@@ -1,0 +1,79 @@
+name: jimboats-web
+
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN:?APP_DOMAIN is required}
+      CADDY_EMAIL: ${CADDY_EMAIL:?CADDY_EMAIL is required}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ../caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+      - ${MEDIA_ROOT:-/var/lib/jimboats/media}/public:/var/lib/jimboats/media/public:ro
+    depends_on:
+      app:
+        condition: service_started
+
+  app:
+    image: ${APP_IMAGE:?APP_IMAGE is required}
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: ${DATABASE_URL:?DATABASE_URL is required}
+      HOSTNAME: 0.0.0.0
+      MEDIA_PUBLIC_BASE_URL: ${MEDIA_PUBLIC_BASE_URL:-/media}
+      MEDIA_ROOT: ${MEDIA_ROOT:-/var/lib/jimboats/media}
+      NODE_ENV: production
+      PORT: 3000
+    expose:
+      - "3000"
+    volumes:
+      - ${MEDIA_ROOT:-/var/lib/jimboats/media}:${MEDIA_ROOT:-/var/lib/jimboats/media}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  media-worker:
+    image: ${APP_IMAGE:?APP_IMAGE is required}
+    restart: unless-stopped
+    command:
+      - node
+      - -e
+      - >
+        console.log("media-worker pending implementation");
+        setInterval(() => {}, 2147483647);
+    environment:
+      DATABASE_URL: ${DATABASE_URL:?DATABASE_URL is required}
+      MEDIA_PUBLIC_BASE_URL: ${MEDIA_PUBLIC_BASE_URL:-/media}
+      MEDIA_ROOT: ${MEDIA_ROOT:-/var/lib/jimboats/media}
+      NODE_ENV: production
+    volumes:
+      - ${MEDIA_ROOT:-/var/lib/jimboats/media}:${MEDIA_ROOT:-/var/lib/jimboats/media}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:?POSTGRES_DB is required}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+      POSTGRES_USER: ${POSTGRES_USER:?POSTGRES_USER is required}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  caddy_config:
+  caddy_data:
+  postgres_data:

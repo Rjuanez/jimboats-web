@@ -1,0 +1,72 @@
+{
+  "name": "jimboats-web",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.34.1",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/engines",
+      "@swc/core",
+      "esbuild",
+      "prisma",
+      "sharp",
+      "unrs-resolver"
+    ]
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:ui": "vitest run",
+    "test:visual": "playwright test tests/visual.spec.ts",
+    "test:responsive": "playwright test tests/responsive.spec.ts",
+    "test:a11y": "playwright test tests/a11y.spec.ts",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "db:up": "docker compose up -d db",
+    "db:down": "docker compose down",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:reset": "prisma migrate reset",
+    "media:prepare": "node scripts/media/prepare.mjs"
+  },
+  "dependencies": {
+    "@prisma/client": "7.8.0",
+    "class-variance-authority": "0.7.1",
+    "clsx": "2.1.1",
+    "lucide-react": "1.17.0",
+    "next": "16.2.6",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "tailwind-merge": "3.6.0",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.11.3",
+    "@playwright/test": "1.60.0",
+    "@storybook/addon-a11y": "10.4.1",
+    "@storybook/nextjs-vite": "10.4.1",
+    "@storybook/test-runner": "0.24.4",
+    "@tailwindcss/postcss": "4.3.0",
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "16.3.2",
+    "@testing-library/user-event": "14.6.1",
+    "@types/node": "25.9.1",
+    "@types/react": "19.2.15",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.0.2",
+    "eslint": "9.39.4",
+    "eslint-config-next": "16.2.6",
+    "jsdom": "29.1.1",
+    "postcss": "8.5.15",
+    "prettier": "3.8.3",
+    "prisma": "7.8.0",
+    "storybook": "10.4.1",
+    "tailwindcss": "4.3.0",
+    "typescript": "5.9.3",
+    "vitest": "4.1.7"
+  }
+}

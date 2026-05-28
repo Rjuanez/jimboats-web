@@ -1,0 +1,26 @@
+# dependencies
+node_modules/
+
+# next
+.next/
+out/
+
+# production
+dist/
+build/
+tsconfig.tsbuildinfo
+
+# env
+.env
+.env.*
+!.env.example
+
+# testing
+coverage/
+test-results/
+playwright-report/
+storybook-static/
+
+# misc
+.DS_Store
+*.log

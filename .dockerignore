@@ -1,0 +1,16 @@
+.git
+.code-review-graph
+.next
+coverage
+node_modules
+playwright-report
+storybook-static
+test-results
+tsconfig.tsbuildinfo
+
+.env
+.env.*
+!.env.example
+
+*.log
+.DS_Store
