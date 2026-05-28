@@ -42,7 +42,7 @@ fi
 
 docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" pull
 docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" up -d db
-docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" run --rm app prisma migrate deploy
+docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" run --rm app prisma migrate deploy --config ./prisma.config.mjs
 docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" up -d app media-worker caddy
 docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" ps
 
