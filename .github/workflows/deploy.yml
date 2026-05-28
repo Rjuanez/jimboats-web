@@ -100,9 +100,10 @@ jobs:
       - name: Configure SSH
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
-          VPS_PORT: ${{ secrets.VPS_PORT || '22' }}
+          VPS_PORT: ${{ secrets.VPS_PORT }}
           VPS_SSH_PRIVATE_KEY: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
         run: |
+          VPS_PORT="${VPS_PORT:-22}"
           install -m 700 -d ~/.ssh
           printf '%s\n' "$VPS_SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
@@ -110,11 +111,14 @@ jobs:
 
       - name: Upload infra files
         env:
-          VPS_APP_DIR: ${{ secrets.VPS_APP_DIR || '/srv/jimboats/web' }}
+          VPS_APP_DIR: ${{ secrets.VPS_APP_DIR }}
           VPS_HOST: ${{ secrets.VPS_HOST }}
-          VPS_PORT: ${{ secrets.VPS_PORT || '22' }}
+          VPS_PORT: ${{ secrets.VPS_PORT }}
           VPS_USER: ${{ secrets.VPS_USER }}
         run: |
+          VPS_APP_DIR="${VPS_APP_DIR:-/srv/jimboats/web}"
+          VPS_PORT="${VPS_PORT:-22}"
+          ssh -v -p "$VPS_PORT" "$VPS_USER@$VPS_HOST" "echo ssh-ok && mkdir -p '$VPS_APP_DIR'"
           tar -czf - infra | ssh -p "$VPS_PORT" "$VPS_USER@$VPS_HOST" "mkdir -p '$VPS_APP_DIR' && tar -xzf - -C '$VPS_APP_DIR'"
           ssh -p "$VPS_PORT" "$VPS_USER@$VPS_HOST" "chmod +x '$VPS_APP_DIR'/infra/deploy/*.sh"
 
@@ -123,9 +127,11 @@ jobs:
           GHCR_TOKEN: ${{ github.token }}
           IMAGE_REPOSITORY: ${{ steps.image.outputs.repository }}
           IMAGE_TAG: ${{ github.sha }}
-          VPS_APP_DIR: ${{ secrets.VPS_APP_DIR || '/srv/jimboats/web' }}
+          VPS_APP_DIR: ${{ secrets.VPS_APP_DIR }}
           VPS_HOST: ${{ secrets.VPS_HOST }}
-          VPS_PORT: ${{ secrets.VPS_PORT || '22' }}
+          VPS_PORT: ${{ secrets.VPS_PORT }}
           VPS_USER: ${{ secrets.VPS_USER }}
         run: |
+          VPS_APP_DIR="${VPS_APP_DIR:-/srv/jimboats/web}"
+          VPS_PORT="${VPS_PORT:-22}"
           ssh -p "$VPS_PORT" "$VPS_USER@$VPS_HOST" "APP_DIR='$VPS_APP_DIR' IMAGE_REPOSITORY='$IMAGE_REPOSITORY' IMAGE_TAG='$IMAGE_TAG' GHCR_USERNAME='${{ github.actor }}' GHCR_TOKEN='$GHCR_TOKEN' sh '$VPS_APP_DIR/infra/deploy/deploy.sh'"
