@@ -46,6 +46,15 @@ docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" run --rm app prisma mig
 docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" up -d app media-worker caddy
 docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" ps
 
-curl --fail --show-error --silent --location --retry 8 --retry-delay 5 "https://$APP_DOMAIN/" >/dev/null
+curl \
+  --fail \
+  --show-error \
+  --silent \
+  --location \
+  --connect-timeout 10 \
+  --retry 12 \
+  --retry-delay 5 \
+  --retry-connrefused \
+  "https://$APP_DOMAIN/" >/dev/null
 
 echo "Deploy completed for $APP_IMAGE"
