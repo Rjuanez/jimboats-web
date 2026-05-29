@@ -2,7 +2,7 @@
 	email {$CADDY_EMAIL}
 }
 
-{$APP_DOMAIN} {
+{$APP_DOMAIN}, www.{$APP_DOMAIN} {
 	encode zstd gzip
 
 	handle_path /media/* {
