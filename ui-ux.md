@@ -119,6 +119,19 @@ src/
 - No usar texto dentro de la app para explicar atajos, arquitectura o detalles tecnicos.
 - El contenido debe ser especifico de JimBoats, no generico.
 
+## UX multiidioma, SEO y GEO
+
+- La experiencia multiidioma debe priorizar paginas utiles e indexables por idioma antes que cantidad de traducciones.
+- No se muestran traducciones incompletas como contenido publico indexable.
+- La navegacion de idioma, cuando exista, debe ser accesible, clara y conservar la intencion de la pagina equivalente si esa traduccion esta publicada.
+- Si una traduccion equivalente no existe, la UI debe ofrecer una salida clara sin crear contenido duplicado o pobre para SEO.
+- Los componentes deben soportar textos traducidos mas largos sin cortar palabras, romper botones ni provocar overflow.
+- Los layouts no deben depender de que los textos tengan una longitud concreta en espanol.
+- Los CTA, labels, errores y estados deben venir del diccionario del locale activo.
+- El contenido editorial indexable debe ser especifico por idioma y mercado, no una traduccion literal pobre.
+- Las FAQs, servicios, politicas, ubicacion y datos de entidad deben poder expresarse de forma natural para SEO local y GEO generativo.
+- Las imagenes informativas deben usar `alt` localizado cuando el significado dependa del idioma o del contexto editorial.
+
 ## Accesibilidad
 
 - Los elementos interactivos deben ser accesibles por teclado.

@@ -201,6 +201,25 @@ Reglas de esta puerta:
 - El contenido local no debe mezclarse con reglas de negocio de reservas.
 - Los datos estructurados deben generarse desde datos claros y testeables cuando afecten SEO local o servicios.
 
+## Reglas de internacionalizacion, SEO y GEO
+
+- Todo `locale` recibido desde ruta, formulario, action o route handler se valida en la frontera de interfaz antes de llamar a aplicacion.
+- Los casos de uso que entregan contenido publico devuelven DTOs localizados para el locale solicitado.
+- Los componentes no consultan diccionarios dinamicos, base de datos ni reglas de fallback.
+- Los textos fijos de UI se resuelven desde diccionarios locales versionados.
+- El contenido editable desde backpanel se resuelve desde PostgreSQL mediante modelos traducibles.
+- Las entidades SEO-relevantes deben separar datos comunes de datos traducibles con tablas explicitas `*_translations`.
+- Las traducciones publicables deben incluir, cuando aplique, `locale`, `slug`, `title`, `seoTitle`, `seoDescription`, `h1`, contenido principal, metadata Open Graph, canonical/indexing y campos necesarios para structured data.
+- Cada traduccion debe tener estado editorial propio, como `DRAFT`, `NEEDS_REVIEW`, `READY_FOR_SEO` o `PUBLISHED`, si la entidad se publica por idioma.
+- No se considera publicada una traduccion indexable si faltan slug, metadata minima, H1 o contenido principal suficiente.
+- No se usa fallback silencioso para contenido indexable; si falta traduccion publicada, se devuelve no publicado, redirect o respuesta controlada segun el caso de uso.
+- Los slugs traducidos se validan por locale y tipo de contenido para evitar colisiones.
+- Los presenters o route metadata generan `hreflang`, canonical y alternates desde DTOs o resultados de aplicacion, no desde constantes dispersas.
+- El structured data se genera desde datos normalizados y traducidos, no desde HTML renderizado.
+- La optimizacion GEO incluye contenido especifico, FAQs reales, datos de entidad, ubicacion, servicios y politicas cuando apliquen.
+- No se introduce SaaS de traduccion, CMS externo ni API externa para i18n sin decision explicita.
+- Si se usa traduccion automatica self-hosted en el futuro, solo puede crear borradores revisables y no publicar contenido sin revision.
+
 ## Reglas de reservas
 
 - La disponibilidad se calcula en dominio o aplicacion, nunca en componentes React.

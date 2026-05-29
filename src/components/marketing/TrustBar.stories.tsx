@@ -1,20 +1,23 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
-import { HomeIntroSection } from "./HomeIntroSection";
+import { homeLandingContent } from "@/interface/next/presenters/homeLandingPresenter";
+
+import { TrustBar } from "./TrustBar";
 
 const meta = {
-  title: "Sections/HomeIntroSection",
-  component: HomeIntroSection,
+  title: "Marketing/TrustBar",
+  component: TrustBar,
+  args: {
+    items: homeLandingContent.trustItems,
+  },
   parameters: {
     layout: "fullscreen",
   },
-} satisfies Meta<typeof HomeIntroSection>;
+} satisfies Meta<typeof TrustBar>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
-
-export const Default: Story = {};
 
 export const Mobile: Story = {
   parameters: {

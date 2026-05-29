@@ -1,0 +1,80 @@
+{
+  "outputDir": "public/images/generated/landing",
+  "items": [
+    {
+      "slug": "hero-sunset-barcelona",
+      "source": "sources/hero-sunset-barcelona.png",
+      "widths": [640, 960, 1024]
+    },
+    {
+      "slug": "experience-sunset-toast",
+      "source": "sources/experience-sunset-toast.png",
+      "widths": [480, 720, 960, 1024]
+    },
+    {
+      "slug": "experience-morning-breeze",
+      "source": "sources/experience-morning-breeze.png",
+      "widths": [480, 720, 960, 1024]
+    },
+    {
+      "slug": "experience-party-board",
+      "source": "sources/experience-party-board.png",
+      "widths": [480, 720, 960, 1024]
+    },
+    {
+      "slug": "experience-romantic-proposal",
+      "source": "sources/experience-romantic-proposal.png",
+      "widths": [480, 720, 960, 1024]
+    },
+    {
+      "slug": "story-barcelona-sea",
+      "source": "sources/story-barcelona-sea.png",
+      "widths": [640, 960, 1024]
+    },
+    {
+      "slug": "upgrade-paddle-surf",
+      "source": "sources/upgrade-paddle-surf.png",
+      "widths": [320, 480, 720, 1024]
+    },
+    {
+      "slug": "upgrade-mediterranean-flavors",
+      "source": "sources/upgrade-mediterranean-flavors.png",
+      "widths": [320, 480, 720, 1024]
+    },
+    {
+      "slug": "upgrade-sunset-toast",
+      "source": "sources/upgrade-sunset-toast.png",
+      "widths": [320, 480, 720, 1024]
+    },
+    {
+      "slug": "gallery-couple-sunset",
+      "source": "sources/gallery-couple-sunset.png",
+      "widths": [480, 720, 960, 1024]
+    },
+    {
+      "slug": "gallery-sea-breeze",
+      "source": "sources/gallery-sea-breeze.png",
+      "widths": [320, 480, 720, 1024]
+    },
+    {
+      "slug": "gallery-champagne",
+      "source": "sources/gallery-champagne.png",
+      "widths": [320, 480, 720, 1024]
+    },
+    {
+      "slug": "gallery-jump-sea",
+      "source": "sources/gallery-jump-sea.png",
+      "widths": [480, 720, 960, 1024]
+    },
+    {
+      "slug": "gallery-barcelona-coast",
+      "source": "sources/gallery-barcelona-coast.png",
+      "widths": [480, 720, 960, 1024]
+    },
+    {
+      "slug": "final-cta-golden-sea",
+      "source": "sources/final-cta-golden-sea.png",
+      "widths": [640, 960, 1024]
+    }
+  ]
+}

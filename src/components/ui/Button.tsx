@@ -32,12 +32,16 @@ export function Button(props: ButtonProps) {
       className,
       disabled,
       loading,
+      shape,
       size,
       variant,
       href,
       ...anchorProps
     } = props;
-    const composedClassName = cn(buttonVariants({ size, variant }), className);
+    const composedClassName = cn(
+      buttonVariants({ shape, size, variant }),
+      className,
+    );
     const isDisabled = Boolean(disabled || loading);
 
     return (
@@ -59,12 +63,16 @@ export function Button(props: ButtonProps) {
     className,
     disabled,
     loading,
+    shape,
     size,
     type = "button",
     variant,
     ...buttonProps
   } = button;
-  const composedClassName = cn(buttonVariants({ size, variant }), className);
+  const composedClassName = cn(
+    buttonVariants({ shape, size, variant }),
+    className,
+  );
   const isDisabled = Boolean(disabled || loading);
 
   return (

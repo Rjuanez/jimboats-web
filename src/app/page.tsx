@@ -1,10 +1,5 @@
-import { PageShell } from "@/components/layout/PageShell";
-import { HomeIntroSection } from "@/components/sections/HomeIntroSection";
+import { redirect } from "next/navigation";
 
 export default function HomePage() {
-  return (
-    <PageShell>
-      <HomeIntroSection />
-    </PageShell>
-  );
+  redirect("/en");
 }

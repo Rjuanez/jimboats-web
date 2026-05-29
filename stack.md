@@ -43,6 +43,21 @@ desplegar en el VPS de Google sin depender de Vercel.
 - No se ejecutan migraciones al arrancar la aplicacion Next.js.
 - Las migraciones se ejecutan como paso operacional separado antes de reiniciar o publicar la app.
 
+## Decisiones de internacionalizacion, SEO y GEO
+
+- No se usa SaaS de traduccion, CMS externo ni servicio externo de i18n por defecto.
+- Los textos fijos de la interfaz se resuelven con diccionarios locales versionados en el repositorio.
+- El contenido editable desde backpanel se guarda en PostgreSQL con traducciones por idioma.
+- Las entidades SEO-relevantes usan tablas de traduccion explicitas antes que JSON generico como fuente principal.
+- Las rutas publicas indexables usan prefijo de locale como `/es`, `/en` y `/fr` cuando esos idiomas esten habilitados.
+- Cada locale publicable debe poder tener slug, metadata SEO, Open Graph, canonical, `hreflang`, sitemap y structured data propios.
+- El idioma base editorial es espanol salvo decision posterior.
+- Ingles debe considerarse idioma prioritario para publico turistico cuando se empiece a publicar contenido multiidioma.
+- Frances queda preparado como locale habilitable si el contenido y la operacion lo justifican.
+- No se publica contenido indexable con fallback silencioso desde otro idioma.
+- La traduccion automatica self-hosted queda como opcion futura para crear borradores revisables, no como fuente de publicacion automatica.
+- La optimizacion GEO cubre motores generativos y busqueda local/geografica mediante contenido claro, datos estructurados, FAQs, servicios, ubicacion y entidad.
+
 ## Aislamiento arquitectonico
 
 - Ninguna pagina importa Prisma.

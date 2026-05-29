@@ -22,6 +22,34 @@ export const Secondary: Story = {
   },
 };
 
+export const Accent: Story = {
+  args: {
+    shape: "pill",
+    variant: "accent",
+  },
+};
+
+export const Dark: Story = {
+  args: {
+    shape: "pill",
+    variant: "dark",
+  },
+};
+
+export const Glass: Story = {
+  args: {
+    shape: "pill",
+    variant: "glass",
+  },
+  decorators: [
+    (Story) => (
+      <div className="bg-text p-6">
+        <Story />
+      </div>
+    ),
+  ],
+};
+
 export const Loading: Story = {
   args: {
     loading: true,

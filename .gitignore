@@ -9,6 +9,7 @@ out/
 dist/
 build/
 tsconfig.tsbuildinfo
+public/images/generated/
 
 # env
 .env

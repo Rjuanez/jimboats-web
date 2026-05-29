@@ -92,6 +92,24 @@ src/
 - Las rutas estaticas de marketing pueden usar contenido local si no hay necesidad de CMS.
 - Las rutas dinamicas de reservas deben pasar siempre por casos de uso.
 
+## Reglas de internacionalizacion, SEO y GEO
+
+- Las paginas publicas indexables deben tener URL propia por idioma mediante prefijo estable de locale como `/es`, `/en` y `/fr` cuando esos idiomas esten habilitados.
+- No se publica contenido indexable sin locale salvo redirecciones tecnicas o canonical documentado.
+- Los textos fijos de interfaz viven en diccionarios locales versionados, por ejemplo en `src/i18n/dictionaries`.
+- El contenido editable desde backpanel vive en PostgreSQL y se modela como contenido traducible por idioma.
+- El contenido SEO-relevante usa traducciones explicitas por entidad, como `page_translations`, `service_translations` o `boat_translations`, en lugar de depender de un JSON generico como fuente principal.
+- Cada traduccion publicable debe poder tener `slug`, `title`, `description`, `h1`, contenido principal, metadata Open Graph, canonical/indexing y datos estructurados propios cuando aplique.
+- Los slugs son traducibles y unicos dentro de cada locale y tipo de contenido.
+- El fallback de idioma no debe usarse silenciosamente para paginas indexables.
+- Si falta una traduccion publicada para un locale, la pagina no debe indexarse en ese idioma o debe resolverse con una estrategia explicita documentada.
+- Las paginas traducidas deben exponer `hreflang` y canonical coherentes.
+- Los sitemaps deben representar las URLs por locale y sus alternates cuando existan.
+- Los datos estructurados para SEO, GEO generativo y SEO local se generan desde datos claros, traducidos y testeables.
+- Los componentes React reciben DTOs ya localizados y no deciden que traduccion, fallback, canonical o schema usar.
+- La seleccion y validacion de locale vive en la frontera de interfaz o en casos de uso, no dentro de componentes visuales.
+- La calidad editorial por idioma es parte del modelo publicable: no se debe publicar una version traducida pobre solo para completar idiomas.
+
 ## Reglas de UI reutilizable
 
 - La UI se organiza siguiendo `ui-ux.md`.
