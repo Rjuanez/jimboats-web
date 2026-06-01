@@ -79,11 +79,14 @@ export function ExperienceCard({
           </div>
           <a
             aria-label={`${ctaLabel}: ${title}`}
-            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-text px-5 text-xs font-semibold uppercase text-white transition hover:bg-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text sm:px-6"
+            className="group inline-flex min-h-12 flex-shrink-0 items-center justify-center gap-3 rounded-full border border-text/70 bg-transparent px-5 text-xs font-semibold uppercase tracking-[0.22em] text-text transition-[background-color,border-color,color,transform] duration-300 ease-out hover:-translate-y-px hover:border-text hover:bg-text hover:text-white focus-visible:-translate-y-px focus-visible:border-text focus-visible:bg-text focus-visible:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-text sm:px-6"
             href={ctaHref}
           >
             <span>{ctaLabel}</span>
-            <ArrowRight aria-hidden="true" className="h-4 w-4" />
+            <ArrowRight
+              aria-hidden="true"
+              className="h-4 w-4 transition-transform duration-300 ease-out group-hover:translate-x-1 group-focus-visible:translate-x-1"
+            />
           </a>
         </div>
       </div>

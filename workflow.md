@@ -9,6 +9,7 @@ alcance completo y confirmarlo.
 
 Antes de proponer o ejecutar cualquier implementacion, leer:
 
+- `AGENTS.md`
 - `AGENT.md`
 - `architecture.md`
 - `implementation.md`
@@ -39,6 +40,16 @@ Cada desarrollo sigue este orden:
 Antes de implementar, usar este formato:
 
 ```txt
+Normas leidas:
+- AGENTS.md
+- AGENT.md
+- architecture.md
+- implementation.md
+- stack.md
+- testing.md
+- ui-ux.md
+- workflow.md
+
 Objetivo:
 - Que se quiere conseguir.
 
@@ -85,6 +96,7 @@ Impacto UI/UX:
 - Confirmacion de que no habra HTML/CSS suelto.
 
 Verificaciones finales:
+- rules:check
 - test
 - test:ui
 - test:visual
@@ -245,6 +257,7 @@ El cierre debe incluir:
 - Archivos creados, modificados o eliminados.
 - Verificaciones ejecutadas.
 - Resultado de cada verificacion.
+- Cumplimiento de normas afectadas, incluyendo `rules:check`.
 - Bloqueos si alguna verificacion no pudo ejecutarse.
 
 Un trabajo no se presenta como terminado si las verificaciones disponibles no se

@@ -22,6 +22,7 @@ con herramientas locales, sin servicios externos.
 Cuando exista la app, estos comandos deben estar disponibles:
 
 ```bash
+pnpm rules:check
 pnpm test
 pnpm test:ui
 pnpm test:visual
@@ -31,6 +32,7 @@ pnpm storybook
 pnpm build-storybook
 ```
 
+- `pnpm rules:check` ejecuta las reglas automatizables de arquitectura, workflow, UI y deploy.
 - `pnpm test` ejecuta tests unitarios y de aplicacion.
 - `pnpm test:ui` ejecuta tests de componentes o Storybook test runner si existe.
 - `pnpm test:visual` ejecuta comparaciones visuales de Playwright.
@@ -141,4 +143,3 @@ Un cambio UI no esta terminado si falta alguna verificacion aplicable:
 - Check responsive si afecta layout.
 - Check a11y si afecta controles, formularios, navegacion o estructura semantica.
 - Build de Storybook si se tocaron stories o componentes visuales.
-

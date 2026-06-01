@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   allowedDevOrigins: ["127.0.0.1"],
   output: "standalone",
+  serverExternalPackages: ["@prisma/client", "@prisma/adapter-pg", "pg"],
 };
 
 export default nextConfig;

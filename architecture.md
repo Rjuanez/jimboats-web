@@ -94,7 +94,7 @@ src/
 
 ## Reglas de internacionalizacion, SEO y GEO
 
-- Las paginas publicas indexables deben tener URL propia por idioma mediante prefijo estable de locale como `/es`, `/en` y `/fr` cuando esos idiomas esten habilitados.
+- Las paginas publicas indexables deben tener URL propia por idioma mediante prefijo estable de locale como `/es`, `/en` y `/ca` cuando esos idiomas esten habilitados.
 - No se publica contenido indexable sin locale salvo redirecciones tecnicas o canonical documentado.
 - Los textos fijos de interfaz viven en diccionarios locales versionados, por ejemplo en `src/i18n/dictionaries`.
 - El contenido editable desde backpanel vive en PostgreSQL y se modela como contenido traducible por idioma.
@@ -179,7 +179,7 @@ src/
 - Las URLs publicas de variantes deben ser inmutables.
 - Si una imagen cambia, se genera un archivo nuevo con nuevo hash.
 - Las variantes se generan antes de marcar la imagen como lista.
-- La generacion de variantes para media dinamica se hace mediante cola local y worker desde el inicio.
+- La generacion de variantes para media dinamica se hace mediante cola local y worker desde la primera implementacion de subida dinamica.
 - La cola local usa PostgreSQL mediante una tabla de jobs como `media_processing_jobs`.
 - El worker corre como proceso Docker separado.
 - La subida dinamica guarda el original privado, crea metadata en estado `PROCESSING` y encola el job.

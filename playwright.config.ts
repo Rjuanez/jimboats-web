@@ -9,7 +9,7 @@ export default defineConfig({
     trace: "on-first-retry",
   },
   webServer: {
-    command: "npx pnpm@10.34.1 dev",
+    command: "JIMBOATS_ADMIN_PREVIEW_DATA=1 npx pnpm@10.34.1 dev",
     url: "http://127.0.0.1:3000",
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

@@ -42,6 +42,7 @@ Si una instruccion de este archivo entra en conflicto con `architecture.md` o
 - Leer `testing.md` antes de crear o modificar tests, componentes UI, estilos, flujos o verificaciones.
 - Leer `ui-ux.md` antes de crear, modificar o convertir cualquier interfaz.
 - Leer `workflow.md` antes de proponer o ejecutar cualquier implementacion.
+- Toda propuesta de implementacion debe incluir un bloque `Normas leidas` con los archivos de normas revisados.
 - Revisar si ya existe una convencion local antes de crear una nueva.
 - Antes de implementar, mostrar todos los archivos que se van a crear, modificar o eliminar.
 - Antes de implementar, mostrar pseudocodigo por archivo y explicar la razon de cada cambio.
@@ -71,8 +72,10 @@ Un cambio solo puede considerarse terminado cuando se cumple todo lo siguiente:
 - No hay overflow horizontal, textos cortados, controles inaccesibles ni layouts rotos en mobile.
 - Los componentes UI afectados tienen stories, tests o verificaciones visuales cuando aplica.
 - Las verificaciones visuales, responsive y accesibilidad aplicables se han ejecutado.
+- `pnpm rules:check` se ha ejecutado correctamente.
 - No hay dependencias externas nuevas sin adapter real.
 - No hay abstracciones que puedan eliminarse sin perder claridad o comportamiento.
 - Los tests relevantes existen o se ha justificado por que no aplican.
 - Todos los tests del repositorio se han ejecutado correctamente.
 - El resultado se puede explicar en terminos de comportamiento, no solo de codigo.
+- El cierre incluye un resumen de cumplimiento contra las normas afectadas.

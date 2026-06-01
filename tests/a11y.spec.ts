@@ -1,10 +1,52 @@
 import { expect, test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-test("home has no detectable accessibility violations", async ({ page }) => {
-  await page.goto("/");
+const pages = [
+  { name: "home", path: "/" },
+  { name: "admin experiences", path: "/admin/experiences" },
+  { name: "admin new experience", path: "/admin/experiences/new" },
+  {
+    name: "admin experience overview",
+    path: "/admin/experiences/sunset-experience",
+  },
+  {
+    name: "admin experience content",
+    path: "/admin/experiences/sunset-experience/content",
+  },
+  {
+    name: "admin experience availability",
+    path: "/admin/experiences/sunset-experience/availability",
+  },
+  {
+    name: "admin experience extras",
+    path: "/admin/experiences/sunset-experience/extras",
+  },
+  {
+    name: "admin experience media",
+    path: "/admin/experiences/sunset-experience/media",
+  },
+  {
+    name: "admin experience publish",
+    path: "/admin/experiences/sunset-experience/publish",
+  },
+  { name: "admin media library", path: "/admin/media" },
+  {
+    name: "admin media detail",
+    path: "/admin/media/sunset-experience-hero",
+  },
+];
 
-  const results = await new AxeBuilder({ page }).analyze();
+for (const testedPage of pages) {
+  test(`${testedPage.name} has no detectable accessibility violations`, async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      window.localStorage.clear();
+    });
+    await page.goto(testedPage.path);
 
-  expect(results.violations).toEqual([]);
-});
+    const results = await new AxeBuilder({ page }).analyze();
+
+    expect(results.violations).toEqual([]);
+  });
+}

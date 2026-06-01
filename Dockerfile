@@ -20,6 +20,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 RUN mkdir -p public \
+  && pnpm db:generate \
   && pnpm media:prepare \
   && pnpm build
 

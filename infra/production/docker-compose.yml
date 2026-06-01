@@ -38,26 +38,6 @@ services:
       db:
         condition: service_healthy
 
-  media-worker:
-    image: ${APP_IMAGE:?APP_IMAGE is required}
-    restart: unless-stopped
-    command:
-      - node
-      - -e
-      - >
-        console.log("media-worker pending implementation");
-        setInterval(() => {}, 2147483647);
-    environment:
-      DATABASE_URL: ${DATABASE_URL:?DATABASE_URL is required}
-      MEDIA_PUBLIC_BASE_URL: ${MEDIA_PUBLIC_BASE_URL:-/media}
-      MEDIA_ROOT: ${MEDIA_ROOT:-/var/lib/jimboats/media}
-      NODE_ENV: production
-    volumes:
-      - ${MEDIA_ROOT:-/var/lib/jimboats/media}:${MEDIA_ROOT:-/var/lib/jimboats/media}
-    depends_on:
-      db:
-        condition: service_healthy
-
   db:
     image: postgres:17-alpine
     restart: unless-stopped

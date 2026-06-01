@@ -5,3 +5,190 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum ExperienceStatus {
+  DRAFT
+  READY
+  PUBLISHED
+  ARCHIVED
+}
+
+enum ExperienceMediaStatus {
+  MISSING
+  PROCESSING
+  READY
+  FAILED
+}
+
+enum SlotPolicyMode {
+  FIXED_SLOTS
+  ANY_AVAILABLE
+  MANUAL_APPROVAL
+}
+
+enum ExtraStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+enum LocalizedContentStatus {
+  DRAFT
+  NEEDS_TRANSLATION
+  NEEDS_REVIEW
+  OUTDATED
+  READY
+  PUBLISHED
+  ARCHIVED
+}
+
+enum IndexingPolicy {
+  INDEX
+  NOINDEX
+}
+
+model Experience {
+  id                        String                       @id
+  internalName              String                       @map("internal_name")
+  type                      String
+  status                    ExperienceStatus
+  displayOrder              Int                          @default(1) @map("display_order")
+  basePriceAmountMinor      Int                          @map("base_price_amount_minor")
+  basePriceCurrency         String                       @map("base_price_currency")
+  depositAmountMinor        Int                          @map("deposit_amount_minor")
+  depositCurrency           String                       @map("deposit_currency")
+  durationMinutes           Int                          @map("duration_minutes")
+  capacity                  Int
+  departurePort             String                       @default("Port Olimpic, Barcelona") @map("departure_port")
+  includedItems             String                       @map("included_items")
+  internalNotes             String                       @default("") @map("internal_notes")
+  bufferMinutes             Int                          @default(30) @map("buffer_minutes")
+  minimumAdvanceMinutes     Int                          @default(60) @map("minimum_advance_minutes")
+  maximumAdvanceMonths      Int                          @default(6) @map("maximum_advance_months")
+  allowsManualScheduling    Boolean                      @default(true) @map("allows_manual_scheduling")
+  primaryMediaAssetId       String?                      @map("primary_media_asset_id")
+  primaryMediaStatus        ExperienceMediaStatus        @default(MISSING) @map("primary_media_status")
+  slotPolicyMode            SlotPolicyMode               @map("slot_policy_mode")
+  slotPolicyTimezone        String                       @map("slot_policy_timezone")
+  slotOperatingStartMinutes Int?                         @map("slot_operating_start_minutes")
+  slotOperatingEndMinutes   Int?                         @map("slot_operating_end_minutes")
+  slotGranularityMinutes    Int?                         @map("slot_granularity_minutes")
+  fixedSlots                ExperienceFixedSlot[]
+  extraRules                ExperienceExtraRule[]
+  localizedContents         LocalizedExperienceContent[]
+  createdAt                 DateTime                     @default(now()) @map("created_at")
+  updatedAt                 DateTime                     @updatedAt @map("updated_at")
+
+  @@index([status], map: "experiences_status_idx")
+  @@index([displayOrder], map: "experiences_display_order_idx")
+  @@index([primaryMediaAssetId], map: "experiences_primary_media_asset_id_idx")
+  @@map("experiences")
+}
+
+model ExperienceFixedSlot {
+  id           String     @id
+  experienceId String     @map("experience_id")
+  slotKey      String     @map("slot_key")
+  label        String
+  enabled      Boolean
+  startMinutes Int        @map("start_minutes")
+  endMinutes   Int        @map("end_minutes")
+  position     Int
+  experience   Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+
+  @@unique([experienceId, slotKey], map: "experience_fixed_slots_experience_id_slot_key_key")
+  @@index([experienceId], map: "experience_fixed_slots_experience_id_idx")
+  @@map("experience_fixed_slots")
+}
+
+model Extra {
+  id                   String                @id
+  name                 String
+  status               ExtraStatus
+  priceAmountMinor     Int                   @map("price_amount_minor")
+  priceCurrency        String                @map("price_currency")
+  defaultNoticeMinutes Int                   @map("default_notice_minutes")
+  primaryMediaAssetId  String?               @map("primary_media_asset_id")
+  experienceRules      ExperienceExtraRule[]
+  createdAt            DateTime              @default(now()) @map("created_at")
+  updatedAt            DateTime              @updatedAt @map("updated_at")
+
+  @@index([status], map: "extras_status_idx")
+  @@index([primaryMediaAssetId], map: "extras_primary_media_asset_id_idx")
+  @@map("extras")
+}
+
+model ExperienceExtraRule {
+  id                       String     @id
+  experienceId             String     @map("experience_id")
+  extraId                  String     @map("extra_id")
+  enabled                  Boolean
+  limitPerBooking          Int        @map("limit_per_booking")
+  noticeMinutes            Int        @map("notice_minutes")
+  priceOverrideAmountMinor Int?       @map("price_override_amount_minor")
+  priceOverrideCurrency    String?    @map("price_override_currency")
+  capacityReduction        Int        @map("capacity_reduction")
+  slotKey                  String?    @map("slot_key")
+  experience               Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  extra                    Extra      @relation(fields: [extraId], references: [id], onDelete: Restrict)
+  createdAt                DateTime   @default(now()) @map("created_at")
+  updatedAt                DateTime   @updatedAt @map("updated_at")
+
+  @@unique([experienceId, extraId, slotKey], map: "experience_extra_rules_experience_id_extra_id_slot_key_key")
+  @@index([experienceId], map: "experience_extra_rules_experience_id_idx")
+  @@index([extraId], map: "experience_extra_rules_extra_id_idx")
+  @@index([slotKey], map: "experience_extra_rules_slot_key_idx")
+  @@map("experience_extra_rules")
+}
+
+model LocalizedExperienceContent {
+  id                String                   @id
+  experienceId      String                   @map("experience_id")
+  locale            String
+  slug              String
+  status            LocalizedContentStatus
+  publicPageEnabled Boolean                  @map("public_page_enabled")
+  indexingPolicy    IndexingPolicy           @map("indexing_policy")
+  title             String
+  h1                String
+  summary           String                   @default("")
+  mainContent       String                   @map("main_content")
+  includedText      String                   @default("") @map("included_text")
+  bringText         String                   @default("") @map("bring_text")
+  visibleTerms      String                   @default("") @map("visible_terms")
+  seoTitle          String                   @map("seo_title")
+  seoDescription    String                   @map("seo_description")
+  geoSummary        String                   @map("geo_summary")
+  keyFacts          String                   @default("") @map("key_facts")
+  imageAltText      String                   @default("") @map("image_alt_text")
+  sourceVersion     Int                      @default(1) @map("source_version")
+  publishedAt       DateTime?                @map("published_at")
+  experience        Experience               @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  faqItems          LocalizedExperienceFaq[]
+  createdAt         DateTime                 @default(now()) @map("created_at")
+  updatedAt         DateTime                 @updatedAt @map("updated_at")
+
+  @@unique([experienceId, locale], map: "localized_experience_contents_experience_id_locale_key")
+  @@unique([locale, slug], map: "localized_experience_contents_locale_slug_key")
+  @@index([experienceId], map: "localized_experience_contents_experience_id_idx")
+  @@index([locale, status], map: "localized_experience_contents_locale_status_idx")
+  @@index([locale, slug], map: "localized_experience_contents_slug_idx")
+  @@map("localized_experience_contents")
+}
+
+model LocalizedExperienceFaq {
+  id                 String                     @id
+  localizedContentId String                     @map("localized_content_id")
+  question           String
+  answer             String
+  position           Int
+  localizedContent   LocalizedExperienceContent @relation(fields: [localizedContentId], references: [id], onDelete: Cascade)
+  createdAt          DateTime                   @default(now()) @map("created_at")
+  updatedAt          DateTime                   @updatedAt @map("updated_at")
+
+  @@unique([localizedContentId, position], map: "localized_experience_faqs_content_id_position_key")
+  @@index([localizedContentId], map: "localized_experience_faqs_content_id_idx")
+  @@map("localized_experience_faqs")
+}

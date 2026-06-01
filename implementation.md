@@ -31,6 +31,7 @@ Antes de implementar cualquier cambio, se debe mostrar al usuario:
 - Impacto arquitectonico esperado.
 - Impacto UI/UX esperado si aplica.
 - Tests, lint, typecheck y build que se ejecutaran al final.
+- `pnpm rules:check` como verificacion obligatoria de normas automatizables.
 
 Reglas de esta puerta:
 
@@ -108,7 +109,7 @@ Reglas de esta puerta:
 
 ## Reglas de generacion de variantes
 
-- La opcion inicial obligatoria para media dinamica es una cola local con PostgreSQL y un worker Docker.
+- La opcion inicial obligatoria para media dinamica, cuando se implemente subida dinamica, es una cola local con PostgreSQL y un worker Docker.
 - La subida dinamica no genera variantes en la misma peticion.
 - La subida dinamica guarda original privado, crea metadata en estado `PROCESSING` y encola job.
 - El worker genera variantes, actualiza metadata a `READY` y registra errores recuperables.
@@ -233,6 +234,7 @@ Reglas de esta puerta:
 ## Reglas de finalizacion
 
 - Ejecutar todos los tests del repositorio.
+- Ejecutar `pnpm rules:check`.
 - Ejecutar typecheck si existe.
 - Ejecutar lint si existe.
 - Ejecutar build si existe y el cambio puede afectar compilacion o rutas.

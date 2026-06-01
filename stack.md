@@ -49,11 +49,11 @@ desplegar en el VPS de Google sin depender de Vercel.
 - Los textos fijos de la interfaz se resuelven con diccionarios locales versionados en el repositorio.
 - El contenido editable desde backpanel se guarda en PostgreSQL con traducciones por idioma.
 - Las entidades SEO-relevantes usan tablas de traduccion explicitas antes que JSON generico como fuente principal.
-- Las rutas publicas indexables usan prefijo de locale como `/es`, `/en` y `/fr` cuando esos idiomas esten habilitados.
+- Las rutas publicas indexables usan prefijo de locale como `/es`, `/en` y `/ca` cuando esos idiomas esten habilitados.
 - Cada locale publicable debe poder tener slug, metadata SEO, Open Graph, canonical, `hreflang`, sitemap y structured data propios.
 - El idioma base editorial es espanol salvo decision posterior.
 - Ingles debe considerarse idioma prioritario para publico turistico cuando se empiece a publicar contenido multiidioma.
-- Frances queda preparado como locale habilitable si el contenido y la operacion lo justifican.
+- Catalan queda incluido como locale inicial junto a espanol e ingles.
 - No se publica contenido indexable con fallback silencioso desde otro idioma.
 - La traduccion automatica self-hosted queda como opcion futura para crear borradores revisables, no como fuente de publicacion automatica.
 - La optimizacion GEO cubre motores generativos y busqueda local/geografica mediante contenido claro, datos estructurados, FAQs, servicios, ubicacion y entidad.
@@ -135,7 +135,7 @@ Ventajas:
 
 Reglas:
 
-- `media-worker` es servicio esperado desde el inicio.
+- `media-worker` es servicio esperado desde la primera implementacion de subida dinamica.
 - La cola vive en PostgreSQL.
 - No se introduce Redis, BullMQ ni broker externo sin decision explicita.
 - La subida no marca una imagen como `READY`.
@@ -195,11 +195,14 @@ Estos comandos deben definirse en `package.json` cuando se cree la app.
 
 La produccion corre en el VPS de Google con Docker Compose.
 
-Servicios esperados:
+Servicios esperados desde el despliegue inicial:
 
 - `app`: contenedor de Next.js standalone.
 - `db`: contenedor PostgreSQL con volumen persistente.
 - `caddy`: reverse proxy publico con HTTPS.
+
+Servicio esperado cuando se implemente subida dinamica de media:
+
 - `media-worker`: worker de procesamiento de imagenes dinamicas.
 
 Reglas:
@@ -227,6 +230,7 @@ Reglas:
 GitHub Actions debe encargarse de:
 
 - Instalar dependencias con pnpm.
+- Ejecutar `pnpm rules:check`.
 - Ejecutar lint si existe.
 - Ejecutar typecheck si existe.
 - Ejecutar tests.
