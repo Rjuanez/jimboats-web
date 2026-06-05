@@ -79,6 +79,14 @@ const fallbackExtraImage = (extraId: string, alt: string) => {
 export async function getPublicBookingPage(
   locale: SupportedLocaleCode = "en",
 ): Promise<PublicBookingContent> {
+  if (process.env.JIMBOATS_ADMIN_PREVIEW_DATA === "1") {
+    const { getPublicBookingMockPage } = await import(
+      "./publicBookingMockPresenter"
+    );
+
+    return getPublicBookingMockPage();
+  }
+
   const { getContainer } = await import("@/container");
   const page = await getContainer().publicBooking.getPage({ locale });
 
