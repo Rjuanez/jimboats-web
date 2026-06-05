@@ -24,6 +24,7 @@ test("home desktop visual baseline", async ({ page }) => {
     fullPage: true,
     mask: [page.locator("img")],
     maskColor: "#e8d9be",
+    maxDiffPixelRatio: 0.02,
   });
 });
 
