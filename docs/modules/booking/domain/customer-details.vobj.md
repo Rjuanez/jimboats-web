@@ -14,7 +14,6 @@ booking.
 - `phone`: optional `PhoneNumber`.
 - `preferredLocale`: `LocaleCode` used for booking access and notifications.
 - `notes`: optional buyer notes.
-- `marketingConsent`: optional consent state when needed.
 
 ## Creation Rules
 
@@ -23,6 +22,8 @@ booking.
 - Phone must satisfy `PhoneNumber` when provided.
 - Phone is required when a selected notification channel needs it.
 - Preferred locale must satisfy `LocaleCode`.
+- Contact details do not imply notification consent. Per-booking channel
+  permission lives in `BookingNotificationPreferences`.
 
 ## Normalization
 
@@ -49,6 +50,7 @@ Two customer detail values are equal when all normalized fields are equal.
 - `EmailAddress`
 - `PhoneNumber`
 - `LocaleCode`
+- `BookingNotificationPreferences`
 
 ## Open Questions
 

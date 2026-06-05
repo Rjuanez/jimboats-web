@@ -7,6 +7,7 @@ import type { ExtraSnapshot } from "../domain/Extra";
 import type { ExtraSelectionRuleSnapshot } from "../domain/ExtraSelectionRule";
 import type { SlotPolicyMode, SlotPolicySnapshot } from "../domain/SlotPolicy";
 import type { AdminLocalizedExperienceContentReadModel } from "./ports/LocalizedExperienceContentReader";
+import type { CancellationPolicySnapshot } from "@/modules/booking/domain/CancellationPolicy";
 
 export type MoneyDto = ExperienceSnapshot["basePrice"];
 
@@ -65,6 +66,7 @@ export type AdminExperienceDto = {
   basePrice: MoneyDto;
   bufferMinutes: number;
   capacity: number;
+  cancellationPolicyId?: string | null;
   depositAmount: MoneyDto;
   departurePort: string;
   displayOrder: number;
@@ -111,6 +113,7 @@ export type AdminExperienceWorkspaceItemDto = {
 };
 
 export type AdminExperiencesWorkspaceDto = {
+  cancellationPolicies?: CancellationPolicySnapshot[];
   experiences: AdminExperienceWorkspaceItemDto[];
   extras: AdminExtraDto[];
   locales: string[];
@@ -141,6 +144,7 @@ export type CreateExperienceCommand = {
 export type UpdateExperienceCoreCommand = {
   basePrice?: MoneyDto;
   capacity?: number;
+  cancellationPolicyId?: string | null;
   depositAmount?: MoneyDto;
   departurePort?: string;
   displayOrder?: number;

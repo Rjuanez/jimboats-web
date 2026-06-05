@@ -30,6 +30,7 @@ const editorTabs: Array<{
   { hrefSuffix: "", id: "overview", label: "Overview" },
   { hrefSuffix: "/content", id: "content", label: "Content & search" },
   { hrefSuffix: "/availability", id: "availability", label: "Availability" },
+  { hrefSuffix: "/cancellation", id: "cancellation", label: "Cancellation" },
   { hrefSuffix: "/extras", id: "extras", label: "Extras" },
   { hrefSuffix: "/media", id: "media", label: "Media" },
   { hrefSuffix: "/publish", id: "publish", label: "Publish" },

@@ -1,6 +1,8 @@
 import { adminNavItems } from "@/components/layout/AdminNavigation";
 import type {
   AdminExperience,
+  AdminExperienceMedia,
+  AdminExperienceMediaAssetOption,
   AdminExperiencesPageData,
   AdminExtra,
 } from "@/components/sections/admin-experiences/AdminExperienceTypes";
@@ -8,6 +10,7 @@ import type {
   AdminExperiencesWorkspaceDto,
   AdminExperienceWorkspaceItemDto,
 } from "@/modules/experience-catalog/application/AdminExperienceDtos";
+import type { AdminMediaListDto } from "@/modules/media-library/application/AdminMediaDtos";
 import type { AdminLocalizedExperienceContentReadModel } from "@/modules/experience-catalog/application/ports/LocalizedExperienceContentReader";
 
 const extras: AdminExtra[] = [
@@ -15,43 +18,74 @@ const extras: AdminExtra[] = [
     defaultNoticeHours: 24,
     defaultPrice: 90,
     id: "premium-champagne",
-    imageUrl: "/images/generated/landing/upgrade-sunset-toast-720.webp",
+    media: previewExtraMedia("upgrade-sunset-toast"),
     name: "Premium champagne",
     requiresNotice: false,
+    status: "active",
   },
   {
     defaultNoticeHours: 48,
     defaultPrice: 180,
     id: "professional-photographer",
-    imageUrl: "/images/generated/landing/gallery-couple-sunset-720.webp",
+    media: previewExtraMedia("gallery-couple-sunset"),
     name: "Professional photographer",
     requiresNotice: true,
+    status: "active",
   },
   {
     defaultNoticeHours: 24,
     defaultPrice: 65,
     id: "mediterranean-snacks",
-    imageUrl:
-      "/images/generated/landing/upgrade-mediterranean-flavors-720.webp",
+    media: previewExtraMedia("upgrade-mediterranean-flavors"),
     name: "Mediterranean snacks",
     requiresNotice: true,
+    status: "active",
   },
   {
     defaultNoticeHours: 12,
     defaultPrice: 45,
     id: "paddle-surf",
-    imageUrl: "/images/generated/landing/upgrade-paddle-surf-720.webp",
+    media: previewExtraMedia("upgrade-paddle-surf"),
     name: "Paddle surf",
     requiresNotice: false,
+    status: "draft",
   },
   {
     defaultNoticeHours: 72,
     defaultPrice: 220,
     id: "flower-setup",
-    imageUrl: "/images/generated/landing/experience-romantic-proposal-720.webp",
+    media: previewExtraMedia("experience-romantic-proposal"),
     name: "Flower setup",
     requiresNotice: true,
+    status: "active",
   },
+];
+
+const previewExperienceMediaAssets: AdminExperienceMediaAssetOption[] = [
+  previewMediaAsset({
+    assetId: "sunset-experience-hero",
+    filename: "experience-sunset-toast.webp",
+    imageBase: "experience-sunset-toast",
+    title: "Sunset Experience hero",
+  }),
+  previewMediaAsset({
+    assetId: "morning-breeze-cover",
+    filename: "experience-morning-breeze.webp",
+    imageBase: "experience-morning-breeze",
+    title: "Morning Breeze cover",
+  }),
+  previewMediaAsset({
+    assetId: "party-on-boat-cover",
+    filename: "experience-party-board.webp",
+    imageBase: "experience-party-board",
+    title: "Party on Boat cover",
+  }),
+  previewMediaAsset({
+    assetId: "romantic-proposal-hero",
+    filename: "experience-romantic-proposal.webp",
+    imageBase: "experience-romantic-proposal",
+    title: "Romantic Proposal hero",
+  }),
 ];
 
 const sunsetExperience: AdminExperience = {
@@ -65,6 +99,7 @@ const sunsetExperience: AdminExperience = {
   durationMinutes: 120,
   extras: [
     {
+      capacityReduction: 0,
       enabled: true,
       extraId: "premium-champagne",
       limitPerBooking: 4,
@@ -72,6 +107,7 @@ const sunsetExperience: AdminExperience = {
       priceOverride: null,
     },
     {
+      capacityReduction: 1,
       enabled: true,
       extraId: "professional-photographer",
       limitPerBooking: 1,
@@ -79,6 +115,7 @@ const sunsetExperience: AdminExperience = {
       priceOverride: null,
     },
     {
+      capacityReduction: 0,
       enabled: true,
       extraId: "mediterranean-snacks",
       limitPerBooking: 8,
@@ -86,6 +123,7 @@ const sunsetExperience: AdminExperience = {
       priceOverride: null,
     },
     {
+      capacityReduction: 0,
       enabled: false,
       extraId: "paddle-surf",
       limitPerBooking: 2,
@@ -93,6 +131,11 @@ const sunsetExperience: AdminExperience = {
       priceOverride: null,
     },
   ],
+  flexibleAvailability: {
+    endTime: "20:00",
+    granularityMinutes: 30,
+    startTime: "10:00",
+  },
   id: "sunset-experience",
   includedInternal:
     "Skipper, fuel, welcome drinks, light snacks and snorkeling equipment.",
@@ -101,10 +144,7 @@ const sunsetExperience: AdminExperience = {
     "Remind guests that EUR 100 is paid online and the rest is paid in cash on board.",
   maxAdvanceMonths: 6,
   media: {
-    filename: "experience-sunset-toast.webp",
-    primaryImageUrl:
-      "/images/generated/landing/experience-sunset-toast-720.webp",
-    status: "ready",
+    ...mediaFromPreviewAsset("sunset-experience-hero"),
   },
   minAdvanceHours: 1,
   slotPolicyType: "fixed_slots",
@@ -249,10 +289,7 @@ const experiences: AdminExperience[] = [
     id: "morning-breeze",
     internalName: "Morning Breeze",
     media: {
-      filename: "experience-morning-breeze.webp",
-      primaryImageUrl:
-        "/images/generated/landing/experience-morning-breeze-720.webp",
-      status: "ready",
+      ...mediaFromPreviewAsset("morning-breeze-cover"),
     },
     slotPolicyType: "fixed_slots",
     status: "ready",
@@ -289,10 +326,12 @@ const experiences: AdminExperience[] = [
     id: "party-on-boat",
     internalName: "Party on Boat",
     media: {
-      filename: "experience-party-board.webp",
-      primaryImageUrl:
-        "/images/generated/landing/experience-party-board-720.webp",
-      status: "processing",
+      ...mediaFromPreviewAsset("party-on-boat-cover", "processing"),
+    },
+    flexibleAvailability: {
+      endTime: "22:00",
+      granularityMinutes: 30,
+      startTime: "10:00",
     },
     slotPolicyType: "any_available",
     status: "draft",
@@ -325,6 +364,7 @@ const experiences: AdminExperience[] = [
     durationMinutes: 120,
     extras: [
       {
+        capacityReduction: 0,
         enabled: true,
         extraId: "premium-champagne",
         limitPerBooking: 1,
@@ -332,6 +372,7 @@ const experiences: AdminExperience[] = [
         priceOverride: null,
       },
       {
+        capacityReduction: 1,
         enabled: true,
         extraId: "professional-photographer",
         limitPerBooking: 1,
@@ -339,6 +380,7 @@ const experiences: AdminExperience[] = [
         priceOverride: 160,
       },
       {
+        capacityReduction: 0,
         enabled: true,
         extraId: "flower-setup",
         limitPerBooking: 1,
@@ -349,10 +391,7 @@ const experiences: AdminExperience[] = [
     id: "romantic-proposal",
     internalName: "Romantic Proposal",
     media: {
-      filename: "experience-romantic-proposal.webp",
-      primaryImageUrl:
-        "/images/generated/landing/experience-romantic-proposal-720.webp",
-      status: "ready",
+      ...mediaFromPreviewAsset("romantic-proposal-hero"),
     },
     status: "ready",
     translations: {
@@ -394,6 +433,7 @@ export function getAdminExperiencesPreviewPage(): AdminExperiencesPageData {
       experiences,
       extras,
       locales: ["en", "es", "ca"],
+      mediaAssets: previewExperienceMediaAssets,
     },
   };
 }
@@ -404,64 +444,156 @@ export async function getAdminExperiencesPage(): Promise<AdminExperiencesPageDat
   }
 
   const { getContainer } = await import("@/container");
-  const workspace = await getContainer().adminExperiences.getWorkspace();
+  const container = getContainer();
+  const [workspace, mediaList] = await Promise.all([
+    container.adminExperiences.getWorkspace(),
+    container.adminMedia.listAssets(),
+  ]);
 
   return {
     navItems: adminNavItems,
-    state: presentAdminExperiencesWorkspace(workspace),
+    state: presentAdminExperiencesWorkspace(workspace, mediaList),
   };
 }
 
 export function presentAdminExperiencesWorkspace(
   workspace: AdminExperiencesWorkspaceDto,
+  mediaList?: AdminMediaListDto,
 ): AdminExperiencesPageData["state"] {
+  const mediaAssets = mediaList ? presentExperienceMediaAssets(mediaList) : [];
+  const mediaAssetsById = new Map(
+    mediaAssets.map((asset) => [asset.assetId, asset]),
+  );
+  const extraMediaAssets = mediaList ? presentExtraMediaAssets(mediaList) : [];
+  const extraMediaAssetsById = new Map(
+    extraMediaAssets.map((asset) => [asset.assetId, asset]),
+  );
+
   return {
-    experiences: workspace.experiences.map(presentExperience),
+    cancellationPolicies: (workspace.cancellationPolicies ?? []).map((policy) => ({
+      activeVersion: policy.activeVersion?.version ?? null,
+      id: policy.id,
+      isDefault: policy.isDefault,
+      name: policy.name,
+      summary: policy.activeVersion?.summaries.en ?? "",
+    })),
+    experiences: workspace.experiences.map((experience) =>
+      presentExperience(experience, mediaAssetsById),
+    ),
     extras: workspace.extras.map((extra) => ({
       defaultNoticeHours: Math.round(extra.defaultNoticeMinutes / 60),
       defaultPrice: fromMoney(extra.price),
       id: extra.id,
-      imageUrl: "",
+      media: presentExtraMedia(extra.primaryMediaAssetId, extraMediaAssetsById),
       name: extra.name,
       requiresNotice: extra.defaultNoticeMinutes > 0,
+      status: extra.status.toLowerCase() as AdminExtra["status"],
     })),
     locales: workspace.locales.filter(isAdminLocale).sort(sortLocalesForAdmin),
+    mediaAssets,
   };
+}
+
+function presentExperienceMediaAssets(
+  mediaList: AdminMediaListDto,
+): AdminExperienceMediaAssetOption[] {
+  return mediaList.assets
+    .filter((asset) => asset.collection === "EXPERIENCES")
+    .map((asset) => {
+      const primaryVariant = asset.primaryVariant ?? asset.variants[0] ?? null;
+
+      return {
+        assetId: asset.id,
+        collection: collectionLabel(asset.collection),
+        filename: asset.original.filename,
+        primaryImageUrl: primaryVariant?.publicUrl ?? "",
+        status: mediaStatusToAdmin(asset.status),
+        title: asset.title,
+        variants: asset.variants.map((variant) => ({
+          publicUrl: variant.publicUrl,
+          width: variant.dimensions.width,
+        })),
+      };
+    })
+    .sort((left, right) => {
+      if (left.status === "ready" && right.status !== "ready") {
+        return -1;
+      }
+
+      if (left.status !== "ready" && right.status === "ready") {
+        return 1;
+      }
+
+      return left.title.localeCompare(right.title);
+    });
+}
+
+function presentExtraMediaAssets(
+  mediaList: AdminMediaListDto,
+): AdminExperienceMediaAssetOption[] {
+  return mediaList.assets
+    .filter((asset) => asset.collection === "EXTRAS")
+    .map((asset) => {
+      const primaryVariant = asset.primaryVariant ?? asset.variants[0] ?? null;
+
+      return {
+        assetId: asset.id,
+        collection: collectionLabel(asset.collection),
+        filename: asset.original.filename,
+        primaryImageUrl: primaryVariant?.publicUrl ?? "",
+        status: mediaStatusToAdmin(asset.status),
+        title: asset.title,
+        variants: asset.variants.map((variant) => ({
+          publicUrl: variant.publicUrl,
+          width: variant.dimensions.width,
+        })),
+      };
+    })
+    .sort((left, right) => {
+      if (left.status === "ready" && right.status !== "ready") {
+        return -1;
+      }
+
+      if (left.status !== "ready" && right.status === "ready") {
+        return 1;
+      }
+
+      return left.title.localeCompare(right.title);
+    });
 }
 
 function presentExperience(
   item: AdminExperienceWorkspaceItemDto,
+  mediaAssetsById: Map<string, AdminExperienceMediaAssetOption>,
 ): AdminExperience {
   const experience = item.experience;
-  const mediaAssetId = experience.media.assetId ?? "";
+  const media = presentExperienceMedia(experience.media, mediaAssetsById);
 
   return {
     allowManualScheduling: experience.allowsManualScheduling,
     basePrice: fromMoney(experience.basePrice),
     bufferMinutes: experience.bufferMinutes,
     capacity: experience.capacity,
+    cancellationPolicyId: experience.cancellationPolicyId,
     depositAmount: fromMoney(experience.depositAmount),
     departurePort: experience.departurePort,
     displayOrder: experience.displayOrder,
     durationMinutes: experience.durationMinutes,
     extras: experience.extraSelectionRules.map((rule) => ({
+      capacityReduction: rule.capacityReduction,
       enabled: rule.enabled,
       extraId: rule.extraId,
       limitPerBooking: rule.limitPerBooking,
       noticeHours: Math.round(rule.noticeMinutes / 60),
       priceOverride: rule.priceOverride ? fromMoney(rule.priceOverride) : null,
     })),
+    flexibleAvailability: presentFlexibleAvailability(experience.slotPolicy),
     id: experience.id,
     includedInternal: experience.includedItems,
     internalName: experience.internalName,
     internalNotes: experience.internalNotes,
     maxAdvanceMonths: experience.maximumAdvanceMonths,
-    media: {
-      filename: mediaAssetId,
-      primaryImageUrl: mediaAssetId.startsWith("/") ? mediaAssetId : "",
-      status:
-        experience.media.status.toLowerCase() as AdminExperience["media"]["status"],
-    },
+    media,
     minAdvanceHours: Math.round(experience.minimumAdvanceMinutes / 60),
     slotPolicyType: slotPolicyTypeToAdmin(experience.slotPolicy.mode),
     slots: experience.slotPolicy.fixedSlots.map((slot) => ({
@@ -478,6 +610,105 @@ function presentExperience(
       es: presentTranslation(item, "es"),
     },
     type: experience.type,
+  };
+}
+
+function presentFlexibleAvailability(
+  slotPolicy: AdminExperienceWorkspaceItemDto["experience"]["slotPolicy"],
+): AdminExperience["flexibleAvailability"] {
+  return {
+    endTime: minutesToTime(slotPolicy.operatingWindow?.endMinutes ?? 20 * 60),
+    granularityMinutes: slotPolicy.granularityMinutes ?? 30,
+    startTime: minutesToTime(
+      slotPolicy.operatingWindow?.startMinutes ?? 10 * 60,
+    ),
+  };
+}
+
+function presentExtraMedia(
+  assetId: string | null,
+  mediaAssetsById: Map<string, AdminExperienceMediaAssetOption>,
+): AdminExperienceMedia {
+  const normalizedAssetId = assetId?.trim() || null;
+
+  if (!normalizedAssetId) {
+    return missingExperienceMedia();
+  }
+
+  const asset = mediaAssetsById.get(normalizedAssetId);
+
+  if (asset) {
+    return mediaFromAssetOption(asset);
+  }
+
+  return {
+    assetId: normalizedAssetId,
+    filename: normalizedAssetId,
+    primaryImageUrl: "",
+    status: "missing",
+    title: "Missing media asset",
+    variants: [],
+  };
+}
+
+function presentExperienceMedia(
+  media: AdminExperienceWorkspaceItemDto["experience"]["media"],
+  mediaAssetsById: Map<string, AdminExperienceMediaAssetOption>,
+): AdminExperienceMedia {
+  const assetId = media.assetId?.trim() || null;
+
+  if (!assetId) {
+    return missingExperienceMedia();
+  }
+
+  const asset = mediaAssetsById.get(assetId);
+
+  if (asset) {
+    return mediaFromAssetOption(asset);
+  }
+
+  if (assetId.startsWith("/")) {
+    return {
+      assetId,
+      filename: filenameFromPath(assetId),
+      primaryImageUrl: assetId,
+      status: mediaStatusToAdmin(media.status),
+      title: filenameFromPath(assetId),
+      variants: [],
+    };
+  }
+
+  return {
+    assetId,
+    filename: assetId,
+    primaryImageUrl: "",
+    status: mediaStatusToAdmin(media.status),
+    title: "Missing media asset",
+    variants: [],
+  };
+}
+
+function mediaFromAssetOption(
+  asset: AdminExperienceMediaAssetOption,
+): AdminExperienceMedia {
+  return {
+    assetId: asset.assetId,
+    filename: asset.filename,
+    primaryImageUrl: asset.primaryImageUrl,
+    status: asset.status,
+    title: asset.title,
+    variants: asset.variants,
+  };
+}
+
+function missingExperienceMedia(): AdminExperienceMedia {
+  return {
+    assetId: null,
+    filename: "",
+    primaryImageUrl: "",
+    status: "missing",
+    title: "",
+    variants: [],
   };
 }
 
@@ -618,4 +849,99 @@ function sortLocalesForAdmin(
   };
 
   return order[left] - order[right];
+}
+
+function previewMediaAsset({
+  assetId,
+  filename,
+  imageBase,
+  title,
+}: {
+  assetId: string;
+  filename: string;
+  imageBase: string;
+  title: string;
+}): AdminExperienceMediaAssetOption {
+  return {
+    assetId,
+    collection: "Experiences",
+    filename,
+    primaryImageUrl: `/images/generated/landing/${imageBase}-720.webp`,
+    status: "ready",
+    title,
+    variants: [480, 720, 1024].map((width) => ({
+      publicUrl: `/images/generated/landing/${imageBase}-${width}.webp`,
+      width,
+    })),
+  };
+}
+
+function mediaFromPreviewAsset(
+  assetId: string,
+  status?: AdminExperience["media"]["status"],
+): AdminExperienceMedia {
+  const asset = previewExperienceMediaAssets.find((candidate) => {
+    return candidate.assetId === assetId;
+  });
+
+  if (!asset) {
+    return missingExperienceMedia();
+  }
+
+  return {
+    ...mediaFromAssetOption(asset),
+    status: status ?? asset.status,
+  };
+}
+
+function previewExtraMedia(imageBase: string): AdminExperienceMedia {
+  return {
+    assetId: imageBase,
+    filename: `${imageBase}.webp`,
+    primaryImageUrl: `/images/generated/landing/${imageBase}-720.webp`,
+    status: "ready",
+    title: imageBase,
+    variants: [480, 720].map((width) => ({
+      publicUrl: `/images/generated/landing/${imageBase}-${width}.webp`,
+      width,
+    })),
+  };
+}
+
+function collectionLabel(
+  collection: AdminMediaListDto["assets"][number]["collection"],
+): AdminExperienceMediaAssetOption["collection"] {
+  const labels = {
+    EXPERIENCES: "Experiences",
+    EXTRAS: "Extras",
+    GALLERY: "Gallery",
+    PAGES: "Pages",
+  } satisfies Record<
+    AdminMediaListDto["assets"][number]["collection"],
+    AdminExperienceMediaAssetOption["collection"]
+  >;
+
+  return labels[collection];
+}
+
+function mediaStatusToAdmin(
+  status: string,
+): AdminExperience["media"]["status"] {
+  if (status === "FAILED" || status === "failed") {
+    return "failed";
+  }
+
+  if (status === "PROCESSING" || status === "processing") {
+    return "processing";
+  }
+
+  if (status === "READY" || status === "ready") {
+    return "ready";
+  }
+
+  return "missing";
+}
+
+function filenameFromPath(value: string) {
+  return value.split("/").pop() || value;
 }

@@ -9,19 +9,100 @@ services:
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-jimboats}:${POSTGRES_PASSWORD:-jimboats}@db:5432/${POSTGRES_DB:-jimboats}?schema=public
       HOSTNAME: 0.0.0.0
+      MEDIA_PUBLIC_BASE_URL: /media
+      MEDIA_ROOT: /var/lib/jimboats/media
       NEXT_TELEMETRY_DISABLED: "1"
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:-}
       NODE_ENV: development
+      NOTIFICATION_PROVIDER_MODE: ${NOTIFICATION_PROVIDER_MODE:-console}
+      PRELUDE_API_KEY: ${PRELUDE_API_KEY:-}
+      PRELUDE_BASE_URL: ${PRELUDE_BASE_URL:-}
+      PRELUDE_CALLBACK_URL: ${PRELUDE_CALLBACK_URL:-}
+      PRELUDE_FROM: ${PRELUDE_FROM:-}
+      PUBLIC_SITE_URL: ${PUBLIC_SITE_URL:-http://localhost:3000}
       PORT: "3000"
-    ports:
-      - "3000:3000"
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      RESEND_BASE_URL: ${RESEND_BASE_URL:-}
+      RESEND_FROM: ${RESEND_FROM:-}
+      RESEND_REPLY_TO: ${RESEND_REPLY_TO:-}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET:-}
+    expose:
+      - "3000"
     volumes:
       - .:/app
       - node_modules:/app/node_modules
       - next_cache:/app/.next
       - pnpm_store:/pnpm/store
+      - media_data:/var/lib/jimboats/media
     depends_on:
       db:
         condition: service_healthy
+
+  media-worker:
+    build:
+      context: .
+      target: base
+    command: sh -lc "if [ ! -x node_modules/.bin/esbuild ]; then CI=true pnpm install --frozen-lockfile --store-dir /pnpm/store; fi && pnpm db:generate && pnpm media:worker"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-jimboats}:${POSTGRES_PASSWORD:-jimboats}@db:5432/${POSTGRES_DB:-jimboats}?schema=public
+      MEDIA_PUBLIC_BASE_URL: /media
+      MEDIA_ROOT: /var/lib/jimboats/media
+      MEDIA_WORKER_POLL_INTERVAL_MS: ${MEDIA_WORKER_POLL_INTERVAL_MS:-2000}
+      NEXT_TELEMETRY_DISABLED: "1"
+      NODE_ENV: development
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+      - pnpm_store:/pnpm/store
+      - media_data:/var/lib/jimboats/media
+    depends_on:
+      app:
+        condition: service_started
+      db:
+        condition: service_healthy
+
+  notification-worker:
+    build:
+      context: .
+      target: base
+    command: sh -lc "if [ ! -x node_modules/.bin/esbuild ]; then CI=true pnpm install --frozen-lockfile --store-dir /pnpm/store; fi && pnpm db:generate && pnpm notifications:worker"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-jimboats}:${POSTGRES_PASSWORD:-jimboats}@db:5432/${POSTGRES_DB:-jimboats}?schema=public
+      NEXT_TELEMETRY_DISABLED: "1"
+      NODE_ENV: development
+      NOTIFICATION_PROVIDER_MODE: ${NOTIFICATION_PROVIDER_MODE:-console}
+      NOTIFICATION_WORKER_POLL_INTERVAL_MS: ${NOTIFICATION_WORKER_POLL_INTERVAL_MS:-2000}
+      PRELUDE_API_KEY: ${PRELUDE_API_KEY:-}
+      PRELUDE_BASE_URL: ${PRELUDE_BASE_URL:-}
+      PRELUDE_CALLBACK_URL: ${PRELUDE_CALLBACK_URL:-}
+      PRELUDE_FROM: ${PRELUDE_FROM:-}
+      PUBLIC_SITE_URL: ${PUBLIC_SITE_URL:-http://localhost:3000}
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      RESEND_BASE_URL: ${RESEND_BASE_URL:-}
+      RESEND_FROM: ${RESEND_FROM:-}
+      RESEND_REPLY_TO: ${RESEND_REPLY_TO:-}
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+      - pnpm_store:/pnpm/store
+    depends_on:
+      app:
+        condition: service_started
+      db:
+        condition: service_healthy
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    volumes:
+      - ./infra/caddy/Caddyfile.dev:/etc/caddy/Caddyfile:ro
+      - media_data:/var/lib/jimboats/media:ro
+    depends_on:
+      app:
+        condition: service_started
 
   db:
     image: postgres:17-alpine
@@ -42,6 +123,7 @@ services:
 
 volumes:
   next_cache:
+  media_data:
   node_modules:
   pnpm_store:
   postgres_data:

@@ -38,6 +38,7 @@ export class UpdateExperienceCoreUseCase {
           ? moneyFromMinor(command.basePrice)
           : undefined,
       capacity: command.capacity,
+      cancellationPolicyId: command.cancellationPolicyId,
       depositAmount:
         command.depositAmount !== undefined
           ? moneyFromMinor(command.depositAmount)

@@ -40,6 +40,7 @@ export type PrismaExperienceRecord = {
   basePriceCurrency: string;
   bufferMinutes: number;
   capacity: number;
+  cancellationPolicyId?: string | null;
   depositAmountMinor: number;
   depositCurrency: string;
   departurePort: string;
@@ -70,6 +71,7 @@ export type PrismaExtraRecord = {
   name: string;
   priceAmountMinor: number;
   priceCurrency: string;
+  primaryMediaAssetId: string | null;
   status: string;
 };
 
@@ -80,6 +82,7 @@ export type PrismaExperienceWriteModel = {
     basePriceCurrency: CurrencyCode;
     bufferMinutes: number;
     capacity: number;
+    cancellationPolicyId: string | null;
     depositAmountMinor: number;
     depositCurrency: CurrencyCode;
     departurePort: string;
@@ -123,6 +126,16 @@ export type PrismaExperienceWriteModel = {
   id: string;
 };
 
+export type PrismaExtraWriteModel = {
+  defaultNoticeMinutes: number;
+  id: string;
+  name: string;
+  priceAmountMinor: number;
+  priceCurrency: CurrencyCode;
+  primaryMediaAssetId: string | null;
+  status: ExtraStatus;
+};
+
 export function experienceFromPrismaRecord(record: PrismaExperienceRecord) {
   return Experience.create({
     allowsManualScheduling: record.allowsManualScheduling,
@@ -132,6 +145,7 @@ export function experienceFromPrismaRecord(record: PrismaExperienceRecord) {
     }),
     bufferMinutes: record.bufferMinutes,
     capacity: record.capacity,
+    cancellationPolicyId: record.cancellationPolicyId ?? null,
     depositAmount: Money.create({
       amountMinor: record.depositAmountMinor,
       currency: currencyFromPrisma(record.depositCurrency),
@@ -165,6 +179,7 @@ export function extraFromPrismaRecord(record: PrismaExtraRecord) {
       amountMinor: record.priceAmountMinor,
       currency: currencyFromPrisma(record.priceCurrency),
     }),
+    primaryMediaAssetId: record.primaryMediaAssetId,
     status: extraStatusFromPrisma(record.status),
   });
 }
@@ -182,6 +197,7 @@ export function experienceToPrismaWriteModel(
       basePriceCurrency: snapshot.basePrice.currency,
       bufferMinutes: snapshot.bufferMinutes,
       capacity: snapshot.capacity,
+      cancellationPolicyId: snapshot.cancellationPolicyId,
       depositAmountMinor: snapshot.depositAmount.amountMinor,
       depositCurrency: snapshot.depositAmount.currency,
       departurePort: snapshot.departurePort,
@@ -224,6 +240,20 @@ export function experienceToPrismaWriteModel(
       startMinutes: slot.startMinutes,
     })),
     id: snapshot.id,
+  };
+}
+
+export function extraToPrismaWriteModel(extra: Extra): PrismaExtraWriteModel {
+  const snapshot = extra.toSnapshot();
+
+  return {
+    defaultNoticeMinutes: snapshot.defaultNoticeMinutes,
+    id: snapshot.id,
+    name: snapshot.name,
+    priceAmountMinor: snapshot.price.amountMinor,
+    priceCurrency: snapshot.price.currency,
+    primaryMediaAssetId: snapshot.primaryMediaAssetId,
+    status: snapshot.status,
   };
 }
 

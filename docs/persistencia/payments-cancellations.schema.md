@@ -16,15 +16,13 @@ Stores payment attempts and confirmations.
 | `id` | string | Primary key. |
 | `booking_id` | string | FK to `bookings.id`. |
 | `provider` | string | Example: `STRIPE` or `MANUAL`. |
-| `provider_payment_id` | string nullable | External payment identifier. |
-| `provider_checkout_session_id` | string nullable | Stripe Checkout session when used. |
-| `status` | string | `PENDING`, `SUCCEEDED`, `FAILED`, `CANCELLED`, `REFUNDED`, `MANUAL_PAID`. |
-| `kind` | string | `DEPOSIT`. |
+| `provider_session_id` | string nullable | Stripe Checkout session when used. |
+| `provider_payment_intent_id` | string nullable | Stripe payment intent when available. |
+| `status` | string | `PENDING`, `SUCCEEDED`, `MANUALLY_PAID`, `FAILED`, `CANCELLED`, `REFUNDED`, `PARTIALLY_REFUNDED`. |
 | `amount_minor` | integer | Charged amount. |
 | `currency` | string | Launch value `EUR`. |
-| `raw_provider_payload` | json nullable | Trusted event snapshot. |
+| `failure_reason` | text nullable | Provider failure or cancellation reason. |
 | `paid_at` | timestamp nullable | Payment success instant. |
-| `created_by_user_id` | string nullable | FK to `backpanel_users.id` for manual payments. |
 | `created_at` | timestamp | Creation instant. |
 | `updated_at` | timestamp | Last update instant. |
 
@@ -32,13 +30,44 @@ Constraints:
 
 - `amount_minor >= 0`.
 - Successful online payment requires provider identifiers.
-- Manual payment requires `created_by_user_id`.
+- Public checkout payment records use provider `STRIPE`.
+- Backpanel manual deposit records use provider `MANUAL`.
 
 Indexes:
 
 - `payment_records_booking_id_idx` on `booking_id`.
-- `payment_records_provider_payment_id_idx` on `provider_payment_id`.
+- `payment_records_provider_session_id_idx` on `provider_session_id`.
+- `payment_records_provider_payment_intent_id_idx` on `provider_payment_intent_id`.
 - `payment_records_status_idx` on `status`.
+
+### `payment_provider_events`
+
+Stores trusted provider events once they have been parsed and accepted for
+processing. This is the idempotency boundary for Stripe webhook retries.
+
+| Column | Type | Notes |
+| --- | --- | --- |
+| `id` | string | Primary key. |
+| `provider` | string | Launch value `STRIPE`. |
+| `provider_event_id` | string | Unique event id from the provider. |
+| `event_type` | string | Example: `checkout.session.completed`. |
+| `status` | string | `PROCESSED`, `FAILED`, `IGNORED`. |
+| `booking_id` | string nullable | FK to `bookings.id` when resolved. |
+| `payment_record_id` | string nullable | FK to `payment_records.id` when resolved. |
+| `payload` | json | Trusted event payload snapshot. |
+| `received_at` | timestamp | Provider event creation instant. |
+| `processed_at` | timestamp | Local processing instant. |
+
+Constraints:
+
+- Unique `(provider, provider_event_id)`.
+- Payload is stored only after signature validation.
+
+Indexes:
+
+- `payment_provider_events_provider_event_id_idx` on `(provider, provider_event_id)`.
+- `payment_provider_events_booking_id_idx` on `booking_id`.
+- `payment_provider_events_payment_record_id_idx` on `payment_record_id`.
 
 ### `cancellation_policies`
 
@@ -92,6 +121,7 @@ Indexes:
 ## Relaciones
 
 - One booking has many payment records.
+- One payment provider event may resolve to one booking and one payment record.
 - One cancellation policy has many tiers.
 - Booking cancellation uses the active policy and should persist the outcome in
   booking/audit records when cancellation happens.
@@ -99,7 +129,3 @@ Indexes:
 ## Notas Prisma
 
 Provider payloads can be Prisma `Json`.
-
-Webhook idempotency may need an additional `provider_events` table once Stripe
-webhooks are implemented. It is intentionally not part of the first schema
-until the payment adapter is designed.

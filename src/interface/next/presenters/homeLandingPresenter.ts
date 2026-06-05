@@ -1,3 +1,17 @@
+import type {
+  HomeLandingContent,
+  HomeLandingExperience,
+  HomeLandingUpgrade,
+} from "@/components/sections/HomeLandingPage";
+import type {
+  PublicBookingContent,
+  PublicBookingExperience,
+  PublicBookingExtra,
+} from "@/components/sections/public-booking/PublicBookingTypes";
+import type { SupportedLocaleCode } from "@/shared/domain/LocaleCode";
+
+import { getPublicBookingPage } from "./publicBookingPresenter";
+
 const generatedImagePath = (slug: string, width: number) =>
   `/images/generated/landing/${slug}-${width}.webp`;
 
@@ -31,12 +45,12 @@ export const homeLandingContent = {
     { href: "#how-it-works", label: "How it Works" },
   ],
   headerCta: {
-    href: "#experiences",
+    href: "/en/book",
     label: "Book now",
   },
   hero: {
     cta: {
-      href: "#experiences",
+      href: "/en/book",
       label: "Book your experience",
     },
     description:
@@ -57,7 +71,7 @@ export const homeLandingContent = {
   ],
   experiences: [
     {
-      ctaHref: "#contact",
+      ctaHref: "/en/book?experience=sunset-private-cruise",
       ctaLabel: "Reserve",
       description:
         "Experience the magic of Barcelona's coastline as the sun dips below the horizon. A peaceful sail with premium drinks and stunning views.",
@@ -73,7 +87,7 @@ export const homeLandingContent = {
       title: "A toast to the golden hour",
     },
     {
-      ctaHref: "#contact",
+      ctaHref: "/en/book?experience=morning-breeze-charter",
       ctaLabel: "Reserve",
       description:
         "Start your day with an invigorating sail. Feel the fresh breeze, take a dip in crystal-clear waters, and enjoy the tranquil sea before the city wakes up.",
@@ -89,7 +103,7 @@ export const homeLandingContent = {
       title: "Feel the Mediterranean breeze",
     },
     {
-      ctaHref: "#contact",
+      ctaHref: "/en/book?experience=party-on-board",
       ctaLabel: "Reserve",
       description:
         "Celebrate life with a private boat party. Bring your friends, play your favorite music, and enjoy a vibrant atmosphere on the water.",
@@ -104,7 +118,7 @@ export const homeLandingContent = {
       title: "Party on Board",
     },
     {
-      ctaHref: "#contact",
+      ctaHref: "/en/book?experience=romantic-proposal",
       ctaLabel: "Reserve",
       description:
         "Create a memory that will last a lifetime. Intimate decoration, premium champagne, and the perfect secluded spot on the sea.",
@@ -224,7 +238,7 @@ export const homeLandingContent = {
   },
   finalCta: {
     cta: {
-      href: "#contact",
+      href: "/en/book",
       label: "Reserve your experience",
     },
     image: generatedImage({
@@ -259,22 +273,147 @@ export const homeLandingContent = {
       { href: "#", label: "Facebook", network: "facebook" },
     ],
   },
-} as const;
+} as const satisfies HomeLandingContent;
 
-export const homeLandingStructuredData = {
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Barcelona",
-    addressRegion: "Catalonia",
-    postalCode: "08005",
-    streetAddress: "Port Olimpic, Moll de Mestral",
-  },
-  areaServed: "Barcelona",
-  description: homeLandingContent.footer.description,
-  email: homeLandingContent.footer.contact.email,
-  image: homeLandingContent.hero.image.src,
-  name: "JimBoats",
-  telephone: homeLandingContent.footer.contact.phone,
-};
+export async function getHomeLandingPage(
+  locale: SupportedLocaleCode = "en",
+): Promise<HomeLandingContent> {
+  let publicBookingContent: PublicBookingContent;
+
+  try {
+    publicBookingContent = await getPublicBookingPage(locale);
+  } catch {
+    return homeLandingContent;
+  }
+
+  return presentHomeLandingContent(publicBookingContent);
+}
+
+export function createHomeLandingStructuredData(content: HomeLandingContent) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Barcelona",
+      addressRegion: "Catalonia",
+      postalCode: "08005",
+      streetAddress: "Port Olimpic, Moll de Mestral",
+    },
+    areaServed: "Barcelona",
+    description: content.footer.description,
+    email: content.footer.contact.email,
+    image: content.hero.image.src,
+    makesOffer: content.experiences.map((experience) => ({
+      "@type": "Offer",
+      name: experience.title,
+      price: priceValueFromLabel(experience.price),
+      priceCurrency: "EUR",
+      url: experience.ctaHref,
+    })),
+    name: "JimBoats",
+    telephone: content.footer.contact.phone,
+  };
+}
+
+export const homeLandingStructuredData =
+  createHomeLandingStructuredData(homeLandingContent);
+
+function presentHomeLandingContent(
+  publicBookingContent: PublicBookingContent,
+): HomeLandingContent {
+  const experiences =
+    publicBookingContent.experiences.length > 0
+      ? publicBookingContent.experiences.map((experience, index) =>
+          presentLandingExperience(experience, index),
+        )
+      : homeLandingContent.experiences;
+  const extras = presentLandingExtras(publicBookingContent);
+
+  return {
+    ...homeLandingContent,
+    experiences,
+    extras: {
+      ...homeLandingContent.extras,
+      items: extras.length > 0 ? extras : homeLandingContent.extras.items,
+    },
+    footer: {
+      ...homeLandingContent.footer,
+      experienceLinks: experiences.map((experience) => ({
+        href: `#${experience.id}`,
+        label: experience.title,
+      })),
+    },
+  };
+}
+
+function presentLandingExperience(
+  experience: PublicBookingExperience,
+  index: number,
+): HomeLandingExperience {
+  return {
+    ctaHref: `/en/book?experience=${encodeURIComponent(experience.id)}`,
+    ctaLabel: "Reserve",
+    description: experience.description,
+    featured: index === 0,
+    id: experience.id,
+    image: {
+      ...experience.image,
+      sizes:
+        index === 1
+          ? "(min-width: 1024px) 50vw, 100vw"
+          : "(min-width: 1024px) 58vw, 100vw",
+    },
+    price: `EUR ${experience.price.toLocaleString("en-US")}`,
+    reverse: index % 2 === 1,
+    title: experience.title,
+  };
+}
+
+function presentLandingExtras(
+  publicBookingContent: PublicBookingContent,
+): HomeLandingUpgrade[] {
+  const extrasById = new Map<string, PublicBookingExtra>();
+
+  for (const extras of Object.values(
+    publicBookingContent.extrasByExperienceId,
+  )) {
+    for (const extra of extras) {
+      if (!extrasById.has(extra.id)) {
+        extrasById.set(extra.id, extra);
+      }
+    }
+  }
+
+  return [...extrasById.values()].slice(0, 3).map((extra) => ({
+    description: upgradeDescription(extra),
+    image: {
+      ...extra.image,
+      sizes: "(min-width: 768px) 33vw, 25vw",
+    },
+    title: extra.title,
+  }));
+}
+
+function upgradeDescription(extra: PublicBookingExtra) {
+  if (extra.description && extra.description !== extra.title) {
+    return extra.description;
+  }
+
+  const knownDescriptions = new Map([
+    ["paddle-surf", "Glide across the calm waters"],
+    ["mediterranean-drinks", "Toast to the good life"],
+    ["sunset-toast", "Set the perfect mood"],
+    ["premium-champagne", "Toast with premium champagne"],
+    ["gourmet-snacks", "Enjoy Mediterranean bites onboard"],
+    ["private-photographer", "Capture the day professionally"],
+  ]);
+
+  return knownDescriptions.get(extra.id) ?? "Add a special touch onboard";
+}
+
+function priceValueFromLabel(price: string) {
+  const value = Number(price.replace(/[^\d.]/g, ""));
+
+  return Number.isFinite(value) ? value : undefined;
+}

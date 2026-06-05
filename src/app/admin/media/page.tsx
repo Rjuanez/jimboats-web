@@ -1,8 +1,28 @@
 import { AdminMediaWorkspace } from "@/components/sections/admin-media/AdminMediaWorkspace";
-import { getAdminMediaPreviewPage } from "@/interface/next/presenters/adminMediaPresenter";
+import type { AdminMediaActions } from "@/components/sections/admin-media/AdminMediaTypes";
+import {
+  requestAdminMediaReprocessAction,
+  updateAdminMediaAssetMetadataAction,
+  uploadAdminMediaAssetAction,
+} from "@/interface/next/actions/adminMediaActions";
+import { getAdminMediaPage } from "@/interface/next/presenters/adminMediaPresenter";
 
-export default function AdminMediaPage() {
+export const dynamic = "force-dynamic";
+
+const actions = {
+  requestReprocess: requestAdminMediaReprocessAction,
+  updateMetadata: updateAdminMediaAssetMetadataAction,
+  uploadAsset: uploadAdminMediaAssetAction,
+} satisfies AdminMediaActions;
+
+export default async function AdminMediaPage() {
+  const pageData = await getAdminMediaPage();
+
   return (
-    <AdminMediaWorkspace pageData={getAdminMediaPreviewPage()} view="library" />
+    <AdminMediaWorkspace
+      actions={actions}
+      pageData={pageData}
+      view="library"
+    />
   );
 }

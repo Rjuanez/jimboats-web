@@ -17,11 +17,14 @@ text.
 - A booking is confirmed when the deposit payment succeeds.
 - Stripe or another online provider charges only the deposit amount for the
   first release.
+- Public Stripe checkout uses Embedded Checkout in the booking page. The
+  application stores the provider session id and the browser mounts Stripe with
+  the session client secret.
 - The price snapshot must show total amount, online deposit amount, and cash
   remaining amount.
 - Booking checkout uses a hold: `PENDING_PAYMENT` booking plus active calendar
   block while the buyer pays.
-- Public checkout hold duration is `15` minutes, aligned with Stripe Checkout
+- Public checkout hold duration is `30` minutes, aligned with Stripe Checkout
   custom expiration limits.
 - Payment confirmation comes from a trusted provider event.
 - Date and time changes are allowed only from the backpanel.
@@ -50,7 +53,7 @@ text.
 
 - Public checkout copy must clearly state that `100 EUR` is paid online and the
   remaining amount is paid in cash on board.
-- Checkout UI should communicate the `15` minute payment hold clearly.
+- Checkout UI should communicate the `30` minute payment hold clearly.
 - Booking confirmation means deposit paid, not total paid.
 - Refund and cancellation behavior depends on configurable cancellation policy
   tiers.

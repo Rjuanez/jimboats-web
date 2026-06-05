@@ -1,9 +1,9 @@
 import { Archive, Copy, Pencil, Plus, Search } from "lucide-react";
-import Image from "next/image";
 import { useMemo, useState } from "react";
 
 import { TextField } from "@/components/forms/AdminFormControls";
 import { Button } from "@/components/ui/Button";
+import { DynamicMediaImage } from "@/components/ui/DynamicMediaImage";
 import { IconButton } from "@/components/ui/IconButton";
 import { Surface } from "@/components/ui/Surface";
 import { cn } from "@/design/variants";
@@ -379,19 +379,20 @@ function ExperienceMobileCard({
 function ExperienceThumb({ experience }: { experience: AdminExperience }) {
   if (!experience.media.primaryImageUrl) {
     return (
-      <div className="flex size-16 shrink-0 items-center justify-center rounded-md bg-slate-100 text-xs font-semibold text-slate-500">
+      <div className="flex size-16 shrink-0 items-center justify-center rounded-md bg-slate-100 text-xs font-semibold text-slate-700">
         No image
       </div>
     );
   }
 
   return (
-    <Image
+    <DynamicMediaImage
       alt=""
-      className="size-16 shrink-0 rounded-md object-cover"
-      height={64}
+      className="size-16 shrink-0 overflow-hidden rounded-md"
+      fallback="No image"
+      sizes="64px"
       src={experience.media.primaryImageUrl}
-      width={64}
+      variants={experience.media.variants}
     />
   );
 }

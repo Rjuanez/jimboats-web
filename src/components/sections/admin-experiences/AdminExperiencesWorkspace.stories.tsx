@@ -75,3 +75,33 @@ export const Content: Story = {
     view: "content",
   },
 };
+
+export const Media: Story = {
+  args: {
+    actions,
+    experienceId: "sunset-experience",
+    initialState: pageData.state,
+    navItems: pageData.navItems,
+    view: "media",
+  },
+};
+
+export const Availability: Story = {
+  args: {
+    actions,
+    experienceId: "sunset-experience",
+    initialState: pageData.state,
+    navItems: pageData.navItems,
+    view: "availability",
+  },
+};
+
+export const Extras: Story = {
+  args: {
+    actions,
+    experienceId: "sunset-experience",
+    initialState: pageData.state,
+    navItems: pageData.navItems,
+    view: "extras",
+  },
+};

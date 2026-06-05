@@ -8,6 +8,7 @@ export type ExtraSnapshot = {
   id: string;
   name: string;
   price: ReturnType<Money["toSnapshot"]>;
+  primaryMediaAssetId: string | null;
   status: ExtraStatus;
 };
 
@@ -16,6 +17,7 @@ export type ExtraProps = {
   id: string;
   name: string;
   price: Money;
+  primaryMediaAssetId?: string | null;
   status: ExtraStatus;
 };
 
@@ -25,6 +27,7 @@ export class Extra {
   static create(input: ExtraProps) {
     const id = input.id.trim();
     const name = input.name.trim();
+    const primaryMediaAssetId = input.primaryMediaAssetId?.trim() || null;
 
     if (!id) {
       throw domainError("EXTRA_ID_MISSING", "Extra id is required.");
@@ -55,6 +58,7 @@ export class Extra {
       ...input,
       id,
       name,
+      primaryMediaAssetId,
     });
   }
 
@@ -85,6 +89,7 @@ export class Extra {
       id: this.props.id,
       name: this.props.name,
       price: this.props.price.toSnapshot(),
+      primaryMediaAssetId: this.props.primaryMediaAssetId ?? null,
       status: this.props.status,
     };
   }

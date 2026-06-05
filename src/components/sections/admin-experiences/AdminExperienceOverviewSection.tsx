@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 import {
   FieldGrid,
   NumberField,
@@ -8,6 +6,7 @@ import {
   TextField,
 } from "@/components/forms/AdminFormControls";
 import { Badge } from "@/components/ui/Badge";
+import { DynamicMediaImage } from "@/components/ui/DynamicMediaImage";
 import { Surface } from "@/components/ui/Surface";
 
 import { MediaStatusBadge } from "./AdminExperienceBadges";
@@ -203,15 +202,16 @@ export function AdminExperienceOverviewSection({
         <Surface title="Primary media">
           <div className="space-y-3">
             {experience.media.primaryImageUrl ? (
-              <Image
+              <DynamicMediaImage
                 alt=""
-                className="aspect-[4/3] w-full rounded-md object-cover"
-                height={360}
+                className="aspect-[4/3] overflow-hidden rounded-md"
+                fallback="Image unavailable"
+                sizes="320px"
                 src={experience.media.primaryImageUrl}
-                width={480}
+                variants={experience.media.variants}
               />
             ) : (
-              <div className="flex aspect-[4/3] w-full items-center justify-center rounded-md bg-slate-100 text-sm font-semibold text-slate-500">
+              <div className="flex aspect-[4/3] w-full items-center justify-center rounded-md bg-slate-100 text-sm font-semibold text-slate-700">
                 No image
               </div>
             )}

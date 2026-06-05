@@ -26,6 +26,7 @@ export type ExperienceProps = {
   basePrice: Money;
   bufferMinutes: number;
   capacity: number;
+  cancellationPolicyId?: string | null;
   depositAmount: Money;
   departurePort: string;
   displayOrder: number;
@@ -54,6 +55,7 @@ export type ExperienceSnapshot = {
   basePrice: ReturnType<Money["toSnapshot"]>;
   bufferMinutes: number;
   capacity: number;
+  cancellationPolicyId: string | null;
   depositAmount: ReturnType<Money["toSnapshot"]>;
   departurePort: string;
   displayOrder: number;
@@ -150,9 +152,25 @@ export class Experience {
       );
     }
 
+    const configuredExtraIds = new Set<string>();
+
+    for (const rule of input.extraSelectionRules) {
+      if (configuredExtraIds.has(rule.extraId)) {
+        throw domainError(
+          "EXPERIENCE_EXTRA_NOT_COMPATIBLE",
+          `Extra ${rule.extraId} is configured more than once.`,
+        );
+      }
+
+      configuredExtraIds.add(rule.extraId);
+    }
+
+    assertSlotPolicyFitsDuration(input.slotPolicy, input.durationMinutes);
+
     return new Experience({
       ...input,
       departurePort,
+      cancellationPolicyId: normalizeOptionalId(input.cancellationPolicyId ?? null),
       id,
       includedItems: input.includedItems.trim(),
       internalName,
@@ -175,6 +193,7 @@ export class Experience {
         ExperienceProps,
         | "basePrice"
         | "capacity"
+        | "cancellationPolicyId"
         | "depositAmount"
         | "departurePort"
         | "displayOrder"
@@ -194,6 +213,12 @@ export class Experience {
 
     if (patch.capacity !== undefined) {
       nextProps.capacity = patch.capacity;
+    }
+
+    if (patch.cancellationPolicyId !== undefined) {
+      nextProps.cancellationPolicyId = normalizeOptionalId(
+        patch.cancellationPolicyId,
+      );
     }
 
     if (patch.depositAmount !== undefined) {
@@ -386,6 +411,7 @@ export class Experience {
       basePrice: this.props.basePrice.toSnapshot(),
       bufferMinutes: this.props.bufferMinutes,
       capacity: this.props.capacity,
+      cancellationPolicyId: this.props.cancellationPolicyId ?? null,
       depositAmount: this.props.depositAmount.toSnapshot(),
       departurePort: this.props.departurePort,
       displayOrder: this.props.displayOrder,
@@ -405,4 +431,34 @@ export class Experience {
       type: this.props.type,
     };
   }
+}
+
+function normalizeOptionalId(value: string | null) {
+  const normalized = value?.trim() ?? "";
+
+  return normalized || null;
+}
+
+function assertSlotPolicyFitsDuration(
+  slotPolicy: SlotPolicy,
+  durationMinutes: number,
+) {
+  const snapshot = slotPolicy.toSnapshot();
+
+  if (snapshot.mode !== "FIXED_SLOTS") {
+    return;
+  }
+
+  const shortEnabledSlot = snapshot.fixedSlots.find((slot) => {
+    return slot.enabled && slot.endMinutes - slot.startMinutes < durationMinutes;
+  });
+
+  if (!shortEnabledSlot) {
+    return;
+  }
+
+  throw domainError(
+    "EXPERIENCE_SLOT_POLICY_INVALID",
+    `Enabled fixed slot "${shortEnabledSlot.label}" must be at least ${durationMinutes} minutes long.`,
+  );
 }

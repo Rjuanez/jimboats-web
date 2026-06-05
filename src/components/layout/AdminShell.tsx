@@ -1,5 +1,6 @@
 import {
   Anchor,
+  Bell,
   CalendarDays,
   ClipboardList,
   FileText,
@@ -7,6 +8,7 @@ import {
   Image as ImageIcon,
   Languages,
   Settings,
+  ShieldCheck,
   Sparkles,
   Tags,
   type LucideIcon,
@@ -27,12 +29,14 @@ type AdminShellProps = {
 const navIcons = {
   bookings: ClipboardList,
   calendar: CalendarDays,
+  "cancellation-policies": ShieldCheck,
   content: FileText,
   dashboard: Gauge,
   experiences: Anchor,
   extras: Tags,
   localization: Languages,
   media: ImageIcon,
+  notifications: Bell,
   settings: Settings,
 } satisfies Record<AdminNavItem["id"], LucideIcon>;
 

@@ -5,7 +5,8 @@
 ## Purpose
 
 Represents a buyer's reservation for one experience, one selected slot, selected
-extras, customer details, price snapshot, buyer access, and payment state.
+extras, customer details, notification preferences, price snapshot, buyer
+access, and payment state.
 
 ## Identity
 
@@ -21,6 +22,8 @@ extras, customer details, price snapshot, buyer access, and payment state.
 - `selectedExtras`: chosen extras with frozen names, prices, and quantities when
   applicable.
 - `customerDetails`: buyer contact details, language, and notes.
+- `notificationPreferences`: per-booking consent and destination preferences
+  for operational email and WhatsApp notifications.
 - `bookingAccess`: public reference and secure access metadata.
 - `priceSnapshot`: frozen base price, extras price, total, currency, and tax
   assumptions.
@@ -44,6 +47,9 @@ extras, customer details, price snapshot, buyer access, and payment state.
 - A buyer-access token must not be stored in plain text.
 - Selected extras must be compatible with the selected experience at booking
   creation time.
+- Contact data alone does not authorize notifications. A buyer channel can only
+  receive operational messages when the booking notification preferences allow
+  that channel.
 
 ## State
 
@@ -76,6 +82,8 @@ extras, customer details, price snapshot, buyer access, and payment state.
   amount.
 - `CancellationPolicy`: evaluates cancellation rules and deposit outcome.
 - `Notification`: messages may be created from booking lifecycle events.
+- `BookingNotificationPreferences`: controls whether buyer email and WhatsApp
+  notification deliveries may be created for this booking.
 
 ## Domain Errors
 

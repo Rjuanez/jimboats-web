@@ -14,6 +14,7 @@ availability assumptions, and cancellation rules.
 - [Payment Record](payment-record.entity.md)
 - [Selected Slot](selected-slot.vobj.md)
 - [Customer Details](customer-details.vobj.md)
+- [Booking Notification Preferences](booking-notification-preferences.vobj.md)
 - [Booking Access](booking-access.vobj.md)
 - [Booking Reference](booking-reference.vobj.md)
 - [Access Token Hash](access-token-hash.vobj.md)

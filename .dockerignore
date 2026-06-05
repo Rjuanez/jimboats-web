@@ -1,6 +1,7 @@
 .git
 .code-review-graph
 .next
+.worker
 coverage
 node_modules
 playwright-report

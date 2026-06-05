@@ -9,6 +9,7 @@ import { Surface } from "@/components/ui/Surface";
 import { AdminExperienceAvailabilitySection } from "./AdminExperienceAvailabilitySection";
 import { AdminExperienceContentSection } from "./AdminExperienceContentSection";
 import { AdminExperienceCreateSection } from "./AdminExperienceCreateSection";
+import { AdminExperienceCancellationSection } from "./AdminExperienceCancellationSection";
 import { AdminExperienceEditorShell } from "./AdminExperienceEditorShell";
 import { AdminExperienceExtrasSection } from "./AdminExperienceExtrasSection";
 import { AdminExperienceMediaSection } from "./AdminExperienceMediaSection";
@@ -120,6 +121,13 @@ function renderView({
           updateExperience={updateExperience}
         />
       ) : null}
+      {view === "cancellation" ? (
+        <AdminExperienceCancellationSection
+          cancellationPolicies={store.state.cancellationPolicies ?? []}
+          experience={experience}
+          updateExperience={updateExperience}
+        />
+      ) : null}
       {view === "extras" ? (
         <AdminExperienceExtrasSection
           experience={experience}
@@ -131,6 +139,7 @@ function renderView({
         <AdminExperienceMediaSection
           experience={experience}
           locales={store.state.locales}
+          mediaAssets={store.state.mediaAssets}
           updateExperience={updateExperience}
         />
       ) : null}
@@ -148,22 +157,27 @@ function renderView({
 
 function MissingExperience() {
   return (
-    <Surface title="Experience not found">
-      <div className="flex flex-col items-start gap-4">
-        <div className="flex items-center gap-3 text-slate-700">
-          <AlertCircle className="size-5 text-amber-600" aria-hidden="true" />
-          <p className="text-sm leading-6">
-            This experience does not exist or was archived from another session.
-          </p>
+    <div className="space-y-5">
+      <h1 className="text-2xl font-semibold text-slate-950">
+        Experience not found
+      </h1>
+      <Surface title="Experience not found">
+        <div className="flex flex-col items-start gap-4">
+          <div className="flex items-center gap-3 text-slate-700">
+            <AlertCircle className="size-5 text-amber-600" aria-hidden="true" />
+            <p className="text-sm leading-6">
+              This experience does not exist or was archived from another
+              session.
+            </p>
+          </div>
+          <Button href="/admin/experiences" variant="secondary">
+            Back to experiences
+          </Button>
         </div>
-        <Button href="/admin/experiences" variant="secondary">
-          Back to experiences
-        </Button>
-      </div>
-    </Surface>
+      </Surface>
+    </div>
   );
 }
-
 function SaveStatus({
   isSaving,
   message,

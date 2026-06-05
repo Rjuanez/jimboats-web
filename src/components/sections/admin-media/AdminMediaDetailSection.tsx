@@ -4,18 +4,19 @@ import {
   CheckCircle2,
   Clock3,
   ExternalLink,
+  Image as ImageIcon,
   RefreshCw,
-  UploadCloud,
 } from "lucide-react";
-import Image from "next/image";
 
-import { TextAreaField } from "@/components/forms/AdminFormControls";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { DynamicMediaImage } from "@/components/ui/DynamicMediaImage";
 import { Surface } from "@/components/ui/Surface";
 
+import { AdminMediaMetadataForm } from "./AdminMediaMetadataForm";
 import type {
   AdminMediaAsset,
+  AdminMediaMetadataInput,
   AdminMediaProcessingEvent,
   AdminMediaStatus,
   AdminMediaVariant,
@@ -23,10 +24,16 @@ import type {
 
 type AdminMediaDetailSectionProps = {
   asset: AdminMediaAsset;
+  isSaving: boolean;
+  requestReprocess: (assetId: string) => Promise<boolean>;
+  updateMetadata: (input: AdminMediaMetadataInput) => Promise<boolean>;
 };
 
 export function AdminMediaDetailSection({
   asset,
+  isSaving,
+  requestReprocess,
+  updateMetadata,
 }: AdminMediaDetailSectionProps) {
   return (
     <div className="space-y-5">
@@ -47,11 +54,13 @@ export function AdminMediaDetailSection({
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Button disabled variant="secondary">
-            <UploadCloud className="size-4" aria-hidden="true" />
-            Upload revision
-          </Button>
-          <Button disabled variant="secondary">
+          <Button
+            loading={isSaving}
+            onClick={() => {
+              void requestReprocess(asset.id);
+            }}
+            variant="secondary"
+          >
             <RefreshCw className="size-4" aria-hidden="true" />
             Reprocess
           </Button>
@@ -64,16 +73,29 @@ export function AdminMediaDetailSection({
           title="Preview"
           description="Primary visual used by catalog surfaces."
         >
-          <div className="relative aspect-[16/10] overflow-hidden rounded-md bg-slate-100">
-            <Image
-              alt={asset.altText.en || asset.title}
-              className="object-cover"
-              fill
-              priority
-              sizes="(min-width: 1280px) 60vw, 100vw"
-              src={asset.publicUrl}
-            />
-          </div>
+          {asset.publicUrl ? (
+            <div className="aspect-[16/10] overflow-hidden rounded-md bg-slate-100">
+              <DynamicMediaImage
+                alt={asset.altText.en || asset.title}
+                className="h-full w-full"
+                fallback={<MediaImageFallback />}
+                imageClassName="object-cover"
+                loading="eager"
+                sizes="(min-width: 1280px) 60vw, 100vw"
+                src={asset.publicUrl}
+                variants={asset.variants}
+              />
+            </div>
+          ) : (
+            <div className="flex aspect-[16/10] items-center justify-center rounded-md bg-slate-100 text-slate-700">
+              <div className="text-center">
+                <ImageIcon className="mx-auto size-8" aria-hidden="true" />
+                <p className="mt-3 text-sm font-semibold">
+                  Public variants are not ready yet.
+                </p>
+              </div>
+            </div>
+          )}
         </Surface>
 
         <Surface className="min-w-0" title="Asset metadata">
@@ -83,7 +105,13 @@ export function AdminMediaDetailSection({
             <MetadataRow label="Hash" value={asset.hash} />
             <MetadataRow label="Updated" value={asset.updatedAt} />
             <MetadataRow label="Original" value={asset.originalPath} />
-            <MetadataRow label="Public path" value={asset.publicPath} />
+            <MetadataRow
+              label="Public path"
+              value={asset.publicPath || "Pending worker output"}
+            />
+            {asset.failureReason ? (
+              <MetadataRow label="Failure" value={asset.failureReason} />
+            ) : null}
           </dl>
         </Surface>
       </div>
@@ -118,55 +146,44 @@ export function AdminMediaDetailSection({
             </div>
           </Surface>
 
-          <Surface
-            className="min-w-0"
-            title="Localized alt text"
-            description="Editorial text used when the image communicates meaning."
-          >
-            <div className="grid gap-4 lg:grid-cols-3">
-              <TextAreaField
-                label="EN alt text"
-                readOnly
-                value={asset.altText.en}
-              />
-              <TextAreaField
-                label="ES alt text"
-                readOnly
-                value={asset.altText.es}
-              />
-              <TextAreaField
-                label="CA alt text"
-                readOnly
-                value={asset.altText.ca}
-              />
-            </div>
-          </Surface>
+          <AdminMediaMetadataForm
+            asset={asset}
+            isSaving={isSaving}
+            key={asset.id}
+            updateMetadata={updateMetadata}
+          />
         </div>
 
         <div className="min-w-0 space-y-5">
           <Surface className="min-w-0" title="Usage">
-            <div className="space-y-3">
-              {asset.usage.map((usage) => (
-                <a
-                  className="flex min-h-12 items-center justify-between gap-3 rounded-md border border-slate-200 px-3 py-2 text-sm transition hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
-                  href={usage.href}
-                  key={usage.id}
-                >
-                  <span className="min-w-0">
-                    <span className="block font-semibold text-slate-950">
-                      {usage.label}
+            {asset.usage.length > 0 ? (
+              <div className="space-y-3">
+                {asset.usage.map((usage) => (
+                  <a
+                    className="flex min-h-12 items-center justify-between gap-3 rounded-md border border-slate-200 px-3 py-2 text-sm transition hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
+                    href={usage.href}
+                    key={usage.id}
+                  >
+                    <span className="min-w-0">
+                      <span className="block font-semibold text-slate-950">
+                        {usage.label}
+                      </span>
+                      <span className="mt-0.5 block text-xs uppercase tracking-wide text-slate-600">
+                        {usage.type}
+                      </span>
                     </span>
-                    <span className="mt-0.5 block text-xs uppercase tracking-wide text-slate-500">
-                      {usage.type}
-                    </span>
-                  </span>
-                  <ExternalLink
-                    className="size-4 shrink-0 text-slate-500"
-                    aria-hidden="true"
-                  />
-                </a>
-              ))}
-            </div>
+                    <ExternalLink
+                      className="size-4 shrink-0 text-slate-500"
+                      aria-hidden="true"
+                    />
+                  </a>
+                ))}
+              </div>
+            ) : (
+              <p className="rounded-md border border-dashed border-slate-300 bg-slate-50 px-3 py-3 text-sm font-semibold text-slate-600">
+                No linked admin content yet.
+              </p>
+            )}
           </Surface>
 
           <Surface className="min-w-0" title="Processing log">
@@ -181,6 +198,17 @@ export function AdminMediaDetailSection({
           </Surface>
         </div>
       </div>
+    </div>
+  );
+}
+
+function MediaImageFallback() {
+  return (
+    <div className="text-center">
+      <ImageIcon className="mx-auto size-8" aria-hidden="true" />
+      <p className="mt-3 text-sm font-semibold">
+        Public variants are not ready yet.
+      </p>
     </div>
   );
 }

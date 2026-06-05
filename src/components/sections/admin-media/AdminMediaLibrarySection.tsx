@@ -5,22 +5,24 @@ import {
   Image as ImageIcon,
   Search,
   SlidersHorizontal,
-  UploadCloud,
 } from "lucide-react";
-import Image from "next/image";
 import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
 
 import { TextField } from "@/components/forms/AdminFormControls";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { DynamicMediaImage } from "@/components/ui/DynamicMediaImage";
 import { Surface } from "@/components/ui/Surface";
 import { cn } from "@/design/variants";
 
+import { AdminMediaUploadPanel } from "./AdminMediaUploadPanel";
 import type { AdminMediaAsset, AdminMediaStatus } from "./AdminMediaTypes";
 
 type AdminMediaLibrarySectionProps = {
   assets: AdminMediaAsset[];
+  isSaving: boolean;
+  uploadAsset: (input: FormData) => Promise<string | null>;
 };
 
 type StatusFilter = AdminMediaStatus | "all";
@@ -29,6 +31,8 @@ const statusOptions: StatusFilter[] = ["all", "ready", "processing", "failed"];
 
 export function AdminMediaLibrarySection({
   assets,
+  isSaving,
+  uploadAsset,
 }: AdminMediaLibrarySectionProps) {
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
@@ -75,13 +79,10 @@ export function AdminMediaLibrarySection({
             Review images used by experiences, extras and public content.
           </p>
         </div>
-        <Button disabled variant="secondary">
-          <UploadCloud className="size-4" aria-hidden="true" />
-          Upload asset
-        </Button>
       </header>
 
       <MediaStats assets={assets} />
+      <AdminMediaUploadPanel isSaving={isSaving} uploadAsset={uploadAsset} />
 
       <Surface
         title="Library workspace"
@@ -230,12 +231,16 @@ function MediaAssetCard({ asset }: { asset: AdminMediaAsset }) {
     <article className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
       <div className="relative aspect-[4/3] bg-slate-100">
         {asset.publicUrl ? (
-          <Image
+          <DynamicMediaImage
             alt={asset.altText.en || asset.title}
-            className="object-cover"
-            fill
+            className="h-full w-full"
+            fallback={
+              <ImageIcon className="size-8 text-slate-400" aria-hidden="true" />
+            }
+            imageClassName="object-cover"
             sizes="(min-width: 1280px) 25vw, (min-width: 768px) 50vw, 100vw"
             src={asset.publicUrl}
+            variants={asset.variants}
           />
         ) : (
           <div className="flex h-full items-center justify-center">

@@ -90,6 +90,39 @@ describe("Experience", () => {
     ).toThrow(DomainError);
   });
 
+  it("rejects enabled fixed slots shorter than the experience duration", () => {
+    expect(() =>
+      createExperience({
+        durationMinutes: 180,
+      }),
+    ).toThrow(DomainError);
+  });
+
+  it("allows disabled fixed slots shorter than the experience duration", () => {
+    const experience = createExperience({
+      durationMinutes: 180,
+      slotPolicy: SlotPolicy.fixedSlots({
+        fixedSlots: [
+          {
+            enabled: false,
+            id: "short-disabled",
+            label: "Short disabled departure",
+            range: TimeRange.fromLocalTimes("09:00", "10:00"),
+          },
+          {
+            enabled: true,
+            id: "valid-enabled",
+            label: "Valid enabled departure",
+            range: TimeRange.fromLocalTimes("14:00", "17:00"),
+          },
+        ],
+        timeZone: "Europe/Madrid",
+      }),
+    });
+
+    expect(experience.toSnapshot().durationMinutes).toBe(180);
+  });
+
   it("rejects admin booking configuration outside launch limits", () => {
     expect(() =>
       createExperience({
@@ -98,8 +131,41 @@ describe("Experience", () => {
     ).toThrow(DomainError);
   });
 
+  it("rejects duplicated extra rules for the same experience", () => {
+    expect(() =>
+      createExperience({
+        extraSelectionRules: [
+          ExtraSelectionRule.create({
+            enabled: true,
+            extraId: "premium-champagne",
+            limitPerBooking: 4,
+            noticeMinutes: 0,
+          }),
+          ExtraSelectionRule.create({
+            enabled: false,
+            extraId: "premium-champagne",
+            limitPerBooking: 1,
+            noticeMinutes: 24 * 60,
+          }),
+        ],
+      }),
+    ).toThrow(DomainError);
+  });
+
   it("updates core configuration through domain construction", () => {
-    const updated = createExperience().withCoreConfiguration({
+    const updated = createExperience({
+      slotPolicy: SlotPolicy.fixedSlots({
+        fixedSlots: [
+          {
+            enabled: true,
+            id: "sunset-1800",
+            label: "Sunset departure",
+            range: TimeRange.fromLocalTimes("18:00", "21:00"),
+          },
+        ],
+        timeZone: "Europe/Madrid",
+      }),
+    }).withCoreConfiguration({
       departurePort: "Marina Vela, Barcelona",
       durationMinutes: 180,
       internalName: "Sunset Celebration",
@@ -114,6 +180,32 @@ describe("Experience", () => {
       internalNotes: "Staff should confirm the meeting point.",
       type: "Celebration charter",
     });
+  });
+
+  it("rejects duration updates that make enabled fixed slots too short", () => {
+    expect(() =>
+      createExperience().withCoreConfiguration({
+        durationMinutes: 180,
+      }),
+    ).toThrow(DomainError);
+  });
+
+  it("rejects availability updates with enabled fixed slots shorter than duration", () => {
+    const shortSlotPolicy = SlotPolicy.fixedSlots({
+      fixedSlots: [
+        {
+          enabled: true,
+          id: "sunset-1800",
+          label: "Sunset departure",
+          range: TimeRange.fromLocalTimes("18:00", "19:00"),
+        },
+      ],
+      timeZone: "Europe/Madrid",
+    });
+
+    expect(() => createExperience().withSlotPolicy(shortSlotPolicy)).toThrow(
+      DomainError,
+    );
   });
 
   it("updates availability, extras and media without mutating the original", () => {

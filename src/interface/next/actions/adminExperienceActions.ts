@@ -9,6 +9,7 @@ import type {
   AdminExperienceCreateInput,
   AdminExperiencesState,
 } from "@/components/sections/admin-experiences/AdminExperienceTypes";
+import type { AdminMediaListDto } from "@/modules/media-library/application/AdminMediaDtos";
 import { ApplicationError } from "@/shared/application/ApplicationError";
 import { DomainError } from "@/shared/domain/DomainError";
 
@@ -60,13 +61,10 @@ export async function createAdminExperienceAction(
       minimumAdvanceMinutes: 60,
       slotPolicy: {
         fixedSlots: [
-          {
-            enabled: true,
-            endMinutes: 12 * 60,
-            id: `${experienceId}-slot-1000`,
-            label: "Morning departure",
-            startMinutes: 10 * 60,
-          },
+          createInitialFixedSlot({
+            durationMinutes: commandInput.durationMinutes,
+            experienceId,
+          }),
         ],
         mode: "FIXED_SLOTS",
         timeZone: "Europe/Madrid",
@@ -94,10 +92,12 @@ export async function saveAdminExperienceAction(
   try {
     const experience = parseAdminExperience(input);
     const container = getContainer();
+    const mediaList = await container.adminMedia.listAssets();
 
     await container.adminExperiences.updateCore({
       basePrice: toMoney(experience.basePrice),
       capacity: experience.capacity,
+      cancellationPolicyId: experience.cancellationPolicyId,
       depositAmount: toMoney(experience.depositAmount),
       departurePort: experience.departurePort,
       displayOrder: experience.displayOrder,
@@ -119,6 +119,7 @@ export async function saveAdminExperienceAction(
     await container.adminExperiences.updateExtras({
       experienceId: experience.id,
       extraSelectionRules: experience.extras.map((extra) => ({
+        capacityReduction: extra.capacityReduction,
         enabled: extra.enabled,
         extraId: extra.extraId,
         limitPerBooking: extra.limitPerBooking,
@@ -129,10 +130,7 @@ export async function saveAdminExperienceAction(
     });
     await container.adminExperiences.updateMedia({
       experienceId: experience.id,
-      media: {
-        assetId: mediaAssetIdFromExperience(experience),
-        status: mediaStatusToApplication(experience.media.status),
-      },
+      media: mediaCommandFromExperience(experience, mediaList),
     });
 
     await Promise.all(
@@ -245,19 +243,22 @@ export async function duplicateAdminExperienceAction(input: {
 }
 
 async function loadState(container: ReturnType<typeof getContainer>) {
-  return presentAdminExperiencesWorkspace(
-    await container.adminExperiences.getWorkspace(),
-  );
+  const [workspace, mediaList] = await Promise.all([
+    container.adminExperiences.getWorkspace(),
+    container.adminMedia.listAssets(),
+  ]);
+
+  return presentAdminExperiencesWorkspace(workspace, mediaList);
 }
 
 function toSlotPolicyCommand(experience: AdminExperience) {
   if (experience.slotPolicyType === "any_available") {
     return {
-      granularityMinutes: 30,
+      granularityMinutes: experience.flexibleAvailability.granularityMinutes,
       mode: "ANY_AVAILABLE" as const,
       operatingWindow: {
-        endMinutes: 20 * 60,
-        startMinutes: 10 * 60,
+        endMinutes: timeToMinutes(experience.flexibleAvailability.endTime),
+        startMinutes: timeToMinutes(experience.flexibleAvailability.startTime),
       },
       timeZone: "Europe/Madrid",
     };
@@ -290,28 +291,57 @@ function toMoney(amount: number) {
   };
 }
 
-function mediaAssetIdFromExperience(experience: AdminExperience) {
-  return (
-    experience.media.primaryImageUrl.trim() ||
-    experience.media.filename.trim() ||
-    null
-  );
+function createInitialFixedSlot(input: {
+  durationMinutes: number;
+  experienceId: string;
+}) {
+  const startMinutes = 10 * 60;
+  const endMinutes = Math.min(24 * 60, startMinutes + input.durationMinutes);
+
+  return {
+    enabled: true,
+    endMinutes,
+    id: `${input.experienceId}-slot-1000`,
+    label: "Morning departure",
+    startMinutes,
+  };
 }
 
-function mediaStatusToApplication(status: AdminExperience["media"]["status"]) {
-  if (status === "failed") {
-    return "FAILED" as const;
+function mediaCommandFromExperience(
+  experience: AdminExperience,
+  mediaList: AdminMediaListDto,
+) {
+  const assetId = experience.media.assetId?.trim() || null;
+
+  if (!assetId) {
+    return {
+      assetId: null,
+      status: "MISSING" as const,
+    };
   }
 
-  if (status === "processing") {
-    return "PROCESSING" as const;
+  const asset = mediaList.assets.find((candidate) => {
+    return candidate.id === assetId;
+  });
+
+  if (!asset) {
+    throw new ApplicationError(
+      "MEDIA_ASSET_NOT_FOUND",
+      "Selected media asset was not found.",
+    );
   }
 
-  if (status === "ready") {
-    return "READY" as const;
+  if (asset.collection !== "EXPERIENCES") {
+    throw new DomainError(
+      "MEDIA_ASSET_COLLECTION_INVALID",
+      "Experience images must come from the Experiences media collection.",
+    );
   }
 
-  return "MISSING" as const;
+  return {
+    assetId: asset.id,
+    status: asset.status,
+  };
 }
 
 function publicationStatusToApplication(status: AdminExperience["status"]) {
@@ -392,6 +422,8 @@ function failure<TData = never>(
       ok: false,
     };
   }
+
+  console.error(error);
 
   return {
     message: "Unexpected error while saving the experience.",

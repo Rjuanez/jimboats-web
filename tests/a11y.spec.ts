@@ -3,7 +3,15 @@ import AxeBuilder from "@axe-core/playwright";
 
 const pages = [
   { name: "home", path: "/" },
+  { name: "public booking", path: "/en/book" },
   { name: "admin experiences", path: "/admin/experiences" },
+  { name: "admin calendar", path: "/admin/calendar" },
+  { name: "admin bookings", path: "/admin/bookings" },
+  { name: "admin new booking", path: "/admin/bookings/new" },
+  {
+    name: "admin booking detail",
+    path: "/admin/bookings/booking-preview-1",
+  },
   { name: "admin new experience", path: "/admin/experiences/new" },
   {
     name: "admin experience overview",

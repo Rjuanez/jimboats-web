@@ -9,6 +9,16 @@ Allow staff to create a booking from the backpanel.
 This supports operational bookings, phone/WhatsApp bookings, and bookings where
 the deposit is marked as manually paid.
 
+## Implementation Status
+
+Implemented in the first admin bookings slice for confirmed backpanel bookings.
+The current implementation stores the booking, selected extras price snapshot,
+manual deposit payment record, confirmed calendar block, audit entry, and
+`BookingCreated` outbox message in one persistence operation.
+
+Public checkout, Stripe provider records, notifications, cancellation policy
+tiers, and outbox publishing are intentionally outside this slice.
+
 ## Actor
 
 - `ADMIN` backpanel user.
@@ -62,8 +72,8 @@ the deposit is marked as manually paid.
 - Persists booking.
 - Persists calendar block.
 - Persists payment record when deposit is manually paid or payment flow starts.
-- Records audit data when staff marks the deposit as manually paid.
-- Emits `AdminBookingCreated`.
+- Records `BOOKING_CREATED` audit data.
+- Stores `BookingCreated` in the outbox.
 
 ## Application Errors
 

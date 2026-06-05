@@ -1,6 +1,11 @@
 import type { AdminNavItem } from "@/components/layout/AdminNavigation";
 
 export type AdminMediaLocaleCode = "ca" | "en" | "es";
+export type AdminMediaCollection =
+  | "Experiences"
+  | "Extras"
+  | "Gallery"
+  | "Pages";
 export type AdminMediaStatus = "failed" | "processing" | "ready";
 export type AdminMediaUsageType = "experience" | "extra" | "gallery" | "page";
 
@@ -29,8 +34,9 @@ export type AdminMediaProcessingEvent = {
 
 export type AdminMediaAsset = {
   altText: Record<AdminMediaLocaleCode, string>;
-  collection: string;
+  collection: AdminMediaCollection;
   dimensions: string;
+  failureReason: string | null;
   filename: string;
   format: string;
   hash: string;
@@ -50,4 +56,40 @@ export type AdminMediaAsset = {
 export type AdminMediaPageData = {
   assets: AdminMediaAsset[];
   navItems: AdminNavItem[];
+};
+
+export type AdminMediaActionResult<TData = undefined> =
+  | {
+      data: TData;
+      ok: true;
+    }
+  | {
+      message: string;
+      ok: false;
+    };
+
+export type AdminMediaMetadataInput = {
+  altText: Record<AdminMediaLocaleCode, string>;
+  assetId: string;
+  collection: AdminMediaCollection;
+  title: string;
+};
+
+export type AdminMediaActions = {
+  requestReprocess: (input: { assetId: string }) => Promise<
+    AdminMediaActionResult<{
+      state: AdminMediaPageData;
+    }>
+  >;
+  updateMetadata: (input: AdminMediaMetadataInput) => Promise<
+    AdminMediaActionResult<{
+      state: AdminMediaPageData;
+    }>
+  >;
+  uploadAsset: (input: FormData) => Promise<
+    AdminMediaActionResult<{
+      assetId: string;
+      state: AdminMediaPageData;
+    }>
+  >;
 };

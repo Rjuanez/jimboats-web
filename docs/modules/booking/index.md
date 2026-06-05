@@ -35,6 +35,24 @@ module to create or release a calendar block for the only boat.
 - Backpanel create booking.
 - Backpanel reschedule booking.
 
+## Implementation Status
+
+- Implemented: backpanel list, detail, create confirmed booking, update
+  operational booking details, reschedule selected slot, and cancel confirmed
+  booking.
+- Implemented: confirmed backpanel bookings create `BOOKING_CONFIRMED`
+  calendar blocks and manual deposit payment records.
+- Implemented: admin booking updates rewrite selected extras, refresh price
+  snapshot, and update the existing confirmed booking calendar block.
+- Implemented: admin cancellation marks booking as `CANCELLED` and releases the
+  confirmed booking calendar block.
+- Implemented: backpanel create, update/reschedule, and cancel record audit
+  entries and booking lifecycle outbox messages in the same persistence
+  transaction.
+- Pending: public checkout hold, Stripe confirmation, buyer access,
+  notifications, refunds, configurable cancellation policy tiers, and outbox
+  publishing workers.
+
 ## Depends On
 
 - [Experience Catalog](../experience-catalog/index.md), for selected experience and package data.

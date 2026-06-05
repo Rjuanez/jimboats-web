@@ -18,6 +18,23 @@ describe("Extra", () => {
     expect(extra.isSelectable()).toBe(true);
   });
 
+  it("normalizes the optional primary media asset id", () => {
+    const extra = Extra.create({
+      defaultNoticeMinutes: 0,
+      id: " paddle-surf ",
+      name: " Paddle surf ",
+      price: Money.create({ amountMinor: 4_500, currency: "EUR" }),
+      primaryMediaAssetId: " asset-paddle ",
+      status: "ACTIVE",
+    });
+
+    expect(extra.toSnapshot()).toMatchObject({
+      id: "paddle-surf",
+      name: "Paddle surf",
+      primaryMediaAssetId: "asset-paddle",
+    });
+  });
+
   it("does not allow archived extras for new selection", () => {
     const extra = Extra.create({
       defaultNoticeMinutes: 0,

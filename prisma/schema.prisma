@@ -47,6 +47,158 @@ enum IndexingPolicy {
   NOINDEX
 }
 
+enum MediaAssetStatus {
+  PROCESSING
+  READY
+  FAILED
+}
+
+enum MediaAssetCollection {
+  EXPERIENCES
+  EXTRAS
+  GALLERY
+  PAGES
+}
+
+enum MediaProcessingJobStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+enum CalendarBlockSource {
+  BOOKING_CONFIRMED
+  BOOKING_HOLD
+  MANUAL_BLOCK
+}
+
+enum CalendarBlockStatus {
+  ACTIVE
+  RELEASED
+}
+
+enum BookingStatus {
+  PENDING_PAYMENT
+  CONFIRMED
+  EXPIRED
+  PAYMENT_FAILED
+  CANCELLED
+}
+
+enum BookingAccessTokenStatus {
+  ACTIVE
+  EXPIRED
+  REVOKED
+}
+
+enum BookingSource {
+  PUBLIC_CHECKOUT
+  BACKPANEL
+}
+
+enum PaymentRecordStatus {
+  PENDING
+  SUCCEEDED
+  MANUALLY_PAID
+  FAILED
+  CANCELLED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+enum PaymentProviderEventStatus {
+  FAILED
+  IGNORED
+  PROCESSED
+}
+
+enum CancellationPolicyStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum CancellationPolicyVersionStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+enum CancellationDepositOutcome {
+  FULL_REFUND
+  MANUAL_REVIEW
+  NO_REFUND
+  PARTIAL_REFUND
+}
+
+enum OutboxMessageStatus {
+  PENDING
+  PUBLISHED
+  FAILED
+}
+
+enum BookingNotificationConsentSource {
+  CHECKOUT
+  BACKPANEL
+  BUYER_ACCESS
+}
+
+enum BookingNotificationConsentStatus {
+  GRANTED
+  NOT_ASKED
+  REVOKED
+}
+
+enum NotificationChannel {
+  EMAIL
+  WHATSAPP
+}
+
+enum NotificationRecipientType {
+  BUYER
+}
+
+enum NotificationRuleSendMode {
+  AUTOMATIC
+  MANUAL_REVIEW
+}
+
+enum NotificationRuleStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum NotificationRuleLocaleStrategy {
+  BOOKING_PREFERRED_LOCALE
+}
+
+enum NotificationRuleMissingTranslationBehavior {
+  DO_NOT_SEND
+}
+
+enum NotificationTemplateStatus {
+  ACTIVE
+  ARCHIVED
+  DRAFT
+  READY
+}
+
+enum NotificationTemplateTranslationStatus {
+  ARCHIVED
+  DRAFT
+  PUBLISHED
+  READY
+}
+
+enum NotificationDeliveryStatus {
+  CANCELLED
+  DELIVERED
+  FAILED
+  MANUAL_REVIEW
+  PENDING
+  SENT
+}
+
 model Experience {
   id                        String                       @id
   internalName              String                       @map("internal_name")
@@ -73,6 +225,8 @@ model Experience {
   slotOperatingStartMinutes Int?                         @map("slot_operating_start_minutes")
   slotOperatingEndMinutes   Int?                         @map("slot_operating_end_minutes")
   slotGranularityMinutes    Int?                         @map("slot_granularity_minutes")
+  cancellationPolicyId      String?                      @map("cancellation_policy_id")
+  cancellationPolicy        CancellationPolicy?          @relation(fields: [cancellationPolicyId], references: [id], onDelete: SetNull)
   fixedSlots                ExperienceFixedSlot[]
   extraRules                ExperienceExtraRule[]
   localizedContents         LocalizedExperienceContent[]
@@ -82,6 +236,7 @@ model Experience {
   @@index([status], map: "experiences_status_idx")
   @@index([displayOrder], map: "experiences_display_order_idx")
   @@index([primaryMediaAssetId], map: "experiences_primary_media_asset_id_idx")
+  @@index([cancellationPolicyId], map: "experiences_cancellation_policy_id_idx")
   @@map("experiences")
 }
 
@@ -191,4 +346,456 @@ model LocalizedExperienceFaq {
   @@unique([localizedContentId, position], map: "localized_experience_faqs_content_id_position_key")
   @@index([localizedContentId], map: "localized_experience_faqs_content_id_idx")
   @@map("localized_experience_faqs")
+}
+
+model MediaAsset {
+  id                  String               @id
+  title               String
+  collection          MediaAssetCollection
+  status              MediaAssetStatus
+  originalPrivatePath String               @map("original_private_path")
+  originalFilename    String               @map("original_filename")
+  mimeType            String               @map("mime_type")
+  originalWidth       Int                  @map("original_width")
+  originalHeight      Int                  @map("original_height")
+  originalSizeBytes   Int                  @map("original_size_bytes")
+  originalContentHash String               @map("original_content_hash")
+  failureReason       String?              @map("failure_reason")
+  variants            MediaAssetVariant[]
+  altTexts            MediaAltText[]
+  processingJobs      MediaProcessingJob[]
+  createdAt           DateTime             @default(now()) @map("created_at")
+  updatedAt           DateTime             @updatedAt @map("updated_at")
+
+  @@index([status], map: "media_assets_status_idx")
+  @@index([collection], map: "media_assets_collection_idx")
+  @@index([originalContentHash], map: "media_assets_original_content_hash_idx")
+  @@index([updatedAt], map: "media_assets_updated_at_idx")
+  @@map("media_assets")
+}
+
+model MediaAssetVariant {
+  id           String     @id
+  mediaAssetId String     @map("media_asset_id")
+  variantKey   String     @map("variant_key")
+  publicPath   String     @map("public_path")
+  format       String
+  width        Int
+  height       Int
+  sizeBytes    Int        @map("size_bytes")
+  contentHash  String     @map("content_hash")
+  mediaAsset   MediaAsset @relation(fields: [mediaAssetId], references: [id], onDelete: Cascade)
+  createdAt    DateTime   @default(now()) @map("created_at")
+
+  @@unique([mediaAssetId, variantKey], map: "media_asset_variants_asset_id_variant_key_key")
+  @@unique([publicPath], map: "media_asset_variants_public_path_key")
+  @@index([mediaAssetId], map: "media_asset_variants_media_asset_id_idx")
+  @@map("media_asset_variants")
+}
+
+model MediaAltText {
+  id           String     @id
+  mediaAssetId String     @map("media_asset_id")
+  locale       String
+  altText      String     @map("alt_text")
+  mediaAsset   MediaAsset @relation(fields: [mediaAssetId], references: [id], onDelete: Cascade)
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+
+  @@unique([mediaAssetId, locale], map: "media_alt_texts_media_asset_id_locale_key")
+  @@index([mediaAssetId], map: "media_alt_texts_media_asset_id_idx")
+  @@map("media_alt_texts")
+}
+
+model MediaProcessingJob {
+  id           String                   @id
+  mediaAssetId String                   @map("media_asset_id")
+  status       MediaProcessingJobStatus
+  attempts     Int                      @default(0)
+  startedAt    DateTime?                @map("started_at")
+  completedAt  DateTime?                @map("completed_at")
+  lastError    String?                  @map("last_error")
+  mediaAsset   MediaAsset               @relation(fields: [mediaAssetId], references: [id], onDelete: Cascade)
+  createdAt    DateTime                 @default(now()) @map("created_at")
+  updatedAt    DateTime                 @updatedAt @map("updated_at")
+
+  @@index([status, createdAt], map: "media_processing_jobs_pick_idx")
+  @@index([mediaAssetId], map: "media_processing_jobs_media_asset_id_idx")
+  @@map("media_processing_jobs")
+}
+
+model CalendarBlock {
+  id                  String              @id
+  source              CalendarBlockSource
+  status              CalendarBlockStatus
+  bookingId           String?             @map("booking_id")
+  experienceId        String?             @map("experience_id")
+  localDate           DateTime            @map("local_date") @db.Date
+  visibleStartMinutes Int                 @map("visible_start_minutes")
+  visibleEndMinutes   Int                 @map("visible_end_minutes")
+  protectedStartAt    DateTime            @map("protected_start_at") @db.Timestamptz(3)
+  protectedEndAt      DateTime            @map("protected_end_at") @db.Timestamptz(3)
+  timeZone            String              @map("timezone")
+  expiresAt           DateTime?           @map("expires_at") @db.Timestamptz(3)
+  reason              String
+  createdByUserId     String              @map("created_by_user_id")
+  createdAt           DateTime            @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt           DateTime            @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([localDate], map: "calendar_blocks_local_date_idx")
+  @@index([bookingId], map: "calendar_blocks_booking_id_idx")
+  @@index([experienceId], map: "calendar_blocks_experience_id_idx")
+  @@index([protectedStartAt, protectedEndAt], map: "calendar_blocks_protected_range_idx")
+  @@index([status, source], map: "calendar_blocks_status_source_idx")
+  @@map("calendar_blocks")
+}
+
+model Booking {
+  id                       String          @id
+  reference                String          @unique
+  status                   BookingStatus
+  source                   BookingSource
+  experienceId             String          @map("experience_id")
+  experienceNameSnapshot   String          @map("experience_name_snapshot")
+  calendarBlockId          String          @map("calendar_block_id")
+  paymentRecordId          String          @map("payment_record_id")
+  guestCount               Int             @map("guest_count")
+  customerName             String          @map("customer_name")
+  customerEmail            String          @map("customer_email")
+  customerPhone            String?         @map("customer_phone")
+  customerLocale           String          @map("customer_locale")
+  customerNotes            String          @default("") @map("customer_notes")
+  selectedLocalDate        DateTime        @map("selected_local_date") @db.Date
+  selectedStartMinutes     Int             @map("selected_start_minutes")
+  selectedEndMinutes       Int             @map("selected_end_minutes")
+  selectedSlotKey          String?         @map("selected_slot_key")
+  timeZone                 String          @map("timezone")
+  totalAmountMinor         Int             @map("total_amount_minor")
+  totalCurrency            String          @map("total_currency")
+  depositAmountMinor       Int             @map("deposit_amount_minor")
+  depositCurrency          String          @map("deposit_currency")
+  cashRemainingAmountMinor Int             @map("cash_remaining_amount_minor")
+  cashRemainingCurrency    String          @map("cash_remaining_currency")
+  priceCapturedAt          DateTime        @map("price_captured_at") @db.Timestamptz(3)
+  cancellationPolicyVersionId String?      @map("cancellation_policy_version_id")
+  cancellationPolicySnapshot Json?         @map("cancellation_policy_snapshot")
+  holdExpiresAt            DateTime?       @map("hold_expires_at") @db.Timestamptz(3)
+  confirmedAt              DateTime?       @map("confirmed_at") @db.Timestamptz(3)
+  cancelledAt              DateTime?       @map("cancelled_at") @db.Timestamptz(3)
+  internalNotes            String          @default("") @map("internal_notes")
+  createdByUserId          String?         @map("created_by_user_id")
+  createdAt                DateTime        @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt                DateTime        @updatedAt @map("updated_at") @db.Timestamptz(3)
+  extras                   BookingExtra[]
+  accessTokens             BookingAccessToken[]
+  notificationDeliveries   NotificationDelivery[]
+  notificationPreference   BookingNotificationPreference?
+  paymentRecords           PaymentRecord[]
+
+  @@index([status], map: "bookings_status_idx")
+  @@index([experienceId], map: "bookings_experience_id_idx")
+  @@index([cancellationPolicyVersionId], map: "bookings_cancellation_policy_version_id_idx")
+  @@index([customerEmail], map: "bookings_customer_email_idx")
+  @@index([selectedLocalDate], map: "bookings_selected_date_idx")
+  @@map("bookings")
+}
+
+model BookingAccessToken {
+  id           String                   @id
+  bookingId    String                   @map("booking_id")
+  tokenHash    String                   @unique @map("token_hash")
+  algorithm    String
+  accessPath   String                   @map("access_path")
+  status       BookingAccessTokenStatus
+  issuedAt     DateTime                 @map("issued_at") @db.Timestamptz(3)
+  expiresAt    DateTime?                @map("expires_at") @db.Timestamptz(3)
+  lastAccessAt DateTime?                @map("last_access_at") @db.Timestamptz(3)
+  revokedAt    DateTime?                @map("revoked_at") @db.Timestamptz(3)
+  booking      Booking                  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  createdAt    DateTime                 @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime                 @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([bookingId], map: "booking_access_tokens_booking_id_idx")
+  @@index([status], map: "booking_access_tokens_status_idx")
+  @@index([expiresAt], map: "booking_access_tokens_expires_at_idx")
+  @@map("booking_access_tokens")
+}
+
+model CancellationPolicy {
+  id        String                       @id
+  name      String
+  status    CancellationPolicyStatus
+  isDefault Boolean                      @default(false) @map("is_default")
+  versions  CancellationPolicyVersion[]
+  experiences Experience[]
+  createdAt DateTime                     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime                     @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([status], map: "cancellation_policies_status_idx")
+  @@index([isDefault], map: "cancellation_policies_default_idx")
+  @@map("cancellation_policies")
+}
+
+model CancellationPolicyVersion {
+  id          String                          @id
+  policyId    String                          @map("policy_id")
+  version     Int
+  status      CancellationPolicyVersionStatus
+  summaryEn   String                          @default("") @map("summary_en")
+  summaryEs   String                          @default("") @map("summary_es")
+  summaryCa   String                          @default("") @map("summary_ca")
+  policy      CancellationPolicy              @relation(fields: [policyId], references: [id], onDelete: Cascade)
+  tiers       CancellationPolicyTier[]
+  createdAt   DateTime                        @default(now()) @map("created_at") @db.Timestamptz(3)
+  activatedAt DateTime?                       @map("activated_at") @db.Timestamptz(3)
+  updatedAt   DateTime                        @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@unique([policyId, version], map: "cancellation_policy_versions_policy_id_version_key")
+  @@index([policyId, status], map: "cancellation_policy_versions_policy_status_idx")
+  @@map("cancellation_policy_versions")
+}
+
+model CancellationPolicyTier {
+  id                         String                       @id
+  versionId                  String                       @map("version_id")
+  fromMinutesBeforeDeparture Int?                         @map("from_minutes_before_departure")
+  toMinutesBeforeDeparture   Int?                         @map("to_minutes_before_departure")
+  depositOutcome             CancellationDepositOutcome   @map("deposit_outcome")
+  refundAmountMinor          Int?                         @map("refund_amount_minor")
+  refundCurrency             String?                      @map("refund_currency")
+  label                      String
+  position                   Int
+  version                    CancellationPolicyVersion    @relation(fields: [versionId], references: [id], onDelete: Cascade)
+  createdAt                  DateTime                     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt                  DateTime                     @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([versionId], map: "cancellation_policy_tiers_version_id_idx")
+  @@map("cancellation_policy_tiers")
+}
+
+model BookingNotificationPreference {
+  id                     String                           @id
+  bookingId              String                           @unique @map("booking_id")
+  preferredLocale        String                           @map("preferred_locale")
+  emailEnabled           Boolean                          @map("email_enabled")
+  emailAddress           String?                          @map("email_address")
+  emailConsentStatus     BookingNotificationConsentStatus @map("email_consent_status")
+  whatsappEnabled        Boolean                          @map("whatsapp_enabled")
+  whatsappPhone          String?                          @map("whatsapp_phone")
+  whatsappConsentStatus  BookingNotificationConsentStatus @map("whatsapp_consent_status")
+  consentSource          BookingNotificationConsentSource @map("consent_source")
+  consentNotes           String?                          @map("consent_notes")
+  consentCapturedAt      DateTime?                        @map("consent_captured_at") @db.Timestamptz(3)
+  booking                Booking                          @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  createdAt              DateTime                         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt              DateTime                         @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([bookingId], map: "booking_notification_preferences_booking_id_idx")
+  @@index([preferredLocale], map: "booking_notification_preferences_locale_idx")
+  @@map("booking_notification_preferences")
+}
+
+model BookingExtra {
+  id               String   @id
+  bookingId        String   @map("booking_id")
+  extraId          String   @map("extra_id")
+  nameSnapshot     String   @map("name_snapshot")
+  quantity         Int
+  unitAmountMinor  Int      @map("unit_amount_minor")
+  unitCurrency     String   @map("unit_currency")
+  totalAmountMinor Int      @map("total_amount_minor")
+  totalCurrency    String   @map("total_currency")
+  booking          Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  createdAt        DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@unique([bookingId, extraId], map: "booking_extras_booking_id_extra_id_key")
+  @@index([bookingId], map: "booking_extras_booking_id_idx")
+  @@index([extraId], map: "booking_extras_extra_id_idx")
+  @@map("booking_extras")
+}
+
+model PaymentRecord {
+  id                      String              @id
+  bookingId               String              @map("booking_id")
+  status                  PaymentRecordStatus
+  amountMinor             Int                 @map("amount_minor")
+  currency                String
+  provider                String
+  providerSessionId       String?             @map("provider_session_id")
+  providerPaymentIntentId String?             @map("provider_payment_intent_id")
+  failureReason           String?             @map("failure_reason")
+  paidAt                  DateTime?           @map("paid_at") @db.Timestamptz(3)
+  booking                 Booking             @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  createdAt               DateTime            @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt               DateTime            @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([bookingId], map: "payment_records_booking_id_idx")
+  @@index([providerSessionId], map: "payment_records_provider_session_id_idx")
+  @@index([providerPaymentIntentId], map: "payment_records_provider_payment_intent_id_idx")
+  @@index([status], map: "payment_records_status_idx")
+  @@map("payment_records")
+}
+
+model PaymentProviderEvent {
+  id              String                     @id @default(dbgenerated("gen_random_uuid()::text"))
+  provider        String
+  providerEventId String                     @map("provider_event_id")
+  eventType       String                     @map("event_type")
+  status          PaymentProviderEventStatus
+  payloadJson     Json                       @map("payload_json")
+  failureReason   String?                    @map("failure_reason")
+  receivedAt      DateTime                   @map("received_at") @db.Timestamptz(3)
+  processedAt     DateTime?                  @map("processed_at") @db.Timestamptz(3)
+  createdAt       DateTime                   @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt       DateTime                   @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@unique([provider, providerEventId], map: "payment_provider_events_provider_event_key")
+  @@index([providerEventId], map: "payment_provider_events_provider_event_id_idx")
+  @@index([status, receivedAt], map: "payment_provider_events_status_received_at_idx")
+  @@map("payment_provider_events")
+}
+
+model BackpanelAuditEntry {
+  id           String   @id @default(dbgenerated("gen_random_uuid()::text"))
+  actorUserId  String?  @map("actor_user_id")
+  action       String
+  resourceType String   @map("resource_type")
+  resourceId   String   @map("resource_id")
+  reason       String?
+  diffJson     Json?    @map("diff_json")
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@index([resourceType, resourceId], map: "audit_entries_resource_idx")
+  @@index([actorUserId], map: "audit_entries_actor_idx")
+  @@index([createdAt], map: "audit_entries_created_at_idx")
+  @@map("audit_entries")
+}
+
+model OutboxMessage {
+  id            String              @id @default(dbgenerated("gen_random_uuid()::text"))
+  aggregateType String              @map("aggregate_type")
+  aggregateId   String              @map("aggregate_id")
+  eventType     String              @map("event_type")
+  eventVersion  Int                 @map("event_version")
+  payload       Json
+  status        OutboxMessageStatus @default(PENDING)
+  occurredAt    DateTime            @map("occurred_at") @db.Timestamptz(3)
+  publishedAt   DateTime?           @map("published_at") @db.Timestamptz(3)
+  failureReason String?             @map("failure_reason")
+  createdAt     DateTime            @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime            @updatedAt @map("updated_at") @db.Timestamptz(3)
+  notificationDeliveries NotificationDelivery[]
+
+  @@index([status, createdAt], map: "outbox_messages_status_created_at_idx")
+  @@index([aggregateType, aggregateId], map: "outbox_messages_aggregate_idx")
+  @@index([eventType], map: "outbox_messages_event_type_idx")
+  @@map("outbox_messages")
+}
+
+model NotificationRule {
+  id                         String                                     @id
+  eventType                  String                                     @map("event_type")
+  notificationType           String                                     @map("notification_type")
+  channel                    NotificationChannel
+  recipientType              NotificationRecipientType                  @map("recipient_type")
+  templateId                 String?                                    @map("template_id")
+  enabled                    Boolean
+  sendMode                   NotificationRuleSendMode                   @map("send_mode")
+  requiresConsent            Boolean                                    @map("requires_consent")
+  localeStrategy             NotificationRuleLocaleStrategy             @map("locale_strategy")
+  missingTranslationBehavior NotificationRuleMissingTranslationBehavior @map("missing_translation_behavior")
+  status                     NotificationRuleStatus
+  updatedByUserId            String?                                    @map("updated_by_user_id")
+  template                   NotificationTemplate?                      @relation(fields: [templateId], references: [id], onDelete: Restrict)
+  deliveries                 NotificationDelivery[]
+  createdAt                  DateTime                                   @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt                  DateTime                                   @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([eventType], map: "notification_rules_event_idx")
+  @@index([eventType, channel, recipientType, status], map: "notification_rules_lookup_idx")
+  @@index([templateId], map: "notification_rules_template_id_idx")
+  @@map("notification_rules")
+}
+
+model NotificationTemplate {
+  id                    String                            @id
+  notificationType      String                            @map("notification_type")
+  eventType             String                            @map("event_type")
+  channel               NotificationChannel
+  providerTemplateId    String?                           @map("provider_template_id")
+  status                NotificationTemplateStatus
+  allowedVariablesJson  Json                              @map("allowed_variables_json")
+  requiredVariablesJson Json                              @map("required_variables_json")
+  version               Int
+  updatedByUserId       String?                           @map("updated_by_user_id")
+  rules                 NotificationRule[]
+  translations          NotificationTemplateTranslation[]
+  deliveries            NotificationDelivery[]
+  createdAt             DateTime                          @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt             DateTime                          @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([notificationType, channel, status], map: "notification_templates_lookup_idx")
+  @@map("notification_templates")
+}
+
+model NotificationTemplateTranslation {
+  id                String                                @id
+  templateId        String                                @map("template_id")
+  locale            String
+  status            NotificationTemplateTranslationStatus
+  subject           String?
+  previewText       String?                               @map("preview_text")
+  body              String
+  variablesUsedJson Json                                  @map("variables_used_json")
+  updatedByUserId   String?                               @map("updated_by_user_id")
+  template          NotificationTemplate                  @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  createdAt         DateTime                              @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime                              @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@unique([templateId, locale], map: "notification_template_translations_template_id_locale_key")
+  @@index([templateId], map: "notification_template_translations_template_idx")
+  @@index([templateId, locale, status], map: "notification_template_translations_lookup_idx")
+  @@map("notification_template_translations")
+}
+
+model NotificationDelivery {
+  id                String                     @id
+  outboxMessageId   String?                    @map("outbox_message_id")
+  ruleId            String?                    @map("rule_id")
+  bookingId         String?                    @map("booking_id")
+  notificationType  String                     @map("notification_type")
+  eventType         String                     @map("event_type")
+  channel           NotificationChannel
+  status            NotificationDeliveryStatus
+  locale            String
+  recipientType     NotificationRecipientType  @map("recipient_type")
+  recipientName     String?                    @map("recipient_name")
+  recipientEmail    String?                    @map("recipient_email")
+  recipientPhone    String?                    @map("recipient_phone")
+  templateId        String?                    @map("template_id")
+  templateVersion   Int?                       @map("template_version")
+  renderedSubject   String?                    @map("rendered_subject")
+  renderedBody      String                     @map("rendered_body")
+  payloadJson       Json                       @map("payload_json")
+  attempts          Int                        @default(0)
+  provider          String?
+  providerMessageId String?                    @map("provider_message_id")
+  providerTemplateId String?                   @map("provider_template_id")
+  providerVariablesJson Json                   @default("{}") @map("provider_variables_json")
+  failureReason     String?                    @map("failure_reason")
+  sendAfter         DateTime?                  @map("send_after") @db.Timestamptz(3)
+  sentAt            DateTime?                  @map("sent_at") @db.Timestamptz(3)
+  deliveredAt       DateTime?                  @map("delivered_at") @db.Timestamptz(3)
+  booking           Booking?                   @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  outboxMessage     OutboxMessage?             @relation(fields: [outboxMessageId], references: [id], onDelete: SetNull)
+  rule              NotificationRule?          @relation(fields: [ruleId], references: [id], onDelete: SetNull)
+  template          NotificationTemplate?      @relation(fields: [templateId], references: [id], onDelete: SetNull)
+  createdAt         DateTime                   @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime                   @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([status, sendAfter], map: "notification_deliveries_status_send_after_idx")
+  @@index([bookingId], map: "notification_deliveries_booking_id_idx")
+  @@index([channel, status], map: "notification_deliveries_channel_status_idx")
+  @@index([outboxMessageId, ruleId], map: "notification_deliveries_outbox_rule_idx")
+  @@map("notification_deliveries")
 }

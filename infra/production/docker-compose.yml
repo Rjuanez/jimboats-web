@@ -5,6 +5,8 @@ services:
     image: caddy:2-alpine
     restart: unless-stopped
     environment:
+      ADMIN_BASIC_AUTH_HASH: ${ADMIN_BASIC_AUTH_HASH:?ADMIN_BASIC_AUTH_HASH is required}
+      ADMIN_BASIC_AUTH_USER: ${ADMIN_BASIC_AUTH_USER:?ADMIN_BASIC_AUTH_USER is required}
       APP_DOMAIN: ${APP_DOMAIN:?APP_DOMAIN is required}
       CADDY_EMAIL: ${CADDY_EMAIL:?CADDY_EMAIL is required}
     ports:
@@ -28,12 +30,65 @@ services:
       HOSTNAME: 0.0.0.0
       MEDIA_PUBLIC_BASE_URL: ${MEDIA_PUBLIC_BASE_URL:-/media}
       MEDIA_ROOT: ${MEDIA_ROOT:-/var/lib/jimboats/media}
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:?NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is required}
       NODE_ENV: production
+      NOTIFICATION_PROVIDER_MODE: ${NOTIFICATION_PROVIDER_MODE:-console}
+      PRELUDE_API_KEY: ${PRELUDE_API_KEY:-}
+      PRELUDE_BASE_URL: ${PRELUDE_BASE_URL:-}
+      PRELUDE_CALLBACK_URL: ${PRELUDE_CALLBACK_URL:-}
+      PRELUDE_FROM: ${PRELUDE_FROM:-}
+      PUBLIC_SITE_URL: ${PUBLIC_SITE_URL:?PUBLIC_SITE_URL is required}
       PORT: 3000
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      RESEND_BASE_URL: ${RESEND_BASE_URL:-}
+      RESEND_FROM: ${RESEND_FROM:-}
+      RESEND_REPLY_TO: ${RESEND_REPLY_TO:-}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:?STRIPE_SECRET_KEY is required}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET:?STRIPE_WEBHOOK_SECRET is required}
     expose:
       - "3000"
     volumes:
       - ${MEDIA_ROOT:-/var/lib/jimboats/media}:${MEDIA_ROOT:-/var/lib/jimboats/media}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  media-worker:
+    image: ${APP_IMAGE:?APP_IMAGE is required}
+    restart: unless-stopped
+    command: node .worker/media-worker.cjs
+    environment:
+      DATABASE_URL: ${DATABASE_URL:?DATABASE_URL is required}
+      MEDIA_PUBLIC_BASE_URL: ${MEDIA_PUBLIC_BASE_URL:-/media}
+      MEDIA_ROOT: ${MEDIA_ROOT:-/var/lib/jimboats/media}
+      MEDIA_WORKER_POLL_INTERVAL_MS: ${MEDIA_WORKER_POLL_INTERVAL_MS:-2000}
+      NEXT_TELEMETRY_DISABLED: "1"
+      NODE_ENV: production
+    volumes:
+      - ${MEDIA_ROOT:-/var/lib/jimboats/media}:${MEDIA_ROOT:-/var/lib/jimboats/media}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  notification-worker:
+    image: ${APP_IMAGE:?APP_IMAGE is required}
+    restart: unless-stopped
+    command: node .worker/notification-worker.cjs
+    environment:
+      DATABASE_URL: ${DATABASE_URL:?DATABASE_URL is required}
+      NEXT_TELEMETRY_DISABLED: "1"
+      NODE_ENV: production
+      NOTIFICATION_PROVIDER_MODE: ${NOTIFICATION_PROVIDER_MODE:-console}
+      NOTIFICATION_WORKER_POLL_INTERVAL_MS: ${NOTIFICATION_WORKER_POLL_INTERVAL_MS:-2000}
+      PRELUDE_API_KEY: ${PRELUDE_API_KEY:-}
+      PRELUDE_BASE_URL: ${PRELUDE_BASE_URL:-}
+      PRELUDE_CALLBACK_URL: ${PRELUDE_CALLBACK_URL:-}
+      PRELUDE_FROM: ${PRELUDE_FROM:-}
+      PUBLIC_SITE_URL: ${PUBLIC_SITE_URL:?PUBLIC_SITE_URL is required}
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      RESEND_BASE_URL: ${RESEND_BASE_URL:-}
+      RESEND_FROM: ${RESEND_FROM:-}
+      RESEND_REPLY_TO: ${RESEND_REPLY_TO:-}
     depends_on:
       db:
         condition: service_healthy

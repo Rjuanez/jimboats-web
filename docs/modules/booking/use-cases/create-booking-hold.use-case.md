@@ -25,7 +25,9 @@ payment.
 - `bookingReference`: public booking reference.
 - `depositAmount`: online deposit amount, expected to be `100 EUR`.
 - `remainingAmount`: amount to be paid in cash on board.
-- `checkoutUrl`: payment provider checkout URL.
+- `paymentProviderSessionId`: payment provider checkout session reference.
+- `checkoutClientSecret`: client secret used by the public page to mount
+  embedded checkout.
 - `expiresAt`: hold expiration time.
 
 ## Ports
@@ -42,11 +44,11 @@ payment.
 - Experience must be published and bookable.
 - Selected slot must satisfy the experience slot policy.
 - Selected extras must be compatible with the experience.
-- Price snapshot is created before redirecting to payment.
+- Price snapshot is created before the embedded payment form is mounted.
 - Price snapshot must include total amount, deposit amount, and remaining
   cash-on-board amount.
 - Payment checkout is created for the deposit amount only.
-- Checkout hold expires after `15` minutes.
+- Checkout hold expires after `30` minutes.
 - Selected booking date must be within the maximum advance booking window of `6`
   months.
 - Selected booking date must satisfy the minimum advance booking window of `1`
@@ -64,7 +66,7 @@ payment.
 - Persists a `CalendarBlock`.
 - Persists a `Booking` in `PENDING_PAYMENT`.
 - Persists or prepares a `PaymentRecord`.
-- Creates payment checkout session for the deposit amount.
+- Creates an embedded payment checkout session for the deposit amount.
 - May emit `BookingHoldCreated`.
 
 ## Application Errors

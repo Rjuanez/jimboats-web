@@ -3,6 +3,12 @@ import type {
   AdminMediaAsset,
   AdminMediaPageData,
 } from "@/components/sections/admin-media/AdminMediaTypes";
+import type {
+  AdminMediaAssetDto,
+  AdminMediaListDto,
+} from "@/modules/media-library/application/AdminMediaDtos";
+import type { AdminExperiencesWorkspaceDto } from "@/modules/experience-catalog/application/AdminExperienceDtos";
+import type { AdminExtrasWorkspaceDto } from "@/modules/experience-catalog/application/AdminExtraDtos";
 
 const mediaAssets: AdminMediaAsset[] = [
   {
@@ -13,6 +19,7 @@ const mediaAssets: AdminMediaAsset[] = [
     },
     collection: "Experiences",
     dimensions: "1024 x 1024",
+    failureReason: null,
     filename: "experience-sunset-toast.webp",
     format: "WebP",
     hash: "a8f4c2",
@@ -76,6 +83,7 @@ const mediaAssets: AdminMediaAsset[] = [
     },
     collection: "Experiences",
     dimensions: "1024 x 1024",
+    failureReason: null,
     filename: "experience-morning-breeze.webp",
     format: "WebP",
     hash: "b7e9d1",
@@ -142,6 +150,7 @@ const mediaAssets: AdminMediaAsset[] = [
     },
     collection: "Extras",
     dimensions: "1024 x 1024",
+    failureReason: null,
     filename: "upgrade-sunset-toast.webp",
     format: "WebP",
     hash: "c4d2f0",
@@ -204,6 +213,7 @@ const mediaAssets: AdminMediaAsset[] = [
     },
     collection: "Gallery",
     dimensions: "1024 x 1024",
+    failureReason: "Large variant failed.",
     filename: "gallery-barcelona-coast.webp",
     format: "WebP",
     hash: "e5a910",
@@ -267,4 +277,230 @@ export function getAdminMediaPreviewPage(): AdminMediaPageData {
     assets: mediaAssets,
     navItems: adminNavItems,
   };
+}
+
+export async function getAdminMediaPage(): Promise<AdminMediaPageData> {
+  if (process.env.JIMBOATS_ADMIN_PREVIEW_DATA === "1") {
+    return getAdminMediaPreviewPage();
+  }
+
+  const { getContainer } = await import("@/container");
+  const container = getContainer();
+  const [mediaList, experiencesWorkspace, extrasWorkspace] = await Promise.all([
+    container.adminMedia.listAssets(),
+    container.adminExperiences.getWorkspace(),
+    container.adminExtras.getWorkspace(),
+  ]);
+
+  return presentAdminMediaList(mediaList, experiencesWorkspace, extrasWorkspace);
+}
+
+export function presentAdminMediaList(
+  list: AdminMediaListDto,
+  experiencesWorkspace?: AdminExperiencesWorkspaceDto,
+  extrasWorkspace?: AdminExtrasWorkspaceDto,
+): AdminMediaPageData {
+  const usageByAssetId = mediaUsageByAssetId(
+    experiencesWorkspace,
+    extrasWorkspace,
+  );
+
+  return {
+    assets: list.assets.map((asset) =>
+      presentAdminMediaAsset(asset, usageByAssetId),
+    ),
+    navItems: adminNavItems,
+  };
+}
+
+function presentAdminMediaAsset(
+  asset: AdminMediaAssetDto,
+  usageByAssetId: Map<string, AdminMediaAsset["usage"]>,
+): AdminMediaAsset {
+  const primaryVariant = asset.primaryVariant ?? asset.variants[0] ?? null;
+
+  return {
+    altText: {
+      ca: asset.altText.ca ?? "",
+      en: asset.altText.en ?? "",
+      es: asset.altText.es ?? "",
+    },
+    collection: collectionLabel(asset.collection),
+    dimensions: dimensionsLabel(asset.original.dimensions),
+    failureReason: asset.failureReason,
+    filename: asset.original.filename,
+    format: formatLabel(primaryVariant?.format ?? asset.original.mimeType),
+    hash: asset.original.hash.slice(0, 8),
+    id: asset.id,
+    originalPath: asset.original.privatePath,
+    publicPath: primaryVariant?.publicPath ?? "",
+    publicUrl: primaryVariant?.publicUrl ?? "",
+    sizeLabel: bytesLabel(
+      primaryVariant?.fileSizeBytes ?? asset.original.fileSizeBytes,
+    ),
+    status: mediaStatusToAdmin(asset.status),
+    title: asset.title,
+    updatedAt: dateTimeLabel(asset.updatedAt),
+    usage: usageByAssetId.get(asset.id) ?? [],
+    variants: asset.variants.map((variant) => ({
+      dimensions: dimensionsLabel(variant.dimensions),
+      format: formatLabel(variant.format),
+      id: variant.id,
+      publicUrl: variant.publicUrl,
+      sizeLabel: bytesLabel(variant.fileSizeBytes),
+      status: "ready",
+      width: variant.dimensions.width,
+    })),
+    workflow: processingWorkflow(asset),
+  };
+}
+
+function mediaUsageByAssetId(
+  experiencesWorkspace?: AdminExperiencesWorkspaceDto,
+  extrasWorkspace?: AdminExtrasWorkspaceDto,
+) {
+  const usageByAssetId = new Map<string, AdminMediaAsset["usage"]>();
+
+  for (const item of experiencesWorkspace?.experiences ?? []) {
+    const assetId = item.experience.media.assetId;
+
+    if (!assetId) {
+      continue;
+    }
+
+    const usage = usageByAssetId.get(assetId) ?? [];
+
+    usage.push({
+      href: `/admin/experiences/${item.experience.id}/media`,
+      id: item.experience.id,
+      label: item.experience.internalName,
+      type: "experience",
+    });
+    usageByAssetId.set(assetId, usage);
+  }
+
+  for (const extra of extrasWorkspace?.extras ?? []) {
+    const assetId = extra.primaryMediaAssetId;
+
+    if (!assetId) {
+      continue;
+    }
+
+    const usage = usageByAssetId.get(assetId) ?? [];
+
+    usage.push({
+      href: `/admin/extras/${extra.id}`,
+      id: extra.id,
+      label: extra.name,
+      type: "extra",
+    });
+    usageByAssetId.set(assetId, usage);
+  }
+
+  for (const usage of usageByAssetId.values()) {
+    usage.sort((left, right) => left.label.localeCompare(right.label));
+  }
+
+  return usageByAssetId;
+}
+
+function processingWorkflow(asset: AdminMediaAssetDto) {
+  const events: AdminMediaAsset["workflow"] = [
+    {
+      at: timeLabel(asset.createdAt),
+      label: "Original received",
+      status: "ready",
+    },
+  ];
+
+  if (asset.status === "READY") {
+    events.push({
+      at: timeLabel(asset.updatedAt),
+      label: "Variants generated",
+      status: "ready",
+    });
+  } else if (asset.status === "FAILED") {
+    events.push({
+      at: timeLabel(asset.updatedAt),
+      label: asset.failureReason ?? "Processing failed",
+      status: "failed",
+    });
+  } else {
+    events.push({
+      at: timeLabel(asset.updatedAt),
+      label: "Waiting for media worker",
+      status: "processing",
+    });
+  }
+
+  return events;
+}
+
+function collectionLabel(
+  collection: AdminMediaAssetDto["collection"],
+): AdminMediaAsset["collection"] {
+  const labels = {
+    EXPERIENCES: "Experiences",
+    EXTRAS: "Extras",
+    GALLERY: "Gallery",
+    PAGES: "Pages",
+  } satisfies Record<
+    AdminMediaAssetDto["collection"],
+    AdminMediaAsset["collection"]
+  >;
+
+  return labels[collection];
+}
+
+function mediaStatusToAdmin(
+  status: AdminMediaAssetDto["status"],
+): AdminMediaAsset["status"] {
+  const statuses = {
+    FAILED: "failed",
+    PROCESSING: "processing",
+    READY: "ready",
+  } satisfies Record<AdminMediaAssetDto["status"], AdminMediaAsset["status"]>;
+
+  return statuses[status];
+}
+
+function formatLabel(format: string) {
+  if (format === "image/jpeg") {
+    return "JPEG";
+  }
+
+  if (format === "image/png") {
+    return "PNG";
+  }
+
+  return format.toUpperCase();
+}
+
+function dimensionsLabel(dimensions: { height: number; width: number }) {
+  return `${dimensions.width} x ${dimensions.height}`;
+}
+
+function bytesLabel(bytes: number) {
+  if (bytes >= 1024 * 1024) {
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  }
+
+  return `${Math.max(1, Math.round(bytes / 1024))} KB`;
+}
+
+function dateTimeLabel(value: string) {
+  return new Intl.DateTimeFormat("en", {
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(new Date(value));
+}
+
+function timeLabel(value: string) {
+  return new Intl.DateTimeFormat("en", {
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(new Date(value));
 }

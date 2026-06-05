@@ -17,6 +17,7 @@ export type AdminSlotPolicyType =
   | "fixed_slots"
   | "manual_approval";
 export type AdminMediaStatus = "failed" | "missing" | "processing" | "ready";
+export type AdminExtraStatus = "active" | "archived" | "draft";
 
 export type AdminExperienceFaq = {
   answer: string;
@@ -54,16 +55,24 @@ export type AdminExperienceSlot = {
   startTime: string;
 };
 
+export type AdminFlexibleAvailability = {
+  endTime: string;
+  granularityMinutes: number;
+  startTime: string;
+};
+
 export type AdminExtra = {
   defaultNoticeHours: number;
   defaultPrice: number;
   id: string;
-  imageUrl: string;
+  media: AdminExperienceMedia;
   name: string;
   requiresNotice: boolean;
+  status: AdminExtraStatus;
 };
 
 export type AdminExperienceExtraConfig = {
+  capacityReduction: number;
   enabled: boolean;
   extraId: string;
   limitPerBooking: number;
@@ -71,10 +80,28 @@ export type AdminExperienceExtraConfig = {
   priceOverride: number | null;
 };
 
-export type AdminExperienceMedia = {
+export type AdminExperienceMediaVariant = {
+  publicUrl: string;
+  width: number;
+};
+
+export type AdminExperienceMediaAssetOption = {
+  assetId: string;
+  collection: "Experiences" | "Extras" | "Gallery" | "Pages";
   filename: string;
   primaryImageUrl: string;
   status: AdminMediaStatus;
+  title: string;
+  variants: AdminExperienceMediaVariant[];
+};
+
+export type AdminExperienceMedia = {
+  assetId: string | null;
+  filename: string;
+  primaryImageUrl: string;
+  status: AdminMediaStatus;
+  title: string;
+  variants: AdminExperienceMediaVariant[];
 };
 
 export type AdminExperience = {
@@ -82,11 +109,13 @@ export type AdminExperience = {
   basePrice: number;
   bufferMinutes: number;
   capacity: number;
+  cancellationPolicyId?: string | null;
   depositAmount: number;
   departurePort: string;
   displayOrder: number;
   durationMinutes: number;
   extras: AdminExperienceExtraConfig[];
+  flexibleAvailability: AdminFlexibleAvailability;
   id: string;
   includedInternal: string;
   internalName: string;
@@ -102,9 +131,19 @@ export type AdminExperience = {
 };
 
 export type AdminExperiencesState = {
+  cancellationPolicies?: AdminCancellationPolicyOption[];
   experiences: AdminExperience[];
   extras: AdminExtra[];
   locales: AdminLocaleCode[];
+  mediaAssets: AdminExperienceMediaAssetOption[];
+};
+
+export type AdminCancellationPolicyOption = {
+  activeVersion: number | null;
+  id: string;
+  isDefault: boolean;
+  name: string;
+  summary: string;
 };
 
 export type AdminExperiencesPageData = {
@@ -157,6 +196,7 @@ export type AdminExperienceActions = {
 
 export type AdminExperienceView =
   | "availability"
+  | "cancellation"
   | "content"
   | "create"
   | "extras"

@@ -43,15 +43,20 @@ export class SlotPolicy {
 
   static fixedSlots(input: { fixedSlots: FixedSlotInput[]; timeZone: string }) {
     assertTimeZone(input.timeZone);
+    const fixedSlots = input.fixedSlots.map((slot) => ({
+      ...slot,
+      id: slot.id.trim(),
+      label: slot.label.trim(),
+    }));
 
-    if (input.fixedSlots.length === 0) {
+    if (fixedSlots.length === 0) {
       throw domainError(
         "SLOT_POLICY_INVALID",
         "Fixed slot policy requires at least one slot.",
       );
     }
 
-    if (!input.fixedSlots.some((slot) => slot.enabled)) {
+    if (!fixedSlots.some((slot) => slot.enabled)) {
       throw domainError(
         "SLOT_POLICY_INVALID",
         "Fixed slot policy requires at least one enabled slot.",
@@ -60,9 +65,13 @@ export class SlotPolicy {
 
     const slotIds = new Set<string>();
 
-    for (const slot of input.fixedSlots) {
-      if (!slot.id.trim()) {
+    for (const slot of fixedSlots) {
+      if (!slot.id) {
         throw domainError("SLOT_POLICY_INVALID", "Slot id is required.");
+      }
+
+      if (!slot.label) {
+        throw domainError("SLOT_POLICY_INVALID", "Slot label is required.");
       }
 
       if (slotIds.has(slot.id)) {
@@ -73,11 +82,7 @@ export class SlotPolicy {
     }
 
     const policy = new SlotPolicy({
-      fixedSlots: input.fixedSlots.map((slot) => ({
-        ...slot,
-        id: slot.id.trim(),
-        label: slot.label.trim(),
-      })),
+      fixedSlots,
       granularityMinutes: null,
       mode: "FIXED_SLOTS",
       operatingWindow: null,
@@ -104,6 +109,7 @@ export class SlotPolicy {
       input.granularityMinutes,
       "Flexible slot granularity must be positive.",
     );
+    assertFlexibleWindow(input.operatingWindow, input.granularityMinutes);
 
     return new SlotPolicy({
       fixedSlots: [],
@@ -179,5 +185,20 @@ function assertTimeZone(timeZone: string) {
 function assertPositiveInteger(value: number, message: string) {
   if (!Number.isInteger(value) || value <= 0) {
     throw domainError("SLOT_POLICY_INVALID", message);
+  }
+}
+
+function assertFlexibleWindow(
+  operatingWindow: TimeRange,
+  granularityMinutes: number,
+) {
+  const durationMinutes =
+    operatingWindow.endMinutes - operatingWindow.startMinutes;
+
+  if (granularityMinutes > durationMinutes) {
+    throw domainError(
+      "SLOT_POLICY_INVALID",
+      "Flexible slot granularity must fit inside the operating window.",
+    );
   }
 }

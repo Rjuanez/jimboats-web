@@ -13,12 +13,12 @@ import { UpgradeCard } from "@/components/marketing/UpgradeCard";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/design/variants";
 
-type LinkItem = {
+export type HomeLandingLinkItem = {
   href: string;
   label: string;
 };
 
-type Experience = {
+export type HomeLandingExperience = {
   ctaHref: string;
   ctaLabel: string;
   description: string;
@@ -30,32 +30,32 @@ type Experience = {
   title: string;
 };
 
-type Upgrade = {
+export type HomeLandingUpgrade = {
   description: string;
   image: MarketingImage;
   title: string;
 };
 
-type BookingStep = {
+export type HomeLandingBookingStep = {
   description: string;
   icon: "anchor" | "calendar" | "sparkles";
   title: string;
 };
 
-type HomeLandingContent = {
+export type HomeLandingContent = {
   booking: {
-    steps: readonly BookingStep[];
+    steps: readonly HomeLandingBookingStep[];
     title: string;
   };
   brand: string;
-  experiences: readonly Experience[];
+  experiences: readonly HomeLandingExperience[];
   extras: {
     description: string;
-    items: readonly Upgrade[];
+    items: readonly HomeLandingUpgrade[];
     title: string;
   };
   finalCta: {
-    cta: LinkItem;
+    cta: HomeLandingLinkItem;
     image: MarketingImage;
     title: string;
   };
@@ -67,9 +67,9 @@ type HomeLandingContent = {
     };
     copyright: string;
     description: string;
-    experienceLinks: readonly LinkItem[];
-    legalLinks: readonly LinkItem[];
-    socialLinks: readonly (LinkItem & {
+    experienceLinks: readonly HomeLandingLinkItem[];
+    legalLinks: readonly HomeLandingLinkItem[];
+    socialLinks: readonly (HomeLandingLinkItem & {
       network: "facebook" | "instagram";
     })[];
   };
@@ -78,14 +78,14 @@ type HomeLandingContent = {
     images: readonly MarketingImage[];
     title: string;
   };
-  headerCta: LinkItem;
+  headerCta: HomeLandingLinkItem;
   hero: {
-    cta: LinkItem;
+    cta: HomeLandingLinkItem;
     description: string;
     image: MarketingImage;
     title: string;
   };
-  navigation: readonly LinkItem[];
+  navigation: readonly HomeLandingLinkItem[];
   story: {
     description: string;
     image: MarketingImage;
@@ -167,10 +167,13 @@ function HeroSection({ content }: { content: HomeLandingContent["hero"] }) {
 function ExperiencesSection({
   experiences,
 }: {
-  experiences: readonly Experience[];
+  experiences: readonly HomeLandingExperience[];
 }) {
   return (
-    <section className="bg-background px-4 py-16 lg:px-0 lg:py-32" id="experiences">
+    <section
+      className="bg-background px-4 py-16 lg:px-0 lg:py-32"
+      id="experiences"
+    >
       <Container>
         <div className="mb-10 text-center lg:hidden">
           <h2 className="font-display text-4xl text-text">Our Experiences</h2>
@@ -218,11 +221,7 @@ function StorySection({ story }: { story: HomeLandingContent["story"] }) {
   );
 }
 
-function ExtrasSection({
-  extras,
-}: {
-  extras: HomeLandingContent["extras"];
-}) {
+function ExtrasSection({ extras }: { extras: HomeLandingContent["extras"] }) {
   return (
     <section className="bg-background px-4 py-14 lg:px-0 lg:py-28" id="extras">
       <Container>
@@ -250,10 +249,7 @@ function GallerySection({
   const [primary, breeze, champagne, jump, coast] = gallery.images;
 
   return (
-    <section
-      className="bg-sand/10 px-4 py-14 lg:px-0 lg:py-32"
-      id="gallery"
-    >
+    <section className="bg-sand/10 px-4 py-14 lg:px-0 lg:py-32" id="gallery">
       <Container>
         <SectionHeading
           description={gallery.description}

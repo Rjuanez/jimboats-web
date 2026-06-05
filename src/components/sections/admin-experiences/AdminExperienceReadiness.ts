@@ -37,16 +37,9 @@ export function getExperienceReadiness(
     blockingIssues.push("Primary image must be ready.");
   }
 
-  if (
-    experience.slotPolicyType === "fixed_slots" &&
-    !experience.slots.some((slot) => slot.enabled)
-  ) {
-    blockingIssues.push("At least one fixed slot must be enabled.");
-  }
+  const availabilityIssues = getAvailabilityIssues(experience);
 
-  if (hasOverlappingSlots(experience)) {
-    blockingIssues.push("Enabled fixed slots cannot overlap.");
-  }
+  blockingIssues.push(...availabilityIssues);
 
   const publishableLocales = Object.values(experience.translations).filter(
     (translation) => {
@@ -68,9 +61,10 @@ export function getExperienceReadiness(
     experience.durationMinutes > 0,
     experience.capacity > 0,
     experience.media.status === "ready",
-    experience.slotPolicyType !== "fixed_slots" ||
-      experience.slots.some((slot) => slot.enabled),
-    !hasOverlappingSlots(experience),
+    availabilityIssues.length === 0,
+    availabilityIssues.length === 0 &&
+      (experience.slotPolicyType !== "fixed_slots" ||
+        !hasOverlappingSlots(experience)),
     publishableLocales.length > 0,
     Object.values(experience.translations).every((translation) => {
       return translation.status !== "missing";
@@ -88,7 +82,86 @@ export function getExperienceReadiness(
   };
 }
 
+export function getAvailabilityIssues(experience: AdminExperience) {
+  if (experience.slotPolicyType === "fixed_slots") {
+    return getFixedSlotIssues(experience);
+  }
+
+  if (experience.slotPolicyType === "any_available") {
+    return getFlexibleAvailabilityIssues(experience);
+  }
+
+  return [];
+}
+
+export function getFixedSlotIssues(experience: AdminExperience) {
+  const issues: string[] = [];
+  const enabledSlots = experience.slots.filter((slot) => slot.enabled);
+
+  if (enabledSlots.length === 0) {
+    issues.push("At least one fixed slot must be enabled.");
+  }
+
+  if (enabledSlots.some((slot) => !slot.label.trim())) {
+    issues.push("Enabled fixed slots need a label.");
+  }
+
+  if (
+    enabledSlots.some((slot) => {
+      const start = timeToMinutes(slot.startTime);
+      const end = timeToMinutes(slot.endTime);
+
+      return start < 0 || end <= start;
+    })
+  ) {
+    issues.push("Enabled fixed slots need valid start and end times.");
+  }
+
+  if (
+    experience.durationMinutes > 0 &&
+    enabledSlots.some((slot) => {
+      const start = timeToMinutes(slot.startTime);
+      const end = timeToMinutes(slot.endTime);
+
+      return start >= 0 && end > start && end - start < experience.durationMinutes;
+    })
+  ) {
+    issues.push(
+      "Enabled fixed slots must be at least as long as the experience duration.",
+    );
+  }
+
+  if (hasOverlappingSlots(experience)) {
+    issues.push("Enabled fixed slots cannot overlap.");
+  }
+
+  return issues;
+}
+
+export function getFlexibleAvailabilityIssues(experience: AdminExperience) {
+  const issues: string[] = [];
+  const start = timeToMinutes(experience.flexibleAvailability.startTime);
+  const end = timeToMinutes(experience.flexibleAvailability.endTime);
+  const granularity = experience.flexibleAvailability.granularityMinutes;
+
+  if (start < 0 || end <= start) {
+    issues.push("Flexible availability needs a valid operating window.");
+  }
+
+  if (!Number.isInteger(granularity) || granularity <= 0) {
+    issues.push("Flexible availability needs a positive step in minutes.");
+  } else if (start >= 0 && end > start && granularity > end - start) {
+    issues.push("Flexible step must fit inside the operating window.");
+  }
+
+  return issues;
+}
+
 export function hasOverlappingSlots(experience: AdminExperience) {
+  if (experience.slotPolicyType !== "fixed_slots") {
+    return false;
+  }
+
   const enabledSlots = experience.slots
     .filter((slot) => slot.enabled)
     .map((slot) => ({
@@ -111,7 +184,14 @@ export function hasOverlappingSlots(experience: AdminExperience) {
 function timeToMinutes(value: string) {
   const [hour, minute] = value.split(":").map(Number);
 
-  if (!Number.isFinite(hour) || !Number.isFinite(minute)) {
+  if (
+    !Number.isInteger(hour) ||
+    !Number.isInteger(minute) ||
+    hour < 0 ||
+    hour > 23 ||
+    minute < 0 ||
+    minute > 59
+  ) {
     return -1;
   }
 

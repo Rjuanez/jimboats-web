@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { ImageIcon } from "lucide-react";
 
 import {
   CheckboxField,
@@ -6,6 +6,7 @@ import {
   NumberField,
 } from "@/components/forms/AdminFormControls";
 import { Badge } from "@/components/ui/Badge";
+import { DynamicMediaImage } from "@/components/ui/DynamicMediaImage";
 import { Surface } from "@/components/ui/Surface";
 import { cn } from "@/design/variants";
 
@@ -34,6 +35,7 @@ export function AdminExperienceExtrasSection({
 
     return (
       currentConfig ?? {
+        capacityReduction: 0,
         enabled: false,
         extraId: extra.id,
         limitPerBooking: 1,
@@ -73,11 +75,11 @@ export function AdminExperienceExtrasSection({
 
   return (
     <Surface
-      description="Choose which add-ons can be sold with this experience and configure limits or notice windows."
+      description="Choose which add-ons can be sold with this experience and configure limits, notice windows and capacity impact."
       title="Compatible extras"
     >
       <div className="hidden overflow-x-auto xl:block">
-        <table className="w-full min-w-[920px] border-collapse text-left text-sm">
+        <table className="w-full min-w-[1080px] border-collapse text-left text-sm">
           <thead>
             <tr className="border-y border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-600">
               <th className="px-3 py-3 font-semibold">Extra</th>
@@ -85,6 +87,7 @@ export function AdminExperienceExtrasSection({
               <th className="px-3 py-3 font-semibold">Price</th>
               <th className="px-3 py-3 font-semibold">Notice hours</th>
               <th className="px-3 py-3 font-semibold">Limit</th>
+              <th className="px-3 py-3 font-semibold">Capacity impact</th>
             </tr>
           </thead>
           <tbody>
@@ -125,6 +128,9 @@ function ExtraRow({
     updater: (config: AdminExperienceExtraConfig) => AdminExperienceExtraConfig,
   ) => void;
 }) {
+  const isActive = extra.status === "active";
+  const canToggle = isActive || config.enabled;
+
   return (
     <tr className="border-b border-slate-200 align-top">
       <td className="px-3 py-4">
@@ -132,7 +138,10 @@ function ExtraRow({
           <ExtraImage extra={extra} size={56} />
           <div>
             <p className="font-semibold text-slate-950">{extra.name}</p>
-            <div className="mt-1">
+            <div className="mt-1 flex flex-wrap gap-1.5">
+              <Badge size="sm" tone={extraStatusTone(extra.status)}>
+                {extraStatusLabel(extra.status)}
+              </Badge>
               <Badge size="sm" tone={extra.requiresNotice ? "amber" : "sky"}>
                 {extra.requiresNotice ? "Notice required" : "Flexible"}
               </Badge>
@@ -143,6 +152,10 @@ function ExtraRow({
       <td className="px-3 py-4">
         <CheckboxField
           checked={config.enabled}
+          description={
+            canToggle ? undefined : "Activate the extra before offering it here."
+          }
+          disabled={!canToggle}
           label="Available"
           onChange={(event) =>
             updateConfig((current) => ({
@@ -156,6 +169,7 @@ function ExtraRow({
         <NumberField
           label="Override price"
           min={0}
+          disabled={!isActive}
           onChange={(event) =>
             updateConfig((current) => ({
               ...current,
@@ -172,6 +186,7 @@ function ExtraRow({
         <NumberField
           label="Notice"
           min={0}
+          disabled={!isActive}
           onChange={(event) =>
             updateConfig((current) => ({
               ...current,
@@ -185,6 +200,7 @@ function ExtraRow({
         <NumberField
           label="Limit"
           min={0}
+          disabled={!isActive}
           onChange={(event) =>
             updateConfig((current) => ({
               ...current,
@@ -192,6 +208,20 @@ function ExtraRow({
             }))
           }
           value={config.limitPerBooking}
+        />
+      </td>
+      <td className="px-3 py-4">
+        <NumberField
+          label="Capacity"
+          min={0}
+          disabled={!isActive}
+          onChange={(event) =>
+            updateConfig((current) => ({
+              ...current,
+              capacityReduction: Number(event.target.value),
+            }))
+          }
+          value={config.capacityReduction}
         />
       </td>
     </tr>
@@ -209,6 +239,9 @@ function ExtraCard({
     updater: (config: AdminExperienceExtraConfig) => AdminExperienceExtraConfig,
   ) => void;
 }) {
+  const isActive = extra.status === "active";
+  const canToggle = isActive || config.enabled;
+
   return (
     <article className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
       <div className="flex gap-3">
@@ -218,7 +251,10 @@ function ExtraCard({
           <p className="mt-1 text-sm text-slate-500">
             Default EUR {extra.defaultPrice}
           </p>
-          <div className="mt-2">
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            <Badge size="sm" tone={extraStatusTone(extra.status)}>
+              {extraStatusLabel(extra.status)}
+            </Badge>
             <Badge size="sm" tone={extra.requiresNotice ? "amber" : "sky"}>
               {extra.requiresNotice ? "Notice required" : "Flexible"}
             </Badge>
@@ -228,6 +264,10 @@ function ExtraCard({
       <div className="mt-4 space-y-4">
         <CheckboxField
           checked={config.enabled}
+          description={
+            canToggle ? undefined : "Activate the extra before offering it here."
+          }
+          disabled={!canToggle}
           label="Available for this experience"
           onChange={(event) =>
             updateConfig((current) => ({
@@ -240,6 +280,7 @@ function ExtraCard({
           <NumberField
             label="Override price"
             min={0}
+            disabled={!isActive}
             onChange={(event) =>
               updateConfig((current) => ({
                 ...current,
@@ -254,6 +295,7 @@ function ExtraCard({
           <NumberField
             label="Notice hours"
             min={0}
+            disabled={!isActive}
             onChange={(event) =>
               updateConfig((current) => ({
                 ...current,
@@ -266,6 +308,7 @@ function ExtraCard({
         <NumberField
           label="Limit per booking"
           min={0}
+          disabled={!isActive}
           onChange={(event) =>
             updateConfig((current) => ({
               ...current,
@@ -274,35 +317,54 @@ function ExtraCard({
           }
           value={config.limitPerBooking}
         />
+        <NumberField
+          label="Capacity impact"
+          min={0}
+          disabled={!isActive}
+          onChange={(event) =>
+            updateConfig((current) => ({
+              ...current,
+              capacityReduction: Number(event.target.value),
+            }))
+          }
+          value={config.capacityReduction}
+        />
       </div>
     </article>
   );
 }
 
 function ExtraImage({ extra, size }: { extra: AdminExtra; size: 56 | 64 }) {
-  if (!extra.imageUrl) {
-    return (
-      <div
-        className={cn(
-          "flex shrink-0 items-center justify-center rounded-md bg-slate-100 text-xs font-semibold text-slate-500",
-          size === 56 ? "size-14" : "size-16",
-        )}
-      >
-        No image
-      </div>
-    );
-  }
-
   return (
-    <Image
+    <DynamicMediaImage
       alt=""
       className={cn(
-        "shrink-0 rounded-md object-cover",
+        "shrink-0 overflow-hidden rounded-md",
         size === 56 ? "size-14" : "size-16",
       )}
-      height={size}
-      src={extra.imageUrl}
-      width={size}
+      fallback={<ImageIcon className="size-4" aria-hidden="true" />}
+      src={extra.media.primaryImageUrl}
+      variants={extra.media.variants}
     />
   );
+}
+
+function extraStatusLabel(status: AdminExtra["status"]) {
+  const labels = {
+    active: "Active",
+    archived: "Archived",
+    draft: "Draft",
+  } satisfies Record<AdminExtra["status"], string>;
+
+  return labels[status];
+}
+
+function extraStatusTone(status: AdminExtra["status"]) {
+  const tones = {
+    active: "emerald",
+    archived: "neutral",
+    draft: "amber",
+  } satisfies Record<AdminExtra["status"], "amber" | "emerald" | "neutral">;
+
+  return tones[status];
 }

@@ -5,6 +5,11 @@
 {$APP_DOMAIN}, www.{$APP_DOMAIN} {
 	encode zstd gzip
 
+	@admin path /admin /admin/*
+	basic_auth @admin {
+		{$ADMIN_BASIC_AUTH_USER} {$ADMIN_BASIC_AUTH_HASH}
+	}
+
 	handle_path /media/* {
 		root * /var/lib/jimboats/media/public
 		header Cache-Control "public, max-age=31536000, immutable"

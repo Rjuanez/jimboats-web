@@ -22,6 +22,8 @@ COPY . .
 RUN mkdir -p public \
   && pnpm db:generate \
   && pnpm media:prepare \
+  && pnpm media:worker:build \
+  && pnpm notifications:worker:build \
   && pnpm build
 
 FROM node:24-alpine AS runner
@@ -45,6 +47,7 @@ RUN apk add --no-cache libc6-compat openssl \
 
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/.worker ./.worker
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=nextjs:nodejs /app/prisma.config.mjs ./prisma.config.mjs

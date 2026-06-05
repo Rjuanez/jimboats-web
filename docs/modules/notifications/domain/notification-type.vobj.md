@@ -8,12 +8,13 @@ Represents the business reason for sending a notification.
 
 ## Value
 
-- `BOOKING_HOLD_CREATED`
+- `BOOKING_CREATED`
+- `BOOKING_UPDATED`
+- `BOOKING_RESCHEDULED`
+- `BOOKING_CANCELLED`
 - `BOOKING_CONFIRMED_DEPOSIT_PAID`
 - `BOOKING_PAYMENT_FAILED`
 - `BOOKING_EXPIRED`
-- `BOOKING_CANCELLED`
-- `BOOKING_RESCHEDULED`
 - `BOOKING_REMINDER`
 - `ADMIN_BOOKING_CREATED`
 
@@ -23,6 +24,11 @@ Represents the business reason for sending a notification.
 - Booking-related types must reference a booking.
 - Reminder types must have a scheduled send time.
 - Admin types can notify staff through supported channels.
+- Booking lifecycle types map from outbox events:
+  - `BookingCreated` -> `BOOKING_CREATED`
+  - `BookingUpdated` -> `BOOKING_UPDATED`
+  - `BookingRescheduled` -> `BOOKING_RESCHEDULED`
+  - `BookingCancelled` -> `BOOKING_CANCELLED`
 
 ## Normalization
 

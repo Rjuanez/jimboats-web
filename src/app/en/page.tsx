@@ -2,9 +2,12 @@ import type { Metadata } from "next";
 
 import { HomeLandingPage } from "@/components/sections/HomeLandingPage";
 import {
+  createHomeLandingStructuredData,
+  getHomeLandingPage,
   homeLandingContent,
-  homeLandingStructuredData,
 } from "@/interface/next/presenters/homeLandingPresenter";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Private Boat Experiences in Barcelona",
@@ -34,13 +37,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function EnglishHomePage() {
+export default async function EnglishHomePage() {
+  const content = await getHomeLandingPage("en");
+
   return (
     <>
-      <HomeLandingPage content={homeLandingContent} />
+      <HomeLandingPage content={content} />
       <script
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(homeLandingStructuredData),
+          __html: JSON.stringify(createHomeLandingStructuredData(content)),
         }}
         type="application/ld+json"
       />

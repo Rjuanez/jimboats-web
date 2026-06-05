@@ -4,6 +4,7 @@ import { cn } from "@/design/variants";
 
 type SurfaceProps = {
   action?: ReactNode;
+  ariaLabel?: string;
   bodyClassName?: string;
   children: ReactNode;
   className?: string;
@@ -13,6 +14,7 @@ type SurfaceProps = {
 
 export function Surface({
   action,
+  ariaLabel,
   bodyClassName,
   children,
   className,
@@ -23,7 +25,7 @@ export function Surface({
 
   return (
     <section
-      aria-label={title}
+      aria-label={ariaLabel ?? title}
       className={cn(
         "overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm",
         className,

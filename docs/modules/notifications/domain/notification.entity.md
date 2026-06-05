@@ -4,31 +4,40 @@
 
 ## Purpose
 
-Represents one message that should be sent, has been sent, or failed to send
-through a specific channel.
+Represents one concrete notification delivery that should be sent, has been
+sent, requires manual review, or failed through a specific channel.
 
-Notifications are separate from bookings so booking logic does not depend on
-email, WhatsApp, or future delivery providers.
+Notification deliveries are separate from bookings so booking logic does not
+depend on email, WhatsApp, or future delivery providers.
 
 ## Identity
 
-- `notificationId`: stable internal identifier.
+- `notificationDeliveryId`: stable internal identifier.
 
 ## Attributes
 
 - `type`: `NotificationType`.
-- `status`: pending, sent, failed, delivered, or cancelled.
+- `eventType`: source outbox event type.
+- `status`: pending, manual review, sent, failed, delivered, or cancelled.
 - `channel`: `NotificationChannel`.
 - `recipient`: `NotificationRecipient`.
 - `locale`: `LocaleCode` used for message content.
 - `bookingId`: related booking when applicable.
-- `templateId`: published `NotificationTemplate` used to render the message.
+- `outboxMessageId`: source outbox message that created this delivery.
+- `ruleId`: notification rule that matched the event.
+- `templateId`: active `NotificationTemplate` used to render the message.
+- `templateVersion`: version used when the message was rendered.
 - `payload`: business data needed by the template.
+- `renderedSubject`: email subject snapshot.
+- `renderedBody`: rendered message body snapshot.
 - `provider`: external provider used, if any.
 - `providerMessageId`: external provider reference, if any.
+- `providerTemplateId`: external template id snapshot used for provider send,
+  especially Prelude WhatsApp.
+- `providerVariables`: external provider variables snapshot.
 - `attempts`: number of send attempts.
 - `lastError`: last error message or code.
-- `scheduledFor`: when the notification should be sent.
+- `sendAfter`: when the notification should be sent.
 - `sentAt`: when the provider accepted the message.
 - `deliveredAt`: when delivery was confirmed, if available.
 
@@ -39,10 +48,16 @@ email, WhatsApp, or future delivery providers.
 - Booking-related notification types must reference a booking.
 - Failed notifications must record enough error context for support.
 - Provider references must not become domain identity.
+- Automatic WhatsApp pending deliveries require a provider template id.
+- Automatic buyer deliveries require booking channel consent unless the rule
+  explicitly does not require consent.
+- Manual review deliveries can be created without provider send, but still need
+  a valid rendered message and recipient snapshot.
 
 ## State
 
 - `PENDING`: waiting to be sent.
+- `MANUAL_REVIEW`: waiting for staff action.
 - `SENT`: provider accepted the message.
 - `DELIVERED`: delivery confirmation received.
 - `FAILED`: sending failed.
@@ -51,6 +66,7 @@ email, WhatsApp, or future delivery providers.
 ## Behavior
 
 - Schedule message.
+- Mark message as manual review.
 - Mark message as sent.
 - Mark message as delivered.
 - Mark message as failed and increment attempts.
@@ -70,6 +86,9 @@ email, WhatsApp, or future delivery providers.
   templates are editable from the backpanel.
 - `NotificationTemplate`: owns editable message content by type, channel, and
   locale.
+- `NotificationRule`: determines whether the delivery is automatic or manual.
+- `OutboxMessage`: source event processed by the notification publisher.
+- `BookingNotificationPreferences`: controls buyer channel permission.
 
 ## Domain Errors
 
@@ -77,6 +96,7 @@ email, WhatsApp, or future delivery providers.
 - `NotificationTemplateMissing`
 - `NotificationCannotBeSent`
 - `NotificationAlreadyFinalized`
+- `NotificationConsentMissing`
 
 ## Open Questions
 

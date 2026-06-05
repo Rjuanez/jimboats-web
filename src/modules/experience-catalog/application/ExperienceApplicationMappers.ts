@@ -4,6 +4,7 @@ import { TimeRange } from "@/shared/domain/TimeRange";
 import type {
   AdminExperienceDto,
   AdminExperienceListItemDto,
+  AdminExtraDto,
   ExtraSelectionRuleCommand,
   MoneyDto,
   SlotPolicyCommand,
@@ -102,4 +103,8 @@ export function experienceToAdminListItemDto(
     status: snapshot.status,
     type: snapshot.type,
   };
+}
+
+export function extraToAdminDto(extra: Extra): AdminExtraDto {
+  return extra.toSnapshot();
 }

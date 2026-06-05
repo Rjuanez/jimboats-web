@@ -42,13 +42,15 @@ details, then starts checkout.
 11. Booking creates `BookingAccess` with a public reference and secure token
     metadata.
 12. Booking creates or prepares a `PaymentRecord` for the deposit amount only
-    and starts provider checkout.
-13. Payment provider confirms deposit payment through a trusted event.
-14. Booking verifies payment amount and currency against the deposit amount.
-15. Booking moves to `CONFIRMED`.
-16. Boat Calendar keeps the linked protected block active as the confirmed boat
+    and starts an embedded provider checkout session.
+13. The public page mounts the provider checkout form with the returned client
+    secret.
+14. Payment provider confirms deposit payment through a trusted event.
+15. Booking verifies payment amount and currency against the deposit amount.
+16. Booking moves to `CONFIRMED`.
+17. Boat Calendar keeps the linked protected block active as the confirmed boat
     reservation.
-17. Notifications creates and sends booking confirmation messages that explain
+18. Notifications creates and sends booking confirmation messages that explain
     deposit paid and remaining amount due in cash on board.
 
 ## Failure And Compensation
@@ -73,7 +75,11 @@ details, then starts checkout.
 - Price, deposit, and remaining cash-on-board amount must be frozen in the
   booking before the buyer enters payment.
 - Public checkout pays only the `100 EUR` deposit.
-- Public checkout hold lasts `15` minutes.
+- Public checkout hold lasts `30` minutes.
+- Public checkout uses Stripe Embedded Checkout, not a full-page redirect, so
+  the browser receives only the checkout client secret.
+- Payment provider events are persisted for idempotency before booking payment
+  state is finalized.
 - Remaining amount is paid in cash on board.
 - Maximum advance booking window is `6` months.
 - Minimum advance booking window is `1` hour.

@@ -6,6 +6,7 @@ import { Slug } from "@/shared/domain/Slug";
 import { TimeRange } from "@/shared/domain/TimeRange";
 import { LocalizedExperienceContent } from "@/modules/localization-seo/domain/LocalizedExperienceContent";
 import { Experience } from "@/modules/experience-catalog/domain/Experience";
+import { Extra } from "@/modules/experience-catalog/domain/Extra";
 import { ExtraSelectionRule } from "@/modules/experience-catalog/domain/ExtraSelectionRule";
 import { SlotPolicy } from "@/modules/experience-catalog/domain/SlotPolicy";
 
@@ -13,6 +14,7 @@ import {
   experienceFromPrismaRecord,
   experienceToPrismaWriteModel,
   extraFromPrismaRecord,
+  extraToPrismaWriteModel,
 } from "./PrismaExperienceCatalogMappers";
 import {
   localizedExperienceContentFromPrismaRecord,
@@ -35,8 +37,13 @@ describe("Prisma experience catalog mappers", () => {
       displayOrder: 1,
       extraSelectionRules: [
         {
+          capacityReduction: 1,
           extraId: "premium-champagne",
           limitPerBooking: 4,
+          priceOverride: {
+            amountMinor: 8_500,
+            currency: "EUR",
+          },
         },
       ],
       media: {
@@ -55,6 +62,28 @@ describe("Prisma experience catalog mappers", () => {
     });
   });
 
+  it("maps flexible slot policy persistence into the domain model", () => {
+    const experience = experienceFromPrismaRecord(
+      experienceRecord({
+        fixedSlots: [],
+        slotGranularityMinutes: 15,
+        slotOperatingEndMinutes: 18 * 60,
+        slotOperatingStartMinutes: 9 * 60,
+        slotPolicyMode: "ANY_AVAILABLE",
+      }),
+    );
+
+    expect(experience.toSnapshot().slotPolicy).toMatchObject({
+      granularityMinutes: 15,
+      fixedSlots: [],
+      mode: "ANY_AVAILABLE",
+      operatingWindow: {
+        endMinutes: 18 * 60,
+        startMinutes: 9 * 60,
+      },
+    });
+  });
+
   it("maps an experience domain model into persistence write data", () => {
     const writeModel = experienceToPrismaWriteModel(createExperience());
 
@@ -69,8 +98,11 @@ describe("Prisma experience catalog mappers", () => {
       },
       extraRules: [
         {
+          capacityReduction: 1,
           extraId: "premium-champagne",
           id: "sunset-experience:extra:premium-champagne",
+          priceOverrideAmountMinor: 8_500,
+          priceOverrideCurrency: "EUR",
         },
       ],
       fixedSlots: [
@@ -83,6 +115,28 @@ describe("Prisma experience catalog mappers", () => {
     });
   });
 
+  it("maps flexible slot policy domain data into persistence write data", () => {
+    const writeModel = experienceToPrismaWriteModel(
+      createExperience({
+        slotPolicy: SlotPolicy.anyAvailable({
+          granularityMinutes: 15,
+          operatingWindow: TimeRange.fromLocalTimes("09:00", "18:00"),
+          timeZone: "Europe/Madrid",
+        }),
+      }),
+    );
+
+    expect(writeModel).toMatchObject({
+      experience: {
+        slotGranularityMinutes: 15,
+        slotOperatingEndMinutes: 18 * 60,
+        slotOperatingStartMinutes: 9 * 60,
+        slotPolicyMode: "ANY_AVAILABLE",
+      },
+      fixedSlots: [],
+    });
+  });
+
   it("maps an extra record into the domain model", () => {
     const extra = extraFromPrismaRecord({
       defaultNoticeMinutes: 0,
@@ -90,6 +144,7 @@ describe("Prisma experience catalog mappers", () => {
       name: "Premium champagne",
       priceAmountMinor: 9_000,
       priceCurrency: "EUR",
+      primaryMediaAssetId: "asset-champagne",
       status: "ACTIVE",
     });
 
@@ -98,6 +153,21 @@ describe("Prisma experience catalog mappers", () => {
       price: {
         amountMinor: 9_000,
       },
+      primaryMediaAssetId: "asset-champagne",
+      status: "ACTIVE",
+    });
+  });
+
+  it("maps an extra domain model into persistence write data", () => {
+    const writeModel = extraToPrismaWriteModel(
+      createExtra({ primaryMediaAssetId: "asset-champagne" }),
+    );
+
+    expect(writeModel).toMatchObject({
+      id: "premium-champagne",
+      name: "Premium champagne",
+      priceAmountMinor: 9_000,
+      primaryMediaAssetId: "asset-champagne",
       status: "ACTIVE",
     });
   });
@@ -153,14 +223,14 @@ export function experienceRecord(
     durationMinutes: 120,
     extraRules: [
       {
-        capacityReduction: 0,
+        capacityReduction: 1,
         enabled: true,
         extraId: "premium-champagne",
         id: "rule-premium-champagne",
         limitPerBooking: 4,
         noticeMinutes: 0,
-        priceOverrideAmountMinor: null,
-        priceOverrideCurrency: null,
+        priceOverrideAmountMinor: 8_500,
+        priceOverrideCurrency: "EUR",
         slotKey: null,
       },
     ],
@@ -238,7 +308,9 @@ export function localizedContentRecord(
   };
 }
 
-export function createExperience() {
+export function createExperience(
+  patch: Partial<Parameters<typeof Experience.create>[0]> = {},
+) {
   return Experience.create({
     allowsManualScheduling: true,
     basePrice: Money.create({ amountMinor: 29_000, currency: "EUR" }),
@@ -250,10 +322,12 @@ export function createExperience() {
     durationMinutes: 120,
     extraSelectionRules: [
       ExtraSelectionRule.create({
+        capacityReduction: 1,
         enabled: true,
         extraId: "premium-champagne",
         limitPerBooking: 4,
         noticeMinutes: 0,
+        priceOverride: Money.create({ amountMinor: 8_500, currency: "EUR" }),
       }),
     ],
     id: "sunset-experience",
@@ -280,6 +354,18 @@ export function createExperience() {
     }),
     status: "READY",
     type: "Private charter",
+    ...patch,
+  });
+}
+
+function createExtra(patch: Partial<Parameters<typeof Extra.create>[0]> = {}) {
+  return Extra.create({
+    defaultNoticeMinutes: 0,
+    id: "premium-champagne",
+    name: "Premium champagne",
+    price: Money.create({ amountMinor: 9_000, currency: "EUR" }),
+    status: "ACTIVE",
+    ...patch,
   });
 }
 

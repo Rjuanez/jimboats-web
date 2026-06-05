@@ -69,6 +69,44 @@ describe("SlotPolicy", () => {
     expect(policy.hasOverlappingEnabledSlots()).toBe(false);
   });
 
+  it("normalizes slot ids before checking uniqueness", () => {
+    expect(() =>
+      SlotPolicy.fixedSlots({
+        fixedSlots: [
+          {
+            enabled: true,
+            id: " sunset-1800 ",
+            label: "Sunset",
+            range: TimeRange.fromLocalTimes("18:00", "20:00"),
+          },
+          {
+            enabled: true,
+            id: "sunset-1800",
+            label: "Same slot",
+            range: TimeRange.fromLocalTimes("20:00", "22:00"),
+          },
+        ],
+        timeZone: "Europe/Madrid",
+      }),
+    ).toThrow(DomainError);
+  });
+
+  it("rejects fixed slots without a label", () => {
+    expect(() =>
+      SlotPolicy.fixedSlots({
+        fixedSlots: [
+          {
+            enabled: true,
+            id: "sunset-1800",
+            label: " ",
+            range: TimeRange.fromLocalTimes("18:00", "20:00"),
+          },
+        ],
+        timeZone: "Europe/Madrid",
+      }),
+    ).toThrow(DomainError);
+  });
+
   it("creates a flexible policy with operating window and granularity", () => {
     const policy = SlotPolicy.anyAvailable({
       granularityMinutes: 30,
@@ -80,6 +118,16 @@ describe("SlotPolicy", () => {
       granularityMinutes: 30,
       mode: "ANY_AVAILABLE",
     });
+  });
+
+  it("rejects flexible granularity larger than the operating window", () => {
+    expect(() =>
+      SlotPolicy.anyAvailable({
+        granularityMinutes: 90,
+        operatingWindow: TimeRange.fromLocalTimes("10:00", "11:00"),
+        timeZone: "Europe/Madrid",
+      }),
+    ).toThrow(DomainError);
   });
 
   it("rejects unsupported time zones", () => {

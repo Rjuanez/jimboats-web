@@ -8,25 +8,139 @@ import type {
   UpdateExperienceMediaCommand,
   UpdateExperiencePublicationStateCommand,
 } from "@/modules/experience-catalog/application/AdminExperienceDtos";
+import type {
+  CreateManualCalendarBlockCommand,
+  GetAdminCalendarQuery,
+  ReleaseManualCalendarBlockCommand,
+} from "@/modules/boat-calendar/application/AdminCalendarDtos";
+import type {
+  BackpanelCancelBookingCommand,
+  BackpanelCreateBookingCommand,
+  BackpanelIssueBookingAccessLinkCommand,
+  BackpanelUpdateBookingCommand,
+} from "@/modules/booking/application/AdminBookingDtos";
+import { BackpanelCancelBookingUseCase } from "@/modules/booking/application/BackpanelCancelBookingUseCase";
+import { BackpanelCreateBookingUseCase } from "@/modules/booking/application/BackpanelCreateBookingUseCase";
+import { BackpanelIssueBookingAccessLinkUseCase } from "@/modules/booking/application/BackpanelIssueBookingAccessLinkUseCase";
+import { BackpanelUpdateBookingUseCase } from "@/modules/booking/application/BackpanelUpdateBookingUseCase";
+import { CreatePublicBookingCheckoutUseCase } from "@/modules/booking/application/CreatePublicBookingCheckoutUseCase";
+import type { SaveCancellationPolicyCommand } from "@/modules/booking/application/AdminCancellationPolicyDtos";
+import { GetAdminCancellationPoliciesWorkspaceUseCase } from "@/modules/booking/application/GetAdminCancellationPoliciesWorkspaceUseCase";
+import { GetAdminBookingsWorkspaceUseCase } from "@/modules/booking/application/GetAdminBookingsWorkspaceUseCase";
+import { GetPublicBookingPageUseCase } from "@/modules/booking/application/GetPublicBookingPageUseCase";
+import { GetPublicBookingCheckoutReturnUseCase } from "@/modules/booking/application/GetPublicBookingCheckoutReturnUseCase";
+import { HandleDepositPaymentWebhookUseCase } from "@/modules/booking/application/HandleDepositPaymentWebhookUseCase";
+import { IssueBookingAccessLinkUseCase } from "@/modules/booking/application/IssueBookingAccessLinkUseCase";
+import { SaveCancellationPolicyUseCase } from "@/modules/booking/application/SaveCancellationPolicyUseCase";
+import { ViewBookingByAccessTokenUseCase } from "@/modules/booking/application/ViewBookingByAccessTokenUseCase";
+import type { ViewBookingByAccessTokenQuery } from "@/modules/booking/application/BookingAccessDtos";
+import type { GetPublicBookingPageQuery } from "@/modules/booking/application/PublicBookingDtos";
+import type { DepositPaymentProvider } from "@/modules/booking/application/ports/DepositPaymentProvider";
+import type {
+  CreatePublicBookingCheckoutCommand,
+  GetPublicBookingCheckoutReturnQuery,
+  HandleDepositPaymentWebhookCommand,
+} from "@/modules/booking/application/PublicCheckoutDtos";
+import { CreateManualCalendarBlockUseCase } from "@/modules/boat-calendar/application/CreateManualCalendarBlockUseCase";
+import { GetAdminCalendarUseCase } from "@/modules/boat-calendar/application/GetAdminCalendarUseCase";
+import { ReleaseManualCalendarBlockUseCase } from "@/modules/boat-calendar/application/ReleaseManualCalendarBlockUseCase";
+import type {
+  ArchiveExtraCommand,
+  CreateExtraCommand,
+  UpdateExtraCommand,
+} from "@/modules/experience-catalog/application/AdminExtraDtos";
 import { ArchiveExperienceUseCase } from "@/modules/experience-catalog/application/ArchiveExperienceUseCase";
+import { ArchiveExtraUseCase } from "@/modules/experience-catalog/application/ArchiveExtraUseCase";
 import { CreateExperienceUseCase } from "@/modules/experience-catalog/application/CreateExperienceUseCase";
+import { CreateExtraUseCase } from "@/modules/experience-catalog/application/CreateExtraUseCase";
 import { DuplicateExperienceUseCase } from "@/modules/experience-catalog/application/DuplicateExperienceUseCase";
 import { GetAdminExperiencesWorkspaceUseCase } from "@/modules/experience-catalog/application/GetAdminExperiencesWorkspaceUseCase";
+import { GetAdminExtrasWorkspaceUseCase } from "@/modules/experience-catalog/application/GetAdminExtrasWorkspaceUseCase";
 import { UpdateExperienceAvailabilityUseCase } from "@/modules/experience-catalog/application/UpdateExperienceAvailabilityUseCase";
 import { UpdateExperienceCoreUseCase } from "@/modules/experience-catalog/application/UpdateExperienceCoreUseCase";
 import { UpdateExperienceExtrasUseCase } from "@/modules/experience-catalog/application/UpdateExperienceExtrasUseCase";
 import { UpdateExperienceMediaUseCase } from "@/modules/experience-catalog/application/UpdateExperienceMediaUseCase";
 import { UpdateExperiencePublicationStateUseCase } from "@/modules/experience-catalog/application/UpdateExperiencePublicationStateUseCase";
+import { UpdateExtraUseCase } from "@/modules/experience-catalog/application/UpdateExtraUseCase";
 import type { UpdateLocalizedExperienceContentCommand } from "@/modules/localization-seo/application/LocalizedExperienceContentDtos";
 import { UpdateLocalizedExperienceContentUseCase } from "@/modules/localization-seo/application/UpdateLocalizedExperienceContentUseCase";
+import type {
+  RequestMediaReprocessCommand,
+  UpdateMediaAssetMetadataCommand,
+  UploadMediaAssetCommand,
+} from "@/modules/media-library/application/AdminMediaDtos";
+import { GetAdminMediaAssetUseCase } from "@/modules/media-library/application/GetAdminMediaAssetUseCase";
+import { ListAdminMediaAssetsUseCase } from "@/modules/media-library/application/ListAdminMediaAssetsUseCase";
+import { ProcessNextMediaProcessingJobUseCase } from "@/modules/media-library/application/ProcessNextMediaProcessingJobUseCase";
+import { RequestMediaReprocessUseCase } from "@/modules/media-library/application/RequestMediaReprocessUseCase";
+import { UpdateMediaAssetMetadataUseCase } from "@/modules/media-library/application/UpdateMediaAssetMetadataUseCase";
+import { UploadMediaAssetUseCase } from "@/modules/media-library/application/UploadMediaAssetUseCase";
+import type { MediaStorage } from "@/modules/media-library/application/ports/MediaStorage";
+import type { MediaVariantGenerator } from "@/modules/media-library/application/ports/MediaVariantGenerator";
+import type {
+  PreviewNotificationTemplateCommand,
+  ProcessOutboxNotificationEventCommand,
+  SendBookingNotificationCommand,
+  UpdateNotificationRuleCommand,
+  UpdateNotificationTemplateCommand,
+} from "@/modules/notifications/application/NotificationDtos";
+import { GetAdminNotificationsWorkspaceUseCase } from "@/modules/notifications/application/GetAdminNotificationsWorkspaceUseCase";
+import { PreviewNotificationTemplateUseCase } from "@/modules/notifications/application/PreviewNotificationTemplateUseCase";
+import { ProcessNextNotificationWorkUseCase } from "@/modules/notifications/application/ProcessNextNotificationWorkUseCase";
+import { ProcessOutboxNotificationEventUseCase } from "@/modules/notifications/application/ProcessOutboxNotificationEventUseCase";
+import { SendBookingNotificationUseCase } from "@/modules/notifications/application/SendBookingNotificationUseCase";
+import { UpdateNotificationRuleUseCase } from "@/modules/notifications/application/UpdateNotificationRuleUseCase";
+import { UpdateNotificationTemplateUseCase } from "@/modules/notifications/application/UpdateNotificationTemplateUseCase";
 
+import { CryptoCalendarBlockIdGenerator } from "./infrastructure/calendar/CryptoCalendarBlockIdGenerator";
+import { SystemCalendarClock } from "./infrastructure/calendar/SystemCalendarClock";
+import { CryptoBookingIdGenerator } from "./infrastructure/booking/CryptoBookingIdGenerator";
+import { CryptoBookingAccessTokenService } from "./infrastructure/booking/CryptoBookingAccessTokenService";
+import { createPublicBookingAccessUrlBuilderFromEnv } from "./infrastructure/booking/PublicBookingAccessUrlBuilder";
+import { SystemBookingClock } from "./infrastructure/booking/SystemBookingClock";
+import { PrismaBookingAccessRepository } from "./infrastructure/db/prisma/PrismaBookingAccessRepository";
+import type { PrismaBookingAccessRepositoryClient } from "./infrastructure/db/prisma/PrismaBookingAccessRepository";
+import { PrismaBookingRepository } from "./infrastructure/db/prisma/PrismaBookingRepository";
+import type { PrismaBookingRepositoryClient } from "./infrastructure/db/prisma/PrismaBookingRepository";
+import { PrismaCancellationPolicyRepository } from "./infrastructure/db/prisma/PrismaCancellationPolicyRepository";
+import type { PrismaCancellationPolicyRepositoryClient } from "./infrastructure/db/prisma/PrismaCancellationPolicyRepository";
+import { PrismaCalendarBlockRepository } from "./infrastructure/db/prisma/PrismaCalendarBlockRepository";
+import type { PrismaCalendarBlockRepositoryClient } from "./infrastructure/db/prisma/PrismaCalendarBlockRepository";
 import { PrismaExperienceRepository } from "./infrastructure/db/prisma/PrismaExperienceRepository";
 import type { PrismaExperienceRepositoryClient } from "./infrastructure/db/prisma/PrismaExperienceRepository";
 import { PrismaExtraRepository } from "./infrastructure/db/prisma/PrismaExtraRepository";
 import type { PrismaExtraRepositoryClient } from "./infrastructure/db/prisma/PrismaExtraRepository";
 import { PrismaLocalizedExperienceContentRepository } from "./infrastructure/db/prisma/PrismaLocalizedExperienceContentRepository";
 import type { PrismaLocalizedExperienceContentClient } from "./infrastructure/db/prisma/PrismaLocalizedExperienceContentRepository";
+import { PrismaMediaAssetRepository } from "./infrastructure/db/prisma/PrismaMediaAssetRepository";
+import type { PrismaMediaAssetRepositoryClient } from "./infrastructure/db/prisma/PrismaMediaAssetRepository";
+import { PrismaMediaLibraryUnitOfWork } from "./infrastructure/db/prisma/PrismaMediaLibraryUnitOfWork";
+import type { PrismaMediaLibraryUnitOfWorkClient } from "./infrastructure/db/prisma/PrismaMediaLibraryUnitOfWork";
+import { PrismaNotificationAuditRepository } from "./infrastructure/db/prisma/PrismaNotificationAuditRepository";
+import type { PrismaNotificationAuditRepositoryClient } from "./infrastructure/db/prisma/PrismaNotificationAuditRepository";
+import { PrismaNotificationBookingReader } from "./infrastructure/db/prisma/PrismaNotificationBookingReader";
+import type { PrismaNotificationBookingReaderClient } from "./infrastructure/db/prisma/PrismaNotificationBookingReader";
+import { PrismaNotificationDeliveryRepository } from "./infrastructure/db/prisma/PrismaNotificationDeliveryRepository";
+import type { PrismaNotificationDeliveryRepositoryClient } from "./infrastructure/db/prisma/PrismaNotificationDeliveryRepository";
+import { PrismaNotificationOutboxRepository } from "./infrastructure/db/prisma/PrismaNotificationOutboxRepository";
+import type { PrismaNotificationOutboxRepositoryClient } from "./infrastructure/db/prisma/PrismaNotificationOutboxRepository";
+import { PrismaNotificationRuleRepository } from "./infrastructure/db/prisma/PrismaNotificationRuleRepository";
+import type { PrismaNotificationRuleRepositoryClient } from "./infrastructure/db/prisma/PrismaNotificationRuleRepository";
+import { PrismaNotificationTemplateRepository } from "./infrastructure/db/prisma/PrismaNotificationTemplateRepository";
+import type { PrismaNotificationTemplateRepositoryClient } from "./infrastructure/db/prisma/PrismaNotificationTemplateRepository";
+import { PrismaPublicBookingCatalogReader } from "./infrastructure/db/prisma/PrismaPublicBookingCatalogReader";
+import type { PrismaPublicBookingCatalogReaderClient } from "./infrastructure/db/prisma/PrismaPublicBookingCatalogReader";
 import { getPrismaClient } from "./infrastructure/db/prisma/prismaClient";
+import { CryptoMediaIdGenerator } from "./infrastructure/media/CryptoMediaIdGenerator";
+import { createSharpLocalMediaVariantGeneratorFromEnv } from "./infrastructure/media/SharpLocalMediaVariantGenerator";
+import { SystemMediaClock } from "./infrastructure/media/SystemMediaClock";
+import { CryptoNotificationIdGenerator } from "./infrastructure/notifications/CryptoNotificationIdGenerator";
+import { createNotificationProviderFromEnv } from "./infrastructure/notifications/NotificationProviderFactory";
+import { SimpleTemplateRenderer } from "./infrastructure/notifications/SimpleTemplateRenderer";
+import { StaticNotificationPreviewFixtureProvider } from "./infrastructure/notifications/StaticNotificationPreviewFixtureProvider";
+import { SystemNotificationClock } from "./infrastructure/notifications/SystemNotificationClock";
+import { createStripeDepositPaymentProviderFromEnv } from "./infrastructure/payments/StripeDepositPaymentProvider";
+import { createLocalMediaStorageFromEnv } from "./infrastructure/storage/local/LocalMediaStorage";
 
 const adminLocales = ["en", "es", "ca"] as const;
 
@@ -42,11 +156,70 @@ export function getContainer() {
     new PrismaLocalizedExperienceContentRepository(
       prisma as unknown as PrismaLocalizedExperienceContentClient,
     );
+  const mediaAssetRepository = new PrismaMediaAssetRepository(
+    prisma as unknown as PrismaMediaAssetRepositoryClient,
+  );
+  const calendarBlockRepository = new PrismaCalendarBlockRepository(
+    prisma as unknown as PrismaCalendarBlockRepositoryClient,
+  );
+  const bookingRepository = new PrismaBookingRepository(
+    prisma as unknown as PrismaBookingRepositoryClient,
+  );
+  const bookingAccessRepository = new PrismaBookingAccessRepository(
+    prisma as unknown as PrismaBookingAccessRepositoryClient,
+  );
+  const cancellationPolicyRepository = new PrismaCancellationPolicyRepository(
+    prisma as unknown as PrismaCancellationPolicyRepositoryClient,
+  );
+  const publicBookingCatalogReader = new PrismaPublicBookingCatalogReader(
+    prisma as unknown as PrismaPublicBookingCatalogReaderClient,
+  );
+  const notificationRuleRepository = new PrismaNotificationRuleRepository(
+    prisma as unknown as PrismaNotificationRuleRepositoryClient,
+  );
+  const notificationTemplateRepository =
+    new PrismaNotificationTemplateRepository(
+      prisma as unknown as PrismaNotificationTemplateRepositoryClient,
+    );
+  const notificationDeliveryRepository =
+    new PrismaNotificationDeliveryRepository(
+      prisma as unknown as PrismaNotificationDeliveryRepositoryClient,
+    );
+  const notificationOutboxRepository = new PrismaNotificationOutboxRepository(
+    prisma as unknown as PrismaNotificationOutboxRepositoryClient,
+  );
+  const notificationBookingReader = new PrismaNotificationBookingReader(
+    prisma as unknown as PrismaNotificationBookingReaderClient,
+  );
+  const notificationAuditRepository = new PrismaNotificationAuditRepository(
+    prisma as unknown as PrismaNotificationAuditRepositoryClient,
+  );
+  const mediaUnitOfWork = new PrismaMediaLibraryUnitOfWork(
+    prisma as unknown as PrismaMediaLibraryUnitOfWorkClient,
+  );
+  const mediaClock = new SystemMediaClock();
+  const mediaIds = new CryptoMediaIdGenerator();
+  const calendarClock = new SystemCalendarClock();
+  const calendarIds = new CryptoCalendarBlockIdGenerator();
+  const bookingClock = new SystemBookingClock();
+  const bookingIds = new CryptoBookingIdGenerator();
+  const bookingAccessTokens = new CryptoBookingAccessTokenService();
+  const bookingAccessUrlBuilder = createPublicBookingAccessUrlBuilderFromEnv();
+  const notificationClock = new SystemNotificationClock();
+  const notificationIds = new CryptoNotificationIdGenerator();
+  const notificationRenderer = new SimpleTemplateRenderer();
+  const notificationProvider = createNotificationProviderFromEnv();
+  const notificationPreviewFixtures =
+    new StaticNotificationPreviewFixtureProvider();
+  const depositPaymentProvider = createLazyDepositPaymentProvider();
+  const mediaStorage = createLazyLocalMediaStorage();
+  const mediaVariantGenerator = createLazyLocalMediaVariantGenerator();
 
   const getWorkspaceUseCase = new GetAdminExperiencesWorkspaceUseCase(
     experienceRepository,
     extraRepository,
     localizedContentRepository,
+    cancellationPolicyRepository,
   );
   const createExperienceUseCase = new CreateExperienceUseCase(
     experienceRepository,
@@ -89,8 +262,191 @@ export function getContainer() {
   );
   const updateLocalizedExperienceContentUseCase =
     new UpdateLocalizedExperienceContentUseCase(localizedContentRepository);
+  const getAdminExtrasWorkspaceUseCase = new GetAdminExtrasWorkspaceUseCase(
+    extraRepository,
+  );
+  const createExtraUseCase = new CreateExtraUseCase(extraRepository);
+  const updateExtraUseCase = new UpdateExtraUseCase(extraRepository);
+  const archiveExtraUseCase = new ArchiveExtraUseCase(extraRepository);
+  const listAdminMediaAssetsUseCase = new ListAdminMediaAssetsUseCase(
+    mediaAssetRepository,
+  );
+  const getAdminMediaAssetUseCase = new GetAdminMediaAssetUseCase(
+    mediaAssetRepository,
+  );
+  const uploadMediaAssetUseCase = new UploadMediaAssetUseCase(
+    mediaUnitOfWork,
+    mediaStorage,
+    mediaIds,
+    mediaClock,
+  );
+  const updateMediaAssetMetadataUseCase = new UpdateMediaAssetMetadataUseCase(
+    mediaAssetRepository,
+    mediaClock,
+  );
+  const requestMediaReprocessUseCase = new RequestMediaReprocessUseCase(
+    mediaUnitOfWork,
+    mediaIds,
+    mediaClock,
+  );
+  const processNextMediaProcessingJobUseCase =
+    new ProcessNextMediaProcessingJobUseCase(
+      mediaUnitOfWork,
+      mediaVariantGenerator,
+      mediaClock,
+    );
+  const getAdminCalendarUseCase = new GetAdminCalendarUseCase(
+    calendarBlockRepository,
+  );
+  const createManualCalendarBlockUseCase = new CreateManualCalendarBlockUseCase(
+    calendarBlockRepository,
+    calendarIds,
+    calendarClock,
+  );
+  const releaseManualCalendarBlockUseCase =
+    new ReleaseManualCalendarBlockUseCase(
+      calendarBlockRepository,
+      calendarClock,
+    );
+  const getAdminBookingsWorkspaceUseCase = new GetAdminBookingsWorkspaceUseCase(
+    bookingRepository,
+  );
+  const backpanelCreateBookingUseCase = new BackpanelCreateBookingUseCase(
+    bookingRepository,
+    bookingIds,
+    bookingClock,
+    cancellationPolicyRepository,
+  );
+  const backpanelUpdateBookingUseCase = new BackpanelUpdateBookingUseCase(
+    bookingRepository,
+    bookingIds,
+    bookingClock,
+  );
+  const backpanelCancelBookingUseCase = new BackpanelCancelBookingUseCase(
+    bookingRepository,
+    bookingClock,
+  );
+  const getPublicBookingPageUseCase = new GetPublicBookingPageUseCase(
+    publicBookingCatalogReader,
+    bookingClock,
+  );
+  const createPublicBookingCheckoutUseCase =
+    new CreatePublicBookingCheckoutUseCase(
+      bookingRepository,
+      bookingIds,
+      bookingClock,
+      depositPaymentProvider,
+      cancellationPolicyRepository,
+    );
+  const getAdminCancellationPoliciesWorkspaceUseCase =
+    new GetAdminCancellationPoliciesWorkspaceUseCase(
+      cancellationPolicyRepository,
+    );
+  const saveCancellationPolicyUseCase = new SaveCancellationPolicyUseCase(
+    cancellationPolicyRepository,
+  );
+  const handleDepositPaymentWebhookUseCase =
+    new HandleDepositPaymentWebhookUseCase(
+      bookingRepository,
+      bookingClock,
+      depositPaymentProvider,
+    );
+  const getPublicBookingCheckoutReturnUseCase =
+    new GetPublicBookingCheckoutReturnUseCase(bookingRepository);
+  const issueBookingAccessLinkUseCase = new IssueBookingAccessLinkUseCase(
+    bookingAccessRepository,
+    bookingAccessTokens,
+    bookingAccessTokens,
+    bookingAccessUrlBuilder,
+  );
+  const viewBookingByAccessTokenUseCase = new ViewBookingByAccessTokenUseCase(
+    bookingAccessRepository,
+    bookingAccessTokens,
+    bookingClock,
+  );
+  const backpanelIssueBookingAccessLinkUseCase =
+    new BackpanelIssueBookingAccessLinkUseCase(
+      bookingRepository,
+      issueBookingAccessLinkUseCase,
+      bookingClock,
+    );
+  const updateNotificationRuleUseCase = new UpdateNotificationRuleUseCase(
+    notificationRuleRepository,
+    notificationTemplateRepository,
+    notificationAuditRepository,
+    notificationIds,
+    notificationClock,
+  );
+  const getAdminNotificationsWorkspaceUseCase =
+    new GetAdminNotificationsWorkspaceUseCase(
+      notificationRuleRepository,
+      notificationTemplateRepository,
+      notificationDeliveryRepository,
+    );
+  const updateNotificationTemplateUseCase =
+    new UpdateNotificationTemplateUseCase(
+      notificationTemplateRepository,
+      notificationAuditRepository,
+      notificationClock,
+    );
+  const previewNotificationTemplateUseCase =
+    new PreviewNotificationTemplateUseCase(
+      notificationTemplateRepository,
+      notificationBookingReader,
+      notificationPreviewFixtures,
+      notificationRenderer,
+    );
+  const processOutboxNotificationEventUseCase =
+    new ProcessOutboxNotificationEventUseCase(
+      notificationOutboxRepository,
+      notificationBookingReader,
+      notificationRuleRepository,
+      notificationTemplateRepository,
+      notificationDeliveryRepository,
+      notificationRenderer,
+      notificationIds,
+      notificationClock,
+      issueBookingAccessLinkUseCase,
+    );
+  const sendBookingNotificationUseCase = new SendBookingNotificationUseCase(
+    notificationDeliveryRepository,
+    notificationProvider,
+    notificationClock,
+  );
+  const processNextNotificationWorkUseCase =
+    new ProcessNextNotificationWorkUseCase(
+      notificationOutboxRepository,
+      notificationDeliveryRepository,
+      processOutboxNotificationEventUseCase,
+      notificationProvider,
+      notificationClock,
+    );
 
   return {
+    adminBookings: {
+      cancelBackpanelBooking: (command: BackpanelCancelBookingCommand) =>
+        backpanelCancelBookingUseCase.execute(command),
+      createBackpanelBooking: (command: BackpanelCreateBookingCommand) =>
+        backpanelCreateBookingUseCase.execute(command),
+      getWorkspace: () => getAdminBookingsWorkspaceUseCase.execute(),
+      issueAccessLink: (command: BackpanelIssueBookingAccessLinkCommand) =>
+        backpanelIssueBookingAccessLinkUseCase.execute(command),
+      updateBackpanelBooking: (command: BackpanelUpdateBookingCommand) =>
+        backpanelUpdateBookingUseCase.execute(command),
+    },
+    adminCancellationPolicies: {
+      getWorkspace: () => getAdminCancellationPoliciesWorkspaceUseCase.execute(),
+      savePolicy: (command: SaveCancellationPolicyCommand) =>
+        saveCancellationPolicyUseCase.execute(command),
+    },
+    adminCalendar: {
+      createManualBlock: (command: CreateManualCalendarBlockCommand) =>
+        createManualCalendarBlockUseCase.execute(command),
+      getCalendar: (query: GetAdminCalendarQuery) =>
+        getAdminCalendarUseCase.execute(query),
+      releaseManualBlock: (command: ReleaseManualCalendarBlockCommand) =>
+        releaseManualCalendarBlockUseCase.execute(command),
+    },
     adminExperiences: {
       archiveExperience: (command: ArchiveExperienceCommand) =>
         archiveExperienceUseCase.execute(command),
@@ -117,7 +473,81 @@ export function getContainer() {
         command: UpdateExperiencePublicationStateCommand,
       ) => updatePublicationStateUseCase.execute(command),
     },
+    adminExtras: {
+      archiveExtra: (command: ArchiveExtraCommand) =>
+        archiveExtraUseCase.execute(command),
+      createExtra: (command: CreateExtraCommand) =>
+        createExtraUseCase.execute(command),
+      getWorkspace: () => getAdminExtrasWorkspaceUseCase.execute(),
+      updateExtra: (command: UpdateExtraCommand) =>
+        updateExtraUseCase.execute(command),
+    },
+    adminMedia: {
+      getAsset: (assetId: string) => getAdminMediaAssetUseCase.execute(assetId),
+      listAssets: () => listAdminMediaAssetsUseCase.execute(),
+      requestReprocess: (command: RequestMediaReprocessCommand) =>
+        requestMediaReprocessUseCase.execute(command),
+      updateMetadata: (command: UpdateMediaAssetMetadataCommand) =>
+        updateMediaAssetMetadataUseCase.execute(command),
+      uploadAsset: (command: UploadMediaAssetCommand) =>
+        uploadMediaAssetUseCase.execute(command),
+    },
+    adminNotifications: {
+      getWorkspace: () => getAdminNotificationsWorkspaceUseCase.execute(),
+      previewTemplate: (command: PreviewNotificationTemplateCommand) =>
+        previewNotificationTemplateUseCase.execute(command),
+      processOutboxEvent: (command: ProcessOutboxNotificationEventCommand) =>
+        processOutboxNotificationEventUseCase.execute(command),
+      sendBookingNotification: (command: SendBookingNotificationCommand) =>
+        sendBookingNotificationUseCase.execute(command),
+      updateRule: (command: UpdateNotificationRuleCommand) =>
+        updateNotificationRuleUseCase.execute(command),
+      updateTemplate: (command: UpdateNotificationTemplateCommand) =>
+        updateNotificationTemplateUseCase.execute(command),
+    },
+    mediaWorker: {
+      processNextJob: () => processNextMediaProcessingJobUseCase.execute(),
+    },
+    notificationWorker: {
+      processNextWork: () => processNextNotificationWorkUseCase.execute(),
+    },
+    publicBooking: {
+      createCheckout: (command: CreatePublicBookingCheckoutCommand) =>
+        createPublicBookingCheckoutUseCase.execute(command),
+      getCheckoutReturn: (query: GetPublicBookingCheckoutReturnQuery) =>
+        getPublicBookingCheckoutReturnUseCase.execute(query),
+      getPage: (query: GetPublicBookingPageQuery) =>
+        getPublicBookingPageUseCase.execute(query),
+      handleDepositPaymentWebhook: (
+        command: HandleDepositPaymentWebhookCommand,
+      ) => handleDepositPaymentWebhookUseCase.execute(command),
+      viewBooking: (query: ViewBookingByAccessTokenQuery) =>
+        viewBookingByAccessTokenUseCase.execute(query),
+    },
   };
 }
 
 export type AppContainer = ReturnType<typeof getContainer>;
+
+function createLazyLocalMediaStorage(): MediaStorage {
+  return {
+    saveOriginal: (input) =>
+      createLocalMediaStorageFromEnv().saveOriginal(input),
+  };
+}
+
+function createLazyLocalMediaVariantGenerator(): MediaVariantGenerator {
+  return {
+    generateVariants: (input) =>
+      createSharpLocalMediaVariantGeneratorFromEnv().generateVariants(input),
+  };
+}
+
+function createLazyDepositPaymentProvider(): DepositPaymentProvider {
+  return {
+    createCheckoutSession: (command) =>
+      createStripeDepositPaymentProviderFromEnv().createCheckoutSession(command),
+    parseWebhook: (input) =>
+      createStripeDepositPaymentProviderFromEnv().parseWebhook(input),
+  };
+}

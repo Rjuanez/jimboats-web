@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
 
+import { TimeRange } from "@/shared/domain/TimeRange";
+import { Money } from "@/shared/domain/Money";
+import { Extra } from "@/modules/experience-catalog/domain/Extra";
+import { SlotPolicy } from "@/modules/experience-catalog/domain/SlotPolicy";
+
 import { PrismaExperienceRepository } from "./PrismaExperienceRepository";
 import type {
   PrismaExperienceExtraRuleRecord,
@@ -27,6 +32,17 @@ describe("Prisma experience repositories", () => {
     const list = await repository.list();
 
     expect(loaded?.toSnapshot()).toMatchObject({
+      extraSelectionRules: [
+        {
+          capacityReduction: 1,
+          extraId: "premium-champagne",
+          limitPerBooking: 4,
+          priceOverride: {
+            amountMinor: 8_500,
+            currency: "EUR",
+          },
+        },
+      ],
       id: "sunset-experience",
       slotPolicy: {
         fixedSlots: [
@@ -39,6 +55,33 @@ describe("Prisma experience repositories", () => {
     expect(list).toHaveLength(1);
   });
 
+  it("saves and loads flexible availability through the Prisma-shaped client", async () => {
+    const client = new InMemoryExperienceClient();
+    const repository = new PrismaExperienceRepository(client);
+
+    await repository.save(
+      createExperience({
+        slotPolicy: SlotPolicy.anyAvailable({
+          granularityMinutes: 15,
+          operatingWindow: TimeRange.fromLocalTimes("09:00", "18:00"),
+          timeZone: "Europe/Madrid",
+        }),
+      }),
+    );
+
+    const loaded = await repository.findById("sunset-experience");
+
+    expect(loaded?.toSnapshot().slotPolicy).toMatchObject({
+      fixedSlots: [],
+      granularityMinutes: 15,
+      mode: "ANY_AVAILABLE",
+      operatingWindow: {
+        endMinutes: 18 * 60,
+        startMinutes: 9 * 60,
+      },
+    });
+  });
+
   it("loads extras by ids without duplicating id filters", async () => {
     const client = new InMemoryExtraClient([
       {
@@ -47,6 +90,7 @@ describe("Prisma experience repositories", () => {
         name: "Premium champagne",
         priceAmountMinor: 9_000,
         priceCurrency: "EUR",
+        primaryMediaAssetId: "asset-champagne",
         status: "ACTIVE",
       },
     ]);
@@ -59,6 +103,29 @@ describe("Prisma experience repositories", () => {
 
     expect(extras).toHaveLength(1);
     expect(extras[0].id).toBe("premium-champagne");
+  });
+
+  it("saves and loads extras through the Prisma-shaped client", async () => {
+    const client = new InMemoryExtraClient([]);
+    const repository = new PrismaExtraRepository(client);
+
+    await repository.save(
+      Extra.create({
+        defaultNoticeMinutes: 24 * 60,
+        id: "mediterranean-snacks",
+        name: "Mediterranean snacks",
+        price: Money.create({ amountMinor: 6_500, currency: "EUR" }),
+        primaryMediaAssetId: "asset-snacks",
+        status: "ACTIVE",
+      }),
+    );
+
+    const loaded = await repository.findById("mediterranean-snacks");
+
+    expect(loaded?.toSnapshot()).toMatchObject({
+      id: "mediterranean-snacks",
+      primaryMediaAssetId: "asset-snacks",
+    });
   });
 });
 
@@ -161,6 +228,11 @@ class InMemoryExtraClient implements PrismaExtraRepositoryClient {
   constructor(private readonly records: PrismaExtraRecord[]) {}
 
   readonly extra = {
+    findUnique: async (
+      args: Parameters<PrismaExtraRepositoryClient["extra"]["findUnique"]>[0],
+    ) => {
+      return this.records.find((record) => record.id === args.where.id) ?? null;
+    },
     findMany: async (
       args: Parameters<PrismaExtraRepositoryClient["extra"]["findMany"]>[0],
     ) => {
@@ -173,6 +245,20 @@ class InMemoryExtraClient implements PrismaExtraRepositoryClient {
       }
 
       return this.records.filter((record) => ids.includes(record.id));
+    },
+    upsert: async (
+      args: Parameters<PrismaExtraRepositoryClient["extra"]["upsert"]>[0],
+    ) => {
+      const index = this.records.findIndex((record) => {
+        return record.id === args.where.id;
+      });
+
+      if (index >= 0) {
+        this.records[index] = args.update;
+        return;
+      }
+
+      this.records.push(args.create);
     },
   };
 }

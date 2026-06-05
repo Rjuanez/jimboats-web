@@ -10,6 +10,7 @@ Create a workflow only when a process cannot be clearly owned by one module.
 
 - [Booking Checkout](booking-checkout.workflow.md)
 - [Publish Localized Experience Page](publish-localized-experience-page.workflow.md)
+- [Process Booking Notifications Outbox](process-booking-notifications-outbox.workflow.md)
 - Upload media and expose public variants.
 - Submit contact or booking lead.
 

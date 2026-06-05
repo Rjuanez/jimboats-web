@@ -63,6 +63,7 @@ tabs or sections inside a parent detail screen, not necessarily separate pages.
   /localization/seo-geo
 
   /notifications
+  /notifications/rules
   /notifications/templates
   /notifications/templates/:templateId
   /notifications/logs
@@ -102,6 +103,7 @@ tabs or sections inside a parent detail screen, not necessarily separate pages.
 | Localization  | SEO GEO               | Review metadata, structured data, and GEO readiness.                                                    |
 | Notifications | Templates List        | Manage editable email and WhatsApp templates.                                                           |
 | Notifications | Template Detail       | Edit template by type, channel, and locale.                                                             |
+| Notifications | Rules                 | Configure which booking events send messages, by channel, mode, and template.                           |
 | Notifications | Logs                  | Inspect sent, failed, delivered, and retryable notifications.                                           |
 | Settings      | Booking Settings      | Configure deposit, checkout hold, advance windows, buffer, and manual deposit rules.                    |
 | Settings      | Cancellation Settings | Configure cancellation tiers and deposit outcomes.                                                      |
@@ -116,10 +118,15 @@ tabs or sections inside a parent detail screen, not necessarily separate pages.
   functional local facade backed by browser storage until database use cases are
   connected.
 - [Dashboard](dashboard.screen.md)
+- [Booking Detail](booking-detail.screen.md)
 - [Experiences List](experiences-list.screen.md)
 - [Experience Detail](experience-detail.screen.md)
 - [Media Library](media-library.screen.md)
 - [Media Asset Detail](media-asset-detail.screen.md)
+- [Notification Rules](notification-rules.screen.md)
+- [Notification Templates](notification-templates.screen.md)
+- [Notification Template Detail](notification-template-detail.screen.md)
+- [Notification Logs](notification-logs.screen.md)
 
 ## Implementation Notes
 

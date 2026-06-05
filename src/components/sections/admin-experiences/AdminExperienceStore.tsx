@@ -36,9 +36,11 @@ export function useAdminExperienceStore({
             return;
           }
 
+          setState(result.data.state);
           setSaveError(null);
         })
-        .catch(() => {
+        .catch((error) => {
+          console.error(error);
           setSaveError("Unexpected error while saving the experience.");
         })
         .finally(() => {

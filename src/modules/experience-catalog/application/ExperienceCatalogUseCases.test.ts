@@ -101,6 +101,23 @@ describe("Experience catalog use cases", () => {
     ).resolves.not.toBeNull();
   });
 
+  it("rejects creating an experience with enabled fixed slots shorter than duration", async () => {
+    const dependencies = createDependencies();
+
+    await expect(
+      new CreateExperienceUseCase(
+        dependencies.experiences,
+        dependencies.extras,
+      ).execute({
+        ...createExperienceCommand(),
+        durationMinutes: 180,
+      }),
+    ).rejects.toBeInstanceOf(DomainError);
+    await expect(
+      dependencies.experiences.findById("morning-breeze"),
+    ).resolves.toBeNull();
+  });
+
   it("gets a single admin experience or fails with an application error", async () => {
     const dependencies = createDependencies();
     const useCase = new GetAdminExperienceUseCase(
@@ -116,7 +133,21 @@ describe("Experience catalog use cases", () => {
 
   it("updates core configuration", async () => {
     const dependencies = createDependencies({
-      experiences: [createExperience()],
+      experiences: [
+        createExperience({
+          slotPolicy: SlotPolicy.fixedSlots({
+            fixedSlots: [
+              {
+                enabled: true,
+                id: "sunset-1800",
+                label: "Sunset departure",
+                range: TimeRange.fromLocalTimes("18:00", "21:00"),
+              },
+            ],
+            timeZone: "Europe/Madrid",
+          }),
+        }),
+      ],
       localizedContents: {
         "sunset-experience": [publishableContent()],
       },
@@ -147,6 +178,41 @@ describe("Experience catalog use cases", () => {
       internalNotes: "Staff should confirm the meeting point.",
       type: "Celebration charter",
     });
+  });
+
+  it("rejects core duration updates that make enabled fixed slots too short", async () => {
+    const dependencies = createDependencies({
+      experiences: [createExperience()],
+    });
+
+    await expect(
+      new UpdateExperienceCoreUseCase(
+        dependencies.experiences,
+        dependencies.extras,
+        dependencies.localizedContent,
+      ).execute({
+        basePrice: moneyDto(35_000),
+        depositAmount: moneyDto(10_000),
+        departurePort: "Marina Vela, Barcelona",
+        displayOrder: 2,
+        durationMinutes: 180,
+        experienceId: "sunset-experience",
+        internalName: "Sunset Celebration",
+        internalNotes: "Staff should confirm the meeting point.",
+        type: "Celebration charter",
+      }),
+    ).rejects.toBeInstanceOf(DomainError);
+
+    await expect(
+      dependencies.experiences.findById("sunset-experience"),
+    ).resolves.toMatchObject({
+      id: "sunset-experience",
+    });
+    expect(
+      (
+        await dependencies.experiences.findById("sunset-experience")
+      )?.toSnapshot().durationMinutes,
+    ).toBe(120);
   });
 
   it("updates availability and keeps domain slot rules enforced", async () => {
@@ -190,6 +256,94 @@ describe("Experience catalog use cases", () => {
     ).rejects.toBeInstanceOf(DomainError);
   });
 
+  it("rejects availability updates with enabled fixed slots shorter than duration", async () => {
+    const dependencies = createDependencies({
+      experiences: [createExperience()],
+    });
+    const useCase = new UpdateExperienceAvailabilityUseCase(
+      dependencies.experiences,
+      dependencies.extras,
+      dependencies.localizedContent,
+    );
+
+    await expect(
+      useCase.execute({
+        allowsManualScheduling: true,
+        bufferMinutes: 30,
+        experienceId: "sunset-experience",
+        maximumAdvanceMonths: 6,
+        minimumAdvanceMinutes: 60,
+        slotPolicy: {
+          fixedSlots: [
+            {
+              enabled: true,
+              endMinutes: 11 * 60,
+              id: "short-morning",
+              label: "Short morning",
+              startMinutes: 10 * 60,
+            },
+          ],
+          mode: "FIXED_SLOTS",
+          timeZone: "Europe/Madrid",
+        },
+      }),
+    ).rejects.toBeInstanceOf(DomainError);
+    expect(
+      (
+        await dependencies.experiences.findById("sunset-experience")
+      )?.toSnapshot().slotPolicy.fixedSlots,
+    ).toMatchObject([
+      {
+        id: "sunset-1800",
+      },
+    ]);
+  });
+
+  it("updates flexible availability configuration", async () => {
+    const dependencies = createDependencies({
+      experiences: [createExperience()],
+    });
+    const useCase = new UpdateExperienceAvailabilityUseCase(
+      dependencies.experiences,
+      dependencies.extras,
+      dependencies.localizedContent,
+    );
+
+    const result = await useCase.execute({
+      allowsManualScheduling: true,
+      bufferMinutes: 30,
+      experienceId: "sunset-experience",
+      maximumAdvanceMonths: 6,
+      minimumAdvanceMinutes: 60,
+      slotPolicy: {
+        granularityMinutes: 15,
+        mode: "ANY_AVAILABLE",
+        operatingWindow: {
+          endMinutes: 18 * 60,
+          startMinutes: 9 * 60,
+        },
+        timeZone: "Europe/Madrid",
+      },
+    });
+
+    expect(result.slotPolicy).toMatchObject({
+      fixedSlots: [],
+      granularityMinutes: 15,
+      mode: "ANY_AVAILABLE",
+      operatingWindow: {
+        endMinutes: 18 * 60,
+        startMinutes: 9 * 60,
+      },
+    });
+    expect(
+      (
+        await dependencies.experiences.findById("sunset-experience")
+      )?.toSnapshot().slotPolicy,
+    ).toMatchObject({
+      mode: "ANY_AVAILABLE",
+    });
+  });
+
   it("updates extra selection rules and rejects unknown extras", async () => {
     const dependencies = createDependencies({
       experiences: [createExperience()],
@@ -213,6 +367,86 @@ describe("Experience catalog use cases", () => {
         ],
       }),
     ).rejects.toBeInstanceOf(ApplicationError);
+  });
+
+  it("updates complete extra selection rules for an experience", async () => {
+    const dependencies = createDependencies({
+      experiences: [
+        createExperience({
+          extraSelectionRules: [],
+        }),
+      ],
+    });
+
+    const result = await new UpdateExperienceExtrasUseCase(
+      dependencies.experiences,
+      dependencies.extras,
+      dependencies.localizedContent,
+    ).execute({
+      experienceId: "sunset-experience",
+      extraSelectionRules: [
+        {
+          capacityReduction: 1,
+          enabled: true,
+          extraId: "premium-champagne",
+          limitPerBooking: 2,
+          noticeMinutes: 24 * 60,
+          priceOverride: moneyDto(8_500),
+        },
+      ],
+    });
+    const saved = await dependencies.experiences.findById("sunset-experience");
+
+    expect(result.extraSelectionRules).toMatchObject([
+      {
+        capacityReduction: 1,
+        enabled: true,
+        extraId: "premium-champagne",
+        limitPerBooking: 2,
+        noticeMinutes: 1440,
+        priceOverride: moneyDto(8_500),
+      },
+    ]);
+    expect(saved?.toSnapshot().extraSelectionRules).toMatchObject([
+      {
+        capacityReduction: 1,
+        extraId: "premium-champagne",
+        limitPerBooking: 2,
+      },
+    ]);
+  });
+
+  it("rejects enabled extra rules when the extra is archived", async () => {
+    const dependencies = createDependencies({
+      experiences: [
+        createExperience({
+          extraSelectionRules: [],
+        }),
+      ],
+      extras: [
+        createExtra({
+          status: "ARCHIVED",
+        }),
+      ],
+    });
+
+    await expect(
+      new UpdateExperienceExtrasUseCase(
+        dependencies.experiences,
+        dependencies.extras,
+        dependencies.localizedContent,
+      ).execute({
+        experienceId: "sunset-experience",
+        extraSelectionRules: [
+          {
+            enabled: true,
+            extraId: "premium-champagne",
+            limitPerBooking: 1,
+            noticeMinutes: 0,
+          },
+        ],
+      }),
+    ).rejects.toBeInstanceOf(DomainError);
   });
 
   it("updates media references", async () => {
@@ -372,8 +606,16 @@ class InMemoryExtraRepository implements ExtraRepository {
     });
   }
 
+  async findById(id: string) {
+    return this.records.get(id) ?? null;
+  }
+
   async list() {
     return [...this.records.values()];
+  }
+
+  async save(extra: Extra) {
+    this.records.set(extra.id, extra);
   }
 }
 
@@ -503,13 +745,14 @@ function createExperience(
   });
 }
 
-function createExtra() {
+function createExtra(patch: Partial<Parameters<typeof Extra.create>[0]> = {}) {
   return Extra.create({
     defaultNoticeMinutes: 0,
     id: "premium-champagne",
     name: "Premium champagne",
     price: Money.create(moneyDto(9_000)),
     status: "ACTIVE",
+    ...patch,
   });
 }
 

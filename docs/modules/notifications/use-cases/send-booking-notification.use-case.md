@@ -4,57 +4,56 @@
 
 ## Purpose
 
-Create and send a booking-related notification through the selected channel.
+Send or mark a previously created booking notification delivery through the
+selected channel.
 
 ## Actor
 
-- Booking lifecycle event.
-- Scheduled reminder process.
+- Notification publisher process.
 - Backpanel user, when manually resending a message.
 
 ## Command Or Query
 
-- `bookingId`: related booking.
-- `type`: `NotificationType`.
-- `channel`: `NotificationChannel`.
-- `recipient`: destination address or phone.
-- `locale`: language for rendered content.
-- `templateKey`: template to render.
+- `notificationDeliveryId`: delivery to send or mark.
+- `sentByUserId`: optional backpanel user for manual WhatsApp/send actions.
 
 ## Response
 
-- `notificationId`: created or reused notification.
+- `notificationDeliveryId`: sent or updated delivery.
 - `status`: resulting notification status.
 
 ## Ports
 
-- `BookingRepository`
-- `NotificationRepository`
-- `TemplateRenderer`
+- `NotificationDeliveryRepository`
 - `NotificationProvider`
 - `Clock`
 
 ## Rules
 
-- Booking must exist.
-- Recipient must be valid for the selected channel.
-- Type must be valid for the booking event.
-- Buyer-critical notifications must use the buyer's locale when content exists.
-- Sending must be idempotent for the same booking event when needed.
+- Delivery must exist.
+- Delivery must not be finalized.
+- Automatic email sends use Resend through `NotificationProvider`.
+- Automatic WhatsApp sends use Prelude Notify through `NotificationProvider`
+  when the delivery is `PENDING` and contains a provider template id.
+- WhatsApp can start as `MANUAL_REVIEW`: the backpanel prepares the rendered
+  message, staff sends it manually, and marks it as sent.
+- Sending must be idempotent for the same delivery.
 - Failed attempts must be recorded.
+- Provider errors keep the delivery retryable unless the provider reports a
+  permanent failure.
 
 ## Side Effects
 
-- Persists notification.
-- Sends message through provider.
-- Updates notification status and attempts.
+- Sends message through provider when supported.
+- Updates delivery status, sent time, attempts, provider id, and failure reason.
+- Provider webhooks are not processed in this use case; accepted messages become
+  `SENT`, not `DELIVERED`.
 
 ## Application Errors
 
-- `BookingNotFound`
-- `NotificationRecipientInvalid`
-- `NotificationTemplateMissing`
+- `NotificationDeliveryNotFound`
 - `NotificationProviderFailed`
+- `NotificationDeliveryAlreadyFinalized`
 
 ## SEO And GEO Impact
 
@@ -65,3 +64,5 @@ Create and send a booking-related notification through the selected channel.
 ## Open Questions
 
 - Should provider delivery webhooks be a separate use case from sending?
+- When should manual WhatsApp be considered sent: button click, copied text, or
+  staff confirmation?
