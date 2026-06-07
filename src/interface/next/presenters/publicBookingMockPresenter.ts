@@ -1,4 +1,6 @@
 import type { PublicBookingContent } from "@/components/sections/public-booking/PublicBookingTypes";
+import { createLocalizedPath, type PublicLocale } from "@/i18n/locales";
+import { getPublicDictionary } from "@/i18n/public";
 
 const generatedImagePath = (slug: string, width: number) =>
   `/images/generated/landing/${slug}-${width}.webp`;
@@ -24,8 +26,10 @@ const generatedImage = ({
   width: 1024,
 });
 
-export function getPublicBookingMockPage(): PublicBookingContent {
-  return publicBookingMockContent;
+export function getPublicBookingMockPage(
+  locale: PublicLocale = "en",
+): PublicBookingContent {
+  return withExperienceMaps(publicBookingMockBase, locale);
 }
 
 const publicBookingMockBase = {
@@ -486,13 +490,28 @@ const publicBookingMockBase = {
 
 export const publicBookingMockContent = withExperienceMaps(
   publicBookingMockBase,
+  "en",
 );
 
 function withExperienceMaps(
   content: typeof publicBookingMockBase,
+  locale: PublicLocale,
 ): PublicBookingContent {
+  const dictionary = getPublicDictionary(locale);
+
   return {
     ...content,
+    bookHref: createLocalizedPath(locale, "/book"),
+    footerLinks: [
+      {
+        href: createLocalizedPath(locale),
+        label: dictionary.common.backToJimBoats,
+      },
+      { href: "#", label: dictionary.common.privacyPolicy },
+      { href: "#", label: dictionary.common.termsOfService },
+    ],
+    homeHref: createLocalizedPath(locale),
+    locale,
     availabilityByExperienceId: Object.fromEntries(
       content.experiences.map((experience) => [
         experience.id,

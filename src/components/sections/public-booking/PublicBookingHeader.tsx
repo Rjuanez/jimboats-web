@@ -1,7 +1,9 @@
 import { LockKeyhole, X } from "lucide-react";
 
 import { Container } from "@/components/layout/Container";
+import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { Button } from "@/components/ui/Button";
+import { getPublicDictionary } from "@/i18n/public";
 
 import { PublicBookingStepIndicator } from "./PublicBookingStepIndicator";
 import type {
@@ -18,6 +20,8 @@ export function PublicBookingHeader({
   content,
   currentStepId,
 }: PublicBookingHeaderProps) {
+  const copy = getPublicDictionary(content.locale).booking.header;
+
   return (
     <header className="fixed left-0 right-0 top-0 z-50 border-b border-sand/30 bg-white shadow-soft">
       <Container className="flex min-h-16 items-center justify-between gap-4 py-3 md:min-h-24 md:py-6">
@@ -29,34 +33,35 @@ export function PublicBookingHeader({
         </a>
 
         <nav
-          aria-label="Booking page links"
+          aria-label={copy.navLabel}
           className="hidden items-center gap-10 md:flex"
         >
           <a
             className="text-sm font-semibold uppercase tracking-widest text-text-muted transition hover:text-text"
             href={`${content.homeHref}#experiences`}
           >
-            Experiences
+            {copy.navExperiences}
           </a>
           <a
             className="text-sm font-semibold uppercase tracking-widest text-text-muted transition hover:text-text"
             href={`${content.homeHref}#how-it-works`}
           >
-            How it Works
+            {copy.navHowItWorks}
           </a>
           <a
             className="text-sm font-semibold uppercase tracking-widest text-text-muted transition hover:text-text"
             href={`${content.homeHref}#reviews`}
           >
-            Reviews
+            {copy.navReviews}
           </a>
         </nav>
 
         <div className="flex items-center gap-2 md:gap-4">
           <span className="hidden items-center gap-2 text-xs font-semibold uppercase tracking-widest text-text-muted sm:inline-flex">
             <LockKeyhole aria-hidden="true" className="size-4 text-primary" />
-            Secure
+            {copy.secure}
           </span>
+          <LanguageSwitcher variant="solid" />
           <Button
             className="hidden md:inline-flex"
             href={content.homeHref}
@@ -64,10 +69,10 @@ export function PublicBookingHeader({
             size="lg"
             variant="dark"
           >
-            Back to home
+            {copy.backHome}
           </Button>
           <a
-            aria-label="Close booking and return to JimBoats"
+            aria-label={copy.closeLabel}
             className="inline-flex size-10 items-center justify-center rounded-full text-text-muted transition hover:bg-sand/25 hover:text-text focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text md:hidden"
             href={content.homeHref}
           >

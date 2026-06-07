@@ -9,6 +9,8 @@ describe("SimpleTemplateRenderer", () => {
     const result = await renderer.render({
       allowedVariables: ["booking.reference", "customer.name"],
       body: "Hello {{ customer.name }}, booking {{ booking.reference }}.",
+      htmlBody:
+        "<p>Hello {{ customer.name }}, booking <strong>{{ booking.reference }}</strong>.</p>",
       payload: {
         booking: {
           reference: "JB-2026-0001",
@@ -24,6 +26,8 @@ describe("SimpleTemplateRenderer", () => {
     expect(result).toEqual({
       missingVariables: [],
       renderedBody: "Hello Sailor Guest, booking JB-2026-0001.",
+      renderedHtmlBody:
+        "<p>Hello Sailor Guest, booking <strong>JB-2026-0001</strong>.</p>",
       renderedPreviewText: "Booking JB-2026-0001",
       renderedSubject: "Booking JB-2026-0001 confirmed",
       variables: ["booking.reference", "customer.name"],
@@ -37,6 +41,7 @@ describe("SimpleTemplateRenderer", () => {
       allowedVariables: ["booking.reference"],
       body:
         "Booking {{ booking.reference }} for {{ customer.name }} with {{ skipper.name }}.",
+      htmlBody: null,
       payload: {
         booking: {
           reference: "JB-2026-0001",

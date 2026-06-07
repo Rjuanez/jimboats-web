@@ -51,6 +51,7 @@ const adminNotificationRuleSchema = z.object({
 
 const adminNotificationTemplateTranslationSchema = z.object({
   body: z.string(),
+  htmlBody: z.string(),
   locale: localeSchema,
   previewText: optionalTextSchema,
   status: translationStatusSchema,
@@ -75,6 +76,7 @@ const adminNotificationPreviewSchema = z
   .object({
     bookingId: optionalTextSchema,
     draftBody: z.string(),
+    draftHtmlBody: z.string(),
     draftPreviewText: optionalTextSchema,
     draftSubject: optionalTextSchema,
     fixtureKey: optionalTextSchema,
@@ -113,6 +115,7 @@ export function parseAdminNotificationTemplate(
     requiredVariables: parseVariables(parsed.requiredVariablesText),
     translations: parsed.translations.map((translation) => ({
       ...translation,
+      htmlBody: parsed.channel === "EMAIL" ? translation.htmlBody || null : null,
       previewText: translation.previewText || null,
       subject: translation.subject || null,
     })),
@@ -127,6 +130,7 @@ export function parseAdminNotificationPreview(
   return {
     ...parsed,
     bookingId: parsed.bookingId || undefined,
+    draftHtmlBody: parsed.draftHtmlBody || null,
     draftPreviewText: parsed.draftPreviewText || null,
     draftSubject: parsed.draftSubject || null,
     fixtureKey: parsed.fixtureKey || undefined,

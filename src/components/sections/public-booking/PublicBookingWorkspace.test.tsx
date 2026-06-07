@@ -89,7 +89,7 @@ describe("PublicBookingWorkspace", () => {
       }),
     );
     await user.click(
-      screen.getByRole("button", { name: /continue to secure payment €100/i }),
+      screen.getByRole("button", { name: /secure payment €100/i }),
     );
 
     expect(actions.startCheckout).toHaveBeenCalledWith(
@@ -106,6 +106,7 @@ describe("PublicBookingWorkspace", () => {
         experienceId: "sunset-cruise",
         guestCount: 1,
         localDate: "2026-06-15",
+        locale: "en",
         selectedExtras: [
           {
             extraId: "mediterranean-drinks",
@@ -146,7 +147,7 @@ describe("PublicBookingWorkspace", () => {
     await user.type(screen.getByLabelText("Full name"), "Sailor Guest");
     await user.type(screen.getByLabelText("Email address"), "sailor@test.com");
     await user.click(
-      screen.getByRole("button", { name: /continue to secure payment €100/i }),
+      screen.getByRole("button", { name: /secure payment €100/i }),
     );
 
     expect(await screen.findByText("Embedded Stripe Checkout")).toBeVisible();
@@ -159,7 +160,7 @@ describe("PublicBookingWorkspace", () => {
     expect(screen.queryByLabelText("Full name")).not.toBeInTheDocument();
     expect(
       screen.queryByRole("button", {
-        name: /continue to secure payment €100/i,
+        name: /secure payment €100/i,
       }),
     ).not.toBeInTheDocument();
   });
@@ -192,7 +193,7 @@ describe("PublicBookingWorkspace", () => {
       screen.getByRole("checkbox", { name: /email me the booking pass/i }),
     );
     await user.click(
-      screen.getByRole("button", { name: /continue to secure payment €100/i }),
+      screen.getByRole("button", { name: /secure payment €100/i }),
     );
 
     expect(screen.getByRole("alert")).toHaveTextContent(

@@ -24,6 +24,7 @@ describe("NotificationDelivery", () => {
         recipientType: "BUYER",
       },
       renderedSubject: "Booking confirmed",
+      renderedHtmlBody: "<p>Your booking is confirmed.</p>",
       status: "PENDING",
     });
   });
@@ -152,6 +153,7 @@ function baseDeliveryProps() {
       recipientType: "BUYER" as const,
     },
     renderedBody: "Your booking is confirmed.",
+    renderedHtmlBody: "<p>Your booking is confirmed.</p>",
     renderedSubject: "Booking confirmed",
     ruleId: "notification-rule-1",
     sendAfter: null,

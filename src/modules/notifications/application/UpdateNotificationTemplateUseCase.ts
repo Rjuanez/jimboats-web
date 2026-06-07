@@ -36,6 +36,7 @@ export class UpdateNotificationTemplateUseCase {
       status: command.status,
       translations: command.translations.map((translation) => ({
         body: translation.body,
+        htmlBody: translation.htmlBody,
         locale: LocaleCode.create(translation.locale),
         previewText: translation.previewText,
         status: translation.status,

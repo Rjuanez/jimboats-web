@@ -1,21 +1,20 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 import { PublicBookingAccessSection } from "@/components/sections/public-booking/PublicBookingAccessSection";
 import { getContainer } from "@/container";
+import {
+  parsePublicLocale,
+  type PublicLocale,
+} from "@/i18n/locales";
+import { getPublicDictionary } from "@/i18n/public";
 import { parsePublicBookingAccess } from "@/interface/next/validators/publicBookingValidators";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Booking Details",
-  robots: {
-    follow: false,
-    index: false,
-  },
-};
-
 type PublicBookingAccessPageProps = {
   params: Promise<{
+    locale: string;
     reference: string;
   }>;
   searchParams?: Promise<{
@@ -23,20 +22,42 @@ type PublicBookingAccessPageProps = {
   }>;
 };
 
+export async function generateMetadata({
+  params,
+}: PublicBookingAccessPageProps): Promise<Metadata> {
+  const { locale } = await resolveParams(params);
+  const dictionary = getPublicDictionary(locale);
+
+  return {
+    title: dictionary.metadata.bookingAccess.title,
+    robots: {
+      follow: false,
+      index: false,
+    },
+  };
+}
+
 export default async function PublicBookingAccessPage({
   params,
   searchParams,
 }: PublicBookingAccessPageProps) {
-  const routeParams = await params;
+  const { locale, reference } = await resolveParams(params);
+  const dictionary = getPublicDictionary(locale);
   const queryParams = await searchParams;
   const tokenParam = queryParams?.token;
   const token = Array.isArray(tokenParam) ? tokenParam[0] : tokenParam;
   const content = await getBookingAccessContent({
-    reference: routeParams.reference,
+    reference,
     token,
   });
 
-  return <PublicBookingAccessSection content={content} />;
+  return (
+    <PublicBookingAccessSection
+      content={content}
+      dictionary={dictionary}
+      locale={locale}
+    />
+  );
 }
 
 async function getBookingAccessContent(input: {
@@ -53,4 +74,18 @@ async function getBookingAccessContent(input: {
   } catch {
     return null;
   }
+}
+
+async function resolveParams(params: PublicBookingAccessPageProps["params"]) {
+  const { locale, reference } = await params;
+  const parsedLocale = parsePublicLocale(locale);
+
+  if (!parsedLocale) {
+    notFound();
+  }
+
+  return {
+    locale: parsedLocale satisfies PublicLocale,
+    reference,
+  };
 }

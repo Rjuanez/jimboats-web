@@ -2,9 +2,11 @@ import { LockKeyhole } from "lucide-react";
 
 import { MarketingImageFrame } from "@/components/marketing/MarketingImageFrame";
 import { cn } from "@/design/variants";
+import { getPublicDictionary } from "@/i18n/public";
 
 import type {
   PublicBookingCalendarDay,
+  PublicBookingContent,
   PublicBookingExperience,
   PublicBookingStepId,
   PublicBookingTimeSlot,
@@ -13,6 +15,7 @@ import type {
 type PublicBookingBottomBarProps = {
   activeStep: PublicBookingStepId;
   canContinueExperience: boolean;
+  content: PublicBookingContent;
   depositAmount: number;
   experience: PublicBookingExperience | null;
   formatPrice: (amount: number) => string;
@@ -29,6 +32,7 @@ type PublicBookingBottomBarProps = {
 export function PublicBookingBottomBar({
   activeStep,
   canContinueExperience,
+  content,
   depositAmount,
   experience,
   formatPrice,
@@ -49,6 +53,7 @@ export function PublicBookingBottomBar({
     experience && selectedDate && selectedTimeSlot,
   );
   const remainingAmount = Math.max(totalAmount - depositAmount, 0);
+  const copy = getPublicDictionary(content.locale).booking.bottomBar;
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-sand/30 bg-white px-4 py-4 shadow-[0_-8px_32px_-8px_rgba(0,0,0,0.12)] lg:hidden">
@@ -65,13 +70,13 @@ export function PublicBookingBottomBar({
               <p className="truncate text-xs text-text-muted">
                 {[selectedDate?.dateLabel, selectedTimeSlot?.label]
                   .filter(Boolean)
-                  .join(" · ") || "Choose date and time"}
+                  .join(" · ") || copy.chooseDateAndTime}
               </p>
             </div>
           </div>
           <div className="shrink-0 text-right">
             <p className="text-[9px] font-semibold uppercase tracking-widest text-text-muted">
-              Total
+              {copy.total}
             </p>
             <p className="font-display text-2xl leading-none text-text">
               {formatPrice(totalAmount)}
@@ -80,7 +85,7 @@ export function PublicBookingBottomBar({
         </div>
       ) : (
         <p className="py-1 text-center text-xs font-light text-text-muted">
-          Select an experience to begin
+          {copy.selectExperience}
         </p>
       )}
 
@@ -95,7 +100,7 @@ export function PublicBookingBottomBar({
           onClick={onContinueExperience}
           type="button"
         >
-          Continue
+          {copy.continue}
         </button>
       ) : null}
 
@@ -110,7 +115,7 @@ export function PublicBookingBottomBar({
           onClick={onContinueExtras}
           type="button"
         >
-          Continue
+          {copy.continue}
         </button>
       ) : null}
 
@@ -118,7 +123,7 @@ export function PublicBookingBottomBar({
         <>
           <div className="mb-3 flex items-center justify-between px-1">
             <span className="text-xs font-semibold uppercase tracking-widest text-text-muted">
-              Deposit due now
+              {copy.depositDueNow}
             </span>
             <span className="font-display text-2xl leading-none text-text">
               {formatPrice(depositAmount)}
@@ -135,10 +140,10 @@ export function PublicBookingBottomBar({
             type="submit"
           >
             <LockKeyhole aria-hidden="true" className="size-4" />
-            {paymentSubmitting ? "Opening payment" : "Pay deposit"}
+            {paymentSubmitting ? copy.openingPayment : copy.payDeposit}
           </button>
           <p className="mt-2 text-center text-[11px] text-text-muted">
-            {formatPrice(remainingAmount)} remaining onboard in cash.
+            {copy.remainingOnboard(formatPrice(remainingAmount))}
           </p>
         </>
       ) : null}

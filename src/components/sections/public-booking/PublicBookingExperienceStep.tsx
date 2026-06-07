@@ -2,6 +2,7 @@ import { Check, Clock, Star } from "lucide-react";
 
 import { MarketingImageFrame } from "@/components/marketing/MarketingImageFrame";
 import { cn } from "@/design/variants";
+import { getPublicDictionary } from "@/i18n/public";
 
 import { PublicBookingCalendar } from "./PublicBookingCalendar";
 import type {
@@ -36,17 +37,17 @@ export function PublicBookingExperienceStep({
   selectedTimeSlotId,
   timeSlots,
 }: PublicBookingExperienceStepProps) {
+  const copy = getPublicDictionary(content.locale).booking.experienceStep;
+
   return (
     <div className="space-y-6 lg:space-y-16">
       <header className="px-1 lg:px-0">
         <h1 className="font-display text-4xl leading-tight text-text lg:text-6xl">
-          <span className="lg:hidden">Choose your experience</span>
-          <span className="hidden lg:inline">
-            Choose your experience and date
-          </span>
+          <span className="lg:hidden">{copy.mobileTitle}</span>
+          <span className="hidden lg:inline">{copy.desktopTitle}</span>
         </h1>
         <p className="mt-1 max-w-2xl text-sm font-light leading-6 text-text-muted lg:mt-4 lg:text-lg lg:leading-8">
-          Find the perfect moment for your day at sea.
+          {copy.subtitle}
         </p>
       </header>
 
@@ -58,14 +59,15 @@ export function PublicBookingExperienceStep({
           className="font-display text-2xl leading-none text-text lg:text-3xl"
           id="experience-selection-title"
         >
-          <span className="lg:hidden">Select Experience</span>
-          <span className="hidden lg:inline">Select Your Experience</span>
+          <span className="lg:hidden">{copy.experienceMobileTitle}</span>
+          <span className="hidden lg:inline">{copy.experienceDesktopTitle}</span>
         </h2>
         <div className="mt-4 grid gap-4 lg:mt-8 lg:grid-cols-2 lg:gap-6">
           {content.experiences.length > 0 ? (
             content.experiences.map((experience) => (
               <ExperienceOption
                 experience={experience}
+                fromLabel={copy.from}
                 formatPrice={formatPrice}
                 key={experience.id}
                 onSelect={onSelectExperience}
@@ -74,7 +76,7 @@ export function PublicBookingExperienceStep({
             ))
           ) : (
             <div className="rounded-3xl border border-sand/35 bg-white px-5 py-8 text-sm text-text-muted shadow-soft lg:col-span-2">
-              No bookable experiences are available right now.
+              {copy.emptyExperiences}
             </div>
           )}
         </div>
@@ -91,8 +93,8 @@ export function PublicBookingExperienceStep({
               className="font-display text-2xl leading-none text-text lg:text-3xl"
               id="date-selection-title"
             >
-              <span className="lg:hidden">Select Date</span>
-              <span className="hidden lg:inline">Select Your Date</span>
+              <span className="lg:hidden">{copy.dateMobileTitle}</span>
+              <span className="hidden lg:inline">{copy.dateDesktopTitle}</span>
             </h2>
             <p className="mt-2 text-xs text-text-muted lg:text-sm">
               {content.maxAdvanceLabel}
@@ -117,8 +119,8 @@ export function PublicBookingExperienceStep({
             className="font-display text-2xl leading-none text-text lg:text-3xl"
             id="time-selection-title"
           >
-            <span className="lg:hidden">Select Time</span>
-            <span className="hidden lg:inline">Select Your Time</span>
+            <span className="lg:hidden">{copy.timeMobileTitle}</span>
+            <span className="hidden lg:inline">{copy.timeDesktopTitle}</span>
           </h2>
           <div className="mt-4 grid grid-cols-3 gap-3 lg:mt-8 lg:flex lg:flex-wrap lg:gap-4">
             {timeSlots.length > 0 ? (
@@ -132,7 +134,7 @@ export function PublicBookingExperienceStep({
               ))
             ) : (
               <div className="col-span-3 rounded-3xl border border-sand/35 bg-white px-5 py-6 text-sm text-text-muted shadow-soft">
-                No available departure times for this date.
+                {copy.departureTimesUnavailable}
               </div>
             )}
           </div>
@@ -150,11 +152,13 @@ export function PublicBookingExperienceStep({
 function ExperienceOption({
   experience,
   formatPrice,
+  fromLabel,
   onSelect,
   selected,
 }: {
   experience: PublicBookingExperience;
   formatPrice: (amount: number) => string;
+  fromLabel: string;
   onSelect: (experienceId: string) => void;
   selected: boolean;
 }) {
@@ -191,7 +195,7 @@ function ExperienceOption({
         <span className="flex items-end justify-between gap-4 lg:mt-4">
           <span>
             <span className="block text-[9px] font-semibold uppercase tracking-widest text-text-muted lg:text-xs">
-              From
+              {fromLabel}
             </span>
             <span className="font-display text-lg leading-none text-text lg:text-2xl">
               {formatPrice(experience.price)}

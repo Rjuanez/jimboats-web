@@ -12,6 +12,7 @@ import {
   PublicTextField,
 } from "@/components/forms/PublicBookingFormControls";
 import { Button } from "@/components/ui/Button";
+import { getPublicDictionary } from "@/i18n/public";
 
 import type {
   PublicBookingConsents,
@@ -63,6 +64,7 @@ export function PublicBookingPaymentStep({
   stripePublishableKey,
   submitting,
 }: PublicBookingPaymentStepProps) {
+  const labels = getPublicDictionary(content.locale).booking.labels;
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (checkoutClientSecret) {
@@ -99,6 +101,8 @@ export function PublicBookingPaymentStep({
           <PublicBookingEmbeddedCheckout
             checkoutClientSecret={checkoutClientSecret}
             checkoutSessionId={checkoutSessionId}
+            returnPath={`${content.bookHref}/success`}
+            securePaymentLabel={labels.securePayment}
             stripePublishableKey={stripePublishableKey}
           />
         </div>
@@ -130,14 +134,14 @@ export function PublicBookingPaymentStep({
             className="font-display text-2xl leading-none text-text lg:text-3xl"
             id="public-booking-details-title"
           >
-            Your Details
+            {labels.yourDetails}
           </h2>
           <div className="mt-5 grid gap-4 md:grid-cols-2">
             <PublicTextField
               autoComplete="name"
               className="rounded-2xl"
               disabled={submitting}
-              label="Full name"
+              label={labels.fullName}
               name="fullName"
               onChange={(event) =>
                 onChangeCustomer({
@@ -153,7 +157,7 @@ export function PublicBookingPaymentStep({
               autoComplete="email"
               className="rounded-2xl"
               disabled={submitting}
-              label="Email address"
+              label={labels.emailAddress}
               name="email"
               onChange={(event) =>
                 onChangeCustomer({
@@ -169,9 +173,9 @@ export function PublicBookingPaymentStep({
             <PublicTextField
               autoComplete="tel"
               className="rounded-2xl"
-              description="Needed if you want the pass sent by WhatsApp."
+              description={labels.phoneDescription}
               disabled={submitting}
-              label="Phone"
+              label={labels.phone}
               name="phone"
               onChange={(event) =>
                 onChangeCustomer({
@@ -185,7 +189,7 @@ export function PublicBookingPaymentStep({
             />
             <label className="block min-w-0" htmlFor="guestCount">
               <span className="block text-sm font-semibold text-text">
-                Guests
+                {labels.guests}
               </span>
               <span className="relative mt-2 block">
                 <select
@@ -206,7 +210,7 @@ export function PublicBookingPaymentStep({
                 />
               </span>
               <span className="mt-2 block text-sm leading-6 text-text-muted">
-                Capacity for this experience: {maxGuestCount}.
+                {labels.capacity(maxGuestCount)}
               </span>
             </label>
           </div>
@@ -220,15 +224,15 @@ export function PublicBookingPaymentStep({
             className="font-display text-2xl leading-none text-text lg:text-3xl"
             id="public-booking-consents-title"
           >
-            Booking Pass
+            {labels.bookingPass}
           </h2>
           <div className="mt-5 grid gap-3">
             <PublicCheckboxField
               checked={consents.ticketEmail}
               className="rounded-2xl"
-              description="Send the booking pass and payment receipt to the email above."
+              description={labels.emailPassDescription}
               disabled={submitting}
-              label="Email me the booking pass"
+              label={labels.emailPass}
               name="ticketEmail"
               onChange={(event) =>
                 onChangeConsents({
@@ -240,9 +244,9 @@ export function PublicBookingPaymentStep({
             <PublicCheckboxField
               checked={consents.ticketWhatsapp}
               className="rounded-2xl"
-              description="Send the booking pass by WhatsApp using the phone number above."
+              description={labels.whatsappPassDescription}
               disabled={submitting}
-              label="Send the booking pass by WhatsApp"
+              label={labels.whatsappPass}
               name="ticketWhatsapp"
               onChange={(event) =>
                 onChangeConsents({
@@ -254,9 +258,9 @@ export function PublicBookingPaymentStep({
             <PublicCheckboxField
               checked={consents.marketing}
               className="rounded-2xl"
-              description="Occasional offers and JimBoats updates. This is optional."
+              description={labels.promotionsDescription}
               disabled={submitting}
-              label="I want to receive promotions and news"
+              label={labels.promotions}
               name="marketing"
               onChange={(event) =>
                 onChangeConsents({
@@ -269,7 +273,7 @@ export function PublicBookingPaymentStep({
         </section>
 
         <section
-          aria-label="Secure payment"
+          aria-label={labels.securePayment}
           className="px-5 py-6 lg:px-8 lg:py-8"
         >
           {error ? (
@@ -289,7 +293,7 @@ export function PublicBookingPaymentStep({
               />
               <div className="min-w-0">
                 <p className="text-sm font-semibold text-text">
-                  Cancellation policy
+                  {labels.cancellationPolicy}
                 </p>
                 <p className="mt-1 text-sm font-light leading-6 text-text-muted">
                   {cancellationPolicySummary}
@@ -299,8 +303,7 @@ export function PublicBookingPaymentStep({
           </div>
 
           <p className="mt-4 text-center text-xs leading-5 text-text-muted">
-            By paying the deposit, you agree to the cancellation policy, Terms
-            of Service and Privacy Policy.
+            {labels.termsAgreement}
           </p>
 
           <div className="mt-6 flex flex-col-reverse gap-3 lg:flex-row lg:justify-between">
@@ -313,7 +316,7 @@ export function PublicBookingPaymentStep({
               variant="secondary"
             >
               <ArrowLeft aria-hidden="true" className="size-4" />
-              Back
+              {labels.back}
             </Button>
             <Button
               disabled={submitting}
@@ -325,8 +328,8 @@ export function PublicBookingPaymentStep({
             >
               <LockKeyhole aria-hidden="true" className="size-5" />
               {submitting
-                ? "Preparing secure payment"
-                : `Continue to secure payment ${formatPrice(depositAmount)}`}
+                ? labels.preparingPayment
+                : `${labels.securePayment} ${formatPrice(depositAmount)}`}
             </Button>
           </div>
         </section>

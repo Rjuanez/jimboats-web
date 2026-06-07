@@ -746,6 +746,7 @@ model NotificationTemplateTranslation {
   subject           String?
   previewText       String?                               @map("preview_text")
   body              String
+  htmlBody          String?                               @map("html_body")
   variablesUsedJson Json                                  @map("variables_used_json")
   updatedByUserId   String?                               @map("updated_by_user_id")
   template          NotificationTemplate                  @relation(fields: [templateId], references: [id], onDelete: Cascade)
@@ -776,6 +777,7 @@ model NotificationDelivery {
   templateVersion   Int?                       @map("template_version")
   renderedSubject   String?                    @map("rendered_subject")
   renderedBody      String                     @map("rendered_body")
+  renderedHtmlBody  String?                    @map("rendered_html_body")
   payloadJson       Json                       @map("payload_json")
   attempts          Int                        @default(0)
   provider          String?

@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { Container } from "@/components/layout/Container";
 import { cn } from "@/design/variants";
+import { getPublicDictionary } from "@/i18n/public";
 
 import { PublicBookingBottomBar } from "./PublicBookingBottomBar";
 import { PublicBookingConfirmationStep } from "./PublicBookingConfirmationStep";
@@ -81,6 +82,7 @@ export function PublicBookingWorkspace({
   );
   const [isSubmittingPayment, setIsSubmittingPayment] = useState(false);
   const didMountRef = useRef(false);
+  const dictionary = getPublicDictionary(content.locale);
 
   const selectedExperience =
     content.experiences.find(
@@ -127,18 +129,18 @@ export function PublicBookingWorkspace({
     activeStep === "experience"
       ? {
           disabled: !canContinueExperience,
-          label: "Continue to extras",
+          label: dictionary.booking.actions.continueToExtras,
           onClick: () => setActiveStep("extras"),
         }
       : activeStep === "extras"
         ? {
-            label: "Continue to payment",
+            label: dictionary.booking.actions.continueToPayment,
             onClick: () => setActiveStep("payment"),
           }
         : undefined;
 
   const formatPrice = (amount: number) =>
-    `${content.currencySymbol}${amount.toLocaleString("en-US")}`;
+    `${content.currencySymbol}${amount.toLocaleString(content.locale)}`;
 
   useEffect(() => {
     if (!didMountRef.current) {
@@ -212,22 +214,22 @@ export function PublicBookingWorkspace({
     }
 
     if (guestCount < 1 || guestCount > selectedExperience.capacity) {
-      setFormError("Choose a valid number of guests for this experience.");
+      setFormError(dictionary.booking.errors.invalidGuests);
       return;
     }
 
     if (!fullName || !email) {
-      setFormError("Add your name and email before confirming.");
+      setFormError(dictionary.booking.errors.missingCustomer);
       return;
     }
 
     if (!consents.ticketEmail && !consents.ticketWhatsapp) {
-      setFormError("Choose at least one channel for the booking pass.");
+      setFormError(dictionary.booking.errors.missingDeliveryChannel);
       return;
     }
 
     if (consents.ticketWhatsapp && !phone) {
-      setFormError("Add a phone number to receive the pass by WhatsApp.");
+      setFormError(dictionary.booking.errors.missingWhatsappPhone);
       return;
     }
 
@@ -247,6 +249,7 @@ export function PublicBookingWorkspace({
       experienceId: selectedExperience.id,
       guestCount,
       localDate: selectedDate.id,
+      locale: content.locale,
       selectedExtras: selectedExtras.map((extra) => ({
         extraId: extra.id,
         quantity: 1,
@@ -325,6 +328,7 @@ export function PublicBookingWorkspace({
 
               {activeStep === "extras" ? (
                 <PublicBookingExtrasStep
+                  content={content}
                   extras={activeExtras}
                   formatPrice={formatPrice}
                   onSkipExtras={() => {
@@ -424,6 +428,7 @@ export function PublicBookingWorkspace({
       <PublicBookingBottomBar
         activeStep={activeStep}
         canContinueExperience={canContinueExperience}
+        content={content}
         depositAmount={selectedDepositAmount}
         experience={selectedExperience}
         formatPrice={formatPrice}
@@ -442,13 +447,15 @@ export function PublicBookingWorkspace({
 }
 
 function PublicBookingFooter({ content }: { content: PublicBookingContent }) {
+  const dictionary = getPublicDictionary(content.locale);
+
   return (
     <footer className="border-t border-sand/35 bg-white py-8">
       <Container className="flex flex-col gap-5 text-sm text-text-muted sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2">
           <LifeBuoy aria-hidden="true" className="size-4" />
           <span>
-            Need help?{" "}
+            {dictionary.booking.footer.needHelp}{" "}
             <a
               className="font-semibold text-text"
               href={`mailto:${content.support.email}`}
@@ -457,7 +464,10 @@ function PublicBookingFooter({ content }: { content: PublicBookingContent }) {
             </a>
           </span>
         </div>
-        <nav aria-label="Booking legal links" className="flex flex-wrap gap-4">
+        <nav
+          aria-label={dictionary.booking.footer.legalLabel}
+          className="flex flex-wrap gap-4"
+        >
           {content.footerLinks.map((link) => (
             <a
               className="transition hover:text-text"

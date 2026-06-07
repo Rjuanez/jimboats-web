@@ -18,6 +18,7 @@ export type NotificationTemplateTranslationStatus =
 
 export type NotificationTemplateTranslationProps = {
   body: string;
+  htmlBody: string | null;
   locale: LocaleCode;
   previewText: string | null;
   status: NotificationTemplateTranslationStatus;
@@ -28,6 +29,7 @@ export type NotificationTemplateTranslationProps = {
 
 export type NotificationTemplateTranslationSnapshot = {
   body: string;
+  htmlBody: string | null;
   locale: SupportedLocaleCode;
   previewText: string | null;
   status: NotificationTemplateTranslationStatus;
@@ -260,6 +262,7 @@ export class NotificationTemplate {
 class NotificationTemplateTranslation {
   private constructor(
     readonly body: string,
+    readonly htmlBody: string | null,
     readonly locale: LocaleCode,
     readonly previewText: string | null,
     readonly status: NotificationTemplateTranslationStatus,
@@ -277,6 +280,7 @@ class NotificationTemplateTranslation {
     },
   ) {
     const body = normalizeBody(input.body);
+    const htmlBody = normalizeHtmlBody(input.htmlBody);
     const subject = normalizeOptionalText(input.subject);
     const previewText = normalizeOptionalText(input.previewText);
     const updatedByUserId = input.updatedByUserId?.trim() || null;
@@ -311,7 +315,7 @@ class NotificationTemplateTranslation {
       );
     }
 
-    const variablesUsed = extractVariables([subject, previewText, body]);
+    const variablesUsed = extractVariables([subject, previewText, body, htmlBody]);
 
     assertVariablesAreAllowed(variablesUsed, input.allowedVariables);
 
@@ -321,6 +325,7 @@ class NotificationTemplateTranslation {
 
     return new NotificationTemplateTranslation(
       body,
+      input.channel.value === "EMAIL" ? htmlBody : null,
       input.locale,
       previewText,
       input.status,
@@ -334,6 +339,7 @@ class NotificationTemplateTranslation {
   toProps(): NotificationTemplateTranslationProps {
     return {
       body: this.body,
+      htmlBody: this.htmlBody,
       locale: this.locale,
       previewText: this.previewText,
       status: this.status,
@@ -346,6 +352,7 @@ class NotificationTemplateTranslation {
   toSnapshot(): NotificationTemplateTranslationSnapshot {
     return {
       body: this.body,
+      htmlBody: this.htmlBody,
       locale: this.locale.value,
       previewText: this.previewText,
       status: this.status,
@@ -441,6 +448,12 @@ function normalizeOptionalText(value: string | null) {
 
 function normalizeBody(value: string) {
   return value.trim().replace(/[ \t]+/g, " ");
+}
+
+function normalizeHtmlBody(value: string | null) {
+  const normalized = value?.trim() ?? "";
+
+  return normalized || null;
 }
 
 function assertDate(value: Date, message: string) {

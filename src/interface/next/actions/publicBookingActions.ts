@@ -29,7 +29,7 @@ export async function startPublicBookingCheckoutAction(
         email: commandInput.customer.email,
         fullName: commandInput.customer.fullName,
         phone: commandInput.customer.phone || null,
-        preferredLocale: "en",
+        preferredLocale: commandInput.locale,
       },
       endTime: commandInput.endTime,
       experienceId: commandInput.experienceId,
@@ -38,7 +38,7 @@ export async function startPublicBookingCheckoutAction(
       selectedExtras: [...commandInput.selectedExtras],
       slotKey: commandInput.slotKey,
       startTime: commandInput.startTime,
-      returnUrl: `${baseUrl}/en/book/success?session_id={CHECKOUT_SESSION_ID}`,
+      returnUrl: `${baseUrl}/${commandInput.locale}/book/success?session_id={CHECKOUT_SESSION_ID}`,
     });
 
     return {

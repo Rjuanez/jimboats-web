@@ -50,7 +50,7 @@ export class ResendEmailNotificationProvider implements NotificationProvider {
     const response = await this.fetchFn(`${this.baseUrl}/emails`, {
       body: JSON.stringify({
         from: this.from,
-        html: bodyToHtml(delivery.renderedBody),
+        html: delivery.renderedHtmlBody ?? bodyToHtml(delivery.renderedBody),
         reply_to: this.replyTo ?? undefined,
         subject: delivery.renderedSubject,
         text: delivery.renderedBody,

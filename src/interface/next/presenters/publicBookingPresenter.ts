@@ -11,10 +11,20 @@ import type {
   PublicBookingMediaDto,
   PublicBookingPageDto,
 } from "@/modules/booking/application/PublicBookingDtos";
+import {
+  createLocalizedPath,
+  localeToIntlLocale,
+  type PublicLocale,
+} from "@/i18n/locales";
+import { getPublicDictionary, type PublicDictionary } from "@/i18n/public";
 import type { SupportedLocaleCode } from "@/shared/domain/LocaleCode";
 import type { MoneySnapshot } from "@/shared/domain/Money";
 
-const weekdays = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"] as const;
+const weekdaysByLocale = {
+  ca: ["Dl", "Dt", "Dc", "Dj", "Dv", "Ds", "Dg"],
+  en: ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
+  es: ["Lu", "Ma", "Mi", "Ju", "Vi", "Sa", "Do"],
+} satisfies Record<PublicLocale, readonly string[]>;
 
 const generatedImagePath = (slug: string, width: number) =>
   `/images/generated/landing/${slug}-${width}.webp`;
@@ -84,22 +94,26 @@ export async function getPublicBookingPage(
       "./publicBookingMockPresenter"
     );
 
-    return getPublicBookingMockPage();
+    return getPublicBookingMockPage(locale);
   }
 
   const { getContainer } = await import("@/container");
   const page = await getContainer().publicBooking.getPage({ locale });
 
-  return presentPublicBookingPage(page);
+  return presentPublicBookingPage(page, locale);
 }
 
-function presentPublicBookingPage(page: PublicBookingPageDto) {
+function presentPublicBookingPage(
+  page: PublicBookingPageDto,
+  locale: SupportedLocaleCode,
+) {
+  const dictionary = getPublicDictionary(locale);
   const experiences = page.experiences.map((experience, index) => ({
-    badge: index === 0 ? "Most popular" : undefined,
+    badge: index === 0 ? mostPopularLabel(locale) : undefined,
     capacity: experience.capacity,
     cancellationPolicySummary:
       experience.cancellationPolicySummary ||
-      "Cancellation terms are confirmed before payment.",
+      dictionary.booking.policies.cancellation,
     depositAmount: fromMoney(experience.depositAmount),
     description: experience.description,
     durationLabel: formatDuration(experience.durationMinutes),
@@ -113,69 +127,66 @@ function presentPublicBookingPage(page: PublicBookingPageDto) {
   const extrasByExperienceId = Object.fromEntries(
     Object.entries(page.extrasByExperienceId).map(([experienceId, extras]) => [
       experienceId,
-      extras.map((extra) => presentExtra(extra)),
+      extras.map((extra) => presentExtra(extra, locale)),
     ]),
   );
   const availabilityByExperienceId = Object.fromEntries(
     Object.entries(page.availabilityByExperienceId).map(
       ([experienceId, availability]) => [
         experienceId,
-        presentAvailability(availability),
+        presentAvailability(availability, locale, dictionary),
       ],
     ),
   );
   const firstAvailability =
     availabilityByExperienceId[experiences[0]?.id ?? ""] ??
-    presentAvailability({
-      days: [],
-      timeSlotsByDate: {},
-    });
+    presentAvailability(
+      {
+        days: [],
+        timeSlotsByDate: {},
+      },
+      locale,
+      dictionary,
+    );
   const firstExtras =
     extrasByExperienceId[experiences[0]?.id ?? ""] ??
     ([] satisfies PublicBookingExtra[]);
 
   return {
     availabilityByExperienceId,
+    bookHref: createLocalizedPath(locale, "/book"),
     brand: "JimBoats",
     calendar: firstAvailability.calendar,
-    confirmation: {
-      bookingReference: "JB-MOCK-2026",
-      subtitle:
-        "Your booking pass mock is ready. In production this page will show the real booking token and payment receipt.",
-      title: "Booking confirmed",
-    },
+    confirmation: dictionary.booking.confirmation,
     currencySymbol: "€",
     depositAmount: fromMoney(page.defaultDepositAmount),
     experiences,
     extras: firstExtras,
     extrasByExperienceId,
     footerLinks: [
-      { href: "/en", label: "Back to JimBoats" },
-      { href: "#", label: "Privacy Policy" },
-      { href: "#", label: "Terms of Service" },
+      {
+        href: createLocalizedPath(locale),
+        label: dictionary.common.backToJimBoats,
+      },
+      { href: "#", label: dictionary.common.privacyPolicy },
+      { href: "#", label: dictionary.common.termsOfService },
     ],
-    homeHref: "/en",
-    maxAdvanceLabel: "Bookings are available up to 6 months ahead.",
-    payment: {
-      depositCopy:
-        "Pay a fixed €100 deposit now. The remaining balance is paid onboard in cash.",
-      secureCopy:
-        "Your deposit is processed securely by Stripe without leaving this page.",
-      subtitle: "You're one step away from your day at sea.",
-      title: "Confirm your booking",
-    },
+    homeHref: createLocalizedPath(locale),
+    locale,
+    maxAdvanceLabel: dictionary.booking.maxAdvanceLabel,
+    payment: dictionary.booking.payment,
     policies: {
       cancellation:
         page.experiences[0]?.cancellationPolicySummary ||
-        "Cancellation terms are confirmed before payment.",
-      meetingPoint: "Port Olimpic, Barcelona",
-      remainingPayment: "Remaining balance paid onboard in cash.",
+        dictionary.booking.policies.cancellation,
+      meetingPoint: dictionary.booking.policies.meetingPoint,
+      remainingPayment: dictionary.booking.policies.remainingPayment,
     },
     steps: [
-      { id: "experience", label: "Experience" },
-      { id: "extras", label: "Extras" },
-      { id: "payment", label: "Payment" },
-      { id: "confirmation", label: "Done" },
+      { id: "experience", label: dictionary.booking.steps.experience },
+      { id: "extras", label: dictionary.booking.steps.extras },
+      { id: "payment", label: dictionary.booking.steps.payment },
+      { id: "confirmation", label: dictionary.booking.steps.confirmation },
     ],
     support: {
       email: "info@jimboatscharter.com",
@@ -187,14 +198,21 @@ function presentPublicBookingPage(page: PublicBookingPageDto) {
 
 function presentAvailability(
   availability: PublicBookingExperienceAvailabilityDto,
+  locale: SupportedLocaleCode,
+  dictionary: PublicDictionary,
 ) {
-  const months = presentCalendarMonths(availability.days);
+  const months = presentCalendarMonths(availability.days, locale);
   const firstMonth = months[0];
   const calendar = {
     days: firstMonth?.days ?? [],
-    monthLabel: firstMonth?.monthLabel ?? "Available dates",
+    monthLabel:
+      firstMonth?.monthLabel ?? dictionary.booking.experienceStep.availableDates,
     months,
-    weekdays,
+    nextMonthLabel: dictionary.booking.experienceStep.nextMonth,
+    previousMonthLabel: dictionary.booking.experienceStep.previousMonth,
+    selectAvailableDateLabel:
+      dictionary.booking.experienceStep.selectAvailableDate,
+    weekdays: weekdaysByLocale[locale],
   } satisfies PublicBookingCalendar;
   const timeSlotsByDate = Object.fromEntries(
     Object.entries(availability.timeSlotsByDate).map(([localDate, slots]) => [
@@ -211,13 +229,18 @@ function presentAvailability(
 
 function presentCalendarMonths(
   days: PublicBookingExperienceAvailabilityDto["days"],
+  locale: SupportedLocaleCode,
 ): PublicBookingCalendarMonth[] {
   const monthsById = new Map<string, PublicBookingCalendarMonth>();
 
   for (const day of days) {
     const monthId = day.localDate.slice(0, 7);
     const existingMonth = monthsById.get(monthId);
-    const presentedDay = presentCalendarDay(day.localDate, day.available);
+    const presentedDay = presentCalendarDay(
+      day.localDate,
+      day.available,
+      locale,
+    );
 
     if (existingMonth) {
       monthsById.set(monthId, {
@@ -230,7 +253,7 @@ function presentCalendarMonths(
     monthsById.set(monthId, {
       days: [presentedDay],
       id: monthId,
-      monthLabel: monthLabelFromMonthId(monthId),
+      monthLabel: monthLabelFromMonthId(monthId, locale),
     });
   }
 
@@ -239,6 +262,7 @@ function presentCalendarMonths(
 
 function presentExtra(
   extra: PublicBookingPageDto["extrasByExperienceId"][string][number],
+  locale: SupportedLocaleCode,
 ): PublicBookingExtra {
   return {
     description: extra.description,
@@ -247,26 +271,33 @@ function presentExtra(
       fallbackExtraImage(extra.id, extra.title),
     ),
     notice:
-      extra.noticeMinutes > 0 ? formatNotice(extra.noticeMinutes) : undefined,
+      extra.noticeMinutes > 0
+        ? formatNotice(extra.noticeMinutes, locale)
+        : undefined,
     price: fromMoney(extra.price),
     title: extra.title,
   };
 }
 
-function presentCalendarDay(localDate: string, available: boolean) {
+function presentCalendarDay(
+  localDate: string,
+  available: boolean,
+  locale: SupportedLocaleCode,
+) {
   const date = new Date(`${localDate}T00:00:00.000Z`);
+  const intlLocale = localeToIntlLocale(locale);
 
   return {
-    ariaLabel: new Intl.DateTimeFormat("en-US", {
+    ariaLabel: new Intl.DateTimeFormat(intlLocale, {
       dateStyle: "full",
       timeZone: "UTC",
     }).format(date),
-    dateLabel: new Intl.DateTimeFormat("en-US", {
+    dateLabel: new Intl.DateTimeFormat(intlLocale, {
       day: "numeric",
       month: "short",
       timeZone: "UTC",
     }).format(date),
-    dayLabel: new Intl.DateTimeFormat("en-US", {
+    dayLabel: new Intl.DateTimeFormat(intlLocale, {
       day: "numeric",
       timeZone: "UTC",
     }).format(date),
@@ -333,12 +364,18 @@ function formatDuration(durationMinutes: number) {
   return `${hours}h ${minutes}m`;
 }
 
-function formatNotice(noticeMinutes: number) {
+function formatNotice(noticeMinutes: number, locale: SupportedLocaleCode) {
+  const labels = {
+    ca: { hour: "Necessita", minute: "Necessita" },
+    en: { hour: "Needs", minute: "Needs" },
+    es: { hour: "Requiere", minute: "Requiere" },
+  } satisfies Record<SupportedLocaleCode, { hour: string; minute: string }>;
+
   if (noticeMinutes % 60 === 0) {
-    return `Needs ${noticeMinutes / 60}h notice`;
+    return `${labels[locale].hour} ${noticeMinutes / 60}h`;
   }
 
-  return `Needs ${noticeMinutes}m notice`;
+  return `${labels[locale].minute} ${noticeMinutes}m`;
 }
 
 function minutesToClockTime(totalMinutes: number) {
@@ -348,13 +385,24 @@ function minutesToClockTime(totalMinutes: number) {
   return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
 }
 
-function monthLabelFromMonthId(monthId: string) {
+function monthLabelFromMonthId(
+  monthId: string,
+  locale: SupportedLocaleCode,
+) {
   const [year, month] = monthId.split("-");
   const date = new Date(`${year}-${month}-01T00:00:00.000Z`);
 
-  return new Intl.DateTimeFormat("en-US", {
+  return new Intl.DateTimeFormat(localeToIntlLocale(locale), {
     month: "long",
     timeZone: "UTC",
     year: "numeric",
   }).format(date);
+}
+
+function mostPopularLabel(locale: SupportedLocaleCode) {
+  return {
+    ca: "Més popular",
+    en: "Most popular",
+    es: "Más popular",
+  }[locale];
 }

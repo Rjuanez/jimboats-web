@@ -136,6 +136,7 @@ function createActions(state: AdminNotificationsState): AdminNotificationActions
       data: {
         missingVariables: [],
         renderedBody: "Rendered body",
+        renderedHtmlBody: "<p>Rendered body</p>",
         renderedPreviewText: "Rendered preview",
         renderedSubject: "Rendered subject",
         variables: ["booking.reference"],

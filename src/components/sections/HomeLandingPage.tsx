@@ -49,6 +49,10 @@ export type HomeLandingContent = {
   };
   brand: string;
   experiences: readonly HomeLandingExperience[];
+  experienceSection: {
+    description: string;
+    title: string;
+  };
   extras: {
     description: string;
     items: readonly HomeLandingUpgrade[];
@@ -79,6 +83,7 @@ export type HomeLandingContent = {
     title: string;
   };
   headerCta: HomeLandingLinkItem;
+  homeHref: string;
   hero: {
     cta: HomeLandingLinkItem;
     description: string;
@@ -110,12 +115,16 @@ export function HomeLandingPage({ content }: HomeLandingPageProps) {
       <LandingHeader
         brand={content.brand}
         cta={content.headerCta}
+        homeHref={content.homeHref}
         navigation={content.navigation}
       />
       <main>
         <HeroSection content={content.hero} />
         <TrustBar items={content.trustItems} />
-        <ExperiencesSection experiences={content.experiences} />
+        <ExperiencesSection
+          experiences={content.experiences}
+          section={content.experienceSection}
+        />
         <StorySection story={content.story} />
         <ExtrasSection extras={content.extras} />
         <GallerySection gallery={content.gallery} />
@@ -166,8 +175,10 @@ function HeroSection({ content }: { content: HomeLandingContent["hero"] }) {
 
 function ExperiencesSection({
   experiences,
+  section,
 }: {
   experiences: readonly HomeLandingExperience[];
+  section: HomeLandingContent["experienceSection"];
 }) {
   return (
     <section
@@ -176,9 +187,9 @@ function ExperiencesSection({
     >
       <Container>
         <div className="mb-10 text-center lg:hidden">
-          <h2 className="font-display text-4xl text-text">Our Experiences</h2>
+          <h2 className="font-display text-4xl text-text">{section.title}</h2>
           <p className="mt-2 text-sm text-text-muted">
-            Choose your perfect moment at sea
+            {section.description}
           </p>
         </div>
         <div className="space-y-12 lg:space-y-40">

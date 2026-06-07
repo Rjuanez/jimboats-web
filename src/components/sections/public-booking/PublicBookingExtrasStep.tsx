@@ -2,10 +2,15 @@ import { Check } from "lucide-react";
 
 import { MarketingImageFrame } from "@/components/marketing/MarketingImageFrame";
 import { cn } from "@/design/variants";
+import { getPublicDictionary } from "@/i18n/public";
 
-import type { PublicBookingExtra } from "./PublicBookingTypes";
+import type {
+  PublicBookingContent,
+  PublicBookingExtra,
+} from "./PublicBookingTypes";
 
 type PublicBookingExtrasStepProps = {
+  content: PublicBookingContent;
   extras: readonly PublicBookingExtra[];
   formatPrice: (amount: number) => string;
   onSkipExtras: () => void;
@@ -14,20 +19,23 @@ type PublicBookingExtrasStepProps = {
 };
 
 export function PublicBookingExtrasStep({
+  content,
   extras,
   formatPrice,
   onSkipExtras,
   onToggleExtra,
   selectedExtraIds,
 }: PublicBookingExtrasStepProps) {
+  const copy = getPublicDictionary(content.locale).booking.extrasStep;
+
   return (
     <div className="space-y-6 lg:space-y-16">
       <header className="px-1 lg:px-0">
         <h1 className="font-display text-4xl leading-tight text-text lg:text-6xl">
-          Make it yours
+          {copy.title}
         </h1>
         <p className="mt-1 max-w-2xl text-sm font-light leading-6 text-text-muted lg:mt-4 lg:text-lg lg:leading-8">
-          Add a few touches to make your time at sea even more special.
+          {copy.subtitle}
         </p>
       </header>
 
@@ -39,7 +47,7 @@ export function PublicBookingExtrasStep({
           className="font-display text-2xl leading-none text-text lg:text-3xl"
           id="extras-selection-title"
         >
-          Available Extras
+          {copy.selectionTitle}
         </h2>
         <div className="mt-4 grid gap-5 lg:mt-8 lg:grid-cols-2 lg:gap-6">
           {extras.length > 0 ? (
@@ -50,11 +58,12 @@ export function PublicBookingExtrasStep({
                 key={extra.id}
                 onToggle={onToggleExtra}
                 selected={selectedExtraIds.includes(extra.id)}
+                labels={{ add: copy.add, remove: copy.remove }}
               />
             ))
           ) : (
             <div className="rounded-3xl border border-sand/35 bg-white px-5 py-8 text-sm text-text-muted shadow-soft lg:col-span-2">
-              There are no extras available for this departure.
+              {copy.emptyExtras}
             </div>
           )}
         </div>
@@ -66,7 +75,7 @@ export function PublicBookingExtrasStep({
           onClick={onSkipExtras}
           type="button"
         >
-          Skip extras and continue
+          {copy.skip}
         </button>
       </div>
     </div>
@@ -78,9 +87,14 @@ function ExtraOption({
   formatPrice,
   onToggle,
   selected,
+  labels,
 }: {
   extra: PublicBookingExtra;
   formatPrice: (amount: number) => string;
+  labels: {
+    add: string;
+    remove: string;
+  };
   onToggle: (extraId: string) => void;
   selected: boolean;
 }) {
@@ -130,7 +144,7 @@ function ExtraOption({
             <span />
           )}
           <span className="inline-flex min-h-9 items-center rounded-full bg-sand/35 px-4 text-xs font-semibold uppercase tracking-widest text-text transition group-hover:bg-sand">
-            {selected ? "Remove" : "Add"}
+            {selected ? labels.remove : labels.add}
           </span>
         </span>
       </span>

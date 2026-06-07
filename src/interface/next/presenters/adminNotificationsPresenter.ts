@@ -37,6 +37,8 @@ const previewState: AdminNotificationsState = {
       recipientLabel: "sailor@example.com",
       renderedBody:
         "Hello Sailor Guest, booking JB-2026-0001 is confirmed for 10 Jun.",
+      renderedHtmlBody:
+        "<p>Hello Sailor Guest, booking <strong>JB-2026-0001</strong> is confirmed for 10 Jun.</p>",
       renderedSubject: "Booking JB-2026-0001 confirmed",
       sentAtLabel: "01 Jun 2026, 12:02",
       status: "SENT",
@@ -58,6 +60,7 @@ const previewState: AdminNotificationsState = {
       recipientLabel: "+34 600 000 000",
       renderedBody:
         "Hola Sailor Guest, te esperamos manana para tu salida JB-2026-0002.",
+      renderedHtmlBody: null,
       renderedSubject: null,
       sentAtLabel: null,
       status: "MANUAL_REVIEW",
@@ -156,6 +159,8 @@ const previewState: AdminNotificationsState = {
       translations: adminNotificationLocales.map((locale) => ({
         body:
           "Hello {{ customer.name }}, booking {{ booking.reference }} is confirmed.",
+        htmlBody:
+          '<p>Hello {{ customer.name }}, booking <strong>{{ booking.reference }}</strong> is confirmed.</p>',
         locale,
         localeLabel: localeLabel(locale),
         previewText: "Booking {{ booking.reference }} confirmed",
@@ -298,6 +303,7 @@ function presentTranslations(
 
     return {
       body: translation?.body ?? "",
+      htmlBody: translation?.htmlBody ?? "",
       locale,
       localeLabel: localeLabel(locale),
       previewText: translation?.previewText ?? "",
@@ -330,6 +336,7 @@ function presentDelivery(
     notificationType: delivery.notificationType,
     recipientLabel: recipientLabel(delivery),
     renderedBody: delivery.renderedBody,
+    renderedHtmlBody: delivery.renderedHtmlBody,
     renderedSubject: delivery.renderedSubject,
     sentAtLabel: delivery.sentAt ? formatDateLabel(delivery.sentAt) : null,
     status: delivery.status,

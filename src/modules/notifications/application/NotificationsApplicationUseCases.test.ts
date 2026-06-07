@@ -64,6 +64,7 @@ describe("Notifications application use cases", () => {
         phone: null,
       },
       renderedBody: "Hello Sailor Guest, booking JB-2026-0001 is confirmed.",
+      renderedHtmlBody: null,
       renderedSubject: "Booking JB-2026-0001 confirmed",
       status: "PENDING",
       templateId: "template-email",
@@ -357,6 +358,7 @@ describe("Notifications application use cases", () => {
         {
           body:
             "Hello {{ customer.name }}, booking {{ booking.reference }} is confirmed.",
+          htmlBody: null,
           locale: "en",
           previewText: "Booking {{ booking.reference }} confirmed",
           status: "PUBLISHED",
@@ -365,6 +367,7 @@ describe("Notifications application use cases", () => {
         {
           body:
             "Hola {{ customer.name }}, reserva {{ booking.reference }} confirmada.",
+          htmlBody: null,
           locale: "es",
           previewText: "Reserva {{ booking.reference }} confirmada",
           status: "PUBLISHED",
@@ -402,6 +405,8 @@ describe("Notifications application use cases", () => {
     const preview = await useCase.execute({
       draftBody:
         "Draft for {{ customer.name }} and booking {{ booking.reference }}.",
+      draftHtmlBody:
+        "<p>Draft for {{ customer.name }} and booking {{ booking.reference }}.</p>",
       draftPreviewText: "Draft {{ booking.reference }}",
       draftSubject: "Draft booking {{ booking.reference }}",
       fixtureKey: "booking-created",
@@ -412,6 +417,8 @@ describe("Notifications application use cases", () => {
     expect(preview).toEqual({
       missingVariables: [],
       renderedBody: "Draft for Fixture Guest and booking JB-FIXTURE.",
+      renderedHtmlBody:
+        "<p>Draft for Fixture Guest and booking JB-FIXTURE.</p>",
       renderedPreviewText: "Draft JB-FIXTURE",
       renderedSubject: "Draft booking JB-FIXTURE",
       variables: ["booking.reference", "customer.name"],
@@ -703,6 +710,7 @@ function createTranslation(
   return {
     body:
       "Hello {{ customer.name }}, booking {{ booking.reference }} is confirmed.",
+    htmlBody: null,
     locale: LocaleCode.create("en"),
     previewText: "Booking {{ booking.reference }} confirmed",
     status: "PUBLISHED" as const,
@@ -813,6 +821,7 @@ function baseDeliveryProps() {
       recipientType: "BUYER" as const,
     },
     renderedBody: "Hello Sailor Guest, booking JB-2026-0001 is confirmed.",
+    renderedHtmlBody: null,
     renderedSubject: "Booking JB-2026-0001 confirmed",
     ruleId: "rule-email",
     sendAfter: null,
@@ -1009,6 +1018,7 @@ class FakeTemplateRenderer implements TemplateRenderer {
       ...extractTemplateVariables(input.subject),
       ...extractTemplateVariables(input.previewText),
       ...extractTemplateVariables(input.body),
+      ...extractTemplateVariables(input.htmlBody),
     ]).filter((variable) => input.allowedVariables.includes(variable));
     const missingVariables = variables.filter(
       (variable) => resolvePath(input.payload, variable) === undefined,
@@ -1017,6 +1027,9 @@ class FakeTemplateRenderer implements TemplateRenderer {
     return {
       missingVariables,
       renderedBody: renderText(input.body, input.payload),
+      renderedHtmlBody: input.htmlBody
+        ? renderText(input.htmlBody, input.payload)
+        : null,
       renderedPreviewText: input.previewText
         ? renderText(input.previewText, input.payload)
         : null,

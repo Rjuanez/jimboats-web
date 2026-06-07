@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/Button";
+import { getPublicDictionary } from "@/i18n/public";
 
 import type {
   PublicBookingCalendarDay,
@@ -47,6 +48,8 @@ export function PublicBookingConfirmationStep({
   totalAmount,
 }: PublicBookingConfirmationStepProps) {
   const remainingAmount = Math.max(totalAmount - depositAmount, 0);
+  const dictionary = getPublicDictionary(content.locale);
+  const labels = dictionary.booking.labels;
 
   return (
     <div className="space-y-6 lg:space-y-8">
@@ -75,33 +78,33 @@ export function PublicBookingConfirmationStep({
             className="font-display text-2xl leading-none text-text lg:text-3xl"
             id="confirmed-details-title"
           >
-            Booking Details
+            {labels.bookingSummary}
           </h2>
         </div>
         <div className="grid gap-5 px-5 py-5 lg:grid-cols-2 lg:px-8">
           <ConfirmationItem
             icon={<Anchor aria-hidden="true" className="size-5" />}
-            label="Experience"
+            label={labels.experience}
             value={experience.title}
           />
           <ConfirmationItem
             icon={<CalendarDays aria-hidden="true" className="size-5" />}
-            label="Date and time"
-            value={`${selectedDate.dateLabel} at ${selectedTimeSlot.label}`}
+            label={`${labels.date} / ${labels.time}`}
+            value={`${selectedDate.dateLabel} · ${selectedTimeSlot.label}`}
           />
           <ConfirmationItem
             icon={<Wallet aria-hidden="true" className="size-5" />}
-            label="Deposit paid"
+            label={dictionary.returnPage.depositPaid}
             value={formatPrice(depositAmount)}
           />
           <ConfirmationItem
             icon={<Wallet aria-hidden="true" className="size-5" />}
-            label="Remaining onboard"
+            label={dictionary.returnPage.remainingOnboard}
             value={formatPrice(remainingAmount)}
           />
         </div>
         <div className="border-t border-sand/20 px-5 py-5 lg:px-8">
-          <p className="text-sm font-semibold text-text">Extras</p>
+          <p className="text-sm font-semibold text-text">{labels.extras}</p>
           {extras.length > 0 ? (
             <ul className="mt-3 grid gap-2 text-sm text-text-muted lg:grid-cols-2">
               {extras.map((extra) => (
@@ -111,7 +114,9 @@ export function PublicBookingConfirmationStep({
               ))}
             </ul>
           ) : (
-            <p className="mt-2 text-sm text-text-muted">No extras selected.</p>
+            <p className="mt-2 text-sm text-text-muted">
+              {labels.noExtrasSelected}
+            </p>
           )}
         </div>
       </section>
@@ -124,32 +129,37 @@ export function PublicBookingConfirmationStep({
           className="font-display text-2xl leading-none text-text lg:text-3xl"
           id="delivery-title"
         >
-          Delivery
+          {labels.deliveryPreferences}
         </h2>
         <div className="mt-5 grid gap-3">
           <DeliveryLine
+            disabledLabel={labels.disabled}
             enabled={consents.ticketEmail}
+            enabledLabel={labels.enabled}
             icon={<Mail aria-hidden="true" className="size-5" />}
-            label={`Email pass to ${customer.email}`}
+            label={`${labels.emailPass}: ${customer.email}`}
           />
           <DeliveryLine
+            disabledLabel={labels.disabled}
             enabled={consents.ticketWhatsapp}
+            enabledLabel={labels.enabled}
             icon={<MessageCircle aria-hidden="true" className="size-5" />}
             label={
               customer.phone
-                ? `WhatsApp pass to ${customer.phone}`
-                : "WhatsApp pass"
+                ? `${labels.whatsappPass}: ${customer.phone}`
+                : labels.whatsappPass
             }
           />
           <p className="text-sm leading-6 text-text-muted">
-            Promotions: {consents.marketing ? "accepted" : "not accepted"}.
+            {labels.promotions}:{" "}
+            {consents.marketing ? labels.accepted : labels.notAccepted}.
           </p>
         </div>
       </section>
 
       <div className="flex justify-center">
         <Button onClick={onStartOver} shape="pill" size="xl" variant="accent">
-          Start another booking
+          {dictionary.returnPage.bookAnother}
         </Button>
       </div>
     </div>
@@ -179,11 +189,15 @@ function ConfirmationItem({
 }
 
 function DeliveryLine({
+  disabledLabel,
   enabled,
+  enabledLabel,
   icon,
   label,
 }: {
+  disabledLabel: string;
   enabled: boolean;
+  enabledLabel: string;
   icon: React.ReactNode;
   label: string;
 }) {
@@ -194,7 +208,7 @@ function DeliveryLine({
         {label}
       </span>
       <span className="shrink-0 font-semibold text-text-muted">
-        {enabled ? "Enabled" : "Disabled"}
+        {enabled ? enabledLabel : disabledLabel}
       </span>
     </div>
   );

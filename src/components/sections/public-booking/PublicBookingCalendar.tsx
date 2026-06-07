@@ -53,7 +53,7 @@ export function PublicBookingCalendar({
     <div className="rounded-[1.75rem] border border-sand/25 bg-white p-4 shadow-soft lg:rounded-[2rem] lg:p-6">
       <div className="mb-4 grid grid-cols-[2.75rem_1fr_2.75rem] items-center gap-2 lg:mb-6">
         <CalendarMonthButton
-          ariaLabel="Previous month"
+          ariaLabel={calendar.previousMonthLabel ?? "Previous month"}
           disabled={!canGoPrevious}
           icon="previous"
           onClick={() => {
@@ -69,11 +69,12 @@ export function PublicBookingCalendar({
             {visibleMonth.monthLabel}
           </p>
           <p className="mt-1 text-xs font-light text-text-muted">
-            Select one of the available dates.
+            {calendar.selectAvailableDateLabel ??
+              "Select one of the available dates."}
           </p>
         </div>
         <CalendarMonthButton
-          ariaLabel="Next month"
+          ariaLabel={calendar.nextMonthLabel ?? "Next month"}
           disabled={!canGoNext}
           icon="next"
           onClick={() => {
@@ -145,34 +146,17 @@ function CalendarMonthButton({
   );
 }
 
-const monthIndexes = new Map(
-  [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ].map((month, index) => [month, index]),
-);
-
 function buildCalendarCells(
   calendar: PublicBookingCalendarMonth,
 ): CalendarCell[] {
-  const [monthName, yearLabel] = calendar.monthLabel.split(" ");
-  const monthIndex = monthIndexes.get(monthName);
-  const year = Number(yearLabel);
+  const monthMatch = /^(\d{4})-(\d{2})$/.exec(calendar.id);
 
-  if (monthIndex === undefined || !Number.isInteger(year)) {
+  if (!monthMatch) {
     return [...calendar.days];
   }
 
+  const year = Number(monthMatch[1]);
+  const monthIndex = Number(monthMatch[2]) - 1;
   const firstDay = new Date(Date.UTC(year, monthIndex, 1));
   const daysInMonth = new Date(Date.UTC(year, monthIndex + 1, 0)).getUTCDate();
   const leadingDays = (firstDay.getUTCDay() + 6) % 7;
@@ -200,8 +184,8 @@ function buildCalendarCells(
 
     cells.push(
       existingDay ?? {
-        ariaLabel: `${monthName} ${dayLabel}, ${year}`,
-        dateLabel: `${monthName.slice(0, 3)} ${dayLabel}`,
+        ariaLabel: `${calendar.monthLabel} ${dayLabel}`,
+        dateLabel: dayLabel,
         dayLabel,
         disabled: true,
         id: `unavailable-${year}-${monthIndex + 1}-${dayLabel}`,

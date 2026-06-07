@@ -63,6 +63,7 @@ export function AdminNotificationTemplateDetailSection({
     await previewTemplate({
       bookingId: "",
       draftBody: activeTranslation.body,
+      draftHtmlBody: activeTranslation.htmlBody,
       draftPreviewText: activeTranslation.previewText,
       draftSubject: activeTranslation.subject,
       fixtureKey: fixtureKeyForEvent(form.eventType),
@@ -338,6 +339,18 @@ function TranslationEditor({
         }
         value={translation.body}
       />
+      <TextAreaField
+        className="min-h-80 font-mono text-xs leading-5"
+        disabled={channel !== "EMAIL"}
+        label="HTML body"
+        onChange={(event) =>
+          updateTranslation({
+            ...translation,
+            htmlBody: event.target.value,
+          })
+        }
+        value={channel === "EMAIL" ? translation.htmlBody : ""}
+      />
     </div>
   );
 }
@@ -373,6 +386,19 @@ function PreviewPanel({ preview }: { preview: AdminNotificationPreview }) {
           {preview.renderedBody}
         </p>
       </div>
+      {preview.renderedHtmlBody ? (
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">
+            HTML
+          </p>
+          <iframe
+            className="mt-1 h-96 w-full rounded-md border border-slate-200 bg-white"
+            sandbox=""
+            srcDoc={preview.renderedHtmlBody}
+            title="HTML email preview"
+          />
+        </div>
+      ) : null}
       {preview.warnings.length > 0 || preview.missingVariables.length > 0 ? (
         <div className="rounded-md border border-amber-200 bg-amber-50 px-3 py-3 text-sm leading-6 text-amber-800">
           {[...preview.warnings, ...preview.missingVariables].join(" ")}
@@ -396,6 +422,7 @@ function createTemplateForm(
     templateId: template.id,
     translations: template.translations.map((translation) => ({
       body: translation.body,
+      htmlBody: translation.htmlBody,
       locale: translation.locale,
       previewText: translation.previewText,
       status: translation.status,

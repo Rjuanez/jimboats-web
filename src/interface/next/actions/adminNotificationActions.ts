@@ -83,6 +83,7 @@ export async function previewAdminNotificationTemplateAction(
     const preview = await container.adminNotifications.previewTemplate({
       bookingId: commandInput.bookingId,
       draftBody: commandInput.draftBody,
+      draftHtmlBody: commandInput.draftHtmlBody,
       draftPreviewText: commandInput.draftPreviewText,
       draftSubject: commandInput.draftSubject,
       fixtureKey: commandInput.fixtureKey,

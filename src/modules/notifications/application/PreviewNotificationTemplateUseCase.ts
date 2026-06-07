@@ -35,6 +35,10 @@ export class PreviewNotificationTemplateUseCase {
       (item) => item.locale === command.locale,
     );
     const body = command.draftBody ?? translation?.body;
+    const htmlBody =
+      command.draftHtmlBody !== undefined
+        ? command.draftHtmlBody
+        : translation?.htmlBody ?? null;
 
     if (!body) {
       throw applicationError(
@@ -47,6 +51,7 @@ export class PreviewNotificationTemplateUseCase {
     const rendered = await this.renderer.render({
       allowedVariables: templateSnapshot.allowedVariables,
       body,
+      htmlBody,
       payload,
       previewText:
         command.draftPreviewText !== undefined

@@ -7,12 +7,16 @@ import { useEffect, useId, useMemo } from "react";
 type PublicBookingEmbeddedCheckoutProps = {
   checkoutClientSecret: string;
   checkoutSessionId: string | null;
+  returnPath: string;
+  securePaymentLabel: string;
   stripePublishableKey: string;
 };
 
 export function PublicBookingEmbeddedCheckout({
   checkoutClientSecret,
   checkoutSessionId,
+  returnPath,
+  securePaymentLabel,
   stripePublishableKey,
 }: PublicBookingEmbeddedCheckoutProps) {
   const checkoutContainerId = useId().replace(/:/g, "");
@@ -40,7 +44,7 @@ export function PublicBookingEmbeddedCheckout({
           }
 
           window.location.assign(
-            `/en/book/success?session_id=${encodeURIComponent(
+            `${returnPath}?session_id=${encodeURIComponent(
               checkoutSessionId,
             )}`,
           );
@@ -66,12 +70,13 @@ export function PublicBookingEmbeddedCheckout({
     checkoutClientSecret,
     checkoutContainerId,
     checkoutSessionId,
+    returnPath,
     stripePromise,
   ]);
 
   return (
     <section
-      aria-label="Secure Stripe payment"
+      aria-label={securePaymentLabel}
       className="scroll-mt-32 overflow-hidden bg-white lg:scroll-mt-40"
       id="public-booking-embedded-checkout"
     >

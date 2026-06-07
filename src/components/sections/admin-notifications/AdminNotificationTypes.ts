@@ -58,6 +58,7 @@ export type AdminNotificationRule = {
 
 export type AdminNotificationTemplateTranslation = {
   body: string;
+  htmlBody: string;
   locale: AdminNotificationLocale;
   localeLabel: string;
   previewText: string;
@@ -100,6 +101,7 @@ export type AdminNotificationDelivery = {
   notificationType: string;
   recipientLabel: string;
   renderedBody: string;
+  renderedHtmlBody: string | null;
   renderedSubject: string | null;
   sentAtLabel: string | null;
   status: AdminNotificationDeliveryStatus;
@@ -144,6 +146,7 @@ export type AdminNotificationRuleInput = {
 
 export type AdminNotificationTemplateTranslationInput = {
   body: string;
+  htmlBody: string;
   locale: AdminNotificationLocale;
   previewText: string;
   status: AdminNotificationTranslationStatus;
@@ -165,6 +168,7 @@ export type AdminNotificationTemplateInput = {
 export type AdminNotificationPreviewInput = {
   bookingId: string;
   draftBody: string;
+  draftHtmlBody: string;
   draftPreviewText: string;
   draftSubject: string;
   fixtureKey: string;
@@ -179,6 +183,7 @@ export type AdminNotificationSendDeliveryInput = {
 export type AdminNotificationPreview = {
   missingVariables: string[];
   renderedBody: string;
+  renderedHtmlBody: string | null;
   renderedPreviewText: string | null;
   renderedSubject: string | null;
   variables: string[];

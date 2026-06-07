@@ -1,4 +1,5 @@
 import type { MarketingImage } from "@/components/marketing/MarketingImageFrame";
+import type { PublicLocale } from "@/i18n/locales";
 
 export type PublicBookingStepId =
   | "experience"
@@ -28,6 +29,9 @@ export type PublicBookingCalendar = {
   days: readonly PublicBookingCalendarDay[];
   monthLabel: string;
   months?: readonly PublicBookingCalendarMonth[];
+  nextMonthLabel?: string;
+  previousMonthLabel?: string;
+  selectAvailableDateLabel?: string;
   weekdays: readonly string[];
 };
 
@@ -89,6 +93,7 @@ export type PublicBookingCheckoutInput = {
   }[];
   slotKey: string | null;
   startTime: string;
+  locale: PublicLocale;
 };
 
 export type PublicBookingCheckoutActionResult<TData> =
@@ -123,6 +128,7 @@ export type PublicBookingContent = {
     PublicBookingExperienceAvailability
   >;
   brand: string;
+  bookHref: string;
   calendar: PublicBookingCalendar;
   confirmation: {
     bookingReference: string;
@@ -139,6 +145,7 @@ export type PublicBookingContent = {
     label: string;
   }[];
   homeHref: string;
+  locale: PublicLocale;
   maxAdvanceLabel: string;
   payment: {
     depositCopy: string;

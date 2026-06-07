@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/design/variants";
+import { createLocalizedPath, type PublicLocale } from "@/i18n/locales";
+import type { PublicDictionary } from "@/i18n/public";
 
 type PublicBookingReturnStatus =
   | "CANCELLED"
@@ -25,11 +27,15 @@ export type PublicBookingReturnContent = {
 
 type PublicBookingReturnSectionProps = {
   content: PublicBookingReturnContent | null;
+  dictionary: PublicDictionary;
+  locale: PublicLocale;
   sessionId?: string;
 };
 
 export function PublicBookingReturnSection({
   content,
+  dictionary,
+  locale,
   sessionId,
 }: PublicBookingReturnSectionProps) {
   const [currentContent, setCurrentContent] = useState(content);
@@ -37,8 +43,8 @@ export function PublicBookingReturnSection({
   const waitingForFinalStatus =
     currentContent?.status === "PENDING_PAYMENT" && !timedOut;
   const state = currentContent
-    ? stateForStatus(currentContent.status, timedOut)
-    : missingState;
+    ? stateForStatus(currentContent.status, timedOut, dictionary)
+    : missingState(dictionary);
   const showBookingDetails =
     currentContent !== null && currentContent.status !== "PENDING_PAYMENT";
 
@@ -107,8 +113,13 @@ export function PublicBookingReturnSection({
     <main className="min-h-screen bg-background py-16 text-text lg:py-24">
       <Container className="max-w-3xl">
         <div className="mb-8">
-          <Button href="/en" shape="pill" size="md" variant="secondary">
-            Back to JimBoats
+          <Button
+            href={createLocalizedPath(locale)}
+            shape="pill"
+            size="md"
+            variant="secondary"
+          >
+            {dictionary.common.backToJimBoats}
           </Button>
         </div>
 
@@ -129,7 +140,7 @@ export function PublicBookingReturnSection({
                 <div className="h-full w-1/2 animate-pulse rounded-full bg-accent" />
               </div>
               <p className="mt-3 text-sm leading-6 text-text-muted">
-                This usually takes a few seconds. Please keep this page open.
+                {dictionary.returnPage.keepOpen}
               </p>
             </div>
           ) : null}
@@ -137,19 +148,19 @@ export function PublicBookingReturnSection({
           {showBookingDetails ? (
             <div className="grid gap-px bg-sand/20 md:grid-cols-2">
               <ReturnMetric
-                label="Reference"
+                label={dictionary.returnPage.reference}
                 value={currentContent.reference}
               />
               <ReturnMetric
-                label="Experience"
+                label={dictionary.returnPage.experience}
                 value={currentContent.experienceTitle}
               />
               <ReturnMetric
-                label="Deposit paid"
+                label={dictionary.returnPage.depositPaid}
                 value={formatPrice(currentContent.paidDepositAmount)}
               />
               <ReturnMetric
-                label="Remaining onboard"
+                label={dictionary.returnPage.remainingOnboard}
                 value={formatPrice(currentContent.remainingAmount)}
               />
             </div>
@@ -160,11 +171,9 @@ export function PublicBookingReturnSection({
               <div className="flex items-start gap-3 rounded-2xl bg-sky-light/45 p-4">
                 <Mail aria-hidden="true" className="mt-0.5 size-5 text-primary" />
                 <p className="text-sm leading-6 text-text-muted">
-                  We will send the booking pass and payment details to{" "}
-                  <span className="font-semibold text-text">
-                    {currentContent.customerEmail}
-                  </span>
-                  .
+                  {dictionary.returnPage.willSendPass(
+                    currentContent.customerEmail,
+                  )}
                 </p>
               </div>
             ) : null}
@@ -175,8 +184,13 @@ export function PublicBookingReturnSection({
                 waitingForFinalStatus && "hidden",
               )}
             >
-              <Button href="/en/book" shape="pill" size="lg" variant="accent">
-                Book another experience
+              <Button
+                href={createLocalizedPath(locale, "/book")}
+                shape="pill"
+                size="lg"
+                variant="accent"
+              >
+                {dictionary.returnPage.bookAnother}
               </Button>
               <Button
                 href="mailto:info@jimboatscharter.com"
@@ -184,7 +198,7 @@ export function PublicBookingReturnSection({
                 size="lg"
                 variant="secondary"
               >
-                Contact support
+                {dictionary.returnPage.contactSupport}
               </Button>
             </div>
           </div>
@@ -207,53 +221,54 @@ function ReturnMetric({ label, value }: { label: string; value: string }) {
   );
 }
 
-function stateForStatus(status: PublicBookingReturnStatus, timedOut = false) {
+function stateForStatus(
+  status: PublicBookingReturnStatus,
+  timedOut: boolean,
+  dictionary: PublicDictionary,
+) {
   if (status === "CONFIRMED") {
     return {
-      description:
-        "Your deposit has been received and your boat experience is confirmed.",
+      description: dictionary.returnPage.confirmedDescription,
       icon: CheckCircle2,
       surface: "bg-emerald-50 text-emerald-900",
-      title: "Booking confirmed",
+      title: dictionary.returnPage.confirmedTitle,
     };
   }
 
   if (status === "PENDING_PAYMENT") {
     if (timedOut) {
       return {
-        description:
-          "We are still finalizing the payment with Stripe. If this page does not update soon, contact us and we will verify the booking manually.",
+        description: dictionary.returnPage.stillFinalizingDescription,
         icon: Clock3,
         surface: "bg-amber-50 text-amber-900",
-        title: "Still finalizing your booking",
+        title: dictionary.returnPage.stillFinalizingTitle,
       };
     }
 
     return {
-      description:
-        "We are securely closing your reservation and waiting for the final payment confirmation.",
+      description: dictionary.returnPage.finalizingDescription,
       icon: Clock3,
       surface: "bg-amber-50 text-amber-900",
-      title: "Finalizing your booking",
+      title: dictionary.returnPage.finalizingTitle,
     };
   }
 
   return {
-    description:
-      "The checkout was not completed. Your boat slot has not been confirmed.",
+    description: dictionary.returnPage.failedDescription,
     icon: XCircle,
     surface: "bg-rose-50 text-rose-900",
-    title: "Payment not completed",
+    title: dictionary.returnPage.failedTitle,
   };
 }
 
-const missingState = {
-  description:
-    "We could not find a checkout session for this return page. Please contact support if you already paid.",
-  icon: Sailboat,
-  surface: "bg-sky-light/45 text-text",
-  title: "Checkout session not found",
-};
+function missingState(dictionary: PublicDictionary) {
+  return {
+    description: dictionary.returnPage.missingDescription,
+    icon: Sailboat,
+    surface: "bg-sky-light/45 text-text",
+    title: dictionary.returnPage.missingTitle,
+  };
+}
 
 function formatPrice(amountMinor: number) {
   return `€${(amountMinor / 100).toLocaleString("en-US", {

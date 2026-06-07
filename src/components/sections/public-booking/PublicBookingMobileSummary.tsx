@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import { MarketingImageFrame } from "@/components/marketing/MarketingImageFrame";
 import { cn } from "@/design/variants";
+import { getPublicDictionary } from "@/i18n/public";
 
 import type {
   PublicBookingCalendarDay,
@@ -35,9 +36,10 @@ export function PublicBookingMobileSummary({
 }: PublicBookingMobileSummaryProps) {
   const [open, setOpen] = useState(true);
   const extrasAmount = extras.reduce((sum, extra) => sum + extra.price, 0);
+  const labels = getPublicDictionary(content.locale).booking.labels;
 
   return (
-    <section aria-label="Booking summary" className="mb-5 lg:hidden">
+    <section aria-label={labels.bookingSummary} className="mb-5 lg:hidden">
       <div className="overflow-hidden rounded-3xl border border-sand/30 bg-white shadow-soft">
         <button
           aria-expanded={open}
@@ -77,19 +79,19 @@ export function PublicBookingMobileSummary({
             <dl className="mb-4 space-y-3 text-sm">
               <SummaryLine
                 icon={<CalendarDays aria-hidden="true" className="size-4" />}
-                label="Date"
+                label={labels.date}
                 value={selectedDate.dateLabel}
               />
               <SummaryLine
                 icon={<Clock aria-hidden="true" className="size-4" />}
-                label="Time"
+                label={labels.time}
                 value={selectedTimeSlot.label}
               />
             </dl>
 
             <div className="mb-4 border-t border-sand/20 pt-3">
               <p className="mb-2 text-xs font-semibold text-text">
-                Selected Extras
+                {labels.selectedExtras}
               </p>
               {extras.length > 0 ? (
                 <ul className="space-y-2">
@@ -107,20 +109,20 @@ export function PublicBookingMobileSummary({
                 </ul>
               ) : (
                 <p className="text-sm font-light text-text-muted">
-                  No extras selected.
+                  {labels.noExtrasSelected}
                 </p>
               )}
             </div>
 
             <div className="mb-4 border-t border-sand/20 pt-3 text-sm">
               <SummaryLine
-                label="Experience"
+                label={labels.experience}
                 value={formatPrice(experience.price)}
               />
-              <SummaryLine label="Extras" value={formatPrice(extrasAmount)} />
+              <SummaryLine label={labels.extras} value={formatPrice(extrasAmount)} />
               <div className="mt-3 flex items-center justify-between border-t-2 border-sand/50 pt-3">
                 <span className="text-xs font-semibold uppercase tracking-widest text-text-muted">
-                  Total
+                  {labels.total}
                 </span>
                 <span className="font-display text-3xl leading-none text-text">
                   {formatPrice(totalAmount)}
@@ -131,12 +133,12 @@ export function PublicBookingMobileSummary({
             <div className="grid grid-cols-2 gap-3">
               <SummaryNote
                 icon={<Info aria-hidden="true" className="size-3.5" />}
-                label="Cancellation"
+                label={labels.cancellation}
                 value={content.policies.cancellation}
               />
               <SummaryNote
                 icon={<MapPin aria-hidden="true" className="size-3.5" />}
-                label="Meeting Point"
+                label={labels.meetingPoint}
                 value={content.policies.meetingPoint}
               />
             </div>

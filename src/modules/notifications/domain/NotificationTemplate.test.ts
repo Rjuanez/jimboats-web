@@ -25,6 +25,8 @@ describe("NotificationTemplate", () => {
       translations: [
         {
           locale: "en",
+          htmlBody:
+            "<p>Hello {{ customer.name }}, your booking {{ booking.reference }} is confirmed.</p>",
           status: "PUBLISHED",
           subject: "Booking {{ booking.reference }} confirmed",
           variablesUsed: ["booking.reference", "customer.name"],
@@ -63,6 +65,7 @@ describe("NotificationTemplate", () => {
         translations: [
           createTranslation({
             body: "Hello {{ customer.name }}.",
+            htmlBody: null,
             previewText: "Booking confirmed",
             subject: "Booking confirmed",
           }),
@@ -127,6 +130,8 @@ function createTranslation(
   return {
     body:
       "Hello {{ customer.name }}, your booking {{ booking.reference }} is confirmed.",
+    htmlBody:
+      "<p>Hello {{ customer.name }}, your booking {{ booking.reference }} is confirmed.</p>",
     locale: LocaleCode.create("en"),
     previewText: "Booking {{ booking.reference }} confirmed",
     status: "PUBLISHED" as const,

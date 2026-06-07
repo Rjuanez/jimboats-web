@@ -66,6 +66,7 @@ export type PrismaNotificationRuleWriteModel = {
 
 export type PrismaNotificationTemplateTranslationRecord = {
   body: string;
+  htmlBody: string | null;
   id: string;
   locale: string;
   previewText: string | null;
@@ -108,6 +109,7 @@ export type PrismaNotificationTemplateWriteModel = {
   };
   translations: Array<{
     body: string;
+    htmlBody: string | null;
     id: string;
     locale: string;
     previewText: string | null;
@@ -141,6 +143,7 @@ export type PrismaNotificationDeliveryRecord = {
   recipientPhone: string | null;
   recipientType: string;
   renderedBody: string;
+  renderedHtmlBody: string | null;
   renderedSubject: string | null;
   ruleId: string | null;
   sendAfter: Date | null;
@@ -173,6 +176,7 @@ export type PrismaNotificationDeliveryWriteModel = {
     recipientPhone: string | null;
     recipientType: NotificationDeliveryRecipient["recipientType"];
     renderedBody: string;
+    renderedHtmlBody: string | null;
     renderedSubject: string | null;
     ruleId: string | null;
     sendAfter: Date | null;
@@ -308,6 +312,7 @@ export function notificationTemplateFromPrismaRecord(
     status: notificationTemplateStatusFromPrisma(record.status),
     translations: record.translations.map((translation) => ({
       body: translation.body,
+      htmlBody: translation.htmlBody,
       locale: LocaleCode.create(translation.locale),
       previewText: translation.previewText,
       status: notificationTemplateTranslationStatusFromPrisma(
@@ -344,6 +349,7 @@ export function notificationTemplateToPrismaWriteModel(
     },
     translations: snapshot.translations.map((translation) => ({
       body: translation.body,
+      htmlBody: translation.htmlBody,
       id: notificationTemplateTranslationId(snapshot.id, translation.locale),
       locale: translation.locale,
       previewText: translation.previewText,
@@ -385,6 +391,7 @@ export function notificationDeliveryFromPrismaRecord(
       ),
     },
     renderedBody: record.renderedBody,
+    renderedHtmlBody: record.renderedHtmlBody,
     renderedSubject: record.renderedSubject,
     ruleId: record.ruleId,
     sendAfter: record.sendAfter,
@@ -425,6 +432,7 @@ export function notificationDeliveryToPrismaWriteModel(
       recipientPhone: snapshot.recipient.phone,
       recipientType: snapshot.recipient.recipientType,
       renderedBody: snapshot.renderedBody,
+      renderedHtmlBody: snapshot.renderedHtmlBody,
       renderedSubject: snapshot.renderedSubject,
       ruleId: snapshot.ruleId,
       sendAfter: snapshot.sendAfter ? new Date(snapshot.sendAfter) : null,

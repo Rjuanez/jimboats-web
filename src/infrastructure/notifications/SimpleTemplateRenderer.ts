@@ -16,6 +16,7 @@ export class SimpleTemplateRenderer implements TemplateRenderer {
       ...extractVariables(input.subject),
       ...extractVariables(input.previewText),
       ...extractVariables(input.body),
+      ...extractVariables(input.htmlBody),
     ]);
     const allowedVariables = new Set(input.allowedVariables);
     const missingVariables = variables.filter((variable) => {
@@ -28,6 +29,9 @@ export class SimpleTemplateRenderer implements TemplateRenderer {
     return {
       missingVariables,
       renderedBody: renderText(input.body, input.payload, allowedVariables),
+      renderedHtmlBody: input.htmlBody
+        ? renderText(input.htmlBody, input.payload, allowedVariables)
+        : null,
       renderedPreviewText: input.previewText
         ? renderText(input.previewText, input.payload, allowedVariables)
         : null,

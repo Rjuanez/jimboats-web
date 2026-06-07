@@ -1,6 +1,8 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import { getPublicDictionary } from "@/i18n/public";
+
 import {
   PublicBookingReturnSection,
   type PublicBookingReturnContent,
@@ -26,6 +28,8 @@ describe("PublicBookingReturnSection", () => {
     render(
       <PublicBookingReturnSection
         content={pendingContent}
+        dictionary={getPublicDictionary("en")}
+        locale="en"
         sessionId="cs_test_123"
       />,
     );

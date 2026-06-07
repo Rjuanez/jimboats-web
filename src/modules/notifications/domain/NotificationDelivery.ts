@@ -51,6 +51,7 @@ export type NotificationDeliveryProps = {
   providerVariables: NotificationProviderVariables;
   recipient: NotificationDeliveryRecipient;
   renderedBody: string;
+  renderedHtmlBody: string | null;
   renderedSubject: string | null;
   ruleId: string | null;
   sendAfter: Date | null;
@@ -80,6 +81,7 @@ export type NotificationDeliverySnapshot = {
   providerVariables: NotificationProviderVariables;
   recipient: NotificationDeliveryRecipient;
   renderedBody: string;
+  renderedHtmlBody: string | null;
   renderedSubject: string | null;
   ruleId: string | null;
   sendAfter: string | null;
@@ -117,6 +119,7 @@ export class NotificationDelivery {
     const templateId = input.templateId?.trim() || null;
     const renderedSubject = normalizeOptionalText(input.renderedSubject);
     const renderedBody = normalizeBody(input.renderedBody);
+    const renderedHtmlBody = normalizeHtmlBody(input.renderedHtmlBody);
     const failureReason = normalizeOptionalText(input.failureReason);
     const recipient = normalizeRecipient(input.channel, input.recipient);
 
@@ -221,6 +224,8 @@ export class NotificationDelivery {
       providerVariables,
       recipient,
       renderedBody,
+      renderedHtmlBody:
+        input.channel.value === "EMAIL" ? renderedHtmlBody : null,
       renderedSubject: input.channel.value === "EMAIL" ? renderedSubject : null,
       ruleId,
       templateId,
@@ -385,6 +390,7 @@ export class NotificationDelivery {
       providerVariables: { ...this.props.providerVariables },
       recipient: { ...this.props.recipient },
       renderedBody: this.props.renderedBody,
+      renderedHtmlBody: this.props.renderedHtmlBody,
       renderedSubject: this.props.renderedSubject,
       ruleId: this.props.ruleId,
       sendAfter: this.props.sendAfter?.toISOString() ?? null,
@@ -489,6 +495,12 @@ function normalizeOptionalText(value: string | null) {
 
 function normalizeBody(value: string) {
   return value.trim().replace(/[ \t]+/g, " ");
+}
+
+function normalizeHtmlBody(value: string | null) {
+  const normalized = value?.trim() ?? "";
+
+  return normalized || null;
 }
 
 function normalizeText(value: string) {

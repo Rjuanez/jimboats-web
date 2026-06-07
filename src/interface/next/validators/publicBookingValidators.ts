@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import type { PublicBookingCheckoutInput } from "@/components/sections/public-booking/PublicBookingTypes";
 
+const localeSchema = z.enum(["ca", "en", "es"]);
 const localDateSchema = z
   .string()
   .trim()
@@ -26,6 +27,7 @@ export const publicBookingCheckoutSchema = z.object({
   experienceId: z.string().trim().min(1, "Experience is required."),
   guestCount: z.number().int().min(1).max(99),
   localDate: localDateSchema,
+  locale: localeSchema,
   selectedExtras: z.array(
     z.object({
       extraId: z.string().trim().min(1),

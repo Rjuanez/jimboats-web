@@ -44,6 +44,7 @@ export type UpdateNotificationRuleCommand = {
 
 export type NotificationTemplateTranslationCommand = {
   body: string;
+  htmlBody: string | null;
   locale: string;
   previewText: string | null;
   status: NotificationTemplateTranslationStatus;
@@ -66,6 +67,7 @@ export type UpdateNotificationTemplateCommand = {
 export type PreviewNotificationTemplateCommand = {
   bookingId?: string;
   draftBody?: string;
+  draftHtmlBody?: string | null;
   draftPreviewText?: string | null;
   draftSubject?: string | null;
   fixtureKey?: string;
@@ -76,6 +78,7 @@ export type PreviewNotificationTemplateCommand = {
 export type PreviewNotificationTemplateResultDto = {
   missingVariables: string[];
   renderedBody: string;
+  renderedHtmlBody: string | null;
   renderedPreviewText: string | null;
   renderedSubject: string | null;
   variables: string[];

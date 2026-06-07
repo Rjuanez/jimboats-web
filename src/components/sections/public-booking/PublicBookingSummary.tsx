@@ -3,6 +3,7 @@ import { CalendarDays, Clock, MapPin, Wallet } from "lucide-react";
 import { MarketingImageFrame } from "@/components/marketing/MarketingImageFrame";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/design/variants";
+import { getPublicDictionary } from "@/i18n/public";
 
 import type {
   PublicBookingCalendarDay,
@@ -46,10 +47,12 @@ export function PublicBookingSummary({
 }: PublicBookingSummaryProps) {
   const extrasAmount = extras.reduce((sum, extra) => sum + extra.price, 0);
   const remainingAmount = Math.max(totalAmount - depositAmount, 0);
+  const dictionary = getPublicDictionary(content.locale);
+  const labels = dictionary.booking.labels;
 
   return (
     <aside
-      aria-label="Booking summary"
+      aria-label={labels.bookingSummary}
       className={cn(
         "overflow-hidden rounded-[2rem] border border-sand/20 bg-white shadow-soft",
         className,
@@ -57,7 +60,7 @@ export function PublicBookingSummary({
     >
       <div className="px-8 pt-8">
         <h2 className="font-display text-3xl leading-none text-text">
-          Booking Summary
+          {labels.bookingSummary}
         </h2>
       </div>
 
@@ -84,26 +87,28 @@ export function PublicBookingSummary({
               {selectedDate ? (
                 <SummaryRow
                   icon={<CalendarDays aria-hidden="true" className="size-4" />}
-                  label="Date"
+                  label={labels.date}
                   value={selectedDate.dateLabel}
                 />
               ) : null}
               {selectedTimeSlot ? (
                 <SummaryRow
                   icon={<Clock aria-hidden="true" className="size-4" />}
-                  label="Time"
+                  label={labels.time}
                   value={selectedTimeSlot.label}
                 />
               ) : null}
               <SummaryRow
                 icon={<MapPin aria-hidden="true" className="size-4" />}
-                label="Meeting point"
+                label={labels.meetingPoint}
                 value={content.policies.meetingPoint}
               />
             </dl>
 
             <div className="border-t border-sand/30 pt-4">
-              <p className="text-sm font-semibold text-text">Selected Extras</p>
+              <p className="text-sm font-semibold text-text">
+                {labels.selectedExtras}
+              </p>
               {extras.length > 0 ? (
                 <ul className="mt-3 space-y-2 text-sm">
                   {extras.map((extra) => (
@@ -117,22 +122,22 @@ export function PublicBookingSummary({
                 </ul>
               ) : (
                 <p className="mt-2 text-sm font-light text-text-muted">
-                  No extras selected.
+                  {labels.noExtrasSelected}
                 </p>
               )}
             </div>
 
             <div className="border-t border-sand/30 pt-5 text-sm">
               <PriceRow
-                label="Experience"
+                label={labels.experience}
                 value={formatPrice(experience.price)}
               />
               {extrasAmount > 0 ? (
-                <PriceRow label="Extras" value={formatPrice(extrasAmount)} />
+                <PriceRow label={labels.extras} value={formatPrice(extrasAmount)} />
               ) : null}
               <PriceRow
                 emphasis
-                label="Total"
+                label={labels.total}
                 value={formatPrice(totalAmount)}
               />
             </div>
@@ -145,11 +150,10 @@ export function PublicBookingSummary({
                 />
                 <div className="min-w-0 text-sm leading-6">
                   <p className="font-semibold text-text">
-                    Deposit due now: {formatPrice(depositAmount)}
+                    {labels.depositDueNow(formatPrice(depositAmount))}
                   </p>
                   <p className="font-light text-text-muted">
-                    Remaining balance: {formatPrice(remainingAmount)} paid
-                    onboard in cash.
+                    {labels.remainingBalance(formatPrice(remainingAmount))}
                   </p>
                 </div>
               </div>
@@ -157,18 +161,21 @@ export function PublicBookingSummary({
 
             {consents ? (
               <div className="border-t border-sand/30 pt-4 text-sm">
-                <p className="font-semibold text-text">Delivery preferences</p>
+                <p className="font-semibold text-text">
+                  {labels.deliveryPreferences}
+                </p>
                 <ul className="mt-2 space-y-1 text-text-muted">
                   <li>
-                    Email pass: {consents.ticketEmail ? "enabled" : "disabled"}
+                    {labels.emailPass}:{" "}
+                    {consents.ticketEmail ? labels.enabled : labels.disabled}
                   </li>
                   <li>
-                    WhatsApp pass:{" "}
-                    {consents.ticketWhatsapp ? "enabled" : "disabled"}
+                    {labels.whatsappPass}:{" "}
+                    {consents.ticketWhatsapp ? labels.enabled : labels.disabled}
                   </li>
                   <li>
-                    Promotions:{" "}
-                    {consents.marketing ? "accepted" : "not accepted"}
+                    {labels.promotions}:{" "}
+                    {consents.marketing ? labels.accepted : labels.notAccepted}
                   </li>
                 </ul>
               </div>
@@ -196,7 +203,7 @@ export function PublicBookingSummary({
               />
             </div>
             <p className="font-light text-text-muted">
-              Select an experience to begin
+              {dictionary.booking.bottomBar.selectExperience}
             </p>
           </div>
         )}

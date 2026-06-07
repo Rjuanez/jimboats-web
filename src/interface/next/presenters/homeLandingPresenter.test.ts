@@ -66,7 +66,9 @@ describe("homeLandingPresenter", () => {
   it("falls back to the static landing content when the catalog is unavailable", async () => {
     vi.mocked(getPublicBookingPage).mockRejectedValue(new Error("DB offline"));
 
-    await expect(getHomeLandingPage("en")).resolves.toBe(homeLandingContent);
+    await expect(getHomeLandingPage("en")).resolves.toStrictEqual(
+      homeLandingContent,
+    );
   });
 });
 
@@ -113,6 +115,7 @@ function publicBookingFixture(): PublicBookingContent {
       },
     },
     brand: "JimBoats",
+    bookHref: "/en/book",
     calendar,
     confirmation: {
       bookingReference: "JB-MOCK-2026",
@@ -129,6 +132,7 @@ function publicBookingFixture(): PublicBookingContent {
     },
     footerLinks: [],
     homeHref: "/en",
+    locale: "en",
     maxAdvanceLabel: "Bookings are available up to 6 months ahead.",
     payment: {
       depositCopy: "Pay a fixed €100 deposit now.",

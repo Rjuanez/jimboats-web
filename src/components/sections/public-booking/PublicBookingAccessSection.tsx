@@ -11,6 +11,8 @@ import type { ReactNode } from "react";
 
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/Button";
+import { createLocalizedPath, localeToIntlLocale, type PublicLocale } from "@/i18n/locales";
+import type { PublicDictionary } from "@/i18n/public";
 
 export type PublicBookingAccessContent = {
   cancellationPolicy: {
@@ -67,24 +69,34 @@ export type PublicBookingAccessContent = {
 
 type PublicBookingAccessSectionProps = {
   content: PublicBookingAccessContent | null;
+  dictionary: PublicDictionary;
+  locale: PublicLocale;
 };
 
 export function PublicBookingAccessSection({
   content,
+  dictionary,
+  locale,
 }: PublicBookingAccessSectionProps) {
   if (!content) {
-    return <InvalidBookingAccessState />;
+    return <InvalidBookingAccessState dictionary={dictionary} locale={locale} />;
   }
 
   const cancellationSummary =
-    content.cancellationPolicy?.summaries.en.trim() || null;
+    content.cancellationPolicy?.summaries[locale].trim() || null;
+  const copy = dictionary.access;
 
   return (
     <main className="min-h-screen bg-background py-10 text-text lg:py-16">
       <Container className="max-w-5xl">
         <div className="mb-6">
-          <Button href="/en" shape="pill" size="md" variant="secondary">
-            Back to JimBoats
+          <Button
+            href={createLocalizedPath(locale)}
+            shape="pill"
+            size="md"
+            variant="secondary"
+          >
+            {dictionary.common.backToJimBoats}
           </Button>
         </div>
 
@@ -92,25 +104,24 @@ export function PublicBookingAccessSection({
           <div className="grid gap-8 bg-sky-light/45 px-6 py-8 lg:grid-cols-[1.35fr_0.65fr] lg:px-10 lg:py-10">
             <div>
               <p className="text-xs font-semibold uppercase tracking-widest text-primary">
-                Booking {content.reference}
+                {copy.bookingPrefix} {content.reference}
               </p>
               <h1 className="mt-3 font-display text-4xl leading-tight text-text lg:text-6xl">
                 {content.experienceTitle}
               </h1>
               <p className="mt-4 max-w-2xl text-base font-light leading-7 text-text-muted lg:text-lg">
-                Your booking details, payment summary and cancellation policy are
-                available here.
+                {copy.detailsDescription}
               </p>
             </div>
             <div className="rounded-3xl bg-white/80 p-5">
               <p className="text-xs font-semibold uppercase tracking-widest text-text-muted">
-                Status
+                {copy.status}
               </p>
               <p className="mt-3 font-display text-3xl leading-tight">
-                {statusLabel(content.status)}
+                {copy.statusLabels[content.status]}
               </p>
               <p className="mt-3 text-sm leading-6 text-text-muted">
-                Buyer: {content.customer.fullName}
+                {copy.buyerPrefix} {content.customer.fullName}
               </p>
             </div>
           </div>
@@ -118,61 +129,61 @@ export function PublicBookingAccessSection({
           <div className="grid gap-px bg-sand/20 md:grid-cols-3">
             <AccessMetric
               icon={CalendarDays}
-              label="Date and time"
-              value={`${formatDate(content.selectedSlot.date)} · ${content.selectedSlot.startTime}-${content.selectedSlot.endTime}`}
+              label={copy.dateAndTime}
+              value={`${formatDate(content.selectedSlot.date, locale)} · ${content.selectedSlot.startTime}-${content.selectedSlot.endTime}`}
             />
             <AccessMetric
               icon={Users}
-              label="Guests"
+              label={copy.guests}
               value={String(content.guestCount)}
             />
             <AccessMetric
               icon={Euro}
-              label="Total"
-              value={formatPrice(content.payment.totalAmount)}
+              label={copy.total}
+              value={formatPrice(content.payment.totalAmount, locale)}
             />
           </div>
 
           <div className="grid gap-6 px-6 py-6 lg:grid-cols-[1fr_0.9fr] lg:px-10 lg:py-8">
             <div className="space-y-5">
-              <InfoBlock title="Payment">
+              <InfoBlock title={copy.payment}>
                 <SummaryRow
-                  label="Deposit paid"
-                  value={formatPrice(content.payment.depositAmount)}
+                  label={copy.depositPaid}
+                  value={formatPrice(content.payment.depositAmount, locale)}
                 />
                 <SummaryRow
-                  label="Remaining onboard"
-                  value={formatPrice(content.payment.remainingAmount)}
+                  label={copy.remainingOnboard}
+                  value={formatPrice(content.payment.remainingAmount, locale)}
                 />
                 <SummaryRow
-                  label="Booking total"
-                  value={formatPrice(content.payment.totalAmount)}
+                  label={copy.total}
+                  value={formatPrice(content.payment.totalAmount, locale)}
                 />
               </InfoBlock>
 
-              <InfoBlock title="Extras">
+              <InfoBlock title={copy.extras}>
                 {content.extras.length > 0 ? (
                   content.extras.map((extra) => (
                     <SummaryRow
                       key={extra.name}
                       label={`${extra.name} x${extra.quantity}`}
-                      value={formatPrice(extra.totalAmount)}
+                      value={formatPrice(extra.totalAmount, locale)}
                     />
                   ))
                 ) : (
                   <p className="text-sm leading-6 text-text-muted">
-                    No extras selected for this booking.
+                    {copy.noExtras}
                   </p>
                 )}
               </InfoBlock>
             </div>
 
             <div className="space-y-5">
-              <InfoBlock icon={ShieldCheck} title="Cancellation policy">
+              <InfoBlock icon={ShieldCheck} title={copy.cancellationPolicyTitle}>
                 {content.cancellationPolicy ? (
                   <>
                     <p className="text-sm font-semibold text-text">
-                      {content.cancellationPolicy.policyName} · version{" "}
+                      {content.cancellationPolicy.policyName} · {copy.version}{" "}
                       {content.cancellationPolicy.version}
                     </p>
                     {cancellationSummary ? (
@@ -190,7 +201,7 @@ export function PublicBookingAccessSection({
                             {tier.label}
                           </p>
                           <p className="mt-1 text-sm leading-6 text-text-muted">
-                            {depositOutcomeLabel(tier.depositOutcome)}
+                            {copy.depositOutcome[tier.depositOutcome]}
                           </p>
                         </div>
                       ))}
@@ -198,14 +209,14 @@ export function PublicBookingAccessSection({
                   </>
                 ) : (
                   <p className="text-sm leading-6 text-text-muted">
-                    No cancellation policy was attached to this booking.
+                    {copy.cancellationFallback}
                   </p>
                 )}
               </InfoBlock>
 
               <InfoBlock icon={Mail} title="Contact">
                 <p className="text-sm leading-6 text-text-muted">
-                  We will use {content.customer.email} for booking updates.
+                  {copy.contactBody(content.customer.email)}
                 </p>
                 <div className="mt-4">
                   <Button
@@ -214,7 +225,7 @@ export function PublicBookingAccessSection({
                     size="md"
                     variant="secondary"
                   >
-                    Contact support
+                    {copy.contactSupport}
                   </Button>
                 </div>
               </InfoBlock>
@@ -226,22 +237,32 @@ export function PublicBookingAccessSection({
   );
 }
 
-function InvalidBookingAccessState() {
+function InvalidBookingAccessState({
+  dictionary,
+  locale,
+}: {
+  dictionary: PublicDictionary;
+  locale: PublicLocale;
+}) {
   return (
     <main className="min-h-screen bg-background py-16 text-text lg:py-24">
       <Container className="max-w-3xl">
         <section className="rounded-3xl border border-sand/35 bg-white p-8 shadow-soft lg:rounded-[2rem] lg:p-10">
           <CircleAlert aria-hidden="true" className="size-10 text-amber-700" />
           <h1 className="mt-5 font-display text-4xl leading-tight lg:text-6xl">
-            Booking link not available
+            {dictionary.access.invalidTitle}
           </h1>
           <p className="mt-4 text-base font-light leading-7 text-text-muted lg:text-lg">
-            This link is missing, expired or no longer matches an active booking
-            access token.
+            {dictionary.access.invalidDescription}
           </p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <Button href="/en" shape="pill" size="lg" variant="accent">
-              Back to JimBoats
+            <Button
+              href={createLocalizedPath(locale)}
+              shape="pill"
+              size="lg"
+              variant="accent"
+            >
+              {dictionary.common.backToJimBoats}
             </Button>
             <Button
               href="mailto:info@jimboatscharter.com"
@@ -249,7 +270,7 @@ function InvalidBookingAccessState() {
               size="lg"
               variant="secondary"
             >
-              Contact support
+              {dictionary.access.contactSupport}
             </Button>
           </div>
         </section>
@@ -311,41 +332,15 @@ function SummaryRow({ label, value }: { label: string; value: string }) {
   );
 }
 
-function statusLabel(status: PublicBookingAccessContent["status"]) {
-  const labels: Record<PublicBookingAccessContent["status"], string> = {
-    CANCELLED: "Cancelled",
-    CONFIRMED: "Confirmed",
-    EXPIRED: "Expired",
-    PAYMENT_FAILED: "Payment failed",
-    PENDING_PAYMENT: "Pending payment",
-  };
-
-  return labels[status];
+function formatDate(localDate: string, locale: PublicLocale) {
+  return new Intl.DateTimeFormat(localeToIntlLocale(locale), {
+    dateStyle: "medium",
+    timeZone: "UTC",
+  }).format(new Date(`${localDate}T00:00:00.000Z`));
 }
 
-function depositOutcomeLabel(
-  outcome: NonNullable<
-    PublicBookingAccessContent["cancellationPolicy"]
-  >["tiers"][number]["depositOutcome"],
-) {
-  const labels = {
-    FULL_REFUND: "Deposit can be fully refunded.",
-    MANUAL_REVIEW: "Cancellation requires manual review.",
-    NO_REFUND: "Deposit is not refundable.",
-    PARTIAL_REFUND: "Deposit can be partially refunded.",
-  };
-
-  return labels[outcome];
-}
-
-function formatDate(localDate: string) {
-  const [year, month, day] = localDate.split("-");
-
-  return `${day}/${month}/${year}`;
-}
-
-function formatPrice(amount: number) {
-  return `€${amount.toLocaleString("en-US", {
+function formatPrice(amount: number, locale: PublicLocale) {
+  return `€${amount.toLocaleString(localeToIntlLocale(locale), {
     maximumFractionDigits: 2,
     minimumFractionDigits: Number.isInteger(amount) ? 0 : 2,
   })}`;

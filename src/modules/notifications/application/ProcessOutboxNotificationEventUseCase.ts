@@ -257,6 +257,7 @@ export class ProcessOutboxNotificationEventUseCase {
     const rendered = await this.renderer.render({
       allowedVariables: templateSnapshot.allowedVariables,
       body: translation.body,
+      htmlBody: translation.htmlBody,
       payload,
       previewText: translation.previewText,
       subject: translation.subject,
@@ -302,6 +303,7 @@ export class ProcessOutboxNotificationEventUseCase {
         destination: preference.destination,
       }),
       renderedBody: rendered.renderedBody,
+      renderedHtmlBody: rendered.renderedHtmlBody,
       renderedSubject: rendered.renderedSubject,
       ruleId: input.rule.id,
       sendAfter: null,

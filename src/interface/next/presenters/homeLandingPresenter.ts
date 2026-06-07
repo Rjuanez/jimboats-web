@@ -8,6 +8,8 @@ import type {
   PublicBookingExperience,
   PublicBookingExtra,
 } from "@/components/sections/public-booking/PublicBookingTypes";
+import { createLocalizedPath, localeToIntlLocale } from "@/i18n/locales";
+import { getPublicDictionary, type PublicDictionary } from "@/i18n/public";
 import type { SupportedLocaleCode } from "@/shared/domain/LocaleCode";
 
 import { getPublicBookingPage } from "./publicBookingPresenter";
@@ -47,6 +49,11 @@ export const homeLandingContent = {
   headerCta: {
     href: "/en/book",
     label: "Book now",
+  },
+  homeHref: "/en",
+  experienceSection: {
+    description: "Choose your perfect moment at sea",
+    title: "Our Experiences",
   },
   hero: {
     cta: {
@@ -283,10 +290,10 @@ export async function getHomeLandingPage(
   try {
     publicBookingContent = await getPublicBookingPage(locale);
   } catch {
-    return homeLandingContent;
+    return localizeFallbackHomeLandingContent(locale);
   }
 
-  return presentHomeLandingContent(publicBookingContent);
+  return presentHomeLandingContent(publicBookingContent, locale);
 }
 
 export function createHomeLandingStructuredData(content: HomeLandingContent) {
@@ -321,24 +328,26 @@ export const homeLandingStructuredData =
 
 function presentHomeLandingContent(
   publicBookingContent: PublicBookingContent,
+  locale: SupportedLocaleCode,
 ): HomeLandingContent {
+  const dictionary = getPublicDictionary(locale);
   const experiences =
     publicBookingContent.experiences.length > 0
       ? publicBookingContent.experiences.map((experience, index) =>
-          presentLandingExperience(experience, index),
+          presentLandingExperience(experience, index, locale, dictionary),
         )
       : homeLandingContent.experiences;
-  const extras = presentLandingExtras(publicBookingContent);
+  const extras = presentLandingExtras(publicBookingContent, dictionary);
 
   return {
-    ...homeLandingContent,
+    ...localizeFallbackHomeLandingContent(locale),
     experiences,
     extras: {
-      ...homeLandingContent.extras,
+      ...localizeFallbackHomeLandingContent(locale).extras,
       items: extras.length > 0 ? extras : homeLandingContent.extras.items,
     },
     footer: {
-      ...homeLandingContent.footer,
+      ...localizeFallbackHomeLandingContent(locale).footer,
       experienceLinks: experiences.map((experience) => ({
         href: `#${experience.id}`,
         label: experience.title,
@@ -350,10 +359,14 @@ function presentHomeLandingContent(
 function presentLandingExperience(
   experience: PublicBookingExperience,
   index: number,
+  locale: SupportedLocaleCode,
+  dictionary: PublicDictionary,
 ): HomeLandingExperience {
   return {
-    ctaHref: `/en/book?experience=${encodeURIComponent(experience.id)}`,
-    ctaLabel: "Reserve",
+    ctaHref: `${createLocalizedPath(locale, "/book")}?experience=${encodeURIComponent(
+      experience.id,
+    )}`,
+    ctaLabel: dictionary.common.bookNow,
     description: experience.description,
     featured: index === 0,
     id: experience.id,
@@ -364,7 +377,7 @@ function presentLandingExperience(
           ? "(min-width: 1024px) 50vw, 100vw"
           : "(min-width: 1024px) 58vw, 100vw",
     },
-    price: `EUR ${experience.price.toLocaleString("en-US")}`,
+    price: `EUR ${experience.price.toLocaleString(localeToIntlLocale(locale))}`,
     reverse: index % 2 === 1,
     title: experience.title,
   };
@@ -372,6 +385,7 @@ function presentLandingExperience(
 
 function presentLandingExtras(
   publicBookingContent: PublicBookingContent,
+  dictionary: PublicDictionary,
 ): HomeLandingUpgrade[] {
   const extrasById = new Map<string, PublicBookingExtra>();
 
@@ -386,7 +400,7 @@ function presentLandingExtras(
   }
 
   return [...extrasById.values()].slice(0, 3).map((extra) => ({
-    description: upgradeDescription(extra),
+    description: upgradeDescription(extra, dictionary),
     image: {
       ...extra.image,
       sizes: "(min-width: 768px) 33vw, 25vw",
@@ -395,21 +409,88 @@ function presentLandingExtras(
   }));
 }
 
-function upgradeDescription(extra: PublicBookingExtra) {
+function upgradeDescription(
+  extra: PublicBookingExtra,
+  dictionary: PublicDictionary,
+) {
   if (extra.description && extra.description !== extra.title) {
     return extra.description;
   }
 
-  const knownDescriptions = new Map([
-    ["paddle-surf", "Glide across the calm waters"],
-    ["mediterranean-drinks", "Toast to the good life"],
-    ["sunset-toast", "Set the perfect mood"],
-    ["premium-champagne", "Toast with premium champagne"],
-    ["gourmet-snacks", "Enjoy Mediterranean bites onboard"],
-    ["private-photographer", "Capture the day professionally"],
-  ]);
+  return (
+    dictionary.landing.experienceFallbackDescriptions[extra.id] ??
+    dictionary.landing.experienceFallbackDescription
+  );
+}
 
-  return knownDescriptions.get(extra.id) ?? "Add a special touch onboard";
+function localizeFallbackHomeLandingContent(
+  locale: SupportedLocaleCode,
+): HomeLandingContent {
+  const dictionary = getPublicDictionary(locale);
+  const homeHref = createLocalizedPath(locale);
+  const bookHref = createLocalizedPath(locale, "/book");
+
+  return {
+    ...homeLandingContent,
+    booking: dictionary.landing.booking,
+    experienceSection: dictionary.landing.experienceSection,
+    extras: {
+      ...homeLandingContent.extras,
+      description: dictionary.landing.upgrades.description,
+      title: dictionary.landing.upgrades.title,
+    },
+    finalCta: {
+      ...homeLandingContent.finalCta,
+      cta: {
+        href: bookHref,
+        label: dictionary.landing.finalCta.cta,
+      },
+      title: dictionary.landing.finalCta.title,
+    },
+    footer: {
+      ...homeLandingContent.footer,
+      copyright: dictionary.landing.footer.copyright,
+      description: dictionary.landing.footer.description,
+      legalLinks: [
+        { href: "#", label: dictionary.common.privacyPolicy },
+        { href: "#", label: dictionary.common.termsOfService },
+      ],
+    },
+    gallery: {
+      ...homeLandingContent.gallery,
+      description: dictionary.landing.gallery.description,
+      title: dictionary.landing.gallery.title,
+    },
+    headerCta: {
+      href: bookHref,
+      label: dictionary.landing.headerCta,
+    },
+    hero: {
+      ...homeLandingContent.hero,
+      cta: {
+        href: bookHref,
+        label: dictionary.landing.hero.cta,
+      },
+      description: dictionary.landing.hero.description,
+      title: dictionary.landing.hero.title,
+    },
+    homeHref,
+    navigation: [
+      { href: "#experiences", label: dictionary.landing.navigation.experiences },
+      { href: "#extras", label: dictionary.landing.navigation.extras },
+      { href: "#gallery", label: dictionary.landing.navigation.gallery },
+      {
+        href: "#how-it-works",
+        label: dictionary.landing.navigation.howItWorks,
+      },
+    ],
+    story: {
+      ...homeLandingContent.story,
+      description: dictionary.landing.story.description,
+      title: dictionary.landing.story.title,
+    },
+    trustItems: dictionary.landing.trustItems,
+  };
 }
 
 function priceValueFromLabel(price: string) {

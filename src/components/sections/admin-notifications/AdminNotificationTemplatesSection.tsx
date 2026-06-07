@@ -261,6 +261,7 @@ function createEmptyTemplateForm(
     templateId: "",
     translations: ["en", "es", "ca"].map((locale) => ({
       body: "",
+      htmlBody: "",
       locale: locale as AdminNotificationTemplateInput["translations"][number]["locale"],
       previewText: "",
       status: "DRAFT",

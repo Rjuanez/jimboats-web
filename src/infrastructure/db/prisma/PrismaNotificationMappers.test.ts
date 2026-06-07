@@ -222,6 +222,8 @@ export function createNotificationTemplate(
       {
         body:
           "Hello {{ customer.name }}, booking {{ booking.reference }} is confirmed.",
+        htmlBody:
+          "<p>Hello {{ customer.name }}, booking {{ booking.reference }} is confirmed.</p>",
         locale: LocaleCode.create("en"),
         previewText: "Booking {{ booking.reference }} confirmed",
         status: "PUBLISHED",
@@ -266,6 +268,8 @@ export function createNotificationDelivery(
       recipientType: "BUYER",
     },
     renderedBody: "Hello Sailor Guest, booking JB-2026-0001 is confirmed.",
+    renderedHtmlBody:
+      "<p>Hello Sailor Guest, booking JB-2026-0001 is confirmed.</p>",
     renderedSubject: "Booking JB-2026-0001 confirmed",
     ruleId: "rule-email",
     sendAfter: null,
@@ -315,6 +319,8 @@ export function templateRecord(
       {
         body:
           "Hello {{ customer.name }}, booking {{ booking.reference }} is confirmed.",
+        htmlBody:
+          "<p>Hello {{ customer.name }}, booking {{ booking.reference }} is confirmed.</p>",
         id: "translation-en",
         locale: "en",
         previewText: "Booking {{ booking.reference }} confirmed",
@@ -362,6 +368,8 @@ export function deliveryRecord(
     recipientPhone: null,
     recipientType: "BUYER",
     renderedBody: "Hello Sailor Guest, booking JB-2026-0001 is confirmed.",
+    renderedHtmlBody:
+      "<p>Hello Sailor Guest, booking JB-2026-0001 is confirmed.</p>",
     renderedSubject: "Booking JB-2026-0001 confirmed",
     ruleId: "rule-email",
     sendAfter: null,

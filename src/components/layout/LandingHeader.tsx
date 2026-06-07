@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { cn } from "@/design/variants";
 
 import { Container } from "./Container";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 type LandingHeaderLink = {
   href: string;
@@ -16,12 +17,14 @@ type LandingHeaderLink = {
 type LandingHeaderProps = {
   brand: string;
   cta: LandingHeaderLink;
+  homeHref: string;
   navigation: readonly LandingHeaderLink[];
 };
 
 export function LandingHeader({
   brand,
   cta,
+  homeHref,
   navigation,
 }: LandingHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -64,7 +67,7 @@ export function LandingHeader({
               "font-display text-3xl leading-none text-white transition-colors lg:text-4xl",
               scrolled && "text-text",
             )}
-            href="/en"
+            href={homeHref}
           >
             {brand}
           </a>
@@ -90,6 +93,7 @@ export function LandingHeader({
 
           <div className="flex items-center gap-3">
             <Button
+              className="hidden sm:inline-flex"
               href={cta.href}
               shape="pill"
               size="sm"
@@ -97,6 +101,7 @@ export function LandingHeader({
             >
               {cta.label}
             </Button>
+            <LanguageSwitcher variant={scrolled ? "solid" : "glass"} />
             <button
               aria-label="Open menu"
               className={cn(
@@ -143,6 +148,11 @@ export function LandingHeader({
               </a>
             ))}
           </nav>
+          <LanguageSwitcher
+            className="mb-4"
+            onNavigate={closeMenu}
+            variant="solid"
+          />
           <Button href={cta.href} shape="pill" size="xl" variant="accent">
             {cta.label}
           </Button>

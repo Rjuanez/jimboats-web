@@ -12,6 +12,8 @@ const actions = {
     data: {
       missingVariables: [],
       renderedBody: "Hello Sailor Guest, booking JB-2026-PREVIEW is confirmed.",
+      renderedHtmlBody:
+        "<p>Hello Sailor Guest, booking <strong>JB-2026-PREVIEW</strong> is confirmed.</p>",
       renderedPreviewText: "Booking JB-2026-PREVIEW confirmed",
       renderedSubject: "Booking JB-2026-PREVIEW confirmed",
       variables: ["booking.reference", "customer.name"],

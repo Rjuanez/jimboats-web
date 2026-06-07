@@ -36,6 +36,8 @@ describe("External notification providers", () => {
     ]);
     expect(JSON.parse(fetchCalls[0][1].body as string)).toMatchObject({
       from: "JimBoats <bookings@jimboatscharter.com>",
+      html:
+        '<p>Your booking <strong>JB-2026-0001</strong> is confirmed.</p>',
       reply_to: "info@jimboatscharter.com",
       subject: "Booking confirmed",
       text: "Your booking is confirmed.",
@@ -160,6 +162,8 @@ function baseDelivery(): NotificationDeliverySnapshot {
       recipientType: "BUYER",
     },
     renderedBody: "Your booking is confirmed.",
+    renderedHtmlBody:
+      '<p>Your booking <strong>JB-2026-0001</strong> is confirmed.</p>',
     renderedSubject: "Booking confirmed",
     ruleId: "rule-email",
     sendAfter: null,
