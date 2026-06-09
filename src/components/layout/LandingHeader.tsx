@@ -14,8 +14,16 @@ type LandingHeaderLink = {
   label: string;
 };
 
+type LandingBrandMark = {
+  alt: string;
+  height: number;
+  src: string;
+  width: number;
+};
+
 type LandingHeaderProps = {
   brand: string;
+  brandMark?: LandingBrandMark;
   cta: LandingHeaderLink;
   homeHref: string;
   navigation: readonly LandingHeaderLink[];
@@ -23,6 +31,7 @@ type LandingHeaderProps = {
 
 export function LandingHeader({
   brand,
+  brandMark,
   cta,
   homeHref,
   navigation,
@@ -64,12 +73,30 @@ export function LandingHeader({
         <Container className="flex min-h-12 items-center justify-between gap-4">
           <a
             className={cn(
-              "font-display text-3xl leading-none text-white transition-colors lg:text-4xl",
-              scrolled && "text-text",
+              "inline-flex min-h-12 min-w-0 items-center text-white transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white",
+              scrolled && "text-text focus-visible:outline-text",
             )}
             href={homeHref}
           >
-            {brand}
+            {brandMark ? (
+              // The SVG wordmark needs raw img rendering so CSS filters and sizing
+              // stay identical between the transparent and scrolled header states.
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                alt={brandMark.alt}
+                className={cn(
+                  "h-10 w-auto max-w-[150px] object-contain transition duration-300 sm:max-w-[190px] lg:h-12 lg:max-w-[220px]",
+                  scrolled ? "invert-0" : "invert",
+                )}
+                height={brandMark.height}
+                src={brandMark.src}
+                width={brandMark.width}
+              />
+            ) : (
+              <span className="font-display text-3xl leading-none lg:text-4xl">
+                {brand}
+              </span>
+            )}
           </a>
 
           <nav aria-label="Main navigation" className="hidden lg:block">

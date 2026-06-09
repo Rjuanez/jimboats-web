@@ -40,6 +40,12 @@ const generatedImage = ({
 
 export const homeLandingContent = {
   brand: "JimBoats",
+  brandMark: {
+    alt: "JimBoats Charter",
+    height: 514,
+    src: "/images/brand/jimboats-charter-wordmark.svg",
+    width: 922,
+  },
   navigation: [
     { href: "#experiences", label: "Experiences" },
     { href: "#extras", label: "Extras" },
@@ -258,9 +264,9 @@ export const homeLandingContent = {
   },
   footer: {
     contact: {
-      email: "hello@jimboats.com",
-      phone: "+34 600 000 000",
-      place: "Port Olimpic, Moll de Mestral, 08005 Barcelona",
+      email: "info@jimboatscharter.com",
+      phone: "+34 669707354",
+      place: "Moll de Xaloc, 3, Sant Martí, 08005 Barcelona",
     },
     copyright: "© 2026 JimBoats Charter Barcelona. All rights reserved.",
     description:
@@ -276,7 +282,11 @@ export const homeLandingContent = {
       { href: "#", label: "Terms of Service" },
     ],
     socialLinks: [
-      { href: "#", label: "Instagram", network: "instagram" },
+      {
+        href: "https://www.instagram.com/jimboatsbcn/",
+        label: "Instagram @jimboatsbcn",
+        network: "instagram",
+      },
       { href: "#", label: "Facebook", network: "facebook" },
     ],
   },
@@ -305,7 +315,7 @@ export function createHomeLandingStructuredData(content: HomeLandingContent) {
       addressLocality: "Barcelona",
       addressRegion: "Catalonia",
       postalCode: "08005",
-      streetAddress: "Port Olimpic, Moll de Mestral",
+      streetAddress: "Moll de Xaloc, 3, Sant Martí",
     },
     areaServed: "Barcelona",
     description: content.footer.description,
@@ -319,6 +329,9 @@ export function createHomeLandingStructuredData(content: HomeLandingContent) {
       url: experience.ctaHref,
     })),
     name: "JimBoats",
+    sameAs: content.footer.socialLinks
+      .map((link) => link.href)
+      .filter((href) => href.startsWith("https://")),
     telephone: content.footer.contact.phone,
   };
 }

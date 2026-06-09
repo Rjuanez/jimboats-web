@@ -46,8 +46,24 @@ describe("homeLandingPresenter", () => {
       { href: "#sunset-private-cruise", label: "Sunset Private Cruise" },
       { href: "#morning-breeze-charter", label: "Morning Breeze Charter" },
     ]);
+    expect(content.footer.contact).toEqual({
+      email: "info@jimboatscharter.com",
+      phone: "+34 669707354",
+      place: "Moll de Xaloc, 3, Sant Martí, 08005 Barcelona",
+    });
 
-    expect(createHomeLandingStructuredData(content).makesOffer).toEqual([
+    const structuredData = createHomeLandingStructuredData(content);
+
+    expect(structuredData).toMatchObject({
+      address: {
+        postalCode: "08005",
+        streetAddress: "Moll de Xaloc, 3, Sant Martí",
+      },
+      email: "info@jimboatscharter.com",
+      sameAs: ["https://www.instagram.com/jimboatsbcn/"],
+      telephone: "+34 669707354",
+    });
+    expect(structuredData.makesOffer).toEqual([
       expect.objectContaining({
         name: "Sunset Private Cruise",
         price: 290,

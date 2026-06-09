@@ -42,12 +42,20 @@ export type HomeLandingBookingStep = {
   title: string;
 };
 
+export type HomeLandingBrandMark = {
+  alt: string;
+  height: number;
+  src: string;
+  width: number;
+};
+
 export type HomeLandingContent = {
   booking: {
     steps: readonly HomeLandingBookingStep[];
     title: string;
   };
   brand: string;
+  brandMark?: HomeLandingBrandMark;
   experiences: readonly HomeLandingExperience[];
   experienceSection: {
     description: string;
@@ -114,6 +122,7 @@ export function HomeLandingPage({ content }: HomeLandingPageProps) {
     <div className="min-h-screen overflow-hidden bg-background text-text">
       <LandingHeader
         brand={content.brand}
+        brandMark={content.brandMark}
         cta={content.headerCta}
         homeHref={content.homeHref}
         navigation={content.navigation}

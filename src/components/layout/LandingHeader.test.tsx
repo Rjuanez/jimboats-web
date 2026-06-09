@@ -21,12 +21,19 @@ describe("LandingHeader", () => {
     render(
       <LandingHeader
         brand="JimBoats"
+        brandMark={{
+          alt: "JimBoats Charter",
+          height: 514,
+          src: "/images/brand/jimboats-charter-wordmark.svg",
+          width: 922,
+        }}
         cta={{ href: "#experiences", label: "Book now" }}
         homeHref="/en"
         navigation={navigation}
       />,
     );
 
+    expect(screen.getByRole("img", { name: "JimBoats Charter" })).toBeVisible();
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "Open menu" }));
