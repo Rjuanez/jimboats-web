@@ -21,6 +21,7 @@ import type {
   PublicBookingConsents,
   PublicBookingContent,
   PublicBookingCustomer,
+  PublicBookingExperienceAvailability,
   PublicBookingStepId,
 } from "./PublicBookingTypes";
 
@@ -67,6 +68,18 @@ export function PublicBookingWorkspace({
   const [selectedTimeSlotId, setSelectedTimeSlotId] = useState<string | null>(
     null,
   );
+  const [availabilityByExperienceId, setAvailabilityByExperienceId] = useState(
+    content.availabilityByExperienceId,
+  );
+  const [loadingAvailabilityExperienceId, setLoadingAvailabilityExperienceId] =
+    useState<string | null>(() =>
+      resolvedInitialExperienceId &&
+      !content.availabilityByExperienceId[resolvedInitialExperienceId]
+        ? resolvedInitialExperienceId
+        : null,
+    );
+  const [availabilityErrorExperienceId, setAvailabilityErrorExperienceId] =
+    useState<string | null>(null);
   const [selectedExtraIds, setSelectedExtraIds] = useState<string[]>([]);
   const [guestCount, setGuestCount] = useState(1);
   const [customer, setCustomer] =
@@ -89,13 +102,29 @@ export function PublicBookingWorkspace({
       (experience) => experience.id === selectedExperienceId,
     ) ?? null;
   const selectedExperienceAvailability = selectedExperienceId
-    ? content.availabilityByExperienceId?.[selectedExperienceId]
+    ? availabilityByExperienceId[selectedExperienceId]
     : null;
-  const activeCalendar =
-    selectedExperienceAvailability?.calendar ?? content.calendar;
+  const emptyCalendar = useMemo(
+    () => ({
+      ...content.calendar,
+      days: [],
+      monthLabel: dictionary.booking.experienceStep.availableDates,
+      months: [],
+    }),
+    [content.calendar, dictionary.booking.experienceStep.availableDates],
+  );
+  const activeCalendar = selectedExperienceId
+    ? (selectedExperienceAvailability?.calendar ?? emptyCalendar)
+    : content.calendar;
   const activeTimeSlots = selectedDateId
     ? (selectedExperienceAvailability?.timeSlotsByDate[selectedDateId] ?? [])
     : [];
+  const availabilityLoading =
+    selectedExperienceId === loadingAvailabilityExperienceId;
+  const availabilityError =
+    selectedExperienceId === availabilityErrorExperienceId
+      ? dictionary.booking.experienceStep.availabilityError
+      : null;
   const selectedDate =
     activeCalendar.days.find((day) => day.id === selectedDateId) ?? null;
   const selectedTimeSlot =
@@ -162,6 +191,60 @@ export function PublicBookingWorkspace({
     });
   }, [activeStep]);
 
+  useEffect(() => {
+    if (!selectedExperienceId) {
+      return;
+    }
+
+    if (availabilityByExperienceId[selectedExperienceId]) {
+      return;
+    }
+
+    const controller = new AbortController();
+    const availabilityUrl = `/api/public-booking/availability?locale=${encodeURIComponent(
+      content.locale,
+    )}&experienceId=${encodeURIComponent(selectedExperienceId)}`;
+
+    fetch(availabilityUrl, { signal: controller.signal })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error("Availability request failed.");
+        }
+
+        return (await response.json()) as {
+          availability?: PublicBookingExperienceAvailability;
+        };
+      })
+      .then((responseBody) => {
+        if (!responseBody.availability) {
+          throw new Error("Availability response was empty.");
+        }
+
+        const availability = responseBody.availability;
+
+        setAvailabilityByExperienceId((current) => ({
+          ...current,
+          [selectedExperienceId]: availability,
+        }));
+      })
+      .catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === "AbortError") {
+          return;
+        }
+
+        setAvailabilityErrorExperienceId(selectedExperienceId);
+      })
+      .finally(() => {
+        setLoadingAvailabilityExperienceId((current) =>
+          current === selectedExperienceId ? null : current,
+        );
+      });
+
+    return () => {
+      controller.abort();
+    };
+  }, [availabilityByExperienceId, content.locale, selectedExperienceId]);
+
   const scrollToBookingSection = (sectionId: string) => {
     window.setTimeout(() => {
       const target = document.getElementById(sectionId);
@@ -190,6 +273,8 @@ export function PublicBookingWorkspace({
     setCheckoutClientSecret(null);
     setCheckoutSessionId(null);
     setIsSubmittingPayment(false);
+    setLoadingAvailabilityExperienceId(null);
+    setAvailabilityErrorExperienceId(null);
   };
 
   const toggleExtra = (extraId: string) => {
@@ -292,6 +377,8 @@ export function PublicBookingWorkspace({
               {activeStep === "experience" ? (
                 <PublicBookingExperienceStep
                   calendar={activeCalendar}
+                  availabilityError={availabilityError}
+                  availabilityLoading={availabilityLoading}
                   content={content}
                   formatPrice={formatPrice}
                   onSelectDate={(dayId) => {
@@ -303,6 +390,9 @@ export function PublicBookingWorkspace({
                     scrollToBookingSection(timeSelectionId);
                   }}
                   onSelectExperience={(experienceId) => {
+                    const availabilityReady =
+                      Boolean(availabilityByExperienceId[experienceId]);
+
                     setSelectedExperienceId(experienceId);
                     setSelectedDateId(null);
                     setSelectedTimeSlotId(null);
@@ -310,6 +400,10 @@ export function PublicBookingWorkspace({
                     setGuestCount(1);
                     setCheckoutClientSecret(null);
                     setCheckoutSessionId(null);
+                    setLoadingAvailabilityExperienceId(
+                      availabilityReady ? null : experienceId,
+                    );
+                    setAvailabilityErrorExperienceId(null);
                     scrollToBookingSection(dateSelectionId);
                   }}
                   onSelectTimeSlot={(timeSlotId) => {

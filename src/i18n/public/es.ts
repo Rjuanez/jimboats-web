@@ -67,6 +67,9 @@ export const esPublicDictionary = {
     },
     experienceStep: {
       availableDates: "Fechas disponibles",
+      availabilityError:
+        "No se ha podido cargar la disponibilidad. Prueba a cambiar de experiencia o refrescar la página.",
+      availabilityLoading: "Cargando fechas disponibles...",
       dateDesktopTitle: "Elige tu fecha",
       dateMobileTitle: "Elige fecha",
       departureTimesUnavailable: "No hay horarios disponibles para esta fecha.",

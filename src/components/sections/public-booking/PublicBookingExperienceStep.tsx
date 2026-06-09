@@ -14,6 +14,8 @@ import type {
 
 type PublicBookingExperienceStepProps = {
   calendar: PublicBookingCalendarModel;
+  availabilityError?: string | null;
+  availabilityLoading?: boolean;
   content: PublicBookingContent;
   formatPrice: (amount: number) => string;
   onSelectDate: (dayId: string) => void;
@@ -27,6 +29,8 @@ type PublicBookingExperienceStepProps = {
 
 export function PublicBookingExperienceStep({
   calendar,
+  availabilityError,
+  availabilityLoading = false,
   content,
   formatPrice,
   onSelectDate,
@@ -100,12 +104,32 @@ export function PublicBookingExperienceStep({
               {content.maxAdvanceLabel}
             </p>
           </div>
-          <PublicBookingCalendar
-            calendar={calendar}
-            key={selectedExperienceId}
-            onSelectDate={onSelectDate}
-            selectedDateId={selectedDateId}
-          />
+          {availabilityLoading ? (
+            <div
+              aria-live="polite"
+              className="rounded-[1.75rem] border border-sand/25 bg-white p-5 text-sm text-text-muted shadow-soft lg:rounded-[2rem] lg:p-6"
+              role="status"
+            >
+              <div className="h-2 overflow-hidden rounded-full bg-sand/35">
+                <div className="h-full w-1/2 animate-pulse rounded-full bg-accent" />
+              </div>
+              <p className="mt-4">{copy.availabilityLoading}</p>
+            </div>
+          ) : availabilityError ? (
+            <div
+              className="rounded-[1.75rem] border border-sand/35 bg-white p-5 text-sm text-text-muted shadow-soft lg:rounded-[2rem] lg:p-6"
+              role="alert"
+            >
+              {availabilityError}
+            </div>
+          ) : (
+            <PublicBookingCalendar
+              calendar={calendar}
+              key={selectedExperienceId}
+              onSelectDate={onSelectDate}
+              selectedDateId={selectedDateId}
+            />
+          )}
         </section>
       ) : null}
 

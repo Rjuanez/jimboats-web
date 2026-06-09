@@ -1,11 +1,15 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { getPublicBookingMockPage } from "@/interface/next/presenters/publicBookingMockPresenter";
 
 import { PublicBookingWorkspace } from "./PublicBookingWorkspace";
 import type { PublicBookingActions } from "./PublicBookingTypes";
+
+const { prefetch } = vi.hoisted(() => ({
+  prefetch: vi.fn(),
+}));
 
 vi.mock("@stripe/stripe-js", () => ({
   loadStripe: vi.fn(() =>
@@ -25,7 +29,19 @@ vi.mock("@stripe/stripe-js", () => ({
   ),
 }));
 
+vi.mock("next/navigation", () => ({
+  usePathname: () => "/en/book",
+  useRouter: () => ({
+    prefetch,
+  }),
+  useSearchParams: () => new URLSearchParams(),
+}));
+
 describe("PublicBookingWorkspace", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
   it("preselects the requested experience", () => {
     render(
       <PublicBookingWorkspace
@@ -36,10 +52,70 @@ describe("PublicBookingWorkspace", () => {
       />,
     );
 
+    expect(screen.getByRole("img", { name: "JimBoats Charter" })).toBeVisible();
     expect(
       screen.getByRole("button", { name: /morning breeze/i }),
     ).toHaveAttribute("aria-pressed", "true");
     expect(screen.getByRole("heading", { name: /select date/i })).toBeVisible();
+  });
+
+  it("loads availability after selecting an experience", async () => {
+    const user = userEvent.setup();
+    const content = getPublicBookingMockPage();
+    const availability = content.availabilityByExperienceId["sunset-cruise"];
+    let resolveAvailability!: (response: {
+      json: () => Promise<{ availability: typeof availability }>;
+      ok: boolean;
+    }) => void;
+    const availabilityRequest = new Promise<{
+      json: () => Promise<{ availability: typeof availability }>;
+      ok: boolean;
+    }>((resolve) => {
+      resolveAvailability = resolve;
+    });
+    const fetchAvailability = vi.fn().mockReturnValue(availabilityRequest);
+
+    vi.stubGlobal("fetch", fetchAvailability);
+
+    render(
+      <PublicBookingWorkspace
+        actions={createActions()}
+        content={{
+          ...content,
+          availabilityByExperienceId: {},
+          calendar: {
+            ...content.calendar,
+            days: [],
+            months: [],
+          },
+          timeSlots: [],
+        }}
+        stripePublishableKey="pk_test_component"
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: /sunset cruise/i }));
+
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "Loading available dates",
+    );
+    expect(fetchAvailability).toHaveBeenCalledWith(
+      "/api/public-booking/availability?locale=en&experienceId=sunset-cruise",
+      expect.objectContaining({
+        signal: expect.any(AbortSignal),
+      }),
+    );
+
+    resolveAvailability({
+      json: async () => ({ availability }),
+      ok: true,
+    });
+
+    expect(
+      await screen.findByRole("button", {
+        name: /select monday june 15, 2026/i,
+      }),
+    ).toBeVisible();
   });
 
   it("starts secure checkout with the selected booking details", async () => {

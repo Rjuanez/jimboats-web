@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 
 import { cn } from "@/design/variants";
 import {
@@ -30,9 +31,35 @@ export function LanguageSwitcher({
   variant = "solid",
 }: LanguageSwitcherProps) {
   const pathname = usePathname() || `/${defaultLocale}`;
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const activeLocale = parsePublicLocale(pathname.split("/")[1] ?? "") ?? defaultLocale;
+  const [pendingHref, setPendingHref] = useState<string | null>(null);
+  const activeLocale =
+    parsePublicLocale(pathname.split("/")[1] ?? "") ?? defaultLocale;
   const search = searchParams?.toString() ?? "";
+  const localeLinks = useMemo(
+    () =>
+      supportedLocales.map((locale) => {
+        const localizedPath = createLocalizedEquivalentPath(locale, pathname);
+        const href = search ? `${localizedPath}?${search}` : localizedPath;
+
+        return {
+          active: locale === activeLocale,
+          href,
+          label: localeLabels[locale],
+          locale,
+        };
+      }),
+    [activeLocale, pathname, search],
+  );
+
+  useEffect(() => {
+    for (const link of localeLinks) {
+      if (!link.active) {
+        router.prefetch(link.href);
+      }
+    }
+  }, [localeLinks, router]);
 
   return (
     <nav aria-label="Language" className={cn("shrink-0", className)}>
@@ -44,15 +71,14 @@ export function LanguageSwitcher({
             : "border-sand/45 bg-white text-text shadow-sm",
         )}
       >
-        {supportedLocales.map((locale) => {
-          const localizedPath = createLocalizedEquivalentPath(locale, pathname);
-          const href = search ? `${localizedPath}?${search}` : localizedPath;
-          const active = locale === activeLocale;
+        {localeLinks.map(({ active, href, label, locale }) => {
+          const pending = !active && pendingHref === href;
 
           return (
             <li key={locale}>
               <Link
                 aria-current={active ? "page" : undefined}
+                aria-busy={pending ? "true" : undefined}
                 className={cn(
                   "inline-flex min-h-8 min-w-9 items-center justify-center rounded-full px-2 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
                   variant === "glass"
@@ -65,11 +91,23 @@ export function LanguageSwitcher({
                     : variant === "glass"
                       ? "text-white/85 hover:bg-white/15 hover:text-white"
                       : "text-text-muted hover:bg-sand/25 hover:text-text",
+                  pending &&
+                    (variant === "glass"
+                      ? "animate-pulse text-white"
+                      : "animate-pulse text-accent-strong"),
                 )}
                 href={href}
-                onClick={onNavigate}
+                onClick={() => {
+                  if (!active) {
+                    setPendingHref(href);
+                  }
+                  onNavigate?.();
+                }}
+                onFocus={() => router.prefetch(href)}
+                onMouseEnter={() => router.prefetch(href)}
+                scroll={false}
               >
-                {localeLabels[locale]}
+                {label}
               </Link>
             </li>
           );

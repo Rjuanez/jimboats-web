@@ -66,6 +66,9 @@ export const enPublicDictionary = {
     },
     experienceStep: {
       availableDates: "Available dates",
+      availabilityError:
+        "Availability could not be loaded. Try changing experience or refreshing the page.",
+      availabilityLoading: "Loading available dates...",
       dateDesktopTitle: "Select Your Date",
       dateMobileTitle: "Select Date",
       departureTimesUnavailable: "No available departure times for this date.",

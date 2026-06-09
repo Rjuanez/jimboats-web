@@ -68,6 +68,9 @@ export const caPublicDictionary = {
     },
     experienceStep: {
       availableDates: "Dates disponibles",
+      availabilityError:
+        "No s'ha pogut carregar la disponibilitat. Prova a canviar d'experiència o refrescar la pàgina.",
+      availabilityLoading: "Carregant dates disponibles...",
       dateDesktopTitle: "Tria la teva data",
       dateMobileTitle: "Tria data",
       departureTimesUnavailable: "No hi ha horaris disponibles per a aquesta data.",

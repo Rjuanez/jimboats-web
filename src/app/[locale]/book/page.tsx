@@ -48,7 +48,9 @@ export default async function PublicBookingPage({
   searchParams,
 }: PublicBookingPageProps) {
   const locale = await resolveLocale(params);
-  const content = await getPublicBookingPage(locale);
+  const content = await getPublicBookingPage(locale, {
+    includeAvailability: false,
+  });
   const stripePublishableKey = getPublicStripePublishableKey();
   const queryParams = await searchParams;
   const experienceParam = queryParams?.experience;

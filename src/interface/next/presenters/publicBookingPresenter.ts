@@ -3,6 +3,7 @@ import type {
   PublicBookingCalendar,
   PublicBookingCalendarMonth,
   PublicBookingContent,
+  PublicBookingExperienceAvailability,
   PublicBookingExtra,
   PublicBookingTimeSlot,
 } from "@/components/sections/public-booking/PublicBookingTypes";
@@ -16,7 +17,7 @@ import {
   localeToIntlLocale,
   type PublicLocale,
 } from "@/i18n/locales";
-import { getPublicDictionary, type PublicDictionary } from "@/i18n/public";
+import { getPublicDictionary } from "@/i18n/public";
 import type { SupportedLocaleCode } from "@/shared/domain/LocaleCode";
 import type { MoneySnapshot } from "@/shared/domain/Money";
 
@@ -88,6 +89,7 @@ const fallbackExtraImage = (extraId: string, alt: string) => {
 
 export async function getPublicBookingPage(
   locale: SupportedLocaleCode = "en",
+  options: { includeAvailability?: boolean } = {},
 ): Promise<PublicBookingContent> {
   if (process.env.JIMBOATS_ADMIN_PREVIEW_DATA === "1") {
     const { getPublicBookingMockPage } = await import(
@@ -98,9 +100,33 @@ export async function getPublicBookingPage(
   }
 
   const { getContainer } = await import("@/container");
-  const page = await getContainer().publicBooking.getPage({ locale });
+  const page = await getContainer().publicBooking.getPage({
+    includeAvailability: options.includeAvailability,
+    locale,
+  });
 
   return presentPublicBookingPage(page, locale);
+}
+
+export async function getPublicBookingAvailability(input: {
+  experienceId: string;
+  locale: SupportedLocaleCode;
+}): Promise<PublicBookingExperienceAvailability | null> {
+  if (process.env.JIMBOATS_ADMIN_PREVIEW_DATA === "1") {
+    const { getPublicBookingMockPage } = await import(
+      "./publicBookingMockPresenter"
+    );
+    const mockPage = getPublicBookingMockPage(input.locale);
+
+    return mockPage.availabilityByExperienceId[input.experienceId] ?? null;
+  }
+
+  const { getContainer } = await import("@/container");
+  const availability = await getContainer().publicBooking.getAvailability(input);
+
+  return availability
+    ? presentPublicBookingAvailability(availability, input.locale)
+    : null;
 }
 
 function presentPublicBookingPage(
@@ -134,19 +160,18 @@ function presentPublicBookingPage(
     Object.entries(page.availabilityByExperienceId).map(
       ([experienceId, availability]) => [
         experienceId,
-        presentAvailability(availability, locale, dictionary),
+        presentPublicBookingAvailability(availability, locale),
       ],
     ),
   );
   const firstAvailability =
     availabilityByExperienceId[experiences[0]?.id ?? ""] ??
-    presentAvailability(
+    presentPublicBookingAvailability(
       {
         days: [],
         timeSlotsByDate: {},
       },
       locale,
-      dictionary,
     );
   const firstExtras =
     extrasByExperienceId[experiences[0]?.id ?? ""] ??
@@ -196,11 +221,11 @@ function presentPublicBookingPage(
   } satisfies PublicBookingContent;
 }
 
-function presentAvailability(
+export function presentPublicBookingAvailability(
   availability: PublicBookingExperienceAvailabilityDto,
   locale: SupportedLocaleCode,
-  dictionary: PublicDictionary,
 ) {
+  const dictionary = getPublicDictionary(locale);
   const months = presentCalendarMonths(availability.days, locale);
   const firstMonth = months[0];
   const calendar = {

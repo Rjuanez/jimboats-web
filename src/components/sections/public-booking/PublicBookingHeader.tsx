@@ -26,10 +26,17 @@ export function PublicBookingHeader({
     <header className="fixed left-0 right-0 top-0 z-50 border-b border-sand/30 bg-white shadow-soft">
       <Container className="flex min-h-16 items-center justify-between gap-4 py-3 md:min-h-24 md:py-6">
         <a
-          className="font-display text-3xl leading-none tracking-wide text-text md:text-4xl"
+          className="inline-flex min-h-12 min-w-0 items-center text-text transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-text"
           href={content.homeHref}
         >
-          {content.brand}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            alt="JimBoats Charter"
+            className="h-10 w-auto max-w-[150px] object-contain md:h-12 md:max-w-[190px]"
+            height={514}
+            src="/images/brand/jimboats-charter-wordmark.svg"
+            width={922}
+          />
         </a>
 
         <nav

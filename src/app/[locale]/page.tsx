@@ -5,6 +5,7 @@ import { HomeLandingPage } from "@/components/sections/HomeLandingPage";
 import {
   createLanguageAlternates,
   parsePublicLocale,
+  supportedLocales,
   type PublicLocale,
 } from "@/i18n/locales";
 import { getPublicDictionary } from "@/i18n/public";
@@ -14,13 +15,15 @@ import {
   homeLandingContent,
 } from "@/interface/next/presenters/homeLandingPresenter";
 
-export const dynamic = "force-dynamic";
-
 type LocalizedPageProps = {
   params: Promise<{
     locale: string;
   }>;
 };
+
+export function generateStaticParams() {
+  return supportedLocales.map((locale) => ({ locale }));
+}
 
 export async function generateMetadata({
   params,

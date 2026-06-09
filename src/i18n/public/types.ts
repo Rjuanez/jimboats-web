@@ -58,6 +58,8 @@ export type PublicDictionary = {
     };
     experienceStep: {
       availableDates: string;
+      availabilityError: string;
+      availabilityLoading: string;
       dateDesktopTitle: string;
       dateMobileTitle: string;
       departureTimesUnavailable: string;

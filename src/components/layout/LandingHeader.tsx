@@ -1,7 +1,7 @@
 "use client";
 
 import { Menu, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/design/variants";
@@ -128,7 +128,9 @@ export function LandingHeader({
             >
               {cta.label}
             </Button>
-            <LanguageSwitcher variant={scrolled ? "solid" : "glass"} />
+            <Suspense fallback={null}>
+              <LanguageSwitcher variant={scrolled ? "solid" : "glass"} />
+            </Suspense>
             <button
               aria-label="Open menu"
               className={cn(
@@ -175,11 +177,13 @@ export function LandingHeader({
               </a>
             ))}
           </nav>
-          <LanguageSwitcher
-            className="mb-4"
-            onNavigate={closeMenu}
-            variant="solid"
-          />
+          <Suspense fallback={null}>
+            <LanguageSwitcher
+              className="mb-4"
+              onNavigate={closeMenu}
+              variant="solid"
+            />
+          </Suspense>
           <Button href={cta.href} shape="pill" size="xl" variant="accent">
             {cta.label}
           </Button>

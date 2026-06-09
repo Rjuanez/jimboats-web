@@ -10,8 +10,7 @@ import type {
 
 describe("GetPublicBookingPageUseCase", () => {
   it("returns published experiences with availability and compatible extras", async () => {
-    const useCase = new GetPublicBookingPageUseCase(
-      new FakePublicBookingCatalogReader({
+    const catalog = new FakePublicBookingCatalogReader({
         blocks: [
           {
             id: "manual-block",
@@ -20,7 +19,9 @@ describe("GetPublicBookingPageUseCase", () => {
           },
         ],
         experiences: [createExperience()],
-      }),
+      });
+    const useCase = new GetPublicBookingPageUseCase(
+      catalog,
       fixedClock(),
     );
 
@@ -61,6 +62,52 @@ describe("GetPublicBookingPageUseCase", () => {
       available: true,
       availableExtraIds: ["paddle-surf", "private-photographer"],
     });
+    expect(catalog.listActiveCalendarBlocksCalls).toBe(1);
+  });
+
+  it("can return the public booking catalog without availability", async () => {
+    const catalog = new FakePublicBookingCatalogReader({
+      experiences: [createExperience()],
+    });
+    const useCase = new GetPublicBookingPageUseCase(catalog, fixedClock());
+
+    const page = await useCase.execute({
+      includeAvailability: false,
+      locale: "en",
+    });
+
+    expect(page.experiences).toHaveLength(1);
+    expect(page.extrasByExperienceId["morning-breeze-charter"]).toHaveLength(2);
+    expect(page.availabilityByExperienceId).toEqual({});
+    expect(page.startLocalDate).toBe("2026-06-01");
+    expect(page.endLocalDate).toBe("2026-12-04");
+    expect(catalog.listActiveCalendarBlocksCalls).toBe(0);
+  });
+
+  it("returns availability for one requested experience", async () => {
+    const catalog = new FakePublicBookingCatalogReader({
+      experiences: [
+        createExperience(),
+        createExperience({
+          id: "sunset-cruise",
+          internalName: "Sunset Cruise",
+          title: "Sunset Cruise",
+        }),
+      ],
+    });
+    const useCase = new GetPublicBookingPageUseCase(catalog, fixedClock());
+
+    const availability = await useCase.executeAvailability({
+      experienceId: "sunset-cruise",
+      locale: "en",
+    });
+
+    expect(availability?.days).toHaveLength(187);
+    expect(availability?.timeSlotsByDate["2026-06-11"]?.[0]).toMatchObject({
+      available: true,
+      availableExtraIds: ["paddle-surf", "private-photographer"],
+    });
+    expect(catalog.listActiveCalendarBlocksCalls).toBe(1);
   });
 
   it("filters slot extras when the selected start does not satisfy notice", async () => {
@@ -163,6 +210,8 @@ describe("GetPublicBookingPageUseCase", () => {
 });
 
 class FakePublicBookingCatalogReader implements PublicBookingCatalogReader {
+  listActiveCalendarBlocksCalls = 0;
+
   constructor(
     private readonly input: {
       blocks?: PublicBookingCalendarBlockReadModel[];
@@ -171,6 +220,8 @@ class FakePublicBookingCatalogReader implements PublicBookingCatalogReader {
   ) {}
 
   async listActiveCalendarBlocks() {
+    this.listActiveCalendarBlocksCalls += 1;
+
     return this.input.blocks ?? [];
   }
 

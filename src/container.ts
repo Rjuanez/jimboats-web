@@ -34,7 +34,10 @@ import { IssueBookingAccessLinkUseCase } from "@/modules/booking/application/Iss
 import { SaveCancellationPolicyUseCase } from "@/modules/booking/application/SaveCancellationPolicyUseCase";
 import { ViewBookingByAccessTokenUseCase } from "@/modules/booking/application/ViewBookingByAccessTokenUseCase";
 import type { ViewBookingByAccessTokenQuery } from "@/modules/booking/application/BookingAccessDtos";
-import type { GetPublicBookingPageQuery } from "@/modules/booking/application/PublicBookingDtos";
+import type {
+  GetPublicBookingAvailabilityQuery,
+  GetPublicBookingPageQuery,
+} from "@/modules/booking/application/PublicBookingDtos";
 import type { DepositPaymentProvider } from "@/modules/booking/application/ports/DepositPaymentProvider";
 import type {
   CreatePublicBookingCheckoutCommand,
@@ -514,6 +517,8 @@ export function getContainer() {
     publicBooking: {
       createCheckout: (command: CreatePublicBookingCheckoutCommand) =>
         createPublicBookingCheckoutUseCase.execute(command),
+      getAvailability: (query: GetPublicBookingAvailabilityQuery) =>
+        getPublicBookingPageUseCase.executeAvailability(query),
       getCheckoutReturn: (query: GetPublicBookingCheckoutReturnQuery) =>
         getPublicBookingCheckoutReturnUseCase.execute(query),
       getPage: (query: GetPublicBookingPageQuery) =>

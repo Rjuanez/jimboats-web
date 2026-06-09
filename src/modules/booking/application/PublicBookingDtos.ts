@@ -67,6 +67,12 @@ export type PublicBookingPageDto = {
   startLocalDate: string;
 };
 
+export type GetPublicBookingAvailabilityQuery = {
+  experienceId: string;
+  locale: string;
+};
+
 export type GetPublicBookingPageQuery = {
+  includeAvailability?: boolean;
   locale: string;
 };

@@ -18,6 +18,7 @@ import type {
   PublicBookingCatalogReader,
 } from "./ports/PublicBookingCatalogReader";
 import type {
+  GetPublicBookingAvailabilityQuery,
   GetPublicBookingPageQuery,
   PublicBookingExperienceAvailabilityDto,
   PublicBookingPageDto,
@@ -40,44 +41,30 @@ export class GetPublicBookingPageUseCase {
   ): Promise<PublicBookingPageDto> {
     const locale = LocaleCode.create(query.locale).value;
     const now = this.clock.now();
-    const today = todayLocalDate(now, boatCalendarTimeZone);
-    const startLocalDate = monthStartLocalDate(today);
     const experiences = await this.catalog.listBookableExperiences({ locale });
-    const endLocalDate = maxAdvanceEndLocalDate(
-      today,
-      maximumAdvanceMonthsFromExperiences(experiences),
-    );
-    const blocks = await this.catalog.listActiveCalendarBlocks({
-      from: new Date(
-        localDateTimeToUtcDate(
-          startLocalDate,
-          0,
-          boatCalendarTimeZone,
-        ).getTime() -
-          24 * 60 * 60_000,
-      ),
-      to: new Date(
-        localDateTimeToUtcDate(
-          addDaysToLocalDate(endLocalDate, 1),
-          0,
-          boatCalendarTimeZone,
-        ).getTime() +
-          24 * 60 * 60_000,
-      ),
-    });
-    const localDates = enumerateLocalDates(startLocalDate, endLocalDate);
+    const availabilityWindow = createAvailabilityWindow(now, experiences);
+    const includeAvailability = query.includeAvailability ?? true;
+    const blocks = includeAvailability
+      ? await this.catalog.listActiveCalendarBlocks(
+          calendarBlockRangeForWindow(availabilityWindow),
+        )
+      : [];
     const availabilityByExperienceId: PublicBookingPageDto["availabilityByExperienceId"] =
       {};
     const extrasByExperienceId: PublicBookingPageDto["extrasByExperienceId"] =
       {};
 
     for (const experience of experiences) {
-      availabilityByExperienceId[experience.id] = buildExperienceAvailability({
-        blocks,
-        experience,
-        localDates,
-        now,
-      });
+      if (includeAvailability) {
+        availabilityByExperienceId[experience.id] = buildExperienceAvailability(
+          {
+            blocks,
+            experience,
+            localDates: availabilityWindow.localDates,
+            now,
+          },
+        );
+      }
       extrasByExperienceId[experience.id] = experience.extras
         .filter((extra) => extra.enabled && extra.status === "ACTIVE")
         .map((extra) => ({
@@ -94,7 +81,7 @@ export class GetPublicBookingPageUseCase {
       availabilityByExperienceId,
       defaultDepositAmount:
         experiences[0]?.depositAmount ?? defaultDepositAmount,
-      endLocalDate,
+      endLocalDate: availabilityWindow.endLocalDate,
       experiences: experiences.map((experience) => ({
         basePrice: experience.basePrice,
         capacity: experience.capacity,
@@ -110,9 +97,80 @@ export class GetPublicBookingPageUseCase {
       })),
       extrasByExperienceId,
       locale,
-      startLocalDate,
+      startLocalDate: availabilityWindow.startLocalDate,
     };
   }
+
+  async executeAvailability(
+    query: GetPublicBookingAvailabilityQuery,
+  ): Promise<PublicBookingExperienceAvailabilityDto | null> {
+    const locale = LocaleCode.create(query.locale).value;
+    const now = this.clock.now();
+    const experiences = await this.catalog.listBookableExperiences({ locale });
+    const experience =
+      experiences.find((item) => item.id === query.experienceId) ?? null;
+
+    if (!experience) {
+      return null;
+    }
+
+    const availabilityWindow = createAvailabilityWindow(now, experiences);
+    const blocks = await this.catalog.listActiveCalendarBlocks(
+      calendarBlockRangeForWindow(availabilityWindow),
+    );
+
+    return buildExperienceAvailability({
+      blocks,
+      experience,
+      localDates: availabilityWindow.localDates,
+      now,
+    });
+  }
+}
+
+type AvailabilityWindow = {
+  endLocalDate: string;
+  localDates: string[];
+  startLocalDate: string;
+};
+
+function createAvailabilityWindow(
+  now: Date,
+  experiences: PublicBookingCatalogExperienceReadModel[],
+): AvailabilityWindow {
+  const today = todayLocalDate(now, boatCalendarTimeZone);
+  const startLocalDate = monthStartLocalDate(today);
+  const endLocalDate = maxAdvanceEndLocalDate(
+    today,
+    maximumAdvanceMonthsFromExperiences(experiences),
+  );
+
+  return {
+    endLocalDate,
+    localDates: enumerateLocalDates(startLocalDate, endLocalDate),
+    startLocalDate,
+  };
+}
+
+function calendarBlockRangeForWindow(window: AvailabilityWindow) {
+  return {
+    from: new Date(
+      localDateTimeToUtcDate(
+        window.startLocalDate,
+        0,
+        boatCalendarTimeZone,
+      ).getTime() -
+        24 * 60 * 60_000,
+    ),
+    to: new Date(
+      localDateTimeToUtcDate(
+        addDaysToLocalDate(window.endLocalDate, 1),
+        0,
+        boatCalendarTimeZone,
+      ).getTime() +
+        24 * 60 * 60_000,
+    ),
+  };
 }
 
 function buildExperienceAvailability(input: {
