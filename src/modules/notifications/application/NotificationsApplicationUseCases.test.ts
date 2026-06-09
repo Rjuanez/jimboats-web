@@ -155,8 +155,10 @@ describe("Notifications application use cases", () => {
         allowedVariables: [
           "booking_access_url",
           "booking_date",
+          "booking_date_label",
           "booking_reference",
           "booking_time",
+          "booking_time_range",
           "customer_name",
           "deposit_amount",
           "experience_name",
@@ -170,7 +172,7 @@ describe("Notifications application use cases", () => {
         translations: [
           createTranslation({
             body:
-              "Hello {{ customer_name }}, booking {{ booking_reference }} for {{ experience_name }} is confirmed on {{ booking_date }} at {{ booking_time }}. Guests: {{ guest_count }}. Deposit: {{ deposit_amount }}. Remaining: {{ remaining_amount }}. {{ booking_access_url }}",
+              "Hello {{ customer_name }}, booking {{ booking_reference }} for {{ experience_name }} is confirmed on {{ booking_date_label }} from {{ booking_time_range }}. Guests: {{ guest_count }}. Deposit: {{ deposit_amount }}. Remaining: {{ remaining_amount }}. {{ booking_access_url }}",
             previewText: "Booking {{ booking_reference }} confirmed",
             subject: null,
           }),
@@ -193,9 +195,9 @@ describe("Notifications application use cases", () => {
       providerTemplateId: "template_prelude_1",
       providerVariables: {
         booking_access_url: "",
-        booking_date: "10/06/2026",
+        booking_date_label: "Wednesday 10 June",
         booking_reference: "JB-2026-0001",
-        booking_time: "10:00",
+        booking_time_range: "10:00 - 14:00",
         customer_name: "Sailor Guest",
         deposit_amount: "100 EUR",
         experience_name: "Sunset Cruise",
@@ -203,7 +205,7 @@ describe("Notifications application use cases", () => {
         remaining_amount: "190 EUR",
       },
       renderedBody:
-        "Hello Sailor Guest, booking JB-2026-0001 for Sunset Cruise is confirmed on 10/06/2026 at 10:00. Guests: 4. Deposit: 100 EUR. Remaining: 190 EUR.",
+        "Hello Sailor Guest, booking JB-2026-0001 for Sunset Cruise is confirmed on Wednesday 10 June from 10:00 - 14:00. Guests: 4. Deposit: 100 EUR. Remaining: 190 EUR.",
       recipient: {
         phone: "+34 600 000 000",
       },
@@ -763,10 +765,12 @@ function createBooking(
       booking: {
         guestCount: 4,
         reference: "JB-2026-0001",
+        selectedEndMinutes: 840,
         selectedLocalDate: "2026-06-10",
         selectedStartMinutes: 600,
       },
       customer: {
+        locale: "en",
         name: "Sailor Guest",
       },
       experience: {

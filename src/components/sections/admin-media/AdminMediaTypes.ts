@@ -34,6 +34,7 @@ export type AdminMediaProcessingEvent = {
 
 export type AdminMediaAsset = {
   altText: Record<AdminMediaLocaleCode, string>;
+  absolutePublicUrl: string;
   collection: AdminMediaCollection;
   dimensions: string;
   failureReason: string | null;

@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import type { AdminExperiencesWorkspaceDto } from "@/modules/experience-catalog/application/AdminExperienceDtos";
 import type { AdminExtrasWorkspaceDto } from "@/modules/experience-catalog/application/AdminExtraDtos";
@@ -7,7 +7,13 @@ import type { AdminMediaListDto } from "@/modules/media-library/application/Admi
 import { presentAdminMediaList } from "./adminMediaPresenter";
 
 describe("admin media presenter", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
   it("maps application media assets into admin page data", () => {
+    vi.stubEnv("PUBLIC_SITE_URL", "https://jimboatscharter.com/");
+
     const pageData = presentAdminMediaList({
       assets: [
         {
@@ -69,6 +75,8 @@ describe("admin media presenter", () => {
         en: "Private sunset charter in Barcelona.",
         es: "",
       },
+      absolutePublicUrl:
+        "https://jimboatscharter.com/media/experiences/sunset-800.webp",
       collection: "Experiences",
       dimensions: "1200 x 900",
       filename: "sunset.jpg",

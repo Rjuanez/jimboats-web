@@ -255,6 +255,6 @@ export type PublicDictionary = {
     remainingOnboard: string;
     stillFinalizingDescription: string;
     stillFinalizingTitle: string;
-    willSendPass: (email: string) => string;
+    willSendPass: string;
   };
 };

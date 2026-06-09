@@ -302,7 +302,7 @@ export const esPublicDictionary = {
     stillFinalizingDescription:
       "Stripe todavía está finalizando el pago. Si esta página no se actualiza pronto, contacta con nosotros y revisaremos la reserva manualmente.",
     stillFinalizingTitle: "Seguimos finalizando tu reserva",
-    willSendPass: (email) =>
-      `Enviaremos el pase de reserva y los detalles de pago a ${email}.`,
+    willSendPass:
+      "Enviaremos el pase de reserva y los detalles de pago a {{ email }}.",
   },
 } satisfies PublicDictionary;

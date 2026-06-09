@@ -51,7 +51,10 @@ export default async function PublicBookingSuccessPage({
   return (
     <PublicBookingReturnSection
       content={content}
-      dictionary={dictionary}
+      dictionary={{
+        ...dictionary.returnPage,
+        backToJimBoats: dictionary.common.backToJimBoats,
+      }}
       locale={locale}
       sessionId={sessionId}
     />

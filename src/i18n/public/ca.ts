@@ -303,7 +303,7 @@ export const caPublicDictionary = {
     stillFinalizingDescription:
       "Stripe encara està finalitzant el pagament. Si aquesta pàgina no s'actualitza aviat, contacta amb nosaltres i revisarem la reserva manualment.",
     stillFinalizingTitle: "Seguim finalitzant la reserva",
-    willSendPass: (email) =>
-      `Enviarem el passi de reserva i els detalls de pagament a ${email}.`,
+    willSendPass:
+      "Enviarem el passi de reserva i els detalls de pagament a {{ email }}.",
   },
 } satisfies PublicDictionary;

@@ -23,15 +23,19 @@ describe("SimpleTemplateRenderer", () => {
       subject: "Booking {{ booking.reference }} confirmed",
     });
 
-    expect(result).toEqual({
+    expect(result).toMatchObject({
       missingVariables: [],
       renderedBody: "Hello Sailor Guest, booking JB-2026-0001.",
-      renderedHtmlBody:
-        "<p>Hello Sailor Guest, booking <strong>JB-2026-0001</strong>.</p>",
       renderedPreviewText: "Booking JB-2026-0001",
       renderedSubject: "Booking JB-2026-0001 confirmed",
       variables: ["booking.reference", "customer.name"],
     });
+    expect(result.renderedHtmlBody).toContain("<!doctype html>");
+    expect(result.renderedHtmlBody).toContain("JimBoats");
+    expect(result.renderedHtmlBody).toContain("Booking JB-2026-0001");
+    expect(result.renderedHtmlBody).toContain(
+      "<p>Hello Sailor Guest, booking <strong>JB-2026-0001</strong>.</p>",
+    );
   });
 
   it("reports missing and unsupported variables", async () => {

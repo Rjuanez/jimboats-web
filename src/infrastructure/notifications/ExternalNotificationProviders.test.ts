@@ -45,6 +45,31 @@ describe("External notification providers", () => {
     });
   });
 
+  it("wraps text-only email deliveries in the shared email layout", async () => {
+    const fetchCalls: Array<[string, RequestInit]> = [];
+    const fetchFn = createFetchFake(fetchCalls, { id: "email_1" });
+    const provider = new ResendEmailNotificationProvider(
+      {
+        apiKey: "resend-key",
+        from: "JimBoats <bookings@jimboatscharter.com>",
+        replyTo: null,
+      },
+      fetchFn,
+    );
+
+    await provider.send({
+      ...emailDelivery(),
+      renderedHtmlBody: null,
+    });
+
+    const payload = JSON.parse(fetchCalls[0][1].body as string);
+
+    expect(payload.html).toContain("<!doctype html>");
+    expect(payload.html).toContain("JimBoats");
+    expect(payload.html).toContain("<p>Your booking is confirmed.</p>");
+    expect(payload.text).toBe("Your booking is confirmed.");
+  });
+
   it("sends provider template deliveries to Prelude WhatsApp", async () => {
     const fetchCalls: Array<[string, RequestInit]> = [];
     const fetchFn = createFetchFake(fetchCalls, { id: "tx_1" });

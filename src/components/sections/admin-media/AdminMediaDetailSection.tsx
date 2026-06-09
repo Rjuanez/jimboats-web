@@ -3,10 +3,12 @@ import {
   ArrowLeft,
   CheckCircle2,
   Clock3,
+  Copy,
   ExternalLink,
   Image as ImageIcon,
   RefreshCw,
 } from "lucide-react";
+import { useState } from "react";
 
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
@@ -109,6 +111,7 @@ export function AdminMediaDetailSection({
               label="Public path"
               value={asset.publicPath || "Pending worker output"}
             />
+            <EmailUrlRow value={asset.absolutePublicUrl} />
             {asset.failureReason ? (
               <MetadataRow label="Failure" value={asset.failureReason} />
             ) : null}
@@ -220,6 +223,51 @@ function MetadataRow({ label, value }: { label: string; value: string }) {
         {label}
       </dt>
       <dd className="mt-1 break-all font-semibold text-slate-950">{value}</dd>
+    </div>
+  );
+}
+
+function EmailUrlRow({ value }: { value: string }) {
+  const [hasCopied, setHasCopied] = useState(false);
+  const displayValue = value || "Pending worker output";
+
+  async function copyToClipboard() {
+    if (!value || !navigator.clipboard) {
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(value);
+      setHasCopied(true);
+      window.setTimeout(() => setHasCopied(false), 1800);
+    } catch {
+      setHasCopied(false);
+    }
+  }
+
+  return (
+    <div className="rounded-md bg-slate-50 px-3 py-2">
+      <dt className="text-xs font-semibold uppercase tracking-wide text-slate-600">
+        Email URL
+      </dt>
+      <dd className="mt-1 flex min-w-0 items-start gap-2">
+        <span className="min-w-0 flex-1 break-all font-semibold text-slate-950">
+          {displayValue}
+        </span>
+        {value ? (
+          <button
+            aria-label="Copy email URL"
+            className="inline-flex size-8 shrink-0 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
+            onClick={() => {
+              void copyToClipboard();
+            }}
+            title={hasCopied ? "Copied" : "Copy email URL"}
+            type="button"
+          >
+            <Copy className="size-4" aria-hidden="true" />
+          </button>
+        ) : null}
+      </dd>
     </div>
   );
 }

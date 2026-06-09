@@ -17,6 +17,8 @@ const mediaAssets: AdminMediaAsset[] = [
       en: "Private catamaran sailing at sunset in Barcelona.",
       es: "Catamaran privado navegando al atardecer frente a Barcelona.",
     },
+    absolutePublicUrl:
+      "http://localhost:3000/images/generated/landing/experience-sunset-toast-1024.webp",
     collection: "Experiences",
     dimensions: "1024 x 1024",
     failureReason: null,
@@ -81,6 +83,8 @@ const mediaAssets: AdminMediaAsset[] = [
       en: "Private morning charter on calm Barcelona water.",
       es: "Salida privada de mañana con mar tranquilo en Barcelona.",
     },
+    absolutePublicUrl:
+      "http://localhost:3000/images/generated/landing/experience-morning-breeze-1024.webp",
     collection: "Experiences",
     dimensions: "1024 x 1024",
     failureReason: null,
@@ -148,6 +152,8 @@ const mediaAssets: AdminMediaAsset[] = [
       en: "Premium cava toast during a private boat charter.",
       es: "Brindis con cava premium durante una salida privada en barco.",
     },
+    absolutePublicUrl:
+      "http://localhost:3000/images/generated/landing/upgrade-sunset-toast-1024.webp",
     collection: "Extras",
     dimensions: "1024 x 1024",
     failureReason: null,
@@ -211,6 +217,8 @@ const mediaAssets: AdminMediaAsset[] = [
       en: "",
       es: "",
     },
+    absolutePublicUrl:
+      "http://localhost:3000/images/generated/landing/gallery-barcelona-coast-1024.webp",
     collection: "Gallery",
     dimensions: "1024 x 1024",
     failureReason: "Large variant failed.",
@@ -325,6 +333,7 @@ function presentAdminMediaAsset(
       en: asset.altText.en ?? "",
       es: asset.altText.es ?? "",
     },
+    absolutePublicUrl: absolutePublicUrl(primaryVariant?.publicUrl ?? ""),
     collection: collectionLabel(asset.collection),
     dimensions: dimensionsLabel(asset.original.dimensions),
     failureReason: asset.failureReason,
@@ -353,6 +362,30 @@ function presentAdminMediaAsset(
     })),
     workflow: processingWorkflow(asset),
   };
+}
+
+function absolutePublicUrl(publicUrl: string) {
+  if (!publicUrl) {
+    return "";
+  }
+
+  return new URL(publicUrl, publicSiteUrlFromEnv()).toString();
+}
+
+function publicSiteUrlFromEnv() {
+  const explicitUrl = process.env.PUBLIC_SITE_URL?.trim();
+
+  if (explicitUrl) {
+    return explicitUrl.replace(/\/+$/, "");
+  }
+
+  const appDomain = process.env.APP_DOMAIN?.trim();
+
+  if (appDomain) {
+    return `https://${appDomain}`.replace(/\/+$/, "");
+  }
+
+  return "http://localhost:3000";
 }
 
 function mediaUsageByAssetId(

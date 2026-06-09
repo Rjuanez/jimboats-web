@@ -4,6 +4,8 @@ import type {
 } from "@/modules/notifications/application/ports/NotificationProvider";
 import type { NotificationDeliverySnapshot } from "@/modules/notifications/domain/NotificationDelivery";
 
+import { renderEmailHtmlDocument } from "./SimpleTemplateRenderer";
+
 type FetchLike = typeof fetch;
 
 export type ResendEmailNotificationProviderConfig = {
@@ -50,7 +52,12 @@ export class ResendEmailNotificationProvider implements NotificationProvider {
     const response = await this.fetchFn(`${this.baseUrl}/emails`, {
       body: JSON.stringify({
         from: this.from,
-        html: delivery.renderedHtmlBody ?? bodyToHtml(delivery.renderedBody),
+        html:
+          delivery.renderedHtmlBody ??
+          renderEmailHtmlDocument({
+            bodyHtml: bodyToHtml(delivery.renderedBody),
+            previewText: null,
+          }),
         reply_to: this.replyTo ?? undefined,
         subject: delivery.renderedSubject,
         text: delivery.renderedBody,

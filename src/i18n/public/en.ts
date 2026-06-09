@@ -301,7 +301,7 @@ export const enPublicDictionary = {
     stillFinalizingDescription:
       "We are still finalizing the payment with Stripe. If this page does not update soon, contact us and we will verify the booking manually.",
     stillFinalizingTitle: "Still finalizing your booking",
-    willSendPass: (email) =>
-      `We will send the booking pass and payment details to ${email}.`,
+    willSendPass:
+      "We will send the booking pass and payment details to {{ email }}.",
   },
 } satisfies PublicDictionary;

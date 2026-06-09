@@ -27,7 +27,9 @@ export type PublicBookingReturnContent = {
 
 type PublicBookingReturnSectionProps = {
   content: PublicBookingReturnContent | null;
-  dictionary: PublicDictionary;
+  dictionary: PublicDictionary["returnPage"] & {
+    backToJimBoats: string;
+  };
   locale: PublicLocale;
   sessionId?: string;
 };
@@ -119,7 +121,7 @@ export function PublicBookingReturnSection({
             size="md"
             variant="secondary"
           >
-            {dictionary.common.backToJimBoats}
+            {dictionary.backToJimBoats}
           </Button>
         </div>
 
@@ -140,7 +142,7 @@ export function PublicBookingReturnSection({
                 <div className="h-full w-1/2 animate-pulse rounded-full bg-accent" />
               </div>
               <p className="mt-3 text-sm leading-6 text-text-muted">
-                {dictionary.returnPage.keepOpen}
+                {dictionary.keepOpen}
               </p>
             </div>
           ) : null}
@@ -148,19 +150,19 @@ export function PublicBookingReturnSection({
           {showBookingDetails ? (
             <div className="grid gap-px bg-sand/20 md:grid-cols-2">
               <ReturnMetric
-                label={dictionary.returnPage.reference}
+                label={dictionary.reference}
                 value={currentContent.reference}
               />
               <ReturnMetric
-                label={dictionary.returnPage.experience}
+                label={dictionary.experience}
                 value={currentContent.experienceTitle}
               />
               <ReturnMetric
-                label={dictionary.returnPage.depositPaid}
+                label={dictionary.depositPaid}
                 value={formatPrice(currentContent.paidDepositAmount)}
               />
               <ReturnMetric
-                label={dictionary.returnPage.remainingOnboard}
+                label={dictionary.remainingOnboard}
                 value={formatPrice(currentContent.remainingAmount)}
               />
             </div>
@@ -171,7 +173,8 @@ export function PublicBookingReturnSection({
               <div className="flex items-start gap-3 rounded-2xl bg-sky-light/45 p-4">
                 <Mail aria-hidden="true" className="mt-0.5 size-5 text-primary" />
                 <p className="text-sm leading-6 text-text-muted">
-                  {dictionary.returnPage.willSendPass(
+                  {formatWillSendPass(
+                    dictionary.willSendPass,
                     currentContent.customerEmail,
                   )}
                 </p>
@@ -190,7 +193,7 @@ export function PublicBookingReturnSection({
                 size="lg"
                 variant="accent"
               >
-                {dictionary.returnPage.bookAnother}
+                {dictionary.bookAnother}
               </Button>
               <Button
                 href="mailto:info@jimboatscharter.com"
@@ -198,7 +201,7 @@ export function PublicBookingReturnSection({
                 size="lg"
                 variant="secondary"
               >
-                {dictionary.returnPage.contactSupport}
+                {dictionary.contactSupport}
               </Button>
             </div>
           </div>
@@ -224,49 +227,49 @@ function ReturnMetric({ label, value }: { label: string; value: string }) {
 function stateForStatus(
   status: PublicBookingReturnStatus,
   timedOut: boolean,
-  dictionary: PublicDictionary,
+  dictionary: PublicDictionary["returnPage"],
 ) {
   if (status === "CONFIRMED") {
     return {
-      description: dictionary.returnPage.confirmedDescription,
+      description: dictionary.confirmedDescription,
       icon: CheckCircle2,
       surface: "bg-emerald-50 text-emerald-900",
-      title: dictionary.returnPage.confirmedTitle,
+      title: dictionary.confirmedTitle,
     };
   }
 
   if (status === "PENDING_PAYMENT") {
     if (timedOut) {
       return {
-        description: dictionary.returnPage.stillFinalizingDescription,
+        description: dictionary.stillFinalizingDescription,
         icon: Clock3,
         surface: "bg-amber-50 text-amber-900",
-        title: dictionary.returnPage.stillFinalizingTitle,
+        title: dictionary.stillFinalizingTitle,
       };
     }
 
     return {
-      description: dictionary.returnPage.finalizingDescription,
+      description: dictionary.finalizingDescription,
       icon: Clock3,
       surface: "bg-amber-50 text-amber-900",
-      title: dictionary.returnPage.finalizingTitle,
+      title: dictionary.finalizingTitle,
     };
   }
 
   return {
-    description: dictionary.returnPage.failedDescription,
+    description: dictionary.failedDescription,
     icon: XCircle,
     surface: "bg-rose-50 text-rose-900",
-    title: dictionary.returnPage.failedTitle,
+    title: dictionary.failedTitle,
   };
 }
 
-function missingState(dictionary: PublicDictionary) {
+function missingState(dictionary: PublicDictionary["returnPage"]) {
   return {
-    description: dictionary.returnPage.missingDescription,
+    description: dictionary.missingDescription,
     icon: Sailboat,
     surface: "bg-sky-light/45 text-text",
-    title: dictionary.returnPage.missingTitle,
+    title: dictionary.missingTitle,
   };
 }
 
@@ -275,6 +278,10 @@ function formatPrice(amountMinor: number) {
     maximumFractionDigits: 0,
     minimumFractionDigits: 0,
   })}`;
+}
+
+function formatWillSendPass(template: string, email: string) {
+  return template.replace("{{ email }}", email);
 }
 
 function delay(ms: number) {

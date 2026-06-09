@@ -24,11 +24,15 @@ describe("PublicBookingReturnSection", () => {
       ok: true,
     });
     vi.stubGlobal("fetch", fetchMock);
+    const dictionary = getPublicDictionary("en");
 
     render(
       <PublicBookingReturnSection
         content={pendingContent}
-        dictionary={getPublicDictionary("en")}
+        dictionary={{
+          ...dictionary.returnPage,
+          backToJimBoats: dictionary.common.backToJimBoats,
+        }}
         locale="en"
         sessionId="cs_test_123"
       />,

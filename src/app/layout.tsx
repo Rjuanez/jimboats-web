@@ -24,6 +24,13 @@ export const metadata: Metadata = {
     template: "%s | JimBoats",
   },
   description: "Private boat experiences in Barcelona with JimBoats.",
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
 };
 
 export default function RootLayout({
