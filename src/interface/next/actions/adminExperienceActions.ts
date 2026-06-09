@@ -13,6 +13,7 @@ import type { AdminMediaListDto } from "@/modules/media-library/application/Admi
 import { ApplicationError } from "@/shared/application/ApplicationError";
 import { DomainError } from "@/shared/domain/DomainError";
 
+import { revalidatePublicBookingCatalogCache } from "../cache/publicBookingCatalogCache";
 import { presentAdminExperiencesWorkspace } from "../presenters/adminExperiencesPresenter";
 import {
   parseAdminCreateExperience,
@@ -72,6 +73,7 @@ export async function createAdminExperienceAction(
       status: "DRAFT",
       type: commandInput.type,
     });
+    revalidatePublicBookingCatalogCache();
 
     return ok({
       experienceId,
@@ -167,6 +169,7 @@ export async function saveAdminExperienceAction(
       experienceId: experience.id,
       status: publicationStatusToApplication(experience.status),
     });
+    revalidatePublicBookingCatalogCache();
 
     return ok({
       state: await loadState(container),
@@ -190,6 +193,7 @@ export async function archiveAdminExperienceAction(input: {
     await container.adminExperiences.archiveExperience({
       experienceId,
     });
+    revalidatePublicBookingCatalogCache();
 
     return ok({
       state: await loadState(container),
@@ -232,6 +236,7 @@ export async function duplicateAdminExperienceAction(input: {
       newExperienceId,
       newInternalName: `${source.experience.internalName} Copy`,
     });
+    revalidatePublicBookingCatalogCache();
 
     return ok({
       experienceId: newExperienceId,

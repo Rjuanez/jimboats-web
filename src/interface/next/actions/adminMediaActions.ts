@@ -11,6 +11,7 @@ import type {
 import { ApplicationError } from "@/shared/application/ApplicationError";
 import { DomainError } from "@/shared/domain/DomainError";
 
+import { revalidatePublicBookingCatalogCache } from "../cache/publicBookingCatalogCache";
 import { presentAdminMediaList } from "../presenters/adminMediaPresenter";
 import {
   parseAdminMediaAssetId,
@@ -18,9 +19,7 @@ import {
   parseAdminMediaUploadFormData,
 } from "../validators/adminMediaValidators";
 
-export async function uploadAdminMediaAssetAction(
-  input: FormData,
-): Promise<
+export async function uploadAdminMediaAssetAction(input: FormData): Promise<
   AdminMediaActionResult<{
     assetId: string;
     state: AdminMediaPageData;
@@ -30,6 +29,7 @@ export async function uploadAdminMediaAssetAction(
     const command = await parseAdminMediaUploadFormData(input);
     const container = getContainer();
     const result = await container.adminMedia.uploadAsset(command);
+    revalidatePublicBookingCatalogCache();
 
     return ok({
       assetId: result.asset.id,
@@ -52,6 +52,7 @@ export async function updateAdminMediaAssetMetadataAction(
     const container = getContainer();
 
     await container.adminMedia.updateMetadata(command);
+    revalidatePublicBookingCatalogCache();
 
     return ok({
       state: await loadState(container),
@@ -73,6 +74,7 @@ export async function requestAdminMediaReprocessAction(input: {
     const container = getContainer();
 
     await container.adminMedia.requestReprocess(command);
+    revalidatePublicBookingCatalogCache();
 
     return ok({
       state: await loadState(container),
@@ -89,7 +91,11 @@ async function loadState(container: ReturnType<typeof getContainer>) {
     container.adminExtras.getWorkspace(),
   ]);
 
-  return presentAdminMediaList(mediaList, experiencesWorkspace, extrasWorkspace);
+  return presentAdminMediaList(
+    mediaList,
+    experiencesWorkspace,
+    extrasWorkspace,
+  );
 }
 
 function ok<TData>(data: TData): AdminMediaActionResult<TData> {

@@ -1,7 +1,18 @@
-import type { HomeLandingContent } from "@/components/sections/HomeLandingPage";
-import { createLocalizedPath } from "@/i18n/locales";
-import { getPublicDictionary } from "@/i18n/public";
+import type {
+  HomeLandingContent,
+  HomeLandingExperience,
+  HomeLandingUpgrade,
+} from "@/components/sections/HomeLandingPage";
+import type {
+  PublicBookingContent,
+  PublicBookingExperience,
+  PublicBookingExtra,
+} from "@/components/sections/public-booking/PublicBookingTypes";
+import { createLocalizedPath, localeToIntlLocale } from "@/i18n/locales";
+import { getPublicDictionary, type PublicDictionary } from "@/i18n/public";
 import type { SupportedLocaleCode } from "@/shared/domain/LocaleCode";
+
+import { getCachedPublicBookingCatalog } from "../cache/publicBookingCatalogCache";
 
 const generatedImagePath = (slug: string, width: number) =>
   `/images/generated/landing/${slug}-${width}.webp`;
@@ -284,7 +295,15 @@ export const homeLandingContent = {
 export async function getHomeLandingPage(
   locale: SupportedLocaleCode = "en",
 ): Promise<HomeLandingContent> {
-  return localizeFallbackHomeLandingContent(locale);
+  let publicBookingContent: PublicBookingContent;
+
+  try {
+    publicBookingContent = await getCachedPublicBookingCatalog(locale);
+  } catch {
+    return localizeFallbackHomeLandingContent(locale);
+  }
+
+  return presentHomeLandingContent(publicBookingContent, locale);
 }
 
 export function createHomeLandingStructuredData(content: HomeLandingContent) {
@@ -319,6 +338,104 @@ export function createHomeLandingStructuredData(content: HomeLandingContent) {
 
 export const homeLandingStructuredData =
   createHomeLandingStructuredData(homeLandingContent);
+
+function presentHomeLandingContent(
+  publicBookingContent: PublicBookingContent,
+  locale: SupportedLocaleCode,
+): HomeLandingContent {
+  const dictionary = getPublicDictionary(locale);
+  const fallbackContent = localizeFallbackHomeLandingContent(locale);
+  const experiences =
+    publicBookingContent.experiences.length > 0
+      ? publicBookingContent.experiences.map((experience, index) =>
+          presentLandingExperience(experience, index, locale, dictionary),
+        )
+      : homeLandingContent.experiences;
+  const extras = presentLandingExtras(publicBookingContent, dictionary);
+
+  return {
+    ...fallbackContent,
+    experiences,
+    extras: {
+      ...fallbackContent.extras,
+      items: extras.length > 0 ? extras : homeLandingContent.extras.items,
+    },
+    footer: {
+      ...fallbackContent.footer,
+      experienceLinks: experiences.map((experience) => ({
+        href: `#${experience.id}`,
+        label: experience.title,
+      })),
+    },
+  };
+}
+
+function presentLandingExperience(
+  experience: PublicBookingExperience,
+  index: number,
+  locale: SupportedLocaleCode,
+  dictionary: PublicDictionary,
+): HomeLandingExperience {
+  return {
+    ctaHref: `${createLocalizedPath(locale, "/book")}?experience=${encodeURIComponent(
+      experience.id,
+    )}`,
+    ctaLabel: dictionary.common.bookNow,
+    description: experience.description,
+    featured: index === 0,
+    id: experience.id,
+    image: {
+      ...experience.image,
+      sizes:
+        index === 1
+          ? "(min-width: 1024px) 50vw, 100vw"
+          : "(min-width: 1024px) 58vw, 100vw",
+    },
+    price: `EUR ${experience.price.toLocaleString(localeToIntlLocale(locale))}`,
+    reverse: index % 2 === 1,
+    title: experience.title,
+  };
+}
+
+function presentLandingExtras(
+  publicBookingContent: PublicBookingContent,
+  dictionary: PublicDictionary,
+): HomeLandingUpgrade[] {
+  const extrasById = new Map<string, PublicBookingExtra>();
+
+  for (const extras of Object.values(
+    publicBookingContent.extrasByExperienceId,
+  )) {
+    for (const extra of extras) {
+      if (!extrasById.has(extra.id)) {
+        extrasById.set(extra.id, extra);
+      }
+    }
+  }
+
+  return [...extrasById.values()].slice(0, 3).map((extra) => ({
+    description: upgradeDescription(extra, dictionary),
+    image: {
+      ...extra.image,
+      sizes: "(min-width: 768px) 33vw, 25vw",
+    },
+    title: extra.title,
+  }));
+}
+
+function upgradeDescription(
+  extra: PublicBookingExtra,
+  dictionary: PublicDictionary,
+) {
+  if (extra.description && extra.description !== extra.title) {
+    return extra.description;
+  }
+
+  return (
+    dictionary.landing.experienceFallbackDescriptions[extra.id] ??
+    dictionary.landing.experienceFallbackDescription
+  );
+}
 
 function localizeFallbackHomeLandingContent(
   locale: SupportedLocaleCode,
@@ -373,7 +490,10 @@ function localizeFallbackHomeLandingContent(
     },
     homeHref,
     navigation: [
-      { href: "#experiences", label: dictionary.landing.navigation.experiences },
+      {
+        href: "#experiences",
+        label: dictionary.landing.navigation.experiences,
+      },
       { href: "#extras", label: dictionary.landing.navigation.extras },
       { href: "#gallery", label: dictionary.landing.navigation.gallery },
       {

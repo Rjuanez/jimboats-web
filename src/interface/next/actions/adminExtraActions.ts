@@ -13,6 +13,7 @@ import type { AdminMediaListDto } from "@/modules/media-library/application/Admi
 import { ApplicationError } from "@/shared/application/ApplicationError";
 import { DomainError } from "@/shared/domain/DomainError";
 
+import { revalidatePublicBookingCatalogCache } from "../cache/publicBookingCatalogCache";
 import { presentAdminExtrasWorkspace } from "../presenters/adminExtrasPresenter";
 import {
   parseAdminCreateExtra,
@@ -44,6 +45,7 @@ export async function createAdminExtraAction(
       price: toMoney(commandInput.price),
       status: "DRAFT",
     });
+    revalidatePublicBookingCatalogCache();
 
     return ok({
       extraId,
@@ -54,9 +56,7 @@ export async function createAdminExtraAction(
   }
 }
 
-export async function saveAdminExtraAction(
-  input: AdminExtra,
-): Promise<
+export async function saveAdminExtraAction(input: AdminExtra): Promise<
   AdminExtraActionResult<{
     state: AdminExtrasState;
   }>
@@ -74,6 +74,7 @@ export async function saveAdminExtraAction(
       primaryMediaAssetId: mediaAssetIdFromExtra(extra, mediaList),
       status: extraStatusToApplication(extra.status),
     });
+    revalidatePublicBookingCatalogCache();
 
     return ok({
       state: await loadState(container),
@@ -97,6 +98,7 @@ export async function archiveAdminExtraAction(input: {
     await container.adminExtras.archiveExtra({
       extraId,
     });
+    revalidatePublicBookingCatalogCache();
 
     return ok({
       state: await loadState(container),
@@ -115,7 +117,10 @@ async function loadState(container: ReturnType<typeof getContainer>) {
   return presentAdminExtrasWorkspace(workspace, mediaList);
 }
 
-function mediaAssetIdFromExtra(extra: AdminExtra, mediaList: AdminMediaListDto) {
+function mediaAssetIdFromExtra(
+  extra: AdminExtra,
+  mediaList: AdminMediaListDto,
+) {
   const assetId = extra.media.assetId?.trim() || null;
 
   if (!assetId) {
