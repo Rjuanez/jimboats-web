@@ -29,14 +29,7 @@ export class SimpleTemplateRenderer implements TemplateRenderer {
     return {
       missingVariables,
       renderedBody: renderText(input.body, input.payload, allowedVariables),
-      renderedHtmlBody: input.htmlBody
-        ? renderEmailHtmlDocument({
-            bodyHtml: renderText(input.htmlBody, input.payload, allowedVariables),
-            previewText: input.previewText
-              ? renderText(input.previewText, input.payload, allowedVariables)
-              : null,
-          })
-        : null,
+      renderedHtmlBody: renderHtmlBody(input, allowedVariables),
       renderedPreviewText: input.previewText
         ? renderText(input.previewText, input.payload, allowedVariables)
         : null,
@@ -95,6 +88,36 @@ function isRecord(
 
 function uniqueVariables(values: string[]) {
   return [...new Set(values)];
+}
+
+function renderHtmlBody(
+  input: TemplateRenderInput,
+  allowedVariables: Set<string>,
+) {
+  if (!input.htmlBody) {
+    return null;
+  }
+
+  const renderedHtmlBody = renderText(
+    input.htmlBody,
+    input.payload,
+    allowedVariables,
+  );
+
+  if (isCompleteHtmlDocument(renderedHtmlBody)) {
+    return renderedHtmlBody;
+  }
+
+  return renderEmailHtmlDocument({
+    bodyHtml: renderedHtmlBody,
+    previewText: input.previewText
+      ? renderText(input.previewText, input.payload, allowedVariables)
+      : null,
+  });
+}
+
+function isCompleteHtmlDocument(html: string) {
+  return /^\s*(?:<!doctype\s+html\b|<html\b|<body\b)/i.test(html);
 }
 
 export function renderEmailHtmlDocument(input: {

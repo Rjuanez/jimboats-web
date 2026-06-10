@@ -61,4 +61,26 @@ describe("SimpleTemplateRenderer", () => {
       renderedBody: "Booking JB-2026-0001 for  with .",
     });
   });
+
+  it("does not wrap complete HTML documents twice", async () => {
+    const renderer = new SimpleTemplateRenderer();
+
+    const result = await renderer.render({
+      allowedVariables: ["booking.reference"],
+      body: "Booking {{ booking.reference }} confirmed.",
+      htmlBody:
+        "<!doctype html><html><body><p>Booking {{ booking.reference }} confirmed.</p></body></html>",
+      payload: {
+        booking: {
+          reference: "JB-2026-0001",
+        },
+      },
+      previewText: "Booking {{ booking.reference }}",
+      subject: "Booking {{ booking.reference }} confirmed",
+    });
+
+    expect(result.renderedHtmlBody).toBe(
+      "<!doctype html><html><body><p>Booking JB-2026-0001 confirmed.</p></body></html>",
+    );
+  });
 });
