@@ -1,0 +1,235 @@
+{
+  "main": {
+    "id": "e5b6089d963ff31e",
+    "type": "split",
+    "children": [
+      {
+        "id": "ffdefd669294d12e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0c036784c5d3676d",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "docs/modules/boat-calendar/domain/calendar-block.entity.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "calendar-block.entity"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "84900a41fca38bd7",
+    "type": "split",
+    "children": [
+      {
+        "id": "1481ae01e23fe456",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "1dffe9964d1a8c9a",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Explorador de archivos"
+            }
+          },
+          {
+            "id": "bf47ef4e9176e2c9",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Buscar"
+            }
+          },
+          {
+            "id": "04b7dec9b4d96cd1",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Marcadores"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "330a4c139e083c6b",
+    "type": "split",
+    "children": [
+      {
+        "id": "0d0bbca57e781943",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "b763b6d2a9fb5918",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "docs/modules/booking/domain/booking.entity.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Enlaces entrantes de booking.entity"
+            }
+          },
+          {
+            "id": "5b0dc42280a82f60",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "docs/modules/booking/domain/booking.entity.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Enlaces salientes de booking.entity"
+            }
+          },
+          {
+            "id": "b5800a29160eac31",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Etiquetas"
+            }
+          },
+          {
+            "id": "f1ad73cd68fe5332",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Todas las propiedades"
+            }
+          },
+          {
+            "id": "9e340abd6d82837d",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "docs/modules/booking/domain/booking.entity.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Esquema de booking.entity"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Abrir selector rápido": false,
+      "graph:Abrir vista gráfica": false,
+      "canvas:Crear nuevo lienzo": false,
+      "daily-notes:Abrir la nota de hoy": false,
+      "templates:Insertar plantilla": false,
+      "command-palette:Abrir paleta de comandos": false,
+      "bases:Crear nueva base": false
+    }
+  },
+  "active": "1dffe9964d1a8c9a",
+  "lastOpenFiles": [
+    "src/modules/notifications/application/NotificationTemplatePayloadAliases.test.ts",
+    "playwright-report/data/fce380ef63707d15500f80cc2df10b2bc0c93f20.md",
+    "playwright-report/data/de44465b2978fec7d3265e45e1df9d753b3d459a.png",
+    "playwright-report/data/dc0e84feca85b8baf8125ce1731d564720250032.png",
+    "playwright-report/data/da89e792c82229c89476112bce25b7641410efe9.png",
+    "playwright-report/data/ca8436a5cf59c6dee751076b8334d664abb234a0.png",
+    "playwright-report/data/c97171ad2784fd373c24de8df702d39fa8f33ed7.png",
+    "playwright-report/data/c4e53a4689a4b5af96cdf8a5bb2b9d103bc25d82.png",
+    "playwright-report/data/bff06e869a7eb12b4dbe96e53167362e8aa3f3a4.png",
+    "playwright-report/data/bf5761150878edcf133ff8bc3b5e093f45e2b96e.png",
+    "playwright-report/data/afedc54b48bc5d62bee4211b2bab3f2a26dd9032.png",
+    "playwright-report/data/99ab218295ca28faaf1a6d0d1faf108dad46b33b.md",
+    "playwright-report/data/98dbcc7ccf94a5b0fef541d47989736b32975af5.png",
+    "playwright-report/data/92825a8a5d92634c931c7a1a3fe1d47c8acdfc10.md",
+    "playwright-report/data/76066875a8ba5a282ff9f34b4a2ea52ccfe0f1f0.md",
+    "playwright-report/data/2b0414d4d3d39442fb81121131f9a43ba6950e60.md",
+    "playwright-report/data/28410b1f96a31b6eb43ada52ebe6a315998697f1.md",
+    "playwright-report/data/03b2579851e7fdb8a777cad1f85348e6311b8e66.md",
+    "playwright-report/data",
+    "test-results/visual-admin-experience-detail-desktop-visual-baseline-chromium/error-context.md",
+    "test-results/visual-admin-experience-detail-desktop-visual-baseline-chromium",
+    "test-results/visual-admin-booking-detail-desktop-visual-baseline-chromium/error-context.md",
+    "test-results/visual-admin-booking-detail-desktop-visual-baseline-chromium",
+    "test-results/visual-home-desktop-visual-baseline-chromium/error-context.md",
+    "test-results/visual-home-desktop-visual-baseline-chromium",
+    "test-results/visual-admin-calendar-desktop-visual-baseline-chromium/error-context.md",
+    "test-results/visual-admin-calendar-desktop-visual-baseline-chromium",
+    "test-results/visual-admin-bookings-desktop-visual-baseline-chromium/error-context.md",
+    "test-results/visual-admin-bookings-desktop-visual-baseline-chromium",
+    "test-results/visual-admin-experiences-mobile-visual-baseline-chromium/error-context.md",
+    "test-results/visual-admin-experiences-mobile-visual-baseline-chromium",
+    "test-results/visual-admin-experiences-desktop-visual-baseline-chromium/error-context.md",
+    "test-results/visual-admin-experiences-desktop-visual-baseline-chromium",
+    "test-results",
+    "storybook-static/iframe.html",
+    "playwright-report/data/659012f09586852944b811d0bc5f69af008b6f82.md",
+    "playwright-report/data/e2433101c5a1b1a2617606bb4db981cb3b8b0ebf.md",
+    "playwright-report/data/675b82fa7937959c4bb575140b89d123afcf50bc.md",
+    "playwright-report/data/c0fbaaa2544c976ec88ae7782658eeb7f8cbdd9d.md",
+    "playwright-report/data/521bec595daac80cf1eb1551578ea40f246cf07c.md",
+    "playwright-report/data/60ba1f031142d93203cab92523cbf2e411a707f1.md",
+    "playwright-report/data/1460da8942f6f73da76e74ff38a1b80c9eca0585.md",
+    "playwright-report/data/f7116ae578791fb5ccd738ff62686b69903c8260.md",
+    "playwright-report/data/da98760d50f8c3f5499a74088337a08b10f55fe0.md",
+    "playwright-report/data/9e132ce0f9235dbd09a94d057114d69c2cbbc6fe.md",
+    "playwright-report/data/14dcb276b6d541c4925feda3cfa869802e6daba0.md"
+  ]
+}

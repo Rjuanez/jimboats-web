@@ -9,6 +9,7 @@ import {
   createBookingCalendarBlockUpdateModel,
   planBackpanelBooking,
 } from "./BookingAdminPlanning";
+import type { BookingCalendarSynchronizer } from "./BookingCalendarSyncService";
 import { bookingToAdminDto } from "./BookingApplicationMappers";
 import { createBackpanelBookingUpdatedRecords } from "./BookingLifecycleRecords";
 import type { BookingClock } from "./ports/BookingClock";
@@ -21,6 +22,7 @@ export class BackpanelUpdateBookingUseCase {
     private readonly bookings: BookingRepository,
     private readonly ids: BookingIdGenerator,
     private readonly clock: BookingClock,
+    private readonly bookingCalendarSync?: BookingCalendarSynchronizer,
   ) {}
 
   async execute(command: BackpanelUpdateBookingCommand): Promise<AdminBookingDto> {
@@ -118,6 +120,8 @@ export class BackpanelUpdateBookingUseCase {
       ),
       outboxEvents: lifecycleRecords.outboxEvents,
     });
+
+    await this.bookingCalendarSync?.syncConfirmedBooking(booking);
 
     return bookingToAdminDto(booking);
   }

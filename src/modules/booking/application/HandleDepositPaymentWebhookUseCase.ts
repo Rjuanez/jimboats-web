@@ -1,5 +1,6 @@
 import { ApplicationError } from "@/shared/application/ApplicationError";
 
+import type { BookingCalendarSynchronizer } from "./BookingCalendarSyncService";
 import { createPublicBookingConfirmedRecords } from "./BookingLifecycleRecords";
 import type { BookingClock } from "./ports/BookingClock";
 import type { BookingJsonValue } from "./ports/BookingRepository";
@@ -24,6 +25,7 @@ export class HandleDepositPaymentWebhookUseCase {
     private readonly bookings: BookingRepository,
     private readonly clock: BookingClock,
     private readonly paymentProvider: DepositPaymentProvider,
+    private readonly bookingCalendarSync?: BookingCalendarSynchronizer,
   ) {}
 
   async execute(
@@ -99,6 +101,10 @@ export class HandleDepositPaymentWebhookUseCase {
           status: "PROCESSED",
         }),
       });
+
+      if (result === "PROCESSED") {
+        await this.bookingCalendarSync?.syncConfirmedBooking(confirmedBooking);
+      }
 
       return {
         action: result,

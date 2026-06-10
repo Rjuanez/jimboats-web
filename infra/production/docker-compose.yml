@@ -27,6 +27,10 @@ services:
     restart: unless-stopped
     environment:
       DATABASE_URL: ${DATABASE_URL:?DATABASE_URL is required}
+      GOOGLE_CALENDAR_ENABLED: ${GOOGLE_CALENDAR_ENABLED:-false}
+      GOOGLE_CALENDAR_ID: ${GOOGLE_CALENDAR_ID:-}
+      GOOGLE_CLIENT_EMAIL: ${GOOGLE_CLIENT_EMAIL:-}
+      GOOGLE_PRIVATE_KEY: ${GOOGLE_PRIVATE_KEY:-}
       HOSTNAME: 0.0.0.0
       MEDIA_PUBLIC_BASE_URL: ${MEDIA_PUBLIC_BASE_URL:-/media}
       MEDIA_ROOT: ${MEDIA_ROOT:-/var/lib/jimboats/media}
@@ -66,6 +70,24 @@ services:
       NODE_ENV: production
     volumes:
       - ${MEDIA_ROOT:-/var/lib/jimboats/media}:${MEDIA_ROOT:-/var/lib/jimboats/media}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  booking-calendar-sync-worker:
+    image: ${APP_IMAGE:?APP_IMAGE is required}
+    restart: unless-stopped
+    command: node .worker/booking-calendar-sync-worker.cjs
+    environment:
+      BOOKING_CALENDAR_SYNC_INTERVAL_MS: ${BOOKING_CALENDAR_SYNC_INTERVAL_MS:-3600000}
+      BOOKING_CALENDAR_SYNC_LIMIT: ${BOOKING_CALENDAR_SYNC_LIMIT:-100}
+      DATABASE_URL: ${DATABASE_URL:?DATABASE_URL is required}
+      GOOGLE_CALENDAR_ENABLED: ${GOOGLE_CALENDAR_ENABLED:-false}
+      GOOGLE_CALENDAR_ID: ${GOOGLE_CALENDAR_ID:-}
+      GOOGLE_CLIENT_EMAIL: ${GOOGLE_CLIENT_EMAIL:-}
+      GOOGLE_PRIVATE_KEY: ${GOOGLE_PRIVATE_KEY:-}
+      NEXT_TELEMETRY_DISABLED: "1"
+      NODE_ENV: production
     depends_on:
       db:
         condition: service_healthy

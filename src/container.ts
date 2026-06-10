@@ -19,6 +19,7 @@ import type {
   BackpanelIssueBookingAccessLinkCommand,
   BackpanelUpdateBookingCommand,
 } from "@/modules/booking/application/AdminBookingDtos";
+import { BookingCalendarSyncService } from "@/modules/booking/application/BookingCalendarSyncService";
 import { BackpanelCancelBookingUseCase } from "@/modules/booking/application/BackpanelCancelBookingUseCase";
 import { BackpanelCreateBookingUseCase } from "@/modules/booking/application/BackpanelCreateBookingUseCase";
 import { BackpanelIssueBookingAccessLinkUseCase } from "@/modules/booking/application/BackpanelIssueBookingAccessLinkUseCase";
@@ -31,6 +32,7 @@ import { GetPublicBookingPageUseCase } from "@/modules/booking/application/GetPu
 import { GetPublicBookingCheckoutReturnUseCase } from "@/modules/booking/application/GetPublicBookingCheckoutReturnUseCase";
 import { HandleDepositPaymentWebhookUseCase } from "@/modules/booking/application/HandleDepositPaymentWebhookUseCase";
 import { IssueBookingAccessLinkUseCase } from "@/modules/booking/application/IssueBookingAccessLinkUseCase";
+import { ReconcileBookingCalendarSyncUseCase } from "@/modules/booking/application/ReconcileBookingCalendarSyncUseCase";
 import { SaveCancellationPolicyUseCase } from "@/modules/booking/application/SaveCancellationPolicyUseCase";
 import { ViewBookingByAccessTokenUseCase } from "@/modules/booking/application/ViewBookingByAccessTokenUseCase";
 import type { ViewBookingByAccessTokenQuery } from "@/modules/booking/application/BookingAccessDtos";
@@ -97,6 +99,7 @@ import { UpdateNotificationTemplateUseCase } from "@/modules/notifications/appli
 
 import { CryptoCalendarBlockIdGenerator } from "./infrastructure/calendar/CryptoCalendarBlockIdGenerator";
 import { SystemCalendarClock } from "./infrastructure/calendar/SystemCalendarClock";
+import { createBookingCalendarPublisherFromEnv } from "./infrastructure/calendar/BookingCalendarPublisherFactory";
 import { CryptoBookingIdGenerator } from "./infrastructure/booking/CryptoBookingIdGenerator";
 import { CryptoBookingAccessTokenService } from "./infrastructure/booking/CryptoBookingAccessTokenService";
 import { createPublicBookingAccessUrlBuilderFromEnv } from "./infrastructure/booking/PublicBookingAccessUrlBuilder";
@@ -217,6 +220,17 @@ export function getContainer() {
   const depositPaymentProvider = createLazyDepositPaymentProvider();
   const mediaStorage = createLazyLocalMediaStorage();
   const mediaVariantGenerator = createLazyLocalMediaVariantGenerator();
+  const bookingCalendarPublisher = createBookingCalendarPublisherFromEnv();
+  const bookingCalendarSync = new BookingCalendarSyncService(
+    bookingRepository,
+    bookingCalendarPublisher,
+    bookingClock,
+  );
+  const reconcileBookingCalendarSyncUseCase =
+    new ReconcileBookingCalendarSyncUseCase(
+      bookingRepository,
+      bookingCalendarSync,
+    );
 
   const getWorkspaceUseCase = new GetAdminExperiencesWorkspaceUseCase(
     experienceRepository,
@@ -319,15 +333,18 @@ export function getContainer() {
     bookingIds,
     bookingClock,
     cancellationPolicyRepository,
+    bookingCalendarSync,
   );
   const backpanelUpdateBookingUseCase = new BackpanelUpdateBookingUseCase(
     bookingRepository,
     bookingIds,
     bookingClock,
+    bookingCalendarSync,
   );
   const backpanelCancelBookingUseCase = new BackpanelCancelBookingUseCase(
     bookingRepository,
     bookingClock,
+    bookingCalendarSync,
   );
   const getPublicBookingPageUseCase = new GetPublicBookingPageUseCase(
     publicBookingCatalogReader,
@@ -353,15 +370,20 @@ export function getContainer() {
       bookingRepository,
       bookingClock,
       depositPaymentProvider,
+      bookingCalendarSync,
     );
-  const getPublicBookingCheckoutReturnUseCase =
-    new GetPublicBookingCheckoutReturnUseCase(bookingRepository);
   const issueBookingAccessLinkUseCase = new IssueBookingAccessLinkUseCase(
     bookingAccessRepository,
     bookingAccessTokens,
     bookingAccessTokens,
     bookingAccessUrlBuilder,
   );
+  const getPublicBookingCheckoutReturnUseCase =
+    new GetPublicBookingCheckoutReturnUseCase(
+      bookingRepository,
+      issueBookingAccessLinkUseCase,
+      bookingClock,
+    );
   const viewBookingByAccessTokenUseCase = new ViewBookingByAccessTokenUseCase(
     bookingAccessRepository,
     bookingAccessTokens,
@@ -510,6 +532,10 @@ export function getContainer() {
     },
     mediaWorker: {
       processNextJob: () => processNextMediaProcessingJobUseCase.execute(),
+    },
+    bookingCalendarSyncWorker: {
+      reconcile: (input: { limit: number }) =>
+        reconcileBookingCalendarSyncUseCase.execute(input),
     },
     notificationWorker: {
       processNextWork: () => processNextNotificationWorkUseCase.execute(),

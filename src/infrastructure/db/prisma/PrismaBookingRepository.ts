@@ -36,6 +36,7 @@ import { localDateToUtcDate } from "@/modules/boat-calendar/application/Calendar
 type BookingFindArgs = {
   include?: unknown;
   orderBy?: unknown;
+  take?: number;
   where?: unknown;
 };
 
@@ -44,7 +45,11 @@ type BookingCreateArgs = {
 };
 
 type BookingUpdateArgs = {
-  data: Partial<PrismaBookingWriteModel["booking"]>;
+  data: Partial<PrismaBookingWriteModel["booking"]> & {
+    externalCalendarEventId?: string | null;
+    externalCalendarSyncedAt?: Date | null;
+    externalCalendarSyncError?: string | null;
+  };
   where: {
     id: string;
   };
@@ -229,6 +234,71 @@ const experienceInclude = {
 
 export class PrismaBookingRepository implements BookingRepository {
   constructor(private readonly prisma: PrismaBookingRepositoryClient) {}
+
+  async findCalendarSyncState(bookingId: string) {
+    const record = await this.prisma.booking.findUnique({
+      include: bookingInclude,
+      where: {
+        id: bookingId,
+      },
+    });
+
+    return record
+      ? {
+          externalEventId: record.externalCalendarEventId,
+          syncError: record.externalCalendarSyncError,
+          syncedAt: record.externalCalendarSyncedAt,
+        }
+      : null;
+  }
+
+  async findBookingsPendingCalendarSync(input: { limit: number }) {
+    const records = await this.prisma.booking.findMany({
+      include: bookingInclude,
+      orderBy: {
+        updatedAt: "asc",
+      },
+      take: input.limit,
+      where: {
+        OR: [
+          {
+            externalCalendarEventId: null,
+            status: "CONFIRMED",
+          },
+          {
+            externalCalendarSyncError: {
+              not: null,
+            },
+            status: {
+              in: ["CANCELLED", "CONFIRMED"],
+            },
+          },
+          {
+            externalCalendarEventId: {
+              not: null,
+            },
+            externalCalendarSyncedAt: null,
+            status: {
+              in: ["CANCELLED", "CONFIRMED"],
+            },
+          },
+          {
+            externalCalendarEventId: {
+              not: null,
+            },
+            status: {
+              in: ["CANCELLED", "CONFIRMED"],
+            },
+            updatedAt: {
+              gt: bookingFields(this.prisma.booking).externalCalendarSyncedAt,
+            },
+          },
+        ],
+      },
+    });
+
+    return records.map(bookingFromPrismaRecord);
+  }
 
   async list() {
     const records = await this.prisma.booking.findMany({
@@ -682,6 +752,45 @@ export class PrismaBookingRepository implements BookingRepository {
       });
     });
   }
+
+  async markCalendarSynced(input: {
+    bookingId: string;
+    externalEventId: string;
+    syncedAt: Date;
+  }) {
+    await this.prisma.booking.update({
+      data: {
+        externalCalendarEventId: input.externalEventId,
+        externalCalendarSyncError: null,
+        externalCalendarSyncedAt: input.syncedAt,
+      },
+      where: {
+        id: input.bookingId,
+      },
+    });
+  }
+
+  async markCalendarSyncFailed(input: {
+    bookingId: string;
+    syncError: string;
+  }) {
+    await this.prisma.booking.update({
+      data: {
+        externalCalendarSyncError: input.syncError,
+      },
+      where: {
+        id: input.bookingId,
+      },
+    });
+  }
+}
+
+function bookingFields(booking: BookingDelegate) {
+  return (booking as BookingDelegate & {
+    fields: {
+      externalCalendarSyncedAt: unknown;
+    };
+  }).fields;
 }
 
 type CalendarBlockCreateModel = {

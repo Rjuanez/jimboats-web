@@ -51,6 +51,7 @@ export type GetPublicBookingCheckoutReturnQuery = {
 };
 
 export type PublicBookingCheckoutReturnDto = {
+  bookingAccessUrl: string | null;
   bookingId: string;
   customerEmail: string;
   experienceTitle: string;

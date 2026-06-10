@@ -5,9 +5,13 @@ services:
     build:
       context: .
       target: base
-    command: sh -lc "CI=true pnpm install --frozen-lockfile --store-dir /pnpm/store && pnpm db:generate && pnpm dev --hostname 0.0.0.0"
+    command: sh -lc "CI=true pnpm install --frozen-lockfile --store-dir /pnpm/store && pnpm db:generate && pnpm dev --webpack --hostname 0.0.0.0"
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-jimboats}:${POSTGRES_PASSWORD:-jimboats}@db:5432/${POSTGRES_DB:-jimboats}?schema=public
+      GOOGLE_CALENDAR_ENABLED: ${GOOGLE_CALENDAR_ENABLED:-false}
+      GOOGLE_CALENDAR_ID: ${GOOGLE_CALENDAR_ID:-}
+      GOOGLE_CLIENT_EMAIL: ${GOOGLE_CLIENT_EMAIL:-}
+      GOOGLE_PRIVATE_KEY: ${GOOGLE_PRIVATE_KEY:-}
       HOSTNAME: 0.0.0.0
       MEDIA_PUBLIC_BASE_URL: /media
       MEDIA_ROOT: /var/lib/jimboats/media
@@ -56,6 +60,31 @@ services:
       - node_modules:/app/node_modules
       - pnpm_store:/pnpm/store
       - media_data:/var/lib/jimboats/media
+    depends_on:
+      app:
+        condition: service_started
+      db:
+        condition: service_healthy
+
+  booking-calendar-sync-worker:
+    build:
+      context: .
+      target: base
+    command: sh -lc "if [ ! -x node_modules/.bin/esbuild ]; then CI=true pnpm install --frozen-lockfile --store-dir /pnpm/store; fi && pnpm booking-calendar-sync:worker"
+    environment:
+      BOOKING_CALENDAR_SYNC_INTERVAL_MS: ${BOOKING_CALENDAR_SYNC_INTERVAL_MS:-3600000}
+      BOOKING_CALENDAR_SYNC_LIMIT: ${BOOKING_CALENDAR_SYNC_LIMIT:-100}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-jimboats}:${POSTGRES_PASSWORD:-jimboats}@db:5432/${POSTGRES_DB:-jimboats}?schema=public
+      GOOGLE_CALENDAR_ENABLED: ${GOOGLE_CALENDAR_ENABLED:-false}
+      GOOGLE_CALENDAR_ID: ${GOOGLE_CALENDAR_ID:-}
+      GOOGLE_CLIENT_EMAIL: ${GOOGLE_CLIENT_EMAIL:-}
+      GOOGLE_PRIVATE_KEY: ${GOOGLE_PRIVATE_KEY:-}
+      NEXT_TELEMETRY_DISABLED: "1"
+      NODE_ENV: development
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+      - pnpm_store:/pnpm/store
     depends_on:
       app:
         condition: service_started

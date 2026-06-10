@@ -216,7 +216,15 @@ export type BookingCalendarOverlapReadModel = {
   protectedStartAt: Date;
 };
 
+export type BookingCalendarSyncState = {
+  externalEventId: string | null;
+  syncError: string | null;
+  syncedAt: Date | null;
+};
+
 export type BookingRepository = {
+  findCalendarSyncState(bookingId: string): Promise<BookingCalendarSyncState | null>;
+  findBookingsPendingCalendarSync(input: { limit: number }): Promise<Booking[]>;
   findActiveCalendarOverlaps(
     startAt: Date,
     endAt: Date,
@@ -248,4 +256,13 @@ export type BookingRepository = {
     input: DepositPaymentSucceededPersistence,
   ): Promise<"DUPLICATE" | "PROCESSED">;
   savePublicPendingBooking(input: PublicPendingBookingPersistence): Promise<void>;
+  markCalendarSyncFailed(input: {
+    bookingId: string;
+    syncError: string;
+  }): Promise<void>;
+  markCalendarSynced(input: {
+    bookingId: string;
+    externalEventId: string;
+    syncedAt: Date;
+  }): Promise<void>;
 };

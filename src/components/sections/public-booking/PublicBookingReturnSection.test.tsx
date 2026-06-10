@@ -64,6 +64,7 @@ describe("PublicBookingReturnSection", () => {
 });
 
 const pendingContent = {
+  bookingAccessUrl: null,
   customerEmail: "sailor@example.com",
   experienceTitle: "Sunset Cruise",
   paidDepositAmount: 0,
@@ -74,6 +75,7 @@ const pendingContent = {
 
 const confirmedContent = {
   ...pendingContent,
+  bookingAccessUrl: null,
   paidDepositAmount: 10000,
   status: "CONFIRMED",
 } satisfies PublicBookingReturnContent;
