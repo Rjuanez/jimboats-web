@@ -61,6 +61,39 @@ describe("PrismaBookingRepository", () => {
     ]);
   });
 
+  it("stores external calendar sync metadata", async () => {
+    const client = new InMemoryBookingClient();
+    const repository = new PrismaBookingRepository(client);
+
+    await repository.saveAdminCreatedBooking(createPersistence());
+    await repository.markCalendarSynced({
+      bookingId: "booking-1",
+      externalEventId: "jb-calendar-event",
+      syncedAt: new Date("2026-06-02T10:00:00.000Z"),
+    });
+
+    await expect(
+      repository.findCalendarSyncState("booking-1"),
+    ).resolves.toMatchObject({
+      externalEventId: "jb-calendar-event",
+      syncError: null,
+      syncedAt: new Date("2026-06-02T10:00:00.000Z"),
+    });
+
+    await repository.markCalendarSyncFailed({
+      bookingId: "booking-1",
+      syncError: "Calendar unavailable.",
+    });
+
+    await expect(
+      repository.findCalendarSyncState("booking-1"),
+    ).resolves.toMatchObject({
+      externalEventId: "jb-calendar-event",
+      syncError: "Calendar unavailable.",
+      syncedAt: new Date("2026-06-02T10:00:00.000Z"),
+    });
+  });
+
   it("updates admin bookings and rewrites their selected extras", async () => {
     const client = new InMemoryBookingClient();
     const repository = new PrismaBookingRepository(client);
@@ -355,6 +388,9 @@ class InMemoryBookingClient implements PrismaBookingRepositoryClient {
     ) => {
       this.records.set(args.data.id, {
         ...args.data,
+        externalCalendarEventId: null,
+        externalCalendarSyncError: null,
+        externalCalendarSyncedAt: null,
         extras: [],
       });
     },

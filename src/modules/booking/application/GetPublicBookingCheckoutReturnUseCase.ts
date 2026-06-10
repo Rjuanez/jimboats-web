@@ -1,13 +1,19 @@
 import { ApplicationError } from "@/shared/application/ApplicationError";
 
 import type { BookingRepository } from "./ports/BookingRepository";
+import { IssueBookingAccessLinkUseCase } from "./IssueBookingAccessLinkUseCase";
+import type { BookingClock } from "./ports/BookingClock";
 import type {
   GetPublicBookingCheckoutReturnQuery,
   PublicBookingCheckoutReturnDto,
 } from "./PublicCheckoutDtos";
 
 export class GetPublicBookingCheckoutReturnUseCase {
-  constructor(private readonly bookings: BookingRepository) {}
+  constructor(
+    private readonly bookings: BookingRepository,
+    private readonly issueAccessLink: IssueBookingAccessLinkUseCase,
+    private readonly clock: BookingClock,
+  ) {}
 
   async execute(
     query: GetPublicBookingCheckoutReturnQuery,
@@ -33,8 +39,20 @@ export class GetPublicBookingCheckoutReturnUseCase {
 
     const booking = bookingPayment.booking.toSnapshot();
     const payment = bookingPayment.paymentRecord.toSnapshot();
+    const bookingAccessUrl =
+      booking.status === "CONFIRMED"
+        ? (
+            await this.issueAccessLink.execute({
+              bookingId: booking.id,
+              issuedAt: this.clock.now(),
+              locale: booking.customer.preferredLocale,
+              reference: booking.reference,
+            })
+          ).url
+        : null;
 
     return {
+      bookingAccessUrl,
       bookingId: booking.id,
       customerEmail: booking.customer.email,
       experienceTitle: booking.experienceNameSnapshot,

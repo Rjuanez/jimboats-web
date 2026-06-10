@@ -1,6 +1,6 @@
 import type { BookingAccessUrlBuilder } from "@/modules/booking/application/ports/BookingAccessUrlBuilder";
 
-const publicBookingAccessLocales = new Set(["en"]);
+const publicBookingAccessLocales = new Set(["ca", "en", "es"]);
 
 export class PublicBookingAccessUrlBuilder implements BookingAccessUrlBuilder {
   constructor(private readonly publicSiteUrl: string) {}

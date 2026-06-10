@@ -4,6 +4,7 @@ import type {
   AdminBookingDto,
   BackpanelCancelBookingCommand,
 } from "./AdminBookingDtos";
+import type { BookingCalendarSynchronizer } from "./BookingCalendarSyncService";
 import { bookingToAdminDto } from "./BookingApplicationMappers";
 import { createBackpanelBookingCancelledRecords } from "./BookingLifecycleRecords";
 import type { BookingClock } from "./ports/BookingClock";
@@ -13,6 +14,7 @@ export class BackpanelCancelBookingUseCase {
   constructor(
     private readonly bookings: BookingRepository,
     private readonly clock: BookingClock,
+    private readonly bookingCalendarSync?: BookingCalendarSynchronizer,
   ) {}
 
   async execute(command: BackpanelCancelBookingCommand): Promise<AdminBookingDto> {
@@ -52,6 +54,8 @@ export class BackpanelCancelBookingUseCase {
       outboxEvents: lifecycleRecords.outboxEvents,
       releasedAt: cancelledAt,
     });
+
+    await this.bookingCalendarSync?.syncCancelledBooking(booking);
 
     return bookingToAdminDto(booking);
   }

@@ -59,6 +59,9 @@ export type PrismaBookingRecord = {
   depositCurrency: string;
   experienceId: string;
   experienceNameSnapshot: string;
+  externalCalendarEventId: string | null;
+  externalCalendarSyncError: string | null;
+  externalCalendarSyncedAt: Date | null;
   extras: PrismaBookingExtraRecord[];
   guestCount: number;
   holdExpiresAt: Date | null;

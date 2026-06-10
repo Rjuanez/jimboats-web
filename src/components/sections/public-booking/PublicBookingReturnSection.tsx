@@ -17,6 +17,7 @@ type PublicBookingReturnStatus =
   | "PENDING_PAYMENT";
 
 export type PublicBookingReturnContent = {
+  bookingAccessUrl: string | null;
   customerEmail: string;
   experienceTitle: string;
   paidDepositAmount: number;
@@ -49,6 +50,12 @@ export function PublicBookingReturnSection({
     : missingState(dictionary);
   const showBookingDetails =
     currentContent !== null && currentContent.status !== "PENDING_PAYMENT";
+
+  useEffect(() => {
+    if (currentContent?.status === "CONFIRMED" && currentContent.bookingAccessUrl) {
+      window.location.assign(currentContent.bookingAccessUrl);
+    }
+  }, [currentContent?.bookingAccessUrl, currentContent?.status]);
 
   useEffect(() => {
     if (!sessionId || currentContent?.status !== "PENDING_PAYMENT") {

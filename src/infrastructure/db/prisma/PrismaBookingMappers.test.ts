@@ -123,6 +123,9 @@ export function bookingRecord(
     depositCurrency: "EUR",
     experienceId: "sunset-cruise",
     experienceNameSnapshot: "Sunset Cruise",
+    externalCalendarEventId: null,
+    externalCalendarSyncError: null,
+    externalCalendarSyncedAt: null,
     extras: [
       {
         extraId: "champagne",

@@ -5,6 +5,7 @@ import { ApplicationError } from "@/shared/application/ApplicationError";
 import { BackpanelCancelBookingUseCase } from "./BackpanelCancelBookingUseCase";
 import { BackpanelCreateBookingUseCase } from "./BackpanelCreateBookingUseCase";
 import { BackpanelUpdateBookingUseCase } from "./BackpanelUpdateBookingUseCase";
+import type { BookingCalendarSynchronizer } from "./BookingCalendarSyncService";
 import { CreatePublicBookingCheckoutUseCase } from "./CreatePublicBookingCheckoutUseCase";
 import { GetAdminBookingsWorkspaceUseCase } from "./GetAdminBookingsWorkspaceUseCase";
 import { HandleDepositPaymentWebhookUseCase } from "./HandleDepositPaymentWebhookUseCase";
@@ -16,6 +17,7 @@ import type {
   BookingPaymentReadModel,
   BookingAuditEntryReadModel,
   BookingCalendarOverlapReadModel,
+  BookingCalendarSyncState,
   BookingExperienceOptionReadModel,
   BookingExtraOptionReadModel,
   BookingRepository,
@@ -33,10 +35,13 @@ import type { PaymentRecord } from "../domain/PaymentRecord";
 describe("Booking use cases", () => {
   it("creates a confirmed backpanel booking with payment and calendar block", async () => {
     const dependencies = createDependencies();
+    const calendarSync = new FakeBookingCalendarSynchronizer();
     const result = await new BackpanelCreateBookingUseCase(
       dependencies.bookings,
       dependencies.ids,
       dependencies.clock,
+      undefined,
+      calendarSync,
     ).execute(createCommand());
 
     expect(result).toMatchObject({
@@ -71,6 +76,7 @@ describe("Booking use cases", () => {
         eventVersion: 1,
       },
     ]);
+    expect(calendarSync.confirmedBookingIds).toEqual(["booking-1"]);
   });
 
   it("lists bookings for the admin workspace", async () => {
@@ -101,6 +107,7 @@ describe("Booking use cases", () => {
 
   it("updates a confirmed booking and its calendar block", async () => {
     const dependencies = createDependencies();
+    const calendarSync = new FakeBookingCalendarSynchronizer();
     await new BackpanelCreateBookingUseCase(
       dependencies.bookings,
       dependencies.ids,
@@ -111,6 +118,7 @@ describe("Booking use cases", () => {
       dependencies.bookings,
       dependencies.ids,
       dependencies.clock,
+      calendarSync,
     ).execute(
       createUpdateCommand({
         customer: {
@@ -172,6 +180,7 @@ describe("Booking use cases", () => {
         eventType: "BookingRescheduled",
       },
     ]);
+    expect(calendarSync.confirmedBookingIds).toEqual(["booking-1"]);
   });
 
   it("ignores the current booking calendar block when rescheduling", async () => {
@@ -228,6 +237,7 @@ describe("Booking use cases", () => {
 
   it("cancels a confirmed booking and releases its calendar block", async () => {
     const dependencies = createDependencies();
+    const calendarSync = new FakeBookingCalendarSynchronizer();
     await new BackpanelCreateBookingUseCase(
       dependencies.bookings,
       dependencies.ids,
@@ -237,6 +247,7 @@ describe("Booking use cases", () => {
     const cancelled = await new BackpanelCancelBookingUseCase(
       dependencies.bookings,
       dependencies.clock,
+      calendarSync,
     ).execute({
       bookingId: "booking-1",
       cancelledByUserId: "admin-user",
@@ -262,6 +273,7 @@ describe("Booking use cases", () => {
         eventType: "BookingCancelled",
       },
     ]);
+    expect(calendarSync.cancelledBookingIds).toEqual(["booking-1"]);
   });
 
   it("rejects overlapping bookings", async () => {
@@ -362,6 +374,7 @@ describe("Booking use cases", () => {
 
   it("confirms a public booking from a paid Stripe checkout webhook", async () => {
     const dependencies = createDependencies();
+    const calendarSync = new FakeBookingCalendarSynchronizer();
     await new CreatePublicBookingCheckoutUseCase(
       dependencies.bookings,
       dependencies.ids,
@@ -373,6 +386,7 @@ describe("Booking use cases", () => {
       dependencies.bookings,
       dependencies.clock,
       dependencies.paymentProvider,
+      calendarSync,
     ).execute({
       rawBody: "paid",
       signature: "stripe-signature",
@@ -400,6 +414,7 @@ describe("Booking use cases", () => {
         eventType: "BookingCreated",
       },
     ]);
+    expect(calendarSync.confirmedBookingIds).toEqual(["booking-1"]);
   });
 
   it("does not confirm a public booking when Stripe reports a wrong amount", async () => {
@@ -538,6 +553,7 @@ function createPublicCheckoutCommand(
 class InMemoryBookingRepository implements BookingRepository {
   private readonly auditEntries: BookingAuditEntryReadModel[] = [];
   private readonly bookings = new Map<string, Booking>();
+  private readonly calendarSyncStates = new Map<string, BookingCalendarSyncState>();
   private readonly paymentRecords = new Map<string, PaymentRecord>();
   private readonly processedProviderEventIds = new Set<string>();
   cancelled: AdminCancelledBookingPersistence | null = null;
@@ -563,6 +579,24 @@ class InMemoryBookingRepository implements BookingRepository {
 
   async findById(id: string) {
     return this.bookings.get(id) ?? null;
+  }
+
+  async findCalendarSyncState(id: string) {
+    return this.calendarSyncStates.get(id) ?? defaultCalendarSyncState();
+  }
+
+  async findBookingsPendingCalendarSync(input: { limit: number }) {
+    return [...this.bookings.values()]
+      .filter((booking) => {
+        const state =
+          this.calendarSyncStates.get(booking.id) ?? defaultCalendarSyncState();
+
+        return (
+          booking.status === "CONFIRMED" &&
+          (!state.externalEventId || state.syncError)
+        );
+      })
+      .slice(0, input.limit);
   }
 
   async findByPaymentProviderSessionId(
@@ -613,6 +647,7 @@ class InMemoryBookingRepository implements BookingRepository {
     this.saved = input;
     this.auditEntries.push(...input.auditEntries.map(toAuditReadModel));
     this.bookings.set(input.booking.id, input.booking);
+    this.calendarSyncStates.set(input.booking.id, defaultCalendarSyncState());
     this.paymentRecords.set(input.paymentRecord.id, input.paymentRecord);
   }
 
@@ -620,17 +655,20 @@ class InMemoryBookingRepository implements BookingRepository {
     this.updated = input;
     this.auditEntries.push(...input.auditEntries.map(toAuditReadModel));
     this.bookings.set(input.booking.id, input.booking);
+    this.ensureCalendarSyncState(input.booking.id);
   }
 
   async saveAdminCancelledBooking(input: AdminCancelledBookingPersistence) {
     this.cancelled = input;
     this.auditEntries.push(...input.auditEntries.map(toAuditReadModel));
     this.bookings.set(input.booking.id, input.booking);
+    this.ensureCalendarSyncState(input.booking.id);
   }
 
   async savePublicPendingBooking(input: PublicPendingBookingPersistence) {
     this.publicPending = input;
     this.bookings.set(input.booking.id, input.booking);
+    this.calendarSyncStates.set(input.booking.id, defaultCalendarSyncState());
     this.paymentRecords.set(input.paymentRecord.id, input.paymentRecord);
   }
 
@@ -645,6 +683,7 @@ class InMemoryBookingRepository implements BookingRepository {
     this.depositSucceeded = input;
     this.auditEntries.push(...input.auditEntries.map(toAuditReadModel));
     this.bookings.set(input.booking.id, input.booking);
+    this.ensureCalendarSyncState(input.booking.id);
     this.paymentRecords.set(input.paymentRecord.id, input.paymentRecord);
 
     return "PROCESSED" as const;
@@ -658,9 +697,41 @@ class InMemoryBookingRepository implements BookingRepository {
     this.processedProviderEventIds.add(input.providerEvent.providerEventId);
     this.depositFailed = input;
     this.bookings.set(input.booking.id, input.booking);
+    this.ensureCalendarSyncState(input.booking.id);
     this.paymentRecords.set(input.paymentRecord.id, input.paymentRecord);
 
     return "PROCESSED" as const;
+  }
+
+  async markCalendarSyncFailed(input: {
+    bookingId: string;
+    syncError: string;
+  }) {
+    const current =
+      this.calendarSyncStates.get(input.bookingId) ?? defaultCalendarSyncState();
+
+    this.calendarSyncStates.set(input.bookingId, {
+      ...current,
+      syncError: input.syncError,
+    });
+  }
+
+  async markCalendarSynced(input: {
+    bookingId: string;
+    externalEventId: string;
+    syncedAt: Date;
+  }) {
+    this.calendarSyncStates.set(input.bookingId, {
+      externalEventId: input.externalEventId,
+      syncError: null,
+      syncedAt: input.syncedAt,
+    });
+  }
+
+  private ensureCalendarSyncState(bookingId: string) {
+    if (!this.calendarSyncStates.has(bookingId)) {
+      this.calendarSyncStates.set(bookingId, defaultCalendarSyncState());
+    }
   }
 
   private experiences(): BookingExperienceOptionReadModel[] {
@@ -738,6 +809,19 @@ class FakeDepositPaymentProvider implements DepositPaymentProvider {
   }
 }
 
+class FakeBookingCalendarSynchronizer implements BookingCalendarSynchronizer {
+  cancelledBookingIds: string[] = [];
+  confirmedBookingIds: string[] = [];
+
+  async syncCancelledBooking(booking: Booking) {
+    this.cancelledBookingIds.push(booking.id);
+  }
+
+  async syncConfirmedBooking(booking: Booking) {
+    this.confirmedBookingIds.push(booking.id);
+  }
+}
+
 function stripeCompletedEvent(
   patch: Partial<
     Extract<
@@ -777,6 +861,14 @@ function toAuditReadModel(
     reason: entry.reason,
     resourceId: entry.resourceId,
     resourceType: entry.resourceType,
+  };
+}
+
+function defaultCalendarSyncState(): BookingCalendarSyncState {
+  return {
+    externalEventId: null,
+    syncError: null,
+    syncedAt: null,
   };
 }
 
