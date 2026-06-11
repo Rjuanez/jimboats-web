@@ -40,7 +40,33 @@ if [ -n "${GHCR_USERNAME:-}" ] && [ -n "${GHCR_TOKEN:-}" ]; then
   printf '%s' "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USERNAME" --password-stdin
 fi
 
-docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" pull
+pull_with_retry() {
+  image="$1"
+  attempts="${PULL_RETRIES:-5}"
+  delay_seconds="${PULL_RETRY_DELAY_SECONDS:-15}"
+  attempt=1
+
+  while [ "$attempt" -le "$attempts" ]; do
+    echo "Pulling $image (attempt $attempt/$attempts)"
+
+    if docker pull "$image"; then
+      return 0
+    fi
+
+    if [ "$attempt" -eq "$attempts" ]; then
+      echo "Failed to pull $image after $attempts attempts." >&2
+      return 1
+    fi
+
+    attempt=$((attempt + 1))
+    sleep "$delay_seconds"
+  done
+}
+
+pull_with_retry "$APP_IMAGE"
+pull_with_retry "caddy:2-alpine"
+pull_with_retry "postgres:17-alpine"
+
 docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" up -d db
 docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" run --rm app prisma migrate deploy --config ./prisma.config.mjs
 docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" up -d app media-worker booking-calendar-sync-worker notification-worker caddy
