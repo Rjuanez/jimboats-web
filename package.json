@@ -15,7 +15,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "NODE_OPTIONS=--max-old-space-size=4096 next build",
     "rules:check": "node scripts/rules/check.mjs",
     "start": "next start",
     "lint": "eslint . --ignore-pattern .worker/",
