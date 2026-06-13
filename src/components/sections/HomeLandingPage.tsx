@@ -49,6 +49,17 @@ export type HomeLandingBrandMark = {
   width: number;
 };
 
+export type HomeLandingGalleryMosaicVariant =
+  | "balanced-classic"
+  | "balanced-rhythm"
+  | "balanced-stack"
+  | "landscape-hero-left"
+  | "landscape-panorama-top"
+  | "landscape-wide-duo"
+  | "portrait-columns"
+  | "portrait-editorial"
+  | "portrait-feature-pair";
+
 export type HomeLandingContent = {
   booking: {
     steps: readonly HomeLandingBookingStep[];
@@ -88,6 +99,7 @@ export type HomeLandingContent = {
   gallery: {
     description: string;
     images: readonly MarketingImage[];
+    mosaicVariant: HomeLandingGalleryMosaicVariant;
     title: string;
   };
   headerCta: HomeLandingLinkItem;
@@ -116,6 +128,72 @@ const bookingIcons = {
   calendar: CalendarDays,
   sparkles: Sparkles,
 } as const;
+
+const galleryMosaicClassNames = {
+  "balanced-classic": [
+    "h-64 md:col-span-7 md:row-span-4 md:h-auto",
+    "h-44 md:col-span-5 md:row-span-2 md:h-auto",
+    "h-44 md:col-span-5 md:row-span-2 md:h-auto",
+    "h-52 md:col-span-5 md:row-span-3 md:h-auto",
+    "h-48 md:col-span-7 md:row-span-3 md:h-auto",
+  ],
+  "balanced-rhythm": [
+    "h-56 md:col-span-5 md:row-span-3 md:h-auto",
+    "h-44 md:col-span-7 md:row-span-2 md:h-auto",
+    "h-48 md:col-span-3 md:row-span-2 md:h-auto",
+    "h-64 md:col-span-4 md:row-span-3 md:h-auto",
+    "h-48 md:col-span-8 md:row-span-2 md:h-auto",
+  ],
+  "balanced-stack": [
+    "h-72 md:col-span-4 md:row-span-5 md:h-auto",
+    "h-44 md:col-span-8 md:row-span-2 md:h-auto",
+    "h-52 md:col-span-4 md:row-span-3 md:h-auto",
+    "h-52 md:col-span-4 md:row-span-3 md:h-auto",
+    "h-48 md:col-span-8 md:row-span-3 md:h-auto",
+  ],
+  "landscape-hero-left": [
+    "h-72 md:col-span-8 md:row-span-5 md:h-auto",
+    "h-44 md:col-span-4 md:row-span-2 md:h-auto",
+    "h-60 md:col-span-4 md:row-span-3 md:h-auto",
+    "h-44 md:col-span-6 md:row-span-2 md:h-auto",
+    "h-44 md:col-span-6 md:row-span-2 md:h-auto",
+  ],
+  "landscape-panorama-top": [
+    "h-60 md:col-span-12 md:row-span-3 md:h-auto",
+    "h-64 md:col-span-5 md:row-span-3 md:h-auto",
+    "h-72 md:col-span-3 md:row-span-4 md:h-auto",
+    "h-44 md:col-span-4 md:row-span-2 md:h-auto",
+    "h-44 md:col-span-4 md:row-span-2 md:h-auto",
+  ],
+  "landscape-wide-duo": [
+    "h-56 md:col-span-7 md:row-span-3 md:h-auto",
+    "h-56 md:col-span-5 md:row-span-3 md:h-auto",
+    "h-64 md:col-span-4 md:row-span-3 md:h-auto",
+    "h-44 md:col-span-8 md:row-span-2 md:h-auto",
+    "h-44 md:col-span-8 md:row-span-2 md:h-auto",
+  ],
+  "portrait-columns": [
+    "h-80 md:col-span-4 md:row-span-6 md:h-auto",
+    "h-80 md:col-span-4 md:row-span-6 md:h-auto",
+    "h-48 md:col-span-4 md:row-span-3 md:h-auto",
+    "h-48 md:col-span-4 md:row-span-3 md:h-auto",
+    "h-48 md:col-span-8 md:row-span-2 md:h-auto",
+  ],
+  "portrait-editorial": [
+    "h-44 md:col-span-7 md:row-span-2 md:h-auto",
+    "h-80 md:col-span-5 md:row-span-5 md:h-auto",
+    "h-72 md:col-span-4 md:row-span-4 md:h-auto",
+    "h-60 md:col-span-3 md:row-span-3 md:h-auto",
+    "h-44 md:col-span-5 md:row-span-2 md:h-auto",
+  ],
+  "portrait-feature-pair": [
+    "h-80 md:col-span-5 md:row-span-5 md:h-auto",
+    "h-44 md:col-span-7 md:row-span-2 md:h-auto",
+    "h-80 md:col-span-4 md:row-span-5 md:h-auto",
+    "h-60 md:col-span-3 md:row-span-3 md:h-auto",
+    "h-44 md:col-span-7 md:row-span-2 md:h-auto",
+  ],
+} satisfies Record<HomeLandingGalleryMosaicVariant, readonly string[]>;
 
 export function HomeLandingPage({ content }: HomeLandingPageProps) {
   return (
@@ -197,9 +275,7 @@ function ExperiencesSection({
       <Container>
         <div className="mb-10 text-center lg:hidden">
           <h2 className="font-display text-4xl text-text">{section.title}</h2>
-          <p className="mt-2 text-sm text-text-muted">
-            {section.description}
-          </p>
+          <p className="mt-2 text-sm text-text-muted">{section.description}</p>
         </div>
         <div className="space-y-12 lg:space-y-40">
           {experiences.map((experience) => (
@@ -266,7 +342,9 @@ function GallerySection({
 }: {
   gallery: HomeLandingContent["gallery"];
 }) {
-  const [primary, breeze, champagne, jump, coast] = gallery.images;
+  const mosaicClassNames =
+    galleryMosaicClassNames[gallery.mosaicVariant] ??
+    galleryMosaicClassNames["balanced-classic"];
 
   return (
     <section className="bg-sand/10 px-4 py-14 lg:px-0 lg:py-32" id="gallery">
@@ -276,29 +354,14 @@ function GallerySection({
           title={gallery.title}
         />
 
-        <div className="mt-10 space-y-4 md:grid md:grid-cols-12 md:items-center md:gap-8 md:space-y-0 lg:mt-20">
-          <GalleryImage
-            className="h-64 md:col-span-7 md:h-[600px] md:-translate-y-8"
-            image={primary}
-          />
-          <div className="grid grid-cols-2 gap-4 md:col-span-5 md:block md:space-y-8">
+        <div className="mt-10 grid gap-4 md:grid-cols-12 md:auto-rows-[110px] md:gap-6 lg:mt-20 lg:auto-rows-[140px] lg:gap-8">
+          {gallery.images.slice(0, 5).map((image, index) => (
             <GalleryImage
-              className="h-44 md:h-[400px] md:translate-x-6"
-              image={breeze}
+              className={mosaicClassNames[index] ?? "h-48 md:col-span-4"}
+              image={image}
+              key={`${image.src}-${index}`}
             />
-            <GalleryImage
-              className="h-44 md:h-[300px] md:-translate-x-8"
-              image={champagne}
-            />
-          </div>
-          <GalleryImage
-            className="h-52 md:col-span-5 md:h-[500px] md:translate-y-10"
-            image={jump}
-          />
-          <GalleryImage
-            className="h-48 md:col-span-7 md:h-[700px] md:-translate-x-4"
-            image={coast}
-          />
+          ))}
         </div>
       </Container>
     </section>

@@ -77,6 +77,11 @@ export type AdminMediaMetadataInput = {
 };
 
 export type AdminMediaActions = {
+  rotateHomeGallery?: () => Promise<
+    AdminMediaActionResult<{
+      state: AdminMediaPageData;
+    }>
+  >;
   requestReprocess: (input: { assetId: string }) => Promise<
     AdminMediaActionResult<{
       state: AdminMediaPageData;

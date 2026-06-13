@@ -107,6 +107,37 @@ export function useAdminMediaStore({
     [actions],
   );
 
+  const rotateHomeGallery = useCallback(async () => {
+    setIsSaving(true);
+    setMessage(null);
+    setError(null);
+
+    try {
+      if (!actions.rotateHomeGallery) {
+        setError("Home gallery rotation is not available in this workspace.");
+        return false;
+      }
+
+      const result = await actions.rotateHomeGallery();
+
+      if (!result.ok) {
+        setError(result.message);
+        return false;
+      }
+
+      setPageData(result.data.state);
+      setMessage("Home gallery rotated.");
+
+      return true;
+    } catch {
+      setError("Unexpected error while rotating the home gallery.");
+
+      return false;
+    } finally {
+      setIsSaving(false);
+    }
+  }, [actions]);
+
   return useMemo(
     () => ({
       error,
@@ -114,6 +145,7 @@ export function useAdminMediaStore({
       message,
       pageData,
       requestReprocess,
+      rotateHomeGallery,
       updateMetadata,
       uploadAsset,
     }),
@@ -123,6 +155,7 @@ export function useAdminMediaStore({
       message,
       pageData,
       requestReprocess,
+      rotateHomeGallery,
       updateMetadata,
       uploadAsset,
     ],

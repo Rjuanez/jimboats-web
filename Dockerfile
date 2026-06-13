@@ -23,6 +23,7 @@ RUN mkdir -p public \
   && pnpm db:generate \
   && pnpm media:prepare \
   && pnpm booking-calendar-sync:worker:build \
+  && pnpm home-gallery:worker:build \
   && pnpm media:worker:build \
   && pnpm notifications:worker:build \
   && pnpm build

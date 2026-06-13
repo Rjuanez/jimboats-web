@@ -11,6 +11,7 @@ import type {
 import { ApplicationError } from "@/shared/application/ApplicationError";
 import { DomainError } from "@/shared/domain/DomainError";
 
+import { revalidateHomeGalleryCache } from "../cache/homeGalleryCache";
 import { revalidatePublicBookingCatalogCache } from "../cache/publicBookingCatalogCache";
 import { presentAdminMediaList } from "../presenters/adminMediaPresenter";
 import {
@@ -30,6 +31,7 @@ export async function uploadAdminMediaAssetAction(input: FormData): Promise<
     const container = getContainer();
     const result = await container.adminMedia.uploadAsset(command);
     revalidatePublicBookingCatalogCache();
+    revalidateHomeGalleryCache();
 
     return ok({
       assetId: result.asset.id,
@@ -53,6 +55,7 @@ export async function updateAdminMediaAssetMetadataAction(
 
     await container.adminMedia.updateMetadata(command);
     revalidatePublicBookingCatalogCache();
+    revalidateHomeGalleryCache();
 
     return ok({
       state: await loadState(container),
@@ -75,6 +78,26 @@ export async function requestAdminMediaReprocessAction(input: {
 
     await container.adminMedia.requestReprocess(command);
     revalidatePublicBookingCatalogCache();
+    revalidateHomeGalleryCache();
+
+    return ok({
+      state: await loadState(container),
+    });
+  } catch (error) {
+    return failure(error);
+  }
+}
+
+export async function rotateAdminHomeGalleryAction(): Promise<
+  AdminMediaActionResult<{
+    state: AdminMediaPageData;
+  }>
+> {
+  try {
+    const container = getContainer();
+
+    await container.adminHomeGallery.rotateNow();
+    revalidateHomeGalleryCache();
 
     return ok({
       state: await loadState(container),

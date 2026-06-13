@@ -67,6 +67,8 @@ import { UpdateExperienceExtrasUseCase } from "@/modules/experience-catalog/appl
 import { UpdateExperienceMediaUseCase } from "@/modules/experience-catalog/application/UpdateExperienceMediaUseCase";
 import { UpdateExperiencePublicationStateUseCase } from "@/modules/experience-catalog/application/UpdateExperiencePublicationStateUseCase";
 import { UpdateExtraUseCase } from "@/modules/experience-catalog/application/UpdateExtraUseCase";
+import { GetPublishedHomeGalleryUseCase } from "@/modules/home-gallery/application/GetPublishedHomeGalleryUseCase";
+import { RotateHomeGalleryUseCase } from "@/modules/home-gallery/application/RotateHomeGalleryUseCase";
 import type { UpdateLocalizedExperienceContentCommand } from "@/modules/localization-seo/application/LocalizedExperienceContentDtos";
 import { UpdateLocalizedExperienceContentUseCase } from "@/modules/localization-seo/application/UpdateLocalizedExperienceContentUseCase";
 import type {
@@ -116,6 +118,8 @@ import { PrismaExperienceRepository } from "./infrastructure/db/prisma/PrismaExp
 import type { PrismaExperienceRepositoryClient } from "./infrastructure/db/prisma/PrismaExperienceRepository";
 import { PrismaExtraRepository } from "./infrastructure/db/prisma/PrismaExtraRepository";
 import type { PrismaExtraRepositoryClient } from "./infrastructure/db/prisma/PrismaExtraRepository";
+import { PrismaHomeGalleryRepository } from "./infrastructure/db/prisma/PrismaHomeGalleryRepository";
+import type { PrismaHomeGalleryRepositoryClient } from "./infrastructure/db/prisma/PrismaHomeGalleryRepository";
 import { PrismaLocalizedExperienceContentRepository } from "./infrastructure/db/prisma/PrismaLocalizedExperienceContentRepository";
 import type { PrismaLocalizedExperienceContentClient } from "./infrastructure/db/prisma/PrismaLocalizedExperienceContentRepository";
 import { PrismaMediaAssetRepository } from "./infrastructure/db/prisma/PrismaMediaAssetRepository";
@@ -137,6 +141,8 @@ import type { PrismaNotificationTemplateRepositoryClient } from "./infrastructur
 import { PrismaPublicBookingCatalogReader } from "./infrastructure/db/prisma/PrismaPublicBookingCatalogReader";
 import type { PrismaPublicBookingCatalogReaderClient } from "./infrastructure/db/prisma/PrismaPublicBookingCatalogReader";
 import { getPrismaClient } from "./infrastructure/db/prisma/prismaClient";
+import { CryptoHomeGalleryIdGenerator } from "./infrastructure/home-gallery/CryptoHomeGalleryIdGenerator";
+import { SystemHomeGalleryClock } from "./infrastructure/home-gallery/SystemHomeGalleryClock";
 import { CryptoMediaIdGenerator } from "./infrastructure/media/CryptoMediaIdGenerator";
 import { createSharpLocalMediaVariantGeneratorFromEnv } from "./infrastructure/media/SharpLocalMediaVariantGenerator";
 import { SystemMediaClock } from "./infrastructure/media/SystemMediaClock";
@@ -164,6 +170,9 @@ export function getContainer() {
     );
   const mediaAssetRepository = new PrismaMediaAssetRepository(
     prisma as unknown as PrismaMediaAssetRepositoryClient,
+  );
+  const homeGalleryRepository = new PrismaHomeGalleryRepository(
+    prisma as unknown as PrismaHomeGalleryRepositoryClient,
   );
   const calendarBlockRepository = new PrismaCalendarBlockRepository(
     prisma as unknown as PrismaCalendarBlockRepositoryClient,
@@ -205,6 +214,8 @@ export function getContainer() {
   );
   const mediaClock = new SystemMediaClock();
   const mediaIds = new CryptoMediaIdGenerator();
+  const homeGalleryClock = new SystemHomeGalleryClock();
+  const homeGalleryIds = new CryptoHomeGalleryIdGenerator();
   const calendarClock = new SystemCalendarClock();
   const calendarIds = new CryptoCalendarBlockIdGenerator();
   const bookingClock = new SystemBookingClock();
@@ -312,6 +323,16 @@ export function getContainer() {
       mediaVariantGenerator,
       mediaClock,
     );
+  const getPublishedHomeGalleryUseCase = new GetPublishedHomeGalleryUseCase(
+    homeGalleryRepository,
+    homeGalleryRepository,
+  );
+  const rotateHomeGalleryUseCase = new RotateHomeGalleryUseCase(
+    homeGalleryRepository,
+    homeGalleryRepository,
+    homeGalleryIds,
+    homeGalleryClock,
+  );
   const getAdminCalendarUseCase = new GetAdminCalendarUseCase(
     calendarBlockRepository,
   );
@@ -460,7 +481,8 @@ export function getContainer() {
         backpanelUpdateBookingUseCase.execute(command),
     },
     adminCancellationPolicies: {
-      getWorkspace: () => getAdminCancellationPoliciesWorkspaceUseCase.execute(),
+      getWorkspace: () =>
+        getAdminCancellationPoliciesWorkspaceUseCase.execute(),
       savePolicy: (command: SaveCancellationPolicyCommand) =>
         saveCancellationPolicyUseCase.execute(command),
     },
@@ -517,6 +539,13 @@ export function getContainer() {
       uploadAsset: (command: UploadMediaAssetCommand) =>
         uploadMediaAssetUseCase.execute(command),
     },
+    adminHomeGallery: {
+      rotateNow: () =>
+        rotateHomeGalleryUseCase.execute({
+          force: true,
+          trigger: "MANUAL",
+        }),
+    },
     adminNotifications: {
       getWorkspace: () => getAdminNotificationsWorkspaceUseCase.execute(),
       previewTemplate: (command: PreviewNotificationTemplateCommand) =>
@@ -532,6 +561,12 @@ export function getContainer() {
     },
     mediaWorker: {
       processNextJob: () => processNextMediaProcessingJobUseCase.execute(),
+    },
+    homeGalleryWorker: {
+      rotateIfDue: () =>
+        rotateHomeGalleryUseCase.execute({
+          trigger: "AUTOMATIC",
+        }),
     },
     bookingCalendarSyncWorker: {
       reconcile: (input: { limit: number }) =>
@@ -555,6 +590,9 @@ export function getContainer() {
       viewBooking: (query: ViewBookingByAccessTokenQuery) =>
         viewBookingByAccessTokenUseCase.execute(query),
     },
+    publicHomeGallery: {
+      getPublished: () => getPublishedHomeGalleryUseCase.execute(),
+    },
   };
 }
 
@@ -577,7 +615,9 @@ function createLazyLocalMediaVariantGenerator(): MediaVariantGenerator {
 function createLazyDepositPaymentProvider(): DepositPaymentProvider {
   return {
     createCheckoutSession: (command) =>
-      createStripeDepositPaymentProviderFromEnv().createCheckoutSession(command),
+      createStripeDepositPaymentProviderFromEnv().createCheckoutSession(
+        command,
+      ),
     parseWebhook: (input) =>
       createStripeDepositPaymentProviderFromEnv().parseWebhook(input),
   };

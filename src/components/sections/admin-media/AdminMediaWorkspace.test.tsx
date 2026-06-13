@@ -24,6 +24,7 @@ describe("AdminMediaWorkspace", () => {
       screen.getByRole("heading", { name: "Media library" }),
     ).toBeInTheDocument();
     expect(screen.getByText("Upload media")).toBeInTheDocument();
+    expect(screen.getByText("Home gallery")).toBeInTheDocument();
     expect(screen.getByText("Sunset Experience hero")).toBeInTheDocument();
     expect(screen.getByText("Morning Breeze cover")).toBeInTheDocument();
   });
@@ -106,7 +107,9 @@ describe("AdminMediaWorkspace", () => {
       />,
     );
 
-    expect(screen.getByText("No linked admin content yet.")).toBeInTheDocument();
+    expect(
+      screen.getByText("No linked admin content yet."),
+    ).toBeInTheDocument();
   });
 
   it("submits edited media metadata", async () => {
@@ -134,10 +137,46 @@ describe("AdminMediaWorkspace", () => {
       }),
     );
   });
+
+  it("forces a home gallery rotation from the media library", async () => {
+    const basePageData = getAdminMediaPreviewPage();
+    const pageData = {
+      ...basePageData,
+      assets: Array.from({ length: 5 }, (_, index) => ({
+        ...basePageData.assets[0],
+        collection: "Gallery" as const,
+        id: `gallery-ready-${index + 1}`,
+        status: "ready" as const,
+        title: `Ready gallery ${index + 1}`,
+      })),
+    };
+    const actions = createActions(pageData);
+    const user = userEvent.setup();
+
+    render(
+      <AdminMediaWorkspace
+        actions={actions}
+        pageData={pageData}
+        view="library"
+      />,
+    );
+
+    await user.click(
+      screen.getByRole("button", { name: /rotate gallery now/i }),
+    );
+
+    expect(actions.rotateHomeGallery).toHaveBeenCalledWith();
+  });
 });
 
 function createActions(state = getAdminMediaPreviewPage()): AdminMediaActions {
   return {
+    rotateHomeGallery: vi.fn(async () => ({
+      data: {
+        state,
+      },
+      ok: true as const,
+    })),
     requestReprocess: vi.fn(async () => ({
       data: {
         state,

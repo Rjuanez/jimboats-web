@@ -1,8 +1,10 @@
 import type {
   HomeLandingContent,
   HomeLandingExperience,
+  HomeLandingGalleryMosaicVariant,
   HomeLandingUpgrade,
 } from "@/components/sections/HomeLandingPage";
+import type { PublishedHomeGalleryDto } from "@/modules/home-gallery/application/HomeGalleryDtos";
 import type {
   PublicBookingContent,
   PublicBookingExperience,
@@ -12,6 +14,7 @@ import { createLocalizedPath, localeToIntlLocale } from "@/i18n/locales";
 import { getPublicDictionary, type PublicDictionary } from "@/i18n/public";
 import type { SupportedLocaleCode } from "@/shared/domain/LocaleCode";
 
+import { getCachedPublishedHomeGallery } from "../cache/homeGalleryCache";
 import { getCachedPublicBookingCatalog } from "../cache/publicBookingCatalogCache";
 
 const generatedImagePath = (slug: string, width: number) =>
@@ -227,6 +230,7 @@ export const homeLandingContent = {
         widths: [480, 720, 960, 1024],
       }),
     ],
+    mosaicVariant: "balanced-classic",
     title: "Moments at Sea",
   },
   booking: {
@@ -295,15 +299,15 @@ export const homeLandingContent = {
 export async function getHomeLandingPage(
   locale: SupportedLocaleCode = "en",
 ): Promise<HomeLandingContent> {
-  let publicBookingContent: PublicBookingContent;
+  const [publicBookingContent, publishedGallery] = await Promise.all([
+    loadPublicBookingCatalogSafe(locale),
+    loadPublishedHomeGallerySafe(locale),
+  ]);
+  const content = publicBookingContent
+    ? presentHomeLandingContent(publicBookingContent, locale)
+    : localizeFallbackHomeLandingContent(locale);
 
-  try {
-    publicBookingContent = await getCachedPublicBookingCatalog(locale);
-  } catch {
-    return localizeFallbackHomeLandingContent(locale);
-  }
-
-  return presentHomeLandingContent(publicBookingContent, locale);
+  return applyPublishedHomeGallery(content, publishedGallery, locale);
 }
 
 export function createHomeLandingStructuredData(content: HomeLandingContent) {
@@ -368,6 +372,131 @@ function presentHomeLandingContent(
       })),
     },
   };
+}
+
+async function loadPublicBookingCatalogSafe(locale: SupportedLocaleCode) {
+  try {
+    return await getCachedPublicBookingCatalog(locale);
+  } catch {
+    return null;
+  }
+}
+
+async function loadPublishedHomeGallerySafe(locale: SupportedLocaleCode) {
+  try {
+    return await getCachedPublishedHomeGallery(locale);
+  } catch {
+    return null;
+  }
+}
+
+function applyPublishedHomeGallery(
+  content: HomeLandingContent,
+  publishedGallery: PublishedHomeGalleryDto | null,
+  locale: SupportedLocaleCode,
+): HomeLandingContent {
+  if (!publishedGallery || publishedGallery.slots.length < 5) {
+    return content;
+  }
+
+  const mosaicVariant =
+    publishedGallery.mosaicVariant ??
+    defaultHomeGalleryMosaicVariantForLayout(publishedGallery.layout);
+
+  return {
+    ...content,
+    gallery: {
+      ...content.gallery,
+      images: publishedGallery.slots
+        .slice()
+        .sort((left, right) => left.position - right.position)
+        .map((slot) =>
+          publishedGallerySlotToImage(slot, locale, mosaicVariant),
+        ),
+      mosaicVariant: homeGalleryMosaicVariantToLandingVariant(mosaicVariant),
+    },
+  };
+}
+
+function publishedGallerySlotToImage(
+  slot: PublishedHomeGalleryDto["slots"][number],
+  locale: SupportedLocaleCode,
+  mosaicVariant: PublishedHomeGalleryDto["mosaicVariant"],
+) {
+  const variants = slot.asset.variants
+    .slice()
+    .sort((left, right) => left.width - right.width);
+  const largestVariant = variants.at(-1) ?? variants[0];
+
+  return {
+    alt:
+      slot.asset.altText[locale] || slot.asset.altText.en || slot.asset.title,
+    height: largestVariant.height,
+    sizes: gallerySlotSizes(mosaicVariant, slot.position),
+    src: largestVariant.publicPath,
+    srcSet: variants
+      .map((variant) => `${variant.publicPath} ${variant.width}w`)
+      .join(", "),
+    width: largestVariant.width,
+  };
+}
+
+function homeGalleryMosaicVariantToLandingVariant(
+  mosaicVariant: PublishedHomeGalleryDto["mosaicVariant"],
+): HomeLandingGalleryMosaicVariant {
+  const variants = {
+    BALANCED_CLASSIC: "balanced-classic",
+    BALANCED_RHYTHM: "balanced-rhythm",
+    BALANCED_STACK: "balanced-stack",
+    LANDSCAPE_HERO_LEFT: "landscape-hero-left",
+    LANDSCAPE_PANORAMA_TOP: "landscape-panorama-top",
+    LANDSCAPE_WIDE_DUO: "landscape-wide-duo",
+    PORTRAIT_COLUMNS: "portrait-columns",
+    PORTRAIT_EDITORIAL: "portrait-editorial",
+    PORTRAIT_FEATURE_PAIR: "portrait-feature-pair",
+  } satisfies Record<
+    PublishedHomeGalleryDto["mosaicVariant"],
+    HomeLandingGalleryMosaicVariant
+  >;
+
+  return variants[mosaicVariant];
+}
+
+function defaultHomeGalleryMosaicVariantForLayout(
+  layout: PublishedHomeGalleryDto["layout"],
+): PublishedHomeGalleryDto["mosaicVariant"] {
+  if (layout === "LANDSCAPE_LED") {
+    return "LANDSCAPE_HERO_LEFT";
+  }
+
+  if (layout === "PORTRAIT_LED") {
+    return "PORTRAIT_COLUMNS";
+  }
+
+  return "BALANCED_CLASSIC";
+}
+
+function gallerySlotSizes(
+  mosaicVariant: PublishedHomeGalleryDto["mosaicVariant"],
+  position: number,
+) {
+  if (mosaicVariant === "LANDSCAPE_PANORAMA_TOP" && position === 1) {
+    return "100vw";
+  }
+
+  if (position === 1) {
+    return mosaicVariant.startsWith("PORTRAIT_")
+      ? "(min-width: 768px) 42vw, 100vw"
+      : "(min-width: 768px) 58vw, 100vw";
+  }
+
+  if (position === 5) {
+    return mosaicVariant.startsWith("LANDSCAPE_")
+      ? "(min-width: 768px) 58vw, 100vw"
+      : "(min-width: 768px) 42vw, 100vw";
+  }
+
+  return "(min-width: 768px) 42vw, 50vw";
 }
 
 function presentLandingExperience(

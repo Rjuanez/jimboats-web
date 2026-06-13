@@ -3,6 +3,7 @@
 import {
   ArrowRight,
   Image as ImageIcon,
+  RefreshCw,
   Search,
   SlidersHorizontal,
 } from "lucide-react";
@@ -22,6 +23,7 @@ import type { AdminMediaAsset, AdminMediaStatus } from "./AdminMediaTypes";
 type AdminMediaLibrarySectionProps = {
   assets: AdminMediaAsset[];
   isSaving: boolean;
+  rotateHomeGallery: () => Promise<boolean>;
   uploadAsset: (input: FormData) => Promise<string | null>;
 };
 
@@ -32,6 +34,7 @@ const statusOptions: StatusFilter[] = ["all", "ready", "processing", "failed"];
 export function AdminMediaLibrarySection({
   assets,
   isSaving,
+  rotateHomeGallery,
   uploadAsset,
 }: AdminMediaLibrarySectionProps) {
   const [query, setQuery] = useState("");
@@ -82,6 +85,11 @@ export function AdminMediaLibrarySection({
       </header>
 
       <MediaStats assets={assets} />
+      <HomeGalleryAdminPanel
+        assets={assets}
+        isSaving={isSaving}
+        rotateHomeGallery={rotateHomeGallery}
+      />
       <AdminMediaUploadPanel isSaving={isSaving} uploadAsset={uploadAsset} />
 
       <Surface
@@ -145,6 +153,48 @@ export function AdminMediaLibrarySection({
         )}
       </Surface>
     </div>
+  );
+}
+
+function HomeGalleryAdminPanel({
+  assets,
+  isSaving,
+  rotateHomeGallery,
+}: {
+  assets: AdminMediaAsset[];
+  isSaving: boolean;
+  rotateHomeGallery: () => Promise<boolean>;
+}) {
+  const readyGalleryAssets = assets.filter(
+    (asset) => asset.collection === "Gallery" && asset.status === "ready",
+  );
+
+  return (
+    <Surface
+      title="Home gallery"
+      description="Force a fresh public gallery composition for testing."
+    >
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p className="text-sm font-semibold text-slate-950">
+            {readyGalleryAssets.length} ready Gallery assets
+          </p>
+          <p className="mt-1 text-sm leading-6 text-slate-600">
+            The public page keeps serving the last published composition while
+            new media finishes processing.
+          </p>
+        </div>
+        <Button
+          disabled={isSaving || readyGalleryAssets.length < 5}
+          onClick={() => void rotateHomeGallery()}
+          type="button"
+          variant="secondary"
+        >
+          <RefreshCw className="size-4" aria-hidden="true" />
+          Rotate gallery now
+        </Button>
+      </div>
+    </Surface>
   );
 }
 

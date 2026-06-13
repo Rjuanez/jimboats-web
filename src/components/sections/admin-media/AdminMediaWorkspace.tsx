@@ -54,6 +54,7 @@ export function AdminMediaWorkspace({
         <AdminMediaLibrarySection
           assets={store.pageData.assets}
           isSaving={store.isSaving}
+          rotateHomeGallery={store.rotateHomeGallery}
           uploadAsset={store.uploadAsset}
         />
       )}
@@ -87,9 +88,7 @@ function SaveStatus({
 function MediaAssetNotFound() {
   return (
     <div className="space-y-5">
-      <h1 className="text-2xl font-semibold text-slate-950">
-        Asset not found
-      </h1>
+      <h1 className="text-2xl font-semibold text-slate-950">Asset not found</h1>
       <Button href="/admin/media" variant="secondary">
         <ArrowLeft className="size-4" aria-hidden="true" />
         Media library

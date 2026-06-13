@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import type {
   PublicBookingCalendar,
@@ -6,19 +6,29 @@ import type {
   PublicBookingExtra,
   PublicBookingExperience,
 } from "@/components/sections/public-booking/PublicBookingTypes";
+import type { HomeGallerySlotKey } from "@/modules/home-gallery/domain/HomeGalleryComposition";
 
 import {
   createHomeLandingStructuredData,
   getHomeLandingPage,
   homeLandingContent,
 } from "./homeLandingPresenter";
+import { getCachedPublishedHomeGallery } from "../cache/homeGalleryCache";
 import { getCachedPublicBookingCatalog } from "../cache/publicBookingCatalogCache";
+
+vi.mock("../cache/homeGalleryCache", () => ({
+  getCachedPublishedHomeGallery: vi.fn(),
+}));
 
 vi.mock("../cache/publicBookingCatalogCache", () => ({
   getCachedPublicBookingCatalog: vi.fn(),
 }));
 
 describe("homeLandingPresenter", () => {
+  beforeEach(() => {
+    vi.mocked(getCachedPublishedHomeGallery).mockResolvedValue(null);
+  });
+
   it("projects the cached public booking catalog into the landing content", async () => {
     vi.mocked(getCachedPublicBookingCatalog).mockResolvedValue(
       publicBookingFixture(),
@@ -80,6 +90,70 @@ describe("homeLandingPresenter", () => {
         url: "/en/book?experience=morning-breeze-charter",
       }),
     ]);
+  });
+
+  it("replaces the static gallery with the published rotating gallery", async () => {
+    const slotKeys: HomeGallerySlotKey[] = [
+      "feature",
+      "pairTop",
+      "pairBottom",
+      "lowerLeft",
+      "lowerRight",
+    ];
+
+    vi.mocked(getCachedPublicBookingCatalog).mockResolvedValue(
+      publicBookingFixture(),
+    );
+    vi.mocked(getCachedPublishedHomeGallery).mockResolvedValue({
+      expiresAt: "2026-06-13T10:00:00.000Z",
+      id: "composition-1",
+      layout: "LANDSCAPE_LED",
+      mosaicVariant: "LANDSCAPE_PANORAMA_TOP",
+      publishedAt: "2026-06-13T09:00:00.000Z",
+      slots: [1, 2, 3, 4, 5].map((position) => ({
+        asset: {
+          altText: {
+            en: `Published gallery image ${position}`,
+            es: `Imagen publicada ${position}`,
+          },
+          id: `asset-${position}`,
+          original: {
+            height: 900,
+            width: 1400,
+          },
+          title: `Gallery asset ${position}`,
+          variants: [
+            {
+              fileSizeBytes: 80_000,
+              format: "webp",
+              height: 480,
+              publicPath: `/media/gallery/asset-${position}-480.webp`,
+              width: 480,
+            },
+            {
+              fileSizeBytes: 140_000,
+              format: "webp",
+              height: 720,
+              publicPath: `/media/gallery/asset-${position}-720.webp`,
+              width: 720,
+            },
+          ],
+        },
+        orientation: "LANDSCAPE",
+        position,
+        slotKey: slotKeys[position - 1] ?? "feature",
+      })),
+    });
+
+    const content = await getHomeLandingPage("es");
+
+    expect(content.gallery.mosaicVariant).toBe("landscape-panorama-top");
+    expect(content.gallery.images[0]).toMatchObject({
+      alt: "Imagen publicada 1",
+      src: "/media/gallery/asset-1-720.webp",
+      srcSet:
+        "/media/gallery/asset-1-480.webp 480w, /media/gallery/asset-1-720.webp 720w",
+    });
   });
 
   it("falls back to localized static landing content when the catalog is unavailable", async () => {

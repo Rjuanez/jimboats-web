@@ -21,6 +21,54 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
+export const LandscapeGallery: Story = {
+  args: {
+    content: {
+      ...homeLandingContent,
+      gallery: {
+        ...homeLandingContent.gallery,
+        mosaicVariant: "landscape-hero-left",
+      },
+    },
+  },
+};
+
+export const LandscapePanoramaGallery: Story = {
+  args: {
+    content: {
+      ...homeLandingContent,
+      gallery: {
+        ...homeLandingContent.gallery,
+        mosaicVariant: "landscape-panorama-top",
+      },
+    },
+  },
+};
+
+export const PortraitGallery: Story = {
+  args: {
+    content: {
+      ...homeLandingContent,
+      gallery: {
+        ...homeLandingContent.gallery,
+        mosaicVariant: "portrait-columns",
+      },
+    },
+  },
+};
+
+export const BalancedRhythmGallery: Story = {
+  args: {
+    content: {
+      ...homeLandingContent,
+      gallery: {
+        ...homeLandingContent.gallery,
+        mosaicVariant: "balanced-rhythm",
+      },
+    },
+  },
+};
+
 export const Mobile: Story = {
   parameters: {
     viewport: {
