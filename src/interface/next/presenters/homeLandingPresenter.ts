@@ -69,7 +69,7 @@ export const homeLandingContent = {
     description:
       "Unforgettable moments on the sea, crafted for the discerning traveler.",
     image: generatedImage({
-      alt: "Friends enjoying a private sunset cruise with the Barcelona skyline behind them.",
+      alt: "Traditional boat sailing at sunset in Barcelona with the city skyline behind it.",
       sizes: "100vw",
       slug: "hero-sunset-barcelona",
       widths: [640, 960, 1024],
@@ -150,7 +150,7 @@ export const homeLandingContent = {
   story: {
     description: "Where every wave tells a story and time stands still.",
     image: generatedImage({
-      alt: "Friends laughing together during a celebration at sea.",
+      alt: "Two guests relaxing on a private boat with Barcelona harbor at sunset.",
       sizes: "100vw",
       slug: "story-barcelona-sea",
       widths: [640, 960, 1024],
@@ -255,7 +255,7 @@ export const homeLandingContent = {
       label: "Reserve your experience",
     },
     image: generatedImage({
-      alt: "A calm Mediterranean golden hour scene with a boat sailing away.",
+      alt: "Traditional boat sailing past Barcelona at golden hour.",
       sizes: "100vw",
       slug: "final-cta-golden-sea",
       widths: [640, 960, 1024],

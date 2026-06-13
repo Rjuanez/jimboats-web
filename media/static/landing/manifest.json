@@ -3,7 +3,7 @@
   "items": [
     {
       "slug": "hero-sunset-barcelona",
-      "source": "sources/hero-sunset-barcelona.png",
+      "source": "sources/hero-sunset-barcelona.jpg",
       "widths": [640, 960, 1024]
     },
     {
@@ -28,7 +28,7 @@
     },
     {
       "slug": "story-barcelona-sea",
-      "source": "sources/story-barcelona-sea.png",
+      "source": "sources/story-barcelona-sea.jpg",
       "widths": [640, 960, 1024]
     },
     {
@@ -73,7 +73,7 @@
     },
     {
       "slug": "final-cta-golden-sea",
-      "source": "sources/final-cta-golden-sea.png",
+      "source": "sources/final-cta-golden-sea.jpg",
       "widths": [640, 960, 1024]
     }
   ]
