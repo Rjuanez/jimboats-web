@@ -156,6 +156,7 @@ function bookingToGoogleEvent(
       `Experiencia: ${snapshot.experienceNameSnapshot}`,
       `Personas: ${snapshot.guestCount}`,
       `Estado: ${label}`,
+      `Pendiente por pagar: ${formatMoney(snapshot.priceSnapshot.remainingAmount)}`,
       snapshot.internalNotes ? `Notas internas: ${snapshot.internalNotes}` : null,
     ]
       .filter((line): line is string => line !== null)
@@ -191,6 +192,15 @@ function dateTimeFromLocalSlot(localDate: string, minutes: number) {
   const minute = (minutes % 60).toString().padStart(2, "0");
 
   return `${localDate}T${hour}:${minute}:00`;
+}
+
+function formatMoney(money: { amountMinor: number; currency: string }) {
+  const sign = money.amountMinor < 0 ? "-" : "";
+  const absoluteAmount = Math.abs(money.amountMinor);
+  const major = Math.floor(absoluteAmount / 100);
+  const minor = String(absoluteAmount % 100).padStart(2, "0");
+
+  return `${sign}${money.currency} ${major}.${minor}`;
 }
 
 function deterministicEventId(bookingId: string) {

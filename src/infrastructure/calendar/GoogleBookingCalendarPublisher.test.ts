@@ -30,6 +30,9 @@ describe("GoogleBookingCalendarPublisher", () => {
           dateTime: "2026-06-10T14:00:00",
           timeZone: "Europe/Madrid",
         },
+        description: expect.stringContaining(
+          "Pendiente por pagar: EUR 1100.00",
+        ),
         start: {
           dateTime: "2026-06-10T10:00:00",
           timeZone: "Europe/Madrid",
