@@ -298,6 +298,33 @@ describe("Booking use cases", () => {
     } satisfies Partial<ApplicationError>);
   });
 
+  it("creates a booking next to existing buffered blocks without double counting buffer", async () => {
+    const dependencies = createDependencies({
+      overlaps: [
+        {
+          id: "previous-booking",
+          protectedEndAt: new Date("2026-06-10T08:00:00.000Z"),
+          protectedStartAt: new Date("2026-06-10T03:00:00.000Z"),
+        },
+        {
+          id: "next-booking",
+          protectedEndAt: new Date("2026-06-10T17:00:00.000Z"),
+          protectedStartAt: new Date("2026-06-10T12:00:00.000Z"),
+        },
+      ],
+    });
+
+    await expect(
+      new BackpanelCreateBookingUseCase(
+        dependencies.bookings,
+        dependencies.ids,
+        dependencies.clock,
+      ).execute(createCommand()),
+    ).resolves.toMatchObject({
+      id: "booking-1",
+    });
+  });
+
   it("rejects extras that exceed configured quantity", async () => {
     const dependencies = createDependencies();
 
@@ -369,6 +396,34 @@ describe("Booking use cases", () => {
         consentStatus: "GRANTED",
         destination: "+34 600 000 000",
       },
+    });
+  });
+
+  it("creates a public checkout hold next to existing buffered blocks", async () => {
+    const dependencies = createDependencies({
+      overlaps: [
+        {
+          id: "previous-booking",
+          protectedEndAt: new Date("2026-06-10T08:00:00.000Z"),
+          protectedStartAt: new Date("2026-06-10T03:00:00.000Z"),
+        },
+        {
+          id: "next-booking",
+          protectedEndAt: new Date("2026-06-10T17:00:00.000Z"),
+          protectedStartAt: new Date("2026-06-10T12:00:00.000Z"),
+        },
+      ],
+    });
+
+    await expect(
+      new CreatePublicBookingCheckoutUseCase(
+        dependencies.bookings,
+        dependencies.ids,
+        dependencies.clock,
+        dependencies.paymentProvider,
+      ).execute(createPublicCheckoutCommand()),
+    ).resolves.toMatchObject({
+      bookingId: "booking-1",
     });
   });
 
@@ -570,11 +625,16 @@ class InMemoryBookingRepository implements BookingRepository {
   }
 
   async findActiveCalendarOverlaps(
-    _startAt: Date,
-    _endAt: Date,
+    startAt: Date,
+    endAt: Date,
     input: { excludeBlockId?: string } = {},
   ) {
-    return this.overlaps.filter((block) => block.id !== input.excludeBlockId);
+    return this.overlaps.filter(
+      (block) =>
+        block.id !== input.excludeBlockId &&
+        block.protectedEndAt > startAt &&
+        block.protectedStartAt < endAt,
+    );
   }
 
   async findById(id: string) {

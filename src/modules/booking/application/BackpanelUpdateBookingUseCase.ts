@@ -69,8 +69,8 @@ export class BackpanelUpdateBookingUseCase {
       now,
     });
     const overlaps = await this.bookings.findActiveCalendarOverlaps(
-      plan.protectedStartAt,
-      plan.protectedEndAt,
+      plan.selectedStartAt,
+      plan.selectedEndAt,
       {
         excludeBlockId: currentSnapshot.calendarBlockId,
       },

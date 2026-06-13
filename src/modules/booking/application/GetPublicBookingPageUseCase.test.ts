@@ -207,6 +207,88 @@ describe("GetPublicBookingPageUseCase", () => {
       },
     ]);
   });
+
+  it("does not double count the buffer around adjacent booked slots", async () => {
+    const useCase = new GetPublicBookingPageUseCase(
+      new FakePublicBookingCatalogReader({
+        blocks: [
+          {
+            id: "booked-middle-slot",
+            protectedEndAt: new Date("2026-06-11T11:30:00.000Z"),
+            protectedStartAt: new Date("2026-06-11T07:30:00.000Z"),
+          },
+        ],
+        experiences: [
+          createExperience({
+            durationMinutes: 180,
+            slotPolicy: {
+              fixedSlots: [
+                {
+                  enabled: true,
+                  endMinutes: 9 * 60 + 30,
+                  id: "before-buffer-boundary",
+                  label: "Before buffer boundary",
+                  startMinutes: 6 * 60 + 30,
+                },
+                {
+                  enabled: true,
+                  endMinutes: 10 * 60,
+                  id: "before-buffer-overlap",
+                  label: "Before buffer overlap",
+                  startMinutes: 7 * 60,
+                },
+                {
+                  enabled: true,
+                  endMinutes: 16 * 60,
+                  id: "after-buffer-overlap",
+                  label: "After buffer overlap",
+                  startMinutes: 13 * 60,
+                },
+                {
+                  enabled: true,
+                  endMinutes: 16 * 60 + 30,
+                  id: "after-buffer-boundary",
+                  label: "After buffer boundary",
+                  startMinutes: 13 * 60 + 30,
+                },
+              ],
+              mode: "FIXED_SLOTS",
+              timeZone: "Europe/Madrid",
+            },
+          }),
+        ],
+      }),
+      fixedClock(),
+    );
+
+    const page = await useCase.execute({ locale: "en" });
+
+    expect(
+      page.availabilityByExperienceId["morning-breeze-charter"]
+        ?.timeSlotsByDate["2026-06-11"],
+    ).toMatchObject([
+      {
+        available: true,
+        id: "before-buffer-boundary",
+        label: "06:30",
+      },
+      {
+        available: false,
+        id: "before-buffer-overlap",
+        label: "07:00",
+      },
+      {
+        available: false,
+        id: "after-buffer-overlap",
+        label: "13:00",
+      },
+      {
+        available: true,
+        id: "after-buffer-boundary",
+        label: "13:30",
+      },
+    ]);
+  });
 });
 
 class FakePublicBookingCatalogReader implements PublicBookingCatalogReader {

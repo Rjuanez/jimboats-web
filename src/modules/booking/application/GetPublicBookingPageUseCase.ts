@@ -221,12 +221,6 @@ function buildTimeSlotsForDate(input: {
       candidate.endMinutes,
       candidate.timeZone,
     );
-    const protectedStartAt = new Date(
-      selectedStartAt.getTime() - input.experience.bufferMinutes * 60_000,
-    );
-    const protectedEndAt = new Date(
-      selectedEndAt.getTime() + input.experience.bufferMinutes * 60_000,
-    );
     const withinAdvanceWindow = isInsideAdvanceWindow({
       experience: input.experience,
       localDate: input.localDate,
@@ -235,8 +229,8 @@ function buildTimeSlotsForDate(input: {
     });
     const blocked = input.blocks.some((block) =>
       overlaps(
-        protectedStartAt,
-        protectedEndAt,
+        selectedStartAt,
+        selectedEndAt,
         block.protectedStartAt,
         block.protectedEndAt,
       ),

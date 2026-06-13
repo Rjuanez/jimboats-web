@@ -56,8 +56,8 @@ export class CreatePublicBookingCheckoutUseCase {
       now,
     });
     const overlaps = await this.bookings.findActiveCalendarOverlaps(
-      plan.protectedStartAt,
-      plan.protectedEndAt,
+      plan.selectedStartAt,
+      plan.selectedEndAt,
     );
 
     if (overlaps.length > 0) {
