@@ -37,10 +37,17 @@ type CouponVersionRecord = {
 
 type CouponRedemptionRecord = {
   bookingId: string;
+  confirmedAt: Date | null;
   customerEmailNormalized: string;
   discountAmountMinor: number;
+  finalCashRemainingAmountMinor: number;
+  finalDepositAmountMinor: number;
   finalTotalAmountMinor: number;
   id: string;
+  originalCashRemainingAmountMinor: number;
+  originalDepositAmountMinor: number;
+  originalTotalAmountMinor: number;
+  releasedAt: Date | null;
   reservedAt: Date;
   status: string;
 };
@@ -144,14 +151,19 @@ export class PrismaCouponRepository implements CouponRepository, AdminCouponRepo
   constructor(private readonly prisma: PrismaCouponRepositoryClient) {}
 
   async list() {
-    const records = await this.prisma.coupon.findMany(adminCouponReadArgs());
+    const records = await this.prisma.coupon.findMany({
+      ...adminCouponIncludeArgs(),
+      orderBy: {
+        updatedAt: "desc",
+      },
+    });
 
     return records.map(adminCouponFromPrisma);
   }
 
   async findById(couponId: string) {
     const record = await this.prisma.coupon.findUnique({
-      ...adminCouponReadArgs(),
+      ...adminCouponIncludeArgs(),
       where: {
         id: couponId,
       },
@@ -162,7 +174,7 @@ export class PrismaCouponRepository implements CouponRepository, AdminCouponRepo
 
   async findByCodeNormalized(codeNormalized: string) {
     const record = await this.prisma.coupon.findUnique({
-      ...adminCouponReadArgs(),
+      ...adminCouponIncludeArgs(),
       where: {
         codeNormalized,
       },
@@ -543,7 +555,7 @@ function couponDiscountType(status: string): CouponDiscountType {
   return status === "FIXED_AMOUNT" ? "FIXED_AMOUNT" : "PERCENTAGE";
 }
 
-function adminCouponReadArgs() {
+function adminCouponIncludeArgs() {
   return {
     include: {
       events: {
@@ -556,16 +568,12 @@ function adminCouponReadArgs() {
         orderBy: {
           reservedAt: "desc",
         },
-        take: 50,
       },
       versions: {
         orderBy: {
           versionNumber: "desc",
         },
       },
-    },
-    orderBy: {
-      updatedAt: "desc",
     },
   };
 }
@@ -626,10 +634,17 @@ function adminCouponRedemptionFromPrisma(
 ): AdminCouponRedemptionDto {
   return {
     bookingId: record.bookingId,
+    confirmedAt: record.confirmedAt?.toISOString() ?? null,
     customerEmailNormalized: record.customerEmailNormalized,
     discountAmountMinor: record.discountAmountMinor,
+    finalCashRemainingAmountMinor: record.finalCashRemainingAmountMinor,
+    finalDepositAmountMinor: record.finalDepositAmountMinor,
     finalTotalAmountMinor: record.finalTotalAmountMinor,
     id: record.id,
+    originalCashRemainingAmountMinor: record.originalCashRemainingAmountMinor,
+    originalDepositAmountMinor: record.originalDepositAmountMinor,
+    originalTotalAmountMinor: record.originalTotalAmountMinor,
+    releasedAt: record.releasedAt?.toISOString() ?? null,
     reservedAt: record.reservedAt.toISOString(),
     status: couponRedemptionStatus(record.status),
   };

@@ -23,6 +23,25 @@ const actions: AdminCouponActions = {
     },
     ok: true,
   }),
+  duplicateCoupon: async () => ({
+    data: {
+      couponId: "coupon-test10-copy",
+      state: pageData.state,
+    },
+    ok: true,
+  }),
+  exportCsv: async () => ({
+    data: {
+      csv: "code,campaign\nTEST10,Initial coupon test",
+    },
+    ok: true,
+  }),
+  generateBatch: async () => ({
+    data: {
+      state: pageData.state,
+    },
+    ok: true,
+  }),
   updateCoupon: async () => ({
     data: {
       state: pageData.state,
@@ -74,5 +93,29 @@ describe("AdminCouponsWorkspace", () => {
       expect(updateCoupon).toHaveBeenCalled();
     });
     expect(updateCoupon.mock.calls[0]?.[0].coupon.discountValue).toBe(15);
+  });
+
+  it("generates a coupon batch from the dashboard", async () => {
+    const user = userEvent.setup();
+    const generateBatch = vi.fn(actions.generateBatch);
+
+    render(
+      <AdminCouponsWorkspace
+        actions={{
+          ...actions,
+          generateBatch,
+        }}
+        initialState={pageData.state}
+        navItems={pageData.navItems}
+        view="list"
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: /Generate batch/i }));
+
+    await waitFor(() => {
+      expect(generateBatch).toHaveBeenCalled();
+    });
+    expect(generateBatch.mock.calls[0]?.[0].codePrefix).toBe("SUMMER");
   });
 });

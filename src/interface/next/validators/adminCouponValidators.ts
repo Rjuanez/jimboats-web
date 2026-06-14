@@ -30,6 +30,22 @@ export const adminCouponUpdateSchema = z.object({
   couponId: z.string().trim().min(1),
 });
 
+export const adminCouponDuplicateSchema = z.object({
+  couponId: z.string().trim().min(1),
+  newCode: z.string().trim().min(1),
+});
+
+export const adminCouponBatchSchema = adminCouponInputSchema
+  .omit({
+    code: true,
+    name: true,
+  })
+  .extend({
+    codePrefix: z.string().trim().min(1),
+    count: z.number().int().min(1).max(100),
+    namePrefix: z.string().trim().min(1),
+  });
+
 export function parseAdminCouponInput(input: unknown) {
   return adminCouponInputSchema.parse(input);
 }
@@ -44,4 +60,12 @@ export function parseAdminCouponStatusChange(input: unknown) {
 
 export function parseAdminCouponUpdate(input: unknown) {
   return adminCouponUpdateSchema.parse(input);
+}
+
+export function parseAdminCouponDuplicate(input: unknown) {
+  return adminCouponDuplicateSchema.parse(input);
+}
+
+export function parseAdminCouponBatch(input: unknown) {
+  return adminCouponBatchSchema.parse(input);
 }

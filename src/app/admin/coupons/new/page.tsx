@@ -3,6 +3,9 @@ import type { AdminCouponActions } from "@/components/sections/admin-coupons/Adm
 import {
   changeAdminCouponStatusAction,
   createAdminCouponAction,
+  duplicateAdminCouponAction,
+  exportAdminCouponsCsvAction,
+  generateAdminCouponBatchAction,
   updateAdminCouponAction,
 } from "@/interface/next/actions/adminCouponActions";
 import { getAdminCouponsPage } from "@/interface/next/presenters/adminCouponsPresenter";
@@ -12,6 +15,9 @@ export const dynamic = "force-dynamic";
 const actions = {
   changeStatus: changeAdminCouponStatusAction,
   createCoupon: createAdminCouponAction,
+  duplicateCoupon: duplicateAdminCouponAction,
+  exportCsv: exportAdminCouponsCsvAction,
+  generateBatch: generateAdminCouponBatchAction,
   updateCoupon: updateAdminCouponAction,
 } satisfies AdminCouponActions;
 

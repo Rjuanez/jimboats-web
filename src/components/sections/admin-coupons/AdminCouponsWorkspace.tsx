@@ -4,6 +4,9 @@ import {
   AlertCircle,
   CircleDollarSign,
   Clock3,
+  Copy,
+  Download,
+  Layers3,
   TicketPercent,
   type LucideIcon,
 } from "lucide-react";
@@ -27,6 +30,7 @@ import { cn } from "@/design/variants";
 import type {
   AdminCoupon,
   AdminCouponActions,
+  AdminCouponBatchInput,
   AdminCouponInput,
   AdminCouponsPageData,
   AdminCouponsState,
@@ -52,6 +56,13 @@ const emptyCouponInput: AdminCouponInput = {
   status: "DRAFT",
   validFrom: new Date().toISOString().slice(0, 10),
   validUntil: "",
+};
+
+const emptyBatchInput: AdminCouponBatchInput = {
+  ...emptyCouponInput,
+  codePrefix: "SUMMER",
+  count: 10,
+  namePrefix: "Summer coupon",
 };
 
 export function AdminCouponsWorkspace({
@@ -137,7 +148,13 @@ function renderView({
   view: AdminCouponView;
 }) {
   if (view === "list") {
-    return <AdminCouponsList coupons={state.coupons} />;
+    return (
+      <AdminCouponsList
+        actions={actions}
+        runMutation={runMutation}
+        state={state}
+      />
+    );
   }
 
   if (view === "create") {
@@ -172,35 +189,77 @@ function renderView({
   );
 }
 
-function AdminCouponsList({ coupons }: { coupons: AdminCoupon[] }) {
+function AdminCouponsList({
+  actions,
+  runMutation,
+  state,
+}: {
+  actions: AdminCouponActions;
+  runMutation: <TData extends { state: AdminCouponsState }>(
+    mutation: () => Promise<
+      | {
+          data: TData;
+          ok: true;
+        }
+      | {
+          message: string;
+          ok: false;
+        }
+    >,
+  ) => Promise<TData | null>;
+  state: AdminCouponsState;
+}) {
+  const { coupons, metrics } = state;
+
   return (
     <div className="space-y-5">
       <Header
-        action={<Button href="/admin/coupons/new">New coupon</Button>}
+        action={
+          <div className="flex flex-wrap gap-2">
+            <Button
+              onClick={() => {
+                void exportCsv(actions);
+              }}
+              variant="secondary"
+            >
+              <Download className="size-4" aria-hidden="true" />
+              Export CSV
+            </Button>
+            <Button href="/admin/coupons/new">New coupon</Button>
+          </div>
+        }
         eyebrow="Commercial tools"
         title="Coupons"
       />
-      <div className="grid gap-4 lg:grid-cols-3">
+      <div className="grid gap-4 lg:grid-cols-4">
         <MetricCard
           icon={TicketPercent}
           label="Active coupons"
-          value={String(coupons.filter((coupon) => coupon.status === "ACTIVE").length)}
+          value={`${metrics.activeCoupons}/${metrics.totalCoupons}`}
         />
         <MetricCard
           icon={CircleDollarSign}
-          label="Confirmed redemptions"
-          value={String(
-            coupons.reduce((sum, coupon) => sum + coupon.confirmedRedemptions, 0),
-          )}
+          label="Discount applied"
+          value={formatEuros(metrics.discountAmount)}
         />
         <MetricCard
           icon={Clock3}
-          label="Reserved redemptions"
-          value={String(
-            coupons.reduce((sum, coupon) => sum + coupon.reservedRedemptions, 0),
-          )}
+          label="Conversion"
+          value={`${metrics.conversionRate}%`}
+        />
+        <MetricCard
+          icon={Layers3}
+          label="Revenue after discount"
+          value={formatEuros(metrics.confirmedRevenueAfterDiscount)}
         />
       </div>
+      <AnalyticsGrid state={state} />
+      <BatchGenerator
+        experiences={state.experiences}
+        onSubmit={(batch) =>
+          runMutation(() => actions.generateBatch(batch))
+        }
+      />
       <Surface
         description="Create, pause and inspect tracked discount codes."
         title="Coupon library"
@@ -267,7 +326,24 @@ function AdminCouponDetail({
   return (
     <div className="space-y-5">
       <Header
-        action={<Button href="/admin/coupons" variant="secondary">Back</Button>}
+        action={
+          <div className="flex flex-wrap gap-2">
+            <DuplicateCouponButton
+              coupon={coupon}
+              duplicateCoupon={(newCode) =>
+                runMutation(() =>
+                  actions.duplicateCoupon({
+                    couponId: coupon.id,
+                    newCode,
+                  }),
+                )
+              }
+            />
+            <Button href="/admin/coupons" variant="secondary">
+              Back
+            </Button>
+          </div>
+        }
         eyebrow={coupon.displayCode}
         title={coupon.name}
       />
@@ -302,6 +378,36 @@ function AdminCouponDetail({
           </div>
         </div>
       </Surface>
+      <div className="grid gap-4 lg:grid-cols-4">
+        <MetricCard
+          icon={TicketPercent}
+          label="Confirmed"
+          value={String(coupon.confirmedRedemptions)}
+        />
+        <MetricCard
+          icon={Clock3}
+          label="Reserved"
+          value={String(coupon.reservedRedemptions)}
+        />
+        <MetricCard
+          icon={CircleDollarSign}
+          label="Discount applied"
+          value={formatEuros(
+            coupon.redemptions
+              .filter((redemption) => redemption.status === "CONFIRMED")
+              .reduce((sum, redemption) => sum + redemption.discountAmount, 0),
+          )}
+        />
+        <MetricCard
+          icon={Layers3}
+          label="Revenue"
+          value={formatEuros(
+            coupon.redemptions
+              .filter((redemption) => redemption.status === "CONFIRMED")
+              .reduce((sum, redemption) => sum + redemption.finalTotalAmount, 0),
+          )}
+        />
+      </div>
       <AdminCouponForm
         coupon={coupon}
         experiences={experiences}
@@ -318,6 +424,280 @@ function AdminCouponDetail({
       <DetailGrid coupon={coupon} experiences={experiences} />
     </div>
   );
+}
+
+function AnalyticsGrid({ state }: { state: AdminCouponsState }) {
+  return (
+    <div className="grid gap-5 xl:grid-cols-3">
+      <Surface title="Top coupons">
+        <div className="space-y-3">
+          {state.ranking.map((item) => (
+            <a
+              className="block rounded-md border border-slate-200 p-3 transition hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
+              href={`/admin/coupons/${item.id}`}
+              key={item.id}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <span className="font-semibold text-slate-950">{item.code}</span>
+                <span className="text-sm text-slate-600">
+                  {item.confirmedRedemptions} confirmed
+                </span>
+              </div>
+              <p className="mt-1 text-sm text-slate-600">
+                {formatEuros(item.discountAmount)} discounted ·{" "}
+                {formatEuros(item.revenueAfterDiscount)} revenue
+              </p>
+            </a>
+          ))}
+        </div>
+      </Surface>
+      <Surface title="Campaigns">
+        <div className="space-y-3">
+          {state.campaigns.map((campaign) => (
+            <div
+              className="rounded-md border border-slate-200 p-3"
+              key={campaign.campaignName}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <span className="font-semibold text-slate-950">
+                  {campaign.campaignName}
+                </span>
+                <span className="text-sm text-slate-600">
+                  {campaign.couponCount} codes
+                </span>
+              </div>
+              <p className="mt-1 text-sm text-slate-600">
+                {campaign.confirmedRedemptions} confirmed ·{" "}
+                {formatEuros(campaign.discountAmount)} discounted
+              </p>
+            </div>
+          ))}
+        </div>
+      </Surface>
+      <Surface title="Recent usage">
+        <div className="space-y-3">
+          {state.usage.map((point) => (
+            <div className="rounded-md border border-slate-200 p-3" key={point.date}>
+              <div className="flex items-start justify-between gap-3">
+                <span className="font-semibold text-slate-950">{point.date}</span>
+                <span className="text-sm text-slate-600">
+                  {formatEuros(point.discountAmount)}
+                </span>
+              </div>
+              <p className="mt-1 text-sm text-slate-600">
+                {point.confirmed} confirmed · {point.reserved} reserved ·{" "}
+                {point.released} released
+              </p>
+            </div>
+          ))}
+          {state.usage.length === 0 ? (
+            <p className="text-sm text-slate-600">No usage yet.</p>
+          ) : null}
+        </div>
+      </Surface>
+    </div>
+  );
+}
+
+function BatchGenerator({
+  experiences,
+  onSubmit,
+}: {
+  experiences: AdminCouponsState["experiences"];
+  onSubmit: (input: AdminCouponBatchInput) => Promise<unknown> | unknown;
+}) {
+  const [input, setInput] = useState<AdminCouponBatchInput>(emptyBatchInput);
+  const selectedExperienceIds = new Set(input.experienceIds);
+
+  return (
+    <Surface
+      description="Generate multiple trackable codes with shared campaign rules."
+      title="Batch generator"
+    >
+      <form
+        className="space-y-5"
+        onSubmit={(event) => {
+          event.preventDefault();
+          void onSubmit(input);
+        }}
+      >
+        <FieldGrid>
+          <TextField
+            label="Code prefix"
+            onChange={(event) =>
+              setInput((current) => ({
+                ...current,
+                codePrefix: event.target.value,
+              }))
+            }
+            value={input.codePrefix}
+          />
+          <TextField
+            label="Name prefix"
+            onChange={(event) =>
+              setInput((current) => ({
+                ...current,
+                namePrefix: event.target.value,
+              }))
+            }
+            value={input.namePrefix}
+          />
+          <TextField
+            label="Campaign"
+            onChange={(event) =>
+              setInput((current) => ({
+                ...current,
+                campaignName: event.target.value,
+              }))
+            }
+            value={input.campaignName}
+          />
+          <NumberField
+            label="Quantity"
+            max={100}
+            min={1}
+            onChange={(event) =>
+              setInput((current) => ({
+                ...current,
+                count: Number(event.target.value),
+              }))
+            }
+            value={input.count}
+          />
+          <SelectField
+            label="Discount type"
+            onChange={(event) =>
+              setInput((current) => ({
+                ...current,
+                discountType: event.target
+                  .value as AdminCouponInput["discountType"],
+              }))
+            }
+            value={input.discountType}
+          >
+            <option value="PERCENTAGE">Percentage</option>
+            <option value="FIXED_AMOUNT">Fixed amount</option>
+          </SelectField>
+          <NumberField
+            label={input.discountType === "PERCENTAGE" ? "Percent" : "Amount"}
+            min={0}
+            onChange={(event) =>
+              setInput((current) => ({
+                ...current,
+                discountValue: Number(event.target.value),
+              }))
+            }
+            value={input.discountValue}
+          />
+          <DateField
+            label="Valid from"
+            onChange={(event) =>
+              setInput((current) => ({
+                ...current,
+                validFrom: event.target.value,
+              }))
+            }
+            value={input.validFrom}
+          />
+          <DateField
+            label="Valid until"
+            onChange={(event) =>
+              setInput((current) => ({
+                ...current,
+                validUntil: event.target.value,
+              }))
+            }
+            value={input.validUntil}
+          />
+        </FieldGrid>
+        <div className="grid gap-3 md:grid-cols-2">
+          {experiences.map((experience) => (
+            <CheckboxField
+              checked={selectedExperienceIds.has(experience.id)}
+              description={experience.status}
+              key={experience.id}
+              label={experience.name}
+              onChange={(event) =>
+                setInput((current) => {
+                  const next = new Set(current.experienceIds);
+
+                  if (event.target.checked) {
+                    next.add(experience.id);
+                  } else {
+                    next.delete(experience.id);
+                  }
+
+                  return {
+                    ...current,
+                    experienceIds: [...next],
+                  };
+                })
+              }
+            />
+          ))}
+        </div>
+        <div className="flex justify-end">
+          <Button type="submit">
+            <Layers3 className="size-4" aria-hidden="true" />
+            Generate batch
+          </Button>
+        </div>
+      </form>
+    </Surface>
+  );
+}
+
+function DuplicateCouponButton({
+  coupon,
+  duplicateCoupon,
+}: {
+  coupon: AdminCoupon;
+  duplicateCoupon: (newCode: string) => Promise<unknown>;
+}) {
+  const [newCode, setNewCode] = useState(`${coupon.displayCode}-COPY`);
+
+  return (
+    <form
+      className="flex flex-wrap gap-2"
+      onSubmit={(event) => {
+        event.preventDefault();
+        void duplicateCoupon(newCode);
+      }}
+    >
+      <label className="sr-only" htmlFor="duplicate-coupon-code">
+        New coupon code
+      </label>
+      <input
+        className="min-h-9 w-40 rounded-md border border-slate-300 bg-white px-3 text-sm text-slate-950 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
+        id="duplicate-coupon-code"
+        onChange={(event) => setNewCode(event.target.value)}
+        value={newCode}
+      />
+      <Button type="submit" variant="secondary">
+        <Copy className="size-4" aria-hidden="true" />
+        Duplicate
+      </Button>
+    </form>
+  );
+}
+
+async function exportCsv(actions: AdminCouponActions) {
+  const result = await actions.exportCsv();
+
+  if (!result.ok) {
+    return;
+  }
+
+  const blob = new Blob([result.data.csv], {
+    type: "text/csv;charset=utf-8",
+  });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+
+  anchor.href = url;
+  anchor.download = "jimboats-coupons.csv";
+  anchor.click();
+  URL.revokeObjectURL(url);
 }
 
 function AdminCouponForm({

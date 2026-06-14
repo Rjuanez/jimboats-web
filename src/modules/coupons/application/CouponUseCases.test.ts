@@ -4,6 +4,9 @@ import { ApplicationError } from "@/shared/application/ApplicationError";
 
 import { ChangeAdminCouponStatusUseCase } from "./ChangeAdminCouponStatusUseCase";
 import { CreateAdminCouponUseCase } from "./CreateAdminCouponUseCase";
+import { DuplicateAdminCouponUseCase } from "./DuplicateAdminCouponUseCase";
+import { ExportAdminCouponsCsvUseCase } from "./ExportAdminCouponsCsvUseCase";
+import { GenerateAdminCouponBatchUseCase } from "./GenerateAdminCouponBatchUseCase";
 import { PreviewCouponDiscountUseCase } from "./PreviewCouponDiscountUseCase";
 import { ReserveCouponRedemptionUseCase } from "./ReserveCouponRedemptionUseCase";
 import { UpdateAdminCouponUseCase } from "./UpdateAdminCouponUseCase";
@@ -163,6 +166,82 @@ describe("Admin coupon use cases", () => {
 
     expect(updated.status).toBe("PAUSED");
     expect(updated.versions).toHaveLength(1);
+  });
+
+  it("duplicates a coupon as a draft with copied active rules", async () => {
+    const coupons = new FakeAdminCouponRepository([adminCoupon()]);
+
+    const duplicated = await new DuplicateAdminCouponUseCase(coupons).execute({
+      actorId: "admin",
+      couponId: "coupon-test10",
+      newCode: "TEST10B",
+      newCouponId: "coupon-test10b",
+      now: now(),
+    });
+
+    expect(duplicated).toMatchObject({
+      code: "TEST10B",
+      status: "DRAFT",
+    });
+    expect(duplicated.activeVersion).toMatchObject({
+      discountPercentageBps: 1_000,
+      discountType: "PERCENTAGE",
+    });
+  });
+
+  it("generates a batch of unique coupon codes", async () => {
+    const coupons = new FakeAdminCouponRepository();
+
+    const created = await new GenerateAdminCouponBatchUseCase(coupons).execute({
+      actorId: "admin",
+      campaignName: "Crew campaign",
+      codePrefix: "CREW",
+      count: 2,
+      discountPercentageBps: 1_500,
+      discountType: "PERCENTAGE",
+      experienceIds: [],
+      maxTotalRedemptions: null,
+      namePrefix: "Crew coupon",
+      now: now(),
+      status: "ACTIVE",
+      validFrom: now(),
+      validUntil: null,
+    });
+
+    expect(created.map((coupon) => coupon.code)).toEqual(["CREW001", "CREW002"]);
+  });
+
+  it("exports coupon analytics as csv", async () => {
+    const coupons = new FakeAdminCouponRepository([
+      adminCoupon({
+        confirmedRedemptions: 1,
+        redemptions: [
+          {
+            bookingId: "booking-1",
+            confirmedAt: now().toISOString(),
+            customerEmailNormalized: "sailor@example.com",
+            discountAmountMinor: 3_800,
+            finalCashRemainingAmountMinor: 24_200,
+            finalDepositAmountMinor: 10_000,
+            finalTotalAmountMinor: 34_200,
+            id: "redemption-1",
+            originalCashRemainingAmountMinor: 28_000,
+            originalDepositAmountMinor: 10_000,
+            originalTotalAmountMinor: 38_000,
+            releasedAt: null,
+            reservedAt: now().toISOString(),
+            status: "CONFIRMED",
+          },
+        ],
+        totalRedemptions: 1,
+      }),
+    ]);
+
+    const csv = await new ExportAdminCouponsCsvUseCase(coupons).execute();
+
+    expect(csv).toContain('"TEST10"');
+    expect(csv).toContain('"38.00"');
+    expect(csv).toContain('"342.00"');
   });
 });
 

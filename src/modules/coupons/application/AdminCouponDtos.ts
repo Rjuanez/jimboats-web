@@ -24,10 +24,17 @@ export type AdminCouponVersionDto = {
 
 export type AdminCouponRedemptionDto = {
   bookingId: string;
+  confirmedAt: string | null;
   customerEmailNormalized: string;
   discountAmountMinor: number;
+  finalCashRemainingAmountMinor: number;
+  finalDepositAmountMinor: number;
   finalTotalAmountMinor: number;
   id: string;
+  originalCashRemainingAmountMinor: number;
+  originalDepositAmountMinor: number;
+  originalTotalAmountMinor: number;
+  releasedAt: string | null;
   reservedAt: string;
   status: "CONFIRMED" | "REFUNDED" | "RELEASED" | "RESERVED" | "VOIDED";
 };
@@ -104,6 +111,24 @@ export type UpdateAdminCouponCommand = AdminCouponRulesCommand & {
 export type ChangeAdminCouponStatusCommand = {
   actorId?: string | null;
   couponId: string;
+  now: Date;
+  status: AdminCouponStatus;
+};
+
+export type DuplicateAdminCouponCommand = {
+  actorId?: string | null;
+  couponId: string;
+  newCode: string;
+  newCouponId: string;
+  now: Date;
+};
+
+export type GenerateAdminCouponBatchCommand = AdminCouponRulesCommand & {
+  actorId?: string | null;
+  campaignName: string;
+  codePrefix: string;
+  count: number;
+  namePrefix: string;
   now: Date;
   status: AdminCouponStatus;
 };

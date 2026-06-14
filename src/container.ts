@@ -50,11 +50,16 @@ import type {
 import type {
   ChangeAdminCouponStatusCommand,
   CreateAdminCouponCommand,
+  DuplicateAdminCouponCommand,
+  GenerateAdminCouponBatchCommand,
   UpdateAdminCouponCommand,
 } from "@/modules/coupons/application/AdminCouponDtos";
 import { ChangeAdminCouponStatusUseCase } from "@/modules/coupons/application/ChangeAdminCouponStatusUseCase";
 import { ConfirmCouponRedemptionUseCase } from "@/modules/coupons/application/ConfirmCouponRedemptionUseCase";
 import { CreateAdminCouponUseCase } from "@/modules/coupons/application/CreateAdminCouponUseCase";
+import { DuplicateAdminCouponUseCase } from "@/modules/coupons/application/DuplicateAdminCouponUseCase";
+import { ExportAdminCouponsCsvUseCase } from "@/modules/coupons/application/ExportAdminCouponsCsvUseCase";
+import { GenerateAdminCouponBatchUseCase } from "@/modules/coupons/application/GenerateAdminCouponBatchUseCase";
 import { GetAdminCouponsWorkspaceUseCase } from "@/modules/coupons/application/GetAdminCouponsWorkspaceUseCase";
 import { PreviewCouponDiscountUseCase } from "@/modules/coupons/application/PreviewCouponDiscountUseCase";
 import { ReleaseCouponRedemptionUseCase } from "@/modules/coupons/application/ReleaseCouponRedemptionUseCase";
@@ -279,6 +284,15 @@ export function getContainer() {
     couponRepository,
   );
   const changeAdminCouponStatusUseCase = new ChangeAdminCouponStatusUseCase(
+    couponRepository,
+  );
+  const duplicateAdminCouponUseCase = new DuplicateAdminCouponUseCase(
+    couponRepository,
+  );
+  const generateAdminCouponBatchUseCase = new GenerateAdminCouponBatchUseCase(
+    couponRepository,
+  );
+  const exportAdminCouponsCsvUseCase = new ExportAdminCouponsCsvUseCase(
     couponRepository,
   );
   const reconcileBookingCalendarSyncUseCase =
@@ -581,6 +595,11 @@ export function getContainer() {
         changeAdminCouponStatusUseCase.execute(command),
       createCoupon: (command: CreateAdminCouponCommand) =>
         createAdminCouponUseCase.execute(command),
+      duplicateCoupon: (command: DuplicateAdminCouponCommand) =>
+        duplicateAdminCouponUseCase.execute(command),
+      exportCsv: () => exportAdminCouponsCsvUseCase.execute(),
+      generateBatch: (command: GenerateAdminCouponBatchCommand) =>
+        generateAdminCouponBatchUseCase.execute(command),
       getWorkspace: () => getAdminCouponsWorkspaceUseCase.execute(),
       updateCoupon: (command: UpdateAdminCouponCommand) =>
         updateAdminCouponUseCase.execute(command),

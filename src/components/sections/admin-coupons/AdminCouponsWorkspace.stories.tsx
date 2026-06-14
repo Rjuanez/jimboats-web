@@ -21,6 +21,25 @@ const actions: AdminCouponActions = {
     },
     ok: true,
   }),
+  duplicateCoupon: async () => ({
+    data: {
+      couponId: "coupon-test10-copy",
+      state: pageData.state,
+    },
+    ok: true,
+  }),
+  exportCsv: async () => ({
+    data: {
+      csv: "code,campaign\nTEST10,Initial coupon test",
+    },
+    ok: true,
+  }),
+  generateBatch: async () => ({
+    data: {
+      state: pageData.state,
+    },
+    ok: true,
+  }),
   updateCoupon: async () => ({
     data: {
       state: pageData.state,

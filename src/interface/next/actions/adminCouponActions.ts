@@ -5,6 +5,7 @@ import { ZodError } from "zod";
 import { getContainer } from "@/container";
 import type {
   AdminCouponActionResult,
+  AdminCouponBatchInput,
   AdminCouponInput,
   AdminCouponsState,
 } from "@/components/sections/admin-coupons/AdminCouponTypes";
@@ -13,6 +14,8 @@ import { DomainError } from "@/shared/domain/DomainError";
 
 import { presentAdminCouponsWorkspace } from "../presenters/adminCouponsPresenter";
 import {
+  parseAdminCouponBatch,
+  parseAdminCouponDuplicate,
   parseAdminCouponInput,
   parseAdminCouponStatusChange,
   parseAdminCouponUpdate,
@@ -91,6 +94,78 @@ export async function changeAdminCouponStatusAction(input: {
 
     return ok({
       state: await loadState(container),
+    });
+  } catch (error) {
+    return failure(error);
+  }
+}
+
+export async function duplicateAdminCouponAction(input: {
+  couponId: string;
+  newCode: string;
+}): Promise<
+  AdminCouponActionResult<{ couponId: string; state: AdminCouponsState }>
+> {
+  try {
+    const command = parseAdminCouponDuplicate(input);
+    const container = getContainer();
+    const couponId = makeCouponId(command.newCode);
+
+    await container.adminCoupons.duplicateCoupon({
+      actorId: "admin",
+      couponId: command.couponId,
+      newCode: command.newCode,
+      newCouponId: couponId,
+      now: new Date(),
+    });
+
+    return ok({
+      couponId,
+      state: await loadState(container),
+    });
+  } catch (error) {
+    return failure(error);
+  }
+}
+
+export async function generateAdminCouponBatchAction(
+  input: AdminCouponBatchInput,
+): Promise<AdminCouponActionResult<{ state: AdminCouponsState }>> {
+  try {
+    const batch = parseAdminCouponBatch(input);
+    const container = getContainer();
+
+    await container.adminCoupons.generateBatch({
+      ...toCouponRulesCommand({
+        ...batch,
+        code: batch.codePrefix,
+        name: batch.namePrefix,
+      }),
+      actorId: "admin",
+      campaignName: batch.campaignName,
+      codePrefix: batch.codePrefix,
+      count: batch.count,
+      namePrefix: batch.namePrefix,
+      now: new Date(),
+      status: batch.status,
+    });
+
+    return ok({
+      state: await loadState(container),
+    });
+  } catch (error) {
+    return failure(error);
+  }
+}
+
+export async function exportAdminCouponsCsvAction(): Promise<
+  AdminCouponActionResult<{ csv: string }>
+> {
+  try {
+    const csv = await getContainer().adminCoupons.exportCsv();
+
+    return ok({
+      csv,
     });
   } catch (error) {
     return failure(error);

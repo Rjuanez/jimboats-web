@@ -23,11 +23,19 @@ export type AdminCouponVersion = {
 
 export type AdminCouponRedemption = {
   bookingId: string;
+  confirmedAt: string;
   customerEmailNormalized: string;
   discountAmount: number;
+  finalCashRemainingAmount: number;
+  finalDepositAmount: number;
   finalTotalAmount: number;
   id: string;
+  originalCashRemainingAmount: number;
+  originalDepositAmount: number;
+  originalTotalAmount: number;
+  releasedAt: string;
   reservedAt: string;
+  reservedDateKey: string;
   status: "CONFIRMED" | "REFUNDED" | "RELEASED" | "RESERVED" | "VOIDED";
 };
 
@@ -66,6 +74,43 @@ export type AdminCoupon = {
   versions: AdminCouponVersion[];
 };
 
+export type AdminCouponMetrics = {
+  activeCoupons: number;
+  averageDiscount: number;
+  confirmedRevenueAfterDiscount: number;
+  confirmedRedemptions: number;
+  conversionRate: number;
+  discountAmount: number;
+  releasedRedemptions: number;
+  reservedRedemptions: number;
+  totalCoupons: number;
+  totalRedemptions: number;
+};
+
+export type AdminCouponUsagePoint = {
+  confirmed: number;
+  date: string;
+  discountAmount: number;
+  released: number;
+  reserved: number;
+};
+
+export type AdminCouponCampaignSummary = {
+  campaignName: string;
+  confirmedRedemptions: number;
+  couponCount: number;
+  discountAmount: number;
+  totalRedemptions: number;
+};
+
+export type AdminCouponRankingItem = {
+  code: string;
+  confirmedRedemptions: number;
+  discountAmount: number;
+  id: string;
+  revenueAfterDiscount: number;
+};
+
 export type AdminCouponInput = {
   campaignName: string;
   code: string;
@@ -79,9 +124,19 @@ export type AdminCouponInput = {
   validUntil: string;
 };
 
+export type AdminCouponBatchInput = Omit<AdminCouponInput, "code" | "name"> & {
+  codePrefix: string;
+  count: number;
+  namePrefix: string;
+};
+
 export type AdminCouponsState = {
+  campaigns: AdminCouponCampaignSummary[];
   coupons: AdminCoupon[];
   experiences: AdminCouponExperienceOption[];
+  metrics: AdminCouponMetrics;
+  ranking: AdminCouponRankingItem[];
+  usage: AdminCouponUsagePoint[];
 };
 
 export type AdminCouponsPageData = {
@@ -111,6 +166,16 @@ export type AdminCouponActions = {
   ) => Promise<
     AdminCouponActionResult<{ couponId: string; state: AdminCouponsState }>
   >;
+  duplicateCoupon: (input: {
+    couponId: string;
+    newCode: string;
+  }) => Promise<
+    AdminCouponActionResult<{ couponId: string; state: AdminCouponsState }>
+  >;
+  exportCsv: () => Promise<AdminCouponActionResult<{ csv: string }>>;
+  generateBatch: (
+    input: AdminCouponBatchInput,
+  ) => Promise<AdminCouponActionResult<{ state: AdminCouponsState }>>;
   updateCoupon: (input: {
     couponId: string;
     coupon: AdminCouponInput;
