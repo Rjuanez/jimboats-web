@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
@@ -62,8 +62,10 @@ describe("AdminCouponsWorkspace", () => {
     );
 
     expect(screen.getByRole("heading", { name: "Coupons" })).toBeInTheDocument();
-    expect(screen.getByText("TEST10")).toBeInTheDocument();
-    expect(screen.getByText("10% off")).toBeInTheDocument();
+    const library = screen.getByRole("region", { name: "Coupon library" });
+
+    expect(within(library).getByText("TEST10")).toBeInTheDocument();
+    expect(within(library).getByText("10% off")).toBeInTheDocument();
   });
 
   it("submits edited coupon rules", async () => {
