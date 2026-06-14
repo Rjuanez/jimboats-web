@@ -106,6 +106,12 @@ export type PublicDictionary = {
       cancellation: string;
       cancellationPolicy: string;
       capacity: (capacity: number) => string;
+      coupon: string;
+      couponApplied: (code: string) => string;
+      couponApply: string;
+      couponDiscount: string;
+      couponPlaceholder: string;
+      couponRemove: string;
       date: string;
       deliveryPreferences: string;
       depositDueNow: (amount: string) => string;

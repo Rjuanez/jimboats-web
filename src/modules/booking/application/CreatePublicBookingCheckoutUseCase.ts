@@ -10,6 +10,7 @@ import type { BookingRepository } from "./ports/BookingRepository";
 import type { BookingCalendarBlockWriteModel } from "./ports/BookingRepository";
 import type { CancellationPolicyRepository } from "./ports/CancellationPolicyRepository";
 import type { DepositPaymentProvider } from "./ports/DepositPaymentProvider";
+import type { ReserveCouponRedemptionUseCase } from "@/modules/coupons/application/ReserveCouponRedemptionUseCase";
 import type {
   CreatePublicBookingCheckoutCommand,
   PublicBookingCheckoutDto,
@@ -29,6 +30,7 @@ export class CreatePublicBookingCheckoutUseCase {
     private readonly clock: BookingClock,
     private readonly paymentProvider: DepositPaymentProvider,
     private readonly cancellationPolicies?: CancellationPolicyRepository,
+    private readonly coupons?: ReserveCouponRedemptionUseCase,
   ) {}
 
   async execute(
@@ -70,6 +72,37 @@ export class CreatePublicBookingCheckoutUseCase {
     const bookingId = this.ids.newBookingId();
     const calendarBlockId = this.ids.newCalendarBlockId({ bookingId });
     const paymentRecordId = this.ids.newPaymentRecordId({ bookingId });
+    const reservedCoupon = command.couponCode?.trim()
+      ? await this.coupons?.execute({
+          bookingId,
+          code: command.couponCode,
+          currency: plan.priceSnapshot.toSnapshot().totalAmount.currency,
+          customerEmail: command.customer.email,
+          depositAmountMinor:
+            plan.priceSnapshot.toSnapshot().depositAmount.amountMinor,
+          experienceId: experience.id,
+          now,
+          paymentRecordId,
+          subtotalAmountMinor:
+            plan.priceSnapshot.toSnapshot().subtotalAmount.amountMinor,
+        })
+      : null;
+    const finalPlan = reservedCoupon
+      ? planBackpanelBooking({
+          command,
+          discountAdjustment: {
+            depositAmountMinor: reservedCoupon.depositAmount.amountMinor,
+            discountAmountMinor: reservedCoupon.discountAmount.amountMinor,
+            discountSnapshot: reservedCoupon.discountSnapshot,
+            remainingAmountMinor: reservedCoupon.remainingAmount.amountMinor,
+            subtotalAmountMinor: reservedCoupon.subtotalAmount.amountMinor,
+            totalAmountMinor: reservedCoupon.totalAmount.amountMinor,
+          },
+          experience,
+          extraOptions,
+          now,
+        })
+      : plan;
     const cancellationPolicySnapshot =
       await this.cancellationPolicies?.findActiveBookingSnapshotForExperience(
         experience.id,
@@ -78,7 +111,7 @@ export class CreatePublicBookingCheckoutUseCase {
       now.getTime() + checkoutHoldMinutes * 60_000,
     );
     const paymentRecord = PaymentRecord.createStripePendingDeposit({
-      amount: plan.priceSnapshot.depositAmount,
+      amount: finalPlan.priceSnapshot.depositAmount,
       bookingId,
       createdAt: now,
       id: paymentRecordId,
@@ -100,13 +133,13 @@ export class CreatePublicBookingCheckoutUseCase {
       holdExpiresAt,
       id: bookingId,
       paymentRecord,
-      priceSnapshot: plan.priceSnapshot,
+      priceSnapshot: finalPlan.priceSnapshot,
       reference: this.ids.newBookingReference({ now }),
-      selectedSlot: plan.selectedSlot,
+      selectedSlot: finalPlan.selectedSlot,
       cancellationPolicySnapshot,
     });
     const checkoutSession = await this.paymentProvider.createCheckoutSession({
-      amount: plan.priceSnapshot.depositAmount.toSnapshot(),
+      amount: finalPlan.priceSnapshot.depositAmount.toSnapshot(),
       bookingId,
       customer: {
         email: command.customer.email,
@@ -132,11 +165,11 @@ export class CreatePublicBookingCheckoutUseCase {
         createdAt: now,
         experienceId: experience.id,
         holdExpiresAt,
-        plan,
+        plan: finalPlan,
         reference: booking.reference,
       }),
       extraLineIds: new Map(
-        plan.priceSnapshot.toSnapshot().extraLines.map((line) => [
+        finalPlan.priceSnapshot.toSnapshot().extraLines.map((line) => [
           line.extraId,
           this.ids.newBookingExtraLineId({
             bookingId,
@@ -163,6 +196,7 @@ export class CreatePublicBookingCheckoutUseCase {
         },
       }),
       paymentRecord: paymentRecordWithSession,
+      couponRedemption: reservedCoupon?.redemption ?? null,
     });
 
     return {

@@ -18,6 +18,12 @@ export const publicBookingCheckoutSchema = z.object({
     ticketEmail: z.boolean(),
     ticketWhatsapp: z.boolean(),
   }),
+  couponCode: z
+    .string()
+    .trim()
+    .transform((value) => (value ? value : null))
+    .nullable()
+    .optional(),
   customer: z.object({
     email: z.string().trim().email("Email is invalid."),
     fullName: z.string().trim().min(1, "Full name is required."),
@@ -42,6 +48,13 @@ export const publicBookingCheckoutSchema = z.object({
   startTime: clockTimeSchema,
 });
 
+export const publicBookingCouponPreviewSchema = z.object({
+  code: z.string().trim().min(1, "Coupon code is required."),
+  depositAmountMinor: z.number().int().min(0),
+  experienceId: z.string().trim().min(1, "Experience is required."),
+  subtotalAmountMinor: z.number().int().min(0),
+});
+
 export const publicBookingAccessSchema = z.object({
   reference: z.string().trim().min(1),
   token: z.string().trim().min(1),
@@ -49,6 +62,10 @@ export const publicBookingAccessSchema = z.object({
 
 export function parsePublicBookingCheckout(input: PublicBookingCheckoutInput) {
   return publicBookingCheckoutSchema.parse(input);
+}
+
+export function parsePublicBookingCouponPreview(input: unknown) {
+  return publicBookingCouponPreviewSchema.parse(input);
 }
 
 export function parsePublicBookingAccess(input: {

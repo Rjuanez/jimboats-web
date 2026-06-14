@@ -92,6 +92,14 @@ type PaymentProviderEventCreateArgs = {
   data: PaymentProviderEventCreateModel;
 };
 
+type CouponRedemptionCreateArgs = {
+  data: CouponRedemptionCreateModel;
+};
+
+type CouponEventCreateArgs = {
+  data: CouponEventCreateModel;
+};
+
 type CalendarBlockFindManyArgs = {
   orderBy?: unknown;
   where?: unknown;
@@ -164,6 +172,14 @@ type PaymentProviderEventDelegate = {
   create(args: PaymentProviderEventCreateArgs): Promise<unknown>;
 };
 
+type CouponRedemptionDelegate = {
+  create(args: CouponRedemptionCreateArgs): Promise<unknown>;
+};
+
+type CouponEventDelegate = {
+  create(args: CouponEventCreateArgs): Promise<unknown>;
+};
+
 type CalendarBlockOverlapRecord = {
   id: string;
   protectedEndAt: Date;
@@ -202,6 +218,8 @@ export type PrismaBookingRepositoryTransaction = {
   bookingExtra: BookingExtraDelegate;
   bookingNotificationPreference: BookingNotificationPreferenceDelegate;
   calendarBlock: CalendarBlockDelegate;
+  couponEvent: CouponEventDelegate;
+  couponRedemption: CouponRedemptionDelegate;
   outboxMessage: OutboxMessageDelegate;
   paymentRecord: PaymentRecordDelegate;
   paymentProviderEvent: PaymentProviderEventDelegate;
@@ -541,6 +559,27 @@ export class PrismaBookingRepository implements BookingRepository {
           preferences: input.notificationPreferences,
         }),
       });
+
+      if (input.couponRedemption) {
+        await transaction.couponRedemption.create({
+          data: couponRedemptionToPrismaCreateModel(input.couponRedemption),
+        });
+        await transaction.couponEvent.create({
+          data: couponEventToPrismaCreateModel({
+            bookingId: input.couponRedemption.bookingId,
+            couponId: input.couponRedemption.couponId,
+            couponVersionId: input.couponRedemption.couponVersionId,
+            metadataJson: {
+              code: input.couponRedemption.couponSnapshot.code,
+              discountAmountMinor:
+                input.couponRedemption.discountAmount.amountMinor,
+            },
+            occurredAt: input.couponRedemption.reservedAt,
+            redemptionId: input.couponRedemption.id,
+            type: "COUPON_RESERVED",
+          }),
+        });
+      }
     });
   }
 
@@ -864,6 +903,40 @@ type PaymentProviderEventCreateModel = {
   status: "FAILED" | "IGNORED" | "PROCESSED";
 };
 
+type CouponRedemptionCreateModel = {
+  bookingId: string;
+  couponId: string;
+  couponSnapshot: NonNullable<
+    PublicPendingBookingPersistence["couponRedemption"]
+  >["couponSnapshot"];
+  couponVersionId: string;
+  currency: string;
+  customerEmailNormalized: string;
+  discountAmountMinor: number;
+  finalCashRemainingAmountMinor: number;
+  finalDepositAmountMinor: number;
+  finalTotalAmountMinor: number;
+  id: string;
+  originalCashRemainingAmountMinor: number;
+  originalDepositAmountMinor: number;
+  originalTotalAmountMinor: number;
+  paymentRecordId: string;
+  reservedAt: Date;
+  status: "RESERVED";
+};
+
+type CouponEventCreateModel = {
+  actorId: string;
+  actorType: "SYSTEM";
+  bookingId: string | null;
+  couponId: string;
+  couponVersionId: string | null;
+  metadataJson: Record<string, unknown>;
+  occurredAt: Date;
+  redemptionId: string | null;
+  type: "COUPON_RESERVED";
+};
+
 function calendarBlockToPrismaCreateModel(
   block: BookingCalendarBlockWriteModel,
 ): CalendarBlockCreateModel {
@@ -921,6 +994,54 @@ function paymentProviderEventToPrismaCreateModel(
     providerEventId: event.providerEventId,
     receivedAt: event.receivedAt,
     status: event.status,
+  };
+}
+
+function couponRedemptionToPrismaCreateModel(
+  redemption: NonNullable<PublicPendingBookingPersistence["couponRedemption"]>,
+): CouponRedemptionCreateModel {
+  return {
+    bookingId: redemption.bookingId,
+    couponId: redemption.couponId,
+    couponSnapshot: redemption.couponSnapshot,
+    couponVersionId: redemption.couponVersionId,
+    currency: redemption.discountAmount.currency,
+    customerEmailNormalized: redemption.customerEmailNormalized,
+    discountAmountMinor: redemption.discountAmount.amountMinor,
+    finalCashRemainingAmountMinor:
+      redemption.finalCashRemainingAmount.amountMinor,
+    finalDepositAmountMinor: redemption.finalDepositAmount.amountMinor,
+    finalTotalAmountMinor: redemption.finalTotalAmount.amountMinor,
+    id: redemption.id,
+    originalCashRemainingAmountMinor:
+      redemption.originalCashRemainingAmount.amountMinor,
+    originalDepositAmountMinor: redemption.originalDepositAmount.amountMinor,
+    originalTotalAmountMinor: redemption.originalTotalAmount.amountMinor,
+    paymentRecordId: redemption.paymentRecordId,
+    reservedAt: redemption.reservedAt,
+    status: redemption.status,
+  };
+}
+
+function couponEventToPrismaCreateModel(input: {
+  bookingId: string | null;
+  couponId: string;
+  couponVersionId: string | null;
+  metadataJson: Record<string, unknown>;
+  occurredAt: Date;
+  redemptionId: string | null;
+  type: "COUPON_RESERVED";
+}): CouponEventCreateModel {
+  return {
+    actorId: "checkout",
+    actorType: "SYSTEM",
+    bookingId: input.bookingId,
+    couponId: input.couponId,
+    couponVersionId: input.couponVersionId,
+    metadataJson: input.metadataJson,
+    occurredAt: input.occurredAt,
+    redemptionId: input.redemptionId,
+    type: input.type,
   };
 }
 

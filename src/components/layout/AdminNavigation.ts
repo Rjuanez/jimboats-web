@@ -3,6 +3,7 @@ export type AdminNavItemId =
   | "calendar"
   | "cancellation-policies"
   | "content"
+  | "coupons"
   | "dashboard"
   | "experiences"
   | "extras"
@@ -28,6 +29,7 @@ export const adminNavItems: AdminNavItem[] = [
   },
   { href: "/admin/experiences", id: "experiences", label: "Experiences" },
   { href: "/admin/extras", id: "extras", label: "Extras" },
+  { href: "/admin/coupons", id: "coupons", label: "Coupons" },
   { href: "/admin/media", id: "media", label: "Media" },
   { href: "/admin/notifications/rules", id: "notifications", label: "Notifications" },
   { href: "/admin/content", id: "content", label: "Content" },

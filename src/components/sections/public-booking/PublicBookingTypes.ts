@@ -82,6 +82,7 @@ export type PublicBookingConsents = {
 
 export type PublicBookingCheckoutInput = {
   consents: PublicBookingConsents;
+  couponCode?: string | null;
   customer: PublicBookingCustomer;
   endTime: string;
   experienceId: string;
@@ -96,6 +97,21 @@ export type PublicBookingCheckoutInput = {
   locale: PublicLocale;
 };
 
+export type PublicBookingCouponPreviewInput = {
+  code: string;
+  depositAmountMinor: number;
+  experienceId: string;
+  subtotalAmountMinor: number;
+};
+
+export type PublicBookingCouponPreview = {
+  code: string;
+  depositAmount: number;
+  discountAmount: number;
+  remainingAmount: number;
+  totalAmount: number;
+};
+
 export type PublicBookingCheckoutActionResult<TData> =
   | {
       data: TData;
@@ -107,6 +123,9 @@ export type PublicBookingCheckoutActionResult<TData> =
     };
 
 export type PublicBookingActions = {
+  previewCoupon(
+    input: PublicBookingCouponPreviewInput,
+  ): Promise<PublicBookingCheckoutActionResult<PublicBookingCouponPreview>>;
   startCheckout(
     input: PublicBookingCheckoutInput,
   ): Promise<

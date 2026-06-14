@@ -6,11 +6,38 @@ import { getContainer } from "@/container";
 import type {
   PublicBookingCheckoutActionResult,
   PublicBookingCheckoutInput,
+  PublicBookingCouponPreview,
+  PublicBookingCouponPreviewInput,
 } from "@/components/sections/public-booking/PublicBookingTypes";
 import { ApplicationError } from "@/shared/application/ApplicationError";
 import { DomainError } from "@/shared/domain/DomainError";
 
-import { parsePublicBookingCheckout } from "../validators/publicBookingValidators";
+import {
+  parsePublicBookingCheckout,
+  parsePublicBookingCouponPreview,
+} from "../validators/publicBookingValidators";
+
+export async function previewPublicBookingCouponAction(
+  input: PublicBookingCouponPreviewInput,
+): Promise<PublicBookingCheckoutActionResult<PublicBookingCouponPreview>> {
+  try {
+    const command = parsePublicBookingCouponPreview(input);
+    const preview = await getContainer().publicBooking.previewCoupon(command);
+
+    return {
+      data: {
+        code: preview.discountSnapshot.code,
+        depositAmount: fromMinor(preview.depositAmount.amountMinor),
+        discountAmount: fromMinor(preview.discountAmount.amountMinor),
+        remainingAmount: fromMinor(preview.remainingAmount.amountMinor),
+        totalAmount: fromMinor(preview.totalAmount.amountMinor),
+      },
+      ok: true,
+    };
+  } catch (error) {
+    return failure(error, "Unexpected error while applying coupon.");
+  }
+}
 
 export async function startPublicBookingCheckoutAction(
   input: PublicBookingCheckoutInput,
@@ -25,6 +52,7 @@ export async function startPublicBookingCheckoutAction(
     const baseUrl = publicSiteUrlFromEnv();
     const checkout = await getContainer().publicBooking.createCheckout({
       consents: commandInput.consents,
+      couponCode: commandInput.couponCode ?? null,
       customer: {
         email: commandInput.customer.email,
         fullName: commandInput.customer.fullName,
@@ -49,8 +77,12 @@ export async function startPublicBookingCheckoutAction(
       ok: true,
     };
   } catch (error) {
-    return failure(error);
+    return failure(error, "Unexpected error while starting secure checkout.");
   }
+}
+
+function fromMinor(amountMinor: number) {
+  return amountMinor / 100;
 }
 
 function publicSiteUrlFromEnv() {
@@ -71,6 +103,7 @@ function publicSiteUrlFromEnv() {
 
 function failure<TData = never>(
   error: unknown,
+  fallbackMessage: string,
 ): PublicBookingCheckoutActionResult<TData> {
   if (error instanceof ApplicationError || error instanceof DomainError) {
     return {
@@ -87,7 +120,7 @@ function failure<TData = never>(
   }
 
   return {
-    message: "Unexpected error while starting secure checkout.",
+    message: fallbackMessage,
     ok: false,
   };
 }

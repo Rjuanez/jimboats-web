@@ -3,6 +3,7 @@ import { CustomerDetails } from "@/modules/booking/domain/CustomerDetails";
 import { PaymentRecord } from "@/modules/booking/domain/PaymentRecord";
 import type { PaymentRecordStatus } from "@/modules/booking/domain/PaymentRecord";
 import { PriceSnapshot } from "@/modules/booking/domain/PriceSnapshot";
+import type { BookingDiscountSnapshot } from "@/modules/booking/domain/PriceSnapshot";
 import { SelectedSlot } from "@/modules/booking/domain/SelectedSlot";
 import type {
   BookingExperienceOptionReadModel,
@@ -55,8 +56,11 @@ export type PrismaBookingRecord = {
   customerName: string;
   customerNotes: string;
   customerPhone: string | null;
+  couponSnapshot?: unknown | null;
   depositAmountMinor: number;
   depositCurrency: string;
+  discountAmountMinor?: number;
+  discountCurrency?: string;
   experienceId: string;
   experienceNameSnapshot: string;
   externalCalendarEventId: string | null;
@@ -75,6 +79,8 @@ export type PrismaBookingRecord = {
   selectedStartMinutes: number;
   source: string;
   status: string;
+  subtotalAmountMinor?: number;
+  subtotalCurrency?: string;
   timeZone: string;
   totalAmountMinor: number;
   totalCurrency: string;
@@ -96,8 +102,11 @@ export type PrismaBookingWriteModel = {
     customerName: string;
     customerNotes: string;
     customerPhone: string | null;
+    couponSnapshot: unknown | null;
     depositAmountMinor: number;
     depositCurrency: CurrencyCode;
+    discountAmountMinor: number;
+    discountCurrency: CurrencyCode;
     experienceId: string;
     experienceNameSnapshot: string;
     guestCount: number;
@@ -112,6 +121,8 @@ export type PrismaBookingWriteModel = {
     selectedStartMinutes: number;
     source: "BACKPANEL" | "PUBLIC_CHECKOUT";
     status: "CANCELLED" | "CONFIRMED" | "EXPIRED" | "PAYMENT_FAILED" | "PENDING_PAYMENT";
+    subtotalAmountMinor: number;
+    subtotalCurrency: CurrencyCode;
     timeZone: string;
     totalAmountMinor: number;
     totalCurrency: CurrencyCode;
@@ -220,15 +231,22 @@ export function bookingFromPrismaRecord(record: PrismaBookingRecord) {
     priceSnapshot: PriceSnapshot.create({
       basePrice: Money.create({
         amountMinor:
-          record.totalAmountMinor -
+          subtotalAmountMinorFromRecord(record) -
           record.extras.reduce((total, extra) => total + extra.totalAmountMinor, 0),
-        currency: currencyFromPrisma(record.totalCurrency),
+        currency: currencyFromPrisma(record.subtotalCurrency ?? record.totalCurrency),
       }),
       capturedAt: record.priceCapturedAt,
       depositAmount: Money.create({
         amountMinor: record.depositAmountMinor,
         currency: currencyFromPrisma(record.depositCurrency),
       }),
+      discountAmount: Money.create({
+        amountMinor: record.discountAmountMinor ?? 0,
+        currency: currencyFromPrisma(record.discountCurrency ?? record.totalCurrency),
+      }),
+      discountSnapshot: record.couponSnapshot
+        ? (record.couponSnapshot as BookingDiscountSnapshot)
+        : null,
       extraLines: record.extras.map((extra) => ({
         extraId: extra.extraId,
         nameSnapshot: extra.nameSnapshot,
@@ -245,6 +263,10 @@ export function bookingFromPrismaRecord(record: PrismaBookingRecord) {
       remainingAmount: Money.create({
         amountMinor: record.cashRemainingAmountMinor,
         currency: currencyFromPrisma(record.cashRemainingCurrency),
+      }),
+      subtotalAmount: Money.create({
+        amountMinor: subtotalAmountMinorFromRecord(record),
+        currency: currencyFromPrisma(record.subtotalCurrency ?? record.totalCurrency),
       }),
       totalAmount: Money.create({
         amountMinor: record.totalAmountMinor,
@@ -286,8 +308,11 @@ export function bookingToPrismaWriteModel(
       customerName: snapshot.customer.fullName,
       customerNotes: snapshot.customer.notes,
       customerPhone: snapshot.customer.phone,
+      couponSnapshot: snapshot.priceSnapshot.discountSnapshot,
       depositAmountMinor: snapshot.priceSnapshot.depositAmount.amountMinor,
       depositCurrency: snapshot.priceSnapshot.depositAmount.currency,
+      discountAmountMinor: snapshot.priceSnapshot.discountAmount.amountMinor,
+      discountCurrency: snapshot.priceSnapshot.discountAmount.currency,
       experienceId: snapshot.experienceId,
       experienceNameSnapshot: snapshot.experienceNameSnapshot,
       guestCount: snapshot.guestCount,
@@ -304,6 +329,8 @@ export function bookingToPrismaWriteModel(
       selectedStartMinutes: snapshot.selectedSlot.startMinutes,
       source: snapshot.source,
       status: snapshot.status,
+      subtotalAmountMinor: snapshot.priceSnapshot.subtotalAmount.amountMinor,
+      subtotalCurrency: snapshot.priceSnapshot.subtotalAmount.currency,
       timeZone: snapshot.selectedSlot.timeZone,
       totalAmountMinor: snapshot.priceSnapshot.totalAmount.amountMinor,
       totalCurrency: snapshot.priceSnapshot.totalAmount.currency,
@@ -517,6 +544,12 @@ function paymentRecordStatusFromPrisma(value: string): PaymentRecordStatus {
   }
 
   throw new Error("Unsupported persisted payment status.");
+}
+
+function subtotalAmountMinorFromRecord(record: PrismaBookingRecord) {
+  return (record.subtotalAmountMinor ?? 0) > 0
+    ? record.subtotalAmountMinor ?? 0
+    : record.totalAmountMinor + (record.discountAmountMinor ?? 0);
 }
 
 function currencyFromPrisma(value: string | null): CurrencyCode {

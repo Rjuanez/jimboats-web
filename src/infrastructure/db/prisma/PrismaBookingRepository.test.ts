@@ -335,6 +335,12 @@ class InMemoryBookingClient implements PrismaBookingRepositoryClient {
     >[0]["data"]
   > = [];
   readonly paymentRecords: PrismaPaymentRecordRecord[] = [];
+  readonly couponRedemptions: Array<
+    Parameters<PrismaBookingRepositoryClient["couponRedemption"]["create"]>[0]["data"]
+  > = [];
+  readonly couponEvents: Array<
+    Parameters<PrismaBookingRepositoryClient["couponEvent"]["create"]>[0]["data"]
+  > = [];
 
   constructor(input: {
     calendarBlocks?: Array<{
@@ -500,6 +506,24 @@ class InMemoryBookingClient implements PrismaBookingRepositoryClient {
       >[0],
     ) => {
       this.paymentProviderEvents.push(args.data);
+    },
+  };
+
+  readonly couponRedemption = {
+    create: async (
+      args: Parameters<
+        PrismaBookingRepositoryClient["couponRedemption"]["create"]
+      >[0],
+    ) => {
+      this.couponRedemptions.push(args.data);
+    },
+  };
+
+  readonly couponEvent = {
+    create: async (
+      args: Parameters<PrismaBookingRepositoryClient["couponEvent"]["create"]>[0],
+    ) => {
+      this.couponEvents.push(args.data);
     },
   };
 

@@ -11,6 +11,7 @@ import {
   ShieldCheck,
   Sparkles,
   Tags,
+  TicketPercent,
   type LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
@@ -31,6 +32,7 @@ const navIcons = {
   calendar: CalendarDays,
   "cancellation-policies": ShieldCheck,
   content: FileText,
+  coupons: TicketPercent,
   dashboard: Gauge,
   experiences: Anchor,
   extras: Tags,

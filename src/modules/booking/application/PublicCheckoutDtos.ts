@@ -11,6 +11,7 @@ export type PublicBookingNotificationConsentCommand = {
 
 export type CreatePublicBookingCheckoutCommand = {
   consents: PublicBookingNotificationConsentCommand;
+  couponCode?: string | null;
   customer: {
     email: string;
     fullName: string;
@@ -25,6 +26,13 @@ export type CreatePublicBookingCheckoutCommand = {
   slotKey: string | null;
   startTime: string;
   returnUrl: string;
+};
+
+export type PreviewPublicBookingCouponCommand = {
+  code: string;
+  depositAmountMinor: number;
+  experienceId: string;
+  subtotalAmountMinor: number;
 };
 
 export type PublicBookingCheckoutDto = {

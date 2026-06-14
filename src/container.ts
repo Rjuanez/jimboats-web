@@ -45,7 +45,21 @@ import type {
   CreatePublicBookingCheckoutCommand,
   GetPublicBookingCheckoutReturnQuery,
   HandleDepositPaymentWebhookCommand,
+  PreviewPublicBookingCouponCommand,
 } from "@/modules/booking/application/PublicCheckoutDtos";
+import type {
+  ChangeAdminCouponStatusCommand,
+  CreateAdminCouponCommand,
+  UpdateAdminCouponCommand,
+} from "@/modules/coupons/application/AdminCouponDtos";
+import { ChangeAdminCouponStatusUseCase } from "@/modules/coupons/application/ChangeAdminCouponStatusUseCase";
+import { ConfirmCouponRedemptionUseCase } from "@/modules/coupons/application/ConfirmCouponRedemptionUseCase";
+import { CreateAdminCouponUseCase } from "@/modules/coupons/application/CreateAdminCouponUseCase";
+import { GetAdminCouponsWorkspaceUseCase } from "@/modules/coupons/application/GetAdminCouponsWorkspaceUseCase";
+import { PreviewCouponDiscountUseCase } from "@/modules/coupons/application/PreviewCouponDiscountUseCase";
+import { ReleaseCouponRedemptionUseCase } from "@/modules/coupons/application/ReleaseCouponRedemptionUseCase";
+import { ReserveCouponRedemptionUseCase } from "@/modules/coupons/application/ReserveCouponRedemptionUseCase";
+import { UpdateAdminCouponUseCase } from "@/modules/coupons/application/UpdateAdminCouponUseCase";
 import { CreateManualCalendarBlockUseCase } from "@/modules/boat-calendar/application/CreateManualCalendarBlockUseCase";
 import { GetAdminCalendarUseCase } from "@/modules/boat-calendar/application/GetAdminCalendarUseCase";
 import { ReleaseManualCalendarBlockUseCase } from "@/modules/boat-calendar/application/ReleaseManualCalendarBlockUseCase";
@@ -114,6 +128,8 @@ import { PrismaCancellationPolicyRepository } from "./infrastructure/db/prisma/P
 import type { PrismaCancellationPolicyRepositoryClient } from "./infrastructure/db/prisma/PrismaCancellationPolicyRepository";
 import { PrismaCalendarBlockRepository } from "./infrastructure/db/prisma/PrismaCalendarBlockRepository";
 import type { PrismaCalendarBlockRepositoryClient } from "./infrastructure/db/prisma/PrismaCalendarBlockRepository";
+import { PrismaCouponRepository } from "./infrastructure/db/prisma/PrismaCouponRepository";
+import type { PrismaCouponRepositoryClient } from "./infrastructure/db/prisma/PrismaCouponRepository";
 import { PrismaExperienceRepository } from "./infrastructure/db/prisma/PrismaExperienceRepository";
 import type { PrismaExperienceRepositoryClient } from "./infrastructure/db/prisma/PrismaExperienceRepository";
 import { PrismaExtraRepository } from "./infrastructure/db/prisma/PrismaExtraRepository";
@@ -186,6 +202,9 @@ export function getContainer() {
   const cancellationPolicyRepository = new PrismaCancellationPolicyRepository(
     prisma as unknown as PrismaCancellationPolicyRepositoryClient,
   );
+  const couponRepository = new PrismaCouponRepository(
+    prisma as unknown as PrismaCouponRepositoryClient,
+  );
   const publicBookingCatalogReader = new PrismaPublicBookingCatalogReader(
     prisma as unknown as PrismaPublicBookingCatalogReaderClient,
   );
@@ -236,6 +255,31 @@ export function getContainer() {
     bookingRepository,
     bookingCalendarPublisher,
     bookingClock,
+  );
+  const previewCouponDiscountUseCase = new PreviewCouponDiscountUseCase(
+    couponRepository,
+  );
+  const reserveCouponRedemptionUseCase = new ReserveCouponRedemptionUseCase(
+    couponRepository,
+  );
+  const confirmCouponRedemptionUseCase = new ConfirmCouponRedemptionUseCase(
+    couponRepository,
+  );
+  const releaseCouponRedemptionUseCase = new ReleaseCouponRedemptionUseCase(
+    couponRepository,
+  );
+  const getAdminCouponsWorkspaceUseCase = new GetAdminCouponsWorkspaceUseCase(
+    couponRepository,
+    experienceRepository,
+  );
+  const createAdminCouponUseCase = new CreateAdminCouponUseCase(
+    couponRepository,
+  );
+  const updateAdminCouponUseCase = new UpdateAdminCouponUseCase(
+    couponRepository,
+  );
+  const changeAdminCouponStatusUseCase = new ChangeAdminCouponStatusUseCase(
+    couponRepository,
   );
   const reconcileBookingCalendarSyncUseCase =
     new ReconcileBookingCalendarSyncUseCase(
@@ -378,6 +422,7 @@ export function getContainer() {
       bookingClock,
       depositPaymentProvider,
       cancellationPolicyRepository,
+      reserveCouponRedemptionUseCase,
     );
   const getAdminCancellationPoliciesWorkspaceUseCase =
     new GetAdminCancellationPoliciesWorkspaceUseCase(
@@ -392,6 +437,8 @@ export function getContainer() {
       bookingClock,
       depositPaymentProvider,
       bookingCalendarSync,
+      confirmCouponRedemptionUseCase,
+      releaseCouponRedemptionUseCase,
     );
   const issueBookingAccessLinkUseCase = new IssueBookingAccessLinkUseCase(
     bookingAccessRepository,
@@ -529,6 +576,15 @@ export function getContainer() {
       updateExtra: (command: UpdateExtraCommand) =>
         updateExtraUseCase.execute(command),
     },
+    adminCoupons: {
+      changeStatus: (command: ChangeAdminCouponStatusCommand) =>
+        changeAdminCouponStatusUseCase.execute(command),
+      createCoupon: (command: CreateAdminCouponCommand) =>
+        createAdminCouponUseCase.execute(command),
+      getWorkspace: () => getAdminCouponsWorkspaceUseCase.execute(),
+      updateCoupon: (command: UpdateAdminCouponCommand) =>
+        updateAdminCouponUseCase.execute(command),
+    },
     adminMedia: {
       getAsset: (assetId: string) => getAdminMediaAssetUseCase.execute(assetId),
       listAssets: () => listAdminMediaAssetsUseCase.execute(),
@@ -587,6 +643,15 @@ export function getContainer() {
       handleDepositPaymentWebhook: (
         command: HandleDepositPaymentWebhookCommand,
       ) => handleDepositPaymentWebhookUseCase.execute(command),
+      previewCoupon: (command: PreviewPublicBookingCouponCommand) =>
+        previewCouponDiscountUseCase.execute({
+          code: command.code,
+          currency: "EUR",
+          depositAmountMinor: command.depositAmountMinor,
+          experienceId: command.experienceId,
+          now: bookingClock.now(),
+          subtotalAmountMinor: command.subtotalAmountMinor,
+        }),
       viewBooking: (query: ViewBookingByAccessTokenQuery) =>
         viewBookingByAccessTokenUseCase.execute(query),
     },

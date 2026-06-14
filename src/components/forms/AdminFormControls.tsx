@@ -75,6 +75,28 @@ export function NumberField({
   );
 }
 
+type DateFieldProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type"> & {
+  description?: string;
+  label: string;
+};
+
+export function DateField({
+  className,
+  description,
+  label,
+  ...props
+}: DateFieldProps) {
+  return (
+    <FieldShell description={description} label={label}>
+      <input
+        className={cn("min-h-11", fieldClassName, className)}
+        type="date"
+        {...props}
+      />
+    </FieldShell>
+  );
+}
+
 type TextAreaFieldProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
   description?: string;
   label: string;

@@ -8,7 +8,10 @@ import {
   type PublicLocale,
 } from "@/i18n/locales";
 import { getPublicDictionary } from "@/i18n/public";
-import { startPublicBookingCheckoutAction } from "@/interface/next/actions/publicBookingActions";
+import {
+  previewPublicBookingCouponAction,
+  startPublicBookingCheckoutAction,
+} from "@/interface/next/actions/publicBookingActions";
 import { getPublicStripePublishableKey } from "@/interface/next/config/publicStripeConfig";
 import { getPublicBookingPage } from "@/interface/next/presenters/publicBookingPresenter";
 
@@ -61,6 +64,7 @@ export default async function PublicBookingPage({
   return (
     <PublicBookingWorkspace
       actions={{
+        previewCoupon: previewPublicBookingCouponAction,
         startCheckout: startPublicBookingCheckoutAction,
       }}
       content={content}

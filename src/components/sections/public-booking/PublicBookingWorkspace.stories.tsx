@@ -6,6 +6,10 @@ import { PublicBookingWorkspace } from "./PublicBookingWorkspace";
 import type { PublicBookingActions } from "./PublicBookingTypes";
 
 const actions = {
+  previewCoupon: async () => ({
+    message: "Storybook preview does not validate coupons.",
+    ok: false,
+  }),
   startCheckout: async () => ({
     message: "Storybook preview does not open Stripe Checkout.",
     ok: false,

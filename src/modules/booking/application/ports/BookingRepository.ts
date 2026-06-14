@@ -1,4 +1,5 @@
 import type { MoneySnapshot } from "@/shared/domain/Money";
+import type { CouponRedemptionWriteModel } from "@/modules/coupons/application/CouponDtos";
 
 import type { Booking } from "../../domain/Booking";
 import type { BookingNotificationPreferences } from "../../domain/BookingNotificationPreferences";
@@ -173,6 +174,7 @@ export type AdminCancelledBookingPersistence = {
 export type PublicPendingBookingPersistence = {
   booking: Booking;
   calendarBlock: BookingCalendarBlockWriteModel;
+  couponRedemption?: CouponRedemptionWriteModel | null;
   extraLineIds: Map<string, string>;
   notificationPreferences: BookingNotificationPreferences;
   paymentRecord: PaymentRecord;

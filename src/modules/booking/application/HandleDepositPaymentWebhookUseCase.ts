@@ -1,6 +1,8 @@
 import { ApplicationError } from "@/shared/application/ApplicationError";
 
 import type { BookingCalendarSynchronizer } from "./BookingCalendarSyncService";
+import type { ConfirmCouponRedemptionUseCase } from "@/modules/coupons/application/ConfirmCouponRedemptionUseCase";
+import type { ReleaseCouponRedemptionUseCase } from "@/modules/coupons/application/ReleaseCouponRedemptionUseCase";
 import { createPublicBookingConfirmedRecords } from "./BookingLifecycleRecords";
 import type { BookingClock } from "./ports/BookingClock";
 import type { BookingJsonValue } from "./ports/BookingRepository";
@@ -26,6 +28,8 @@ export class HandleDepositPaymentWebhookUseCase {
     private readonly clock: BookingClock,
     private readonly paymentProvider: DepositPaymentProvider,
     private readonly bookingCalendarSync?: BookingCalendarSynchronizer,
+    private readonly confirmCouponRedemption?: ConfirmCouponRedemptionUseCase,
+    private readonly releaseCouponRedemption?: ReleaseCouponRedemptionUseCase,
   ) {}
 
   async execute(
@@ -103,6 +107,10 @@ export class HandleDepositPaymentWebhookUseCase {
       });
 
       if (result === "PROCESSED") {
+        await this.confirmCouponRedemption?.execute({
+          bookingId: bookingSnapshot.id,
+          confirmedAt,
+        });
         await this.bookingCalendarSync?.syncConfirmedBooking(confirmedBooking);
       }
 
@@ -175,6 +183,13 @@ export class HandleDepositPaymentWebhookUseCase {
       }),
       releasedAt: now,
     });
+
+    if (result === "PROCESSED") {
+      await this.releaseCouponRedemption?.execute({
+        bookingId: bookingSnapshot.id,
+        releasedAt: now,
+      });
+    }
 
     return {
       action: result,

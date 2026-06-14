@@ -9,7 +9,10 @@ import type {
   BookingExtraSelectionRuleReadModel,
 } from "./ports/BookingRepository";
 import { PriceSnapshot } from "../domain/PriceSnapshot";
-import type { BookingExtraPriceLineProps } from "../domain/PriceSnapshot";
+import type {
+  BookingDiscountSnapshot,
+  BookingExtraPriceLineProps,
+} from "../domain/PriceSnapshot";
 import { SelectedSlot } from "../domain/SelectedSlot";
 
 const boatTimeZone = "Europe/Madrid";
@@ -38,6 +41,15 @@ export type BackpanelBookingPlan = {
   selectedStartAt: Date;
 };
 
+export type BookingDiscountAdjustment = {
+  depositAmountMinor: number;
+  discountAmountMinor: number;
+  discountSnapshot: BookingDiscountSnapshot;
+  remainingAmountMinor: number;
+  subtotalAmountMinor: number;
+  totalAmountMinor: number;
+};
+
 export function collectSelectedExtraIds(command: BackpanelBookingPlanningCommand) {
   return normalizeSelectedExtras(command.selectedExtras).map(
     (selected) => selected.extraId,
@@ -46,6 +58,7 @@ export function collectSelectedExtraIds(command: BackpanelBookingPlanningCommand
 
 export function planBackpanelBooking(input: {
   command: BackpanelBookingPlanningCommand;
+  discountAdjustment?: BookingDiscountAdjustment | null;
   experience: BookingExperienceOptionReadModel;
   extraOptions: BookingExtraOptionReadModel[];
   now: Date;
@@ -100,6 +113,7 @@ export function planBackpanelBooking(input: {
     protectedEndAt,
     protectedStartAt,
     priceSnapshot: buildPriceSnapshot({
+      discountAdjustment: input.discountAdjustment ?? null,
       experience: input.experience,
       lines,
       now: input.now,
@@ -399,6 +413,7 @@ function assertExtraNotice(input: {
 }
 
 function buildPriceSnapshot(input: {
+  discountAdjustment?: BookingDiscountAdjustment | null;
   experience: BookingExperienceOptionReadModel;
   lines: BookingExtraPriceLineProps[];
   now: Date;
@@ -417,13 +432,48 @@ function buildPriceSnapshot(input: {
     amountMinor: totalAmount.amountMinor - depositAmount.amountMinor,
     currency: totalAmount.currency,
   });
+  const adjustment = input.discountAdjustment;
+
+  if (adjustment) {
+    return PriceSnapshot.create({
+      basePrice,
+      capturedAt: input.now,
+      depositAmount: Money.create({
+        amountMinor: adjustment.depositAmountMinor,
+        currency: totalAmount.currency,
+      }),
+      discountAmount: Money.create({
+        amountMinor: adjustment.discountAmountMinor,
+        currency: totalAmount.currency,
+      }),
+      discountSnapshot: adjustment.discountSnapshot,
+      extraLines: input.lines,
+      remainingAmount: Money.create({
+        amountMinor: adjustment.remainingAmountMinor,
+        currency: totalAmount.currency,
+      }),
+      subtotalAmount: Money.create({
+        amountMinor: adjustment.subtotalAmountMinor,
+        currency: totalAmount.currency,
+      }),
+      totalAmount: Money.create({
+        amountMinor: adjustment.totalAmountMinor,
+        currency: totalAmount.currency,
+      }),
+    });
+  }
 
   return PriceSnapshot.create({
     basePrice,
     capturedAt: input.now,
     depositAmount,
     extraLines: input.lines,
+    discountAmount: Money.create({
+      amountMinor: 0,
+      currency: totalAmount.currency,
+    }),
     remainingAmount,
+    subtotalAmount: totalAmount,
     totalAmount,
   });
 }

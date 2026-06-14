@@ -142,6 +142,46 @@ enum PaymentProviderEventStatus {
   PROCESSED
 }
 
+enum CouponStatus {
+  ACTIVE
+  DRAFT
+  EXPIRED
+  PAUSED
+}
+
+enum CouponVersionStatus {
+  ACTIVE
+  ARCHIVED
+  DRAFT
+}
+
+enum CouponDiscountType {
+  FIXED_AMOUNT
+  PERCENTAGE
+}
+
+enum CouponRedemptionStatus {
+  CONFIRMED
+  REFUNDED
+  RELEASED
+  RESERVED
+  VOIDED
+}
+
+enum CouponEventType {
+  COUPON_CONFIRMED
+  COUPON_CREATED
+  COUPON_RELEASED
+  COUPON_RESERVED
+  COUPON_VERSION_CREATED
+}
+
+enum CouponActorType {
+  ADMIN
+  CUSTOMER
+  SYSTEM
+}
+
 enum CancellationPolicyStatus {
   ACTIVE
   ARCHIVED
@@ -534,6 +574,11 @@ model Booking {
   selectedEndMinutes          Int                            @map("selected_end_minutes")
   selectedSlotKey             String?                        @map("selected_slot_key")
   timeZone                    String                         @map("timezone")
+  subtotalAmountMinor         Int                            @default(0) @map("subtotal_amount_minor")
+  subtotalCurrency            String                         @default("EUR") @map("subtotal_currency")
+  discountAmountMinor         Int                            @default(0) @map("discount_amount_minor")
+  discountCurrency            String                         @default("EUR") @map("discount_currency")
+  couponSnapshot              Json?                          @map("coupon_snapshot")
   totalAmountMinor            Int                            @map("total_amount_minor")
   totalCurrency               String                         @map("total_currency")
   depositAmountMinor          Int                            @map("deposit_amount_minor")
@@ -558,6 +603,7 @@ model Booking {
   notificationDeliveries      NotificationDelivery[]
   notificationPreference      BookingNotificationPreference?
   paymentRecords              PaymentRecord[]
+  couponRedemptions           CouponRedemption[]
 
   @@index([status], map: "bookings_status_idx")
   @@index([experienceId], map: "bookings_experience_id_idx")
@@ -565,6 +611,100 @@ model Booking {
   @@index([customerEmail], map: "bookings_customer_email_idx")
   @@index([selectedLocalDate], map: "bookings_selected_date_idx")
   @@map("bookings")
+}
+
+model Coupon {
+  id             String             @id
+  codeNormalized String             @unique @map("code_normalized")
+  displayCode    String             @map("display_code")
+  name           String
+  campaignName   String             @default("") @map("campaign_name")
+  status         CouponStatus
+  createdAt      DateTime           @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt      DateTime           @updatedAt @map("updated_at") @db.Timestamptz(3)
+  versions       CouponVersion[]
+  redemptions    CouponRedemption[]
+  events         CouponEvent[]
+
+  @@index([status], map: "coupons_status_idx")
+  @@map("coupons")
+}
+
+model CouponVersion {
+  id                    String              @id
+  couponId              String              @map("coupon_id")
+  versionNumber         Int                 @map("version_number")
+  status                CouponVersionStatus
+  discountType          CouponDiscountType  @map("discount_type")
+  discountAmountMinor   Int?                @map("discount_amount_minor")
+  discountPercentageBps Int?                @map("discount_percentage_bps")
+  currency              String
+  validFrom             DateTime            @map("valid_from") @db.Timestamptz(3)
+  validUntil            DateTime?           @map("valid_until") @db.Timestamptz(3)
+  maxTotalRedemptions   Int?                @map("max_total_redemptions")
+  experienceIds         String[]            @default([]) @map("experience_ids")
+  createdAt             DateTime            @default(now()) @map("created_at") @db.Timestamptz(3)
+  coupon                Coupon              @relation(fields: [couponId], references: [id], onDelete: Cascade)
+  redemptions           CouponRedemption[]
+  events                CouponEvent[]
+
+  @@unique([couponId, versionNumber], map: "coupon_versions_coupon_id_version_number_key")
+  @@index([couponId, status], map: "coupon_versions_coupon_status_idx")
+  @@index([validFrom, validUntil], map: "coupon_versions_valid_range_idx")
+  @@map("coupon_versions")
+}
+
+model CouponRedemption {
+  id                               String                 @id
+  couponId                         String                 @map("coupon_id")
+  couponVersionId                  String                 @map("coupon_version_id")
+  bookingId                        String                 @unique @map("booking_id")
+  paymentRecordId                  String?                @map("payment_record_id")
+  customerEmailNormalized          String                 @map("customer_email_normalized")
+  status                           CouponRedemptionStatus
+  discountAmountMinor              Int                    @map("discount_amount_minor")
+  currency                         String
+  originalTotalAmountMinor         Int                    @map("original_total_amount_minor")
+  finalTotalAmountMinor            Int                    @map("final_total_amount_minor")
+  originalDepositAmountMinor       Int                    @map("original_deposit_amount_minor")
+  finalDepositAmountMinor          Int                    @map("final_deposit_amount_minor")
+  originalCashRemainingAmountMinor Int                    @map("original_cash_remaining_amount_minor")
+  finalCashRemainingAmountMinor    Int                    @map("final_cash_remaining_amount_minor")
+  couponSnapshot                   Json                   @map("coupon_snapshot")
+  reservedAt                       DateTime               @map("reserved_at") @db.Timestamptz(3)
+  confirmedAt                      DateTime?              @map("confirmed_at") @db.Timestamptz(3)
+  releasedAt                       DateTime?              @map("released_at") @db.Timestamptz(3)
+  voidedAt                         DateTime?              @map("voided_at") @db.Timestamptz(3)
+  coupon                           Coupon                 @relation(fields: [couponId], references: [id], onDelete: Cascade)
+  couponVersion                    CouponVersion          @relation(fields: [couponVersionId], references: [id], onDelete: Cascade)
+  booking                          Booking                @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  events                           CouponEvent[]
+
+  @@index([couponId, status], map: "coupon_redemptions_coupon_status_idx")
+  @@index([couponVersionId, status], map: "coupon_redemptions_version_status_idx")
+  @@index([customerEmailNormalized], map: "coupon_redemptions_customer_email_idx")
+  @@map("coupon_redemptions")
+}
+
+model CouponEvent {
+  id              String            @id @default(dbgenerated("gen_random_uuid()::text"))
+  couponId        String            @map("coupon_id")
+  couponVersionId String?           @map("coupon_version_id")
+  redemptionId    String?           @map("redemption_id")
+  bookingId       String?           @map("booking_id")
+  type            CouponEventType
+  actorType       CouponActorType   @map("actor_type")
+  actorId         String?           @map("actor_id")
+  metadataJson    Json              @map("metadata_json")
+  occurredAt      DateTime          @map("occurred_at") @db.Timestamptz(3)
+  coupon          Coupon            @relation(fields: [couponId], references: [id], onDelete: Cascade)
+  couponVersion   CouponVersion?    @relation(fields: [couponVersionId], references: [id], onDelete: SetNull)
+  redemption      CouponRedemption? @relation(fields: [redemptionId], references: [id], onDelete: SetNull)
+
+  @@index([couponId, occurredAt], map: "coupon_events_coupon_occurred_idx")
+  @@index([bookingId], map: "coupon_events_booking_id_idx")
+  @@index([redemptionId], map: "coupon_events_redemption_id_idx")
+  @@map("coupon_events")
 }
 
 model BookingAccessToken {

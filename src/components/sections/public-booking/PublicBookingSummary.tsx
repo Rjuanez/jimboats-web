@@ -24,6 +24,7 @@ type PublicBookingSummaryProps = {
   consents?: PublicBookingConsents;
   content: PublicBookingContent;
   depositAmount: number;
+  discountAmount?: number;
   extras: readonly PublicBookingExtra[];
   experience: PublicBookingExperience | null;
   formatPrice: (amount: number) => string;
@@ -38,6 +39,7 @@ export function PublicBookingSummary({
   consents,
   content,
   depositAmount,
+  discountAmount = 0,
   experience,
   extras,
   formatPrice,
@@ -134,6 +136,12 @@ export function PublicBookingSummary({
               />
               {extrasAmount > 0 ? (
                 <PriceRow label={labels.extras} value={formatPrice(extrasAmount)} />
+              ) : null}
+              {discountAmount > 0 ? (
+                <PriceRow
+                  label={labels.couponDiscount}
+                  value={`-${formatPrice(discountAmount)}`}
+                />
               ) : null}
               <PriceRow
                 emphasis

@@ -22,46 +22,107 @@ export type PriceSnapshotProps = {
   basePrice: Money;
   capturedAt: Date;
   depositAmount: Money;
+  discountAmount?: Money;
+  discountSnapshot?: BookingDiscountSnapshot | null;
   extraLines: BookingExtraPriceLineProps[];
   remainingAmount: Money;
+  subtotalAmount?: Money;
   totalAmount: Money;
+};
+
+export type BookingDiscountSnapshot = {
+  appliedAt: string;
+  campaignName: string;
+  code: string;
+  couponId: string;
+  couponVersionId: string;
+  discountAmount: MoneySnapshot;
+  discountType: "FIXED_AMOUNT" | "PERCENTAGE";
+  discountValue: number;
 };
 
 export type PriceSnapshotSnapshot = {
   basePrice: MoneySnapshot;
   capturedAt: string;
   depositAmount: MoneySnapshot;
+  discountAmount: MoneySnapshot;
+  discountSnapshot: BookingDiscountSnapshot | null;
   extraLines: BookingExtraPriceLineSnapshot[];
   remainingAmount: MoneySnapshot;
   remainingPaymentMethod: "CASH_ON_BOARD";
+  subtotalAmount: MoneySnapshot;
   totalAmount: MoneySnapshot;
 };
 
 export class PriceSnapshot {
   private constructor(
-    private readonly props: Omit<PriceSnapshotProps, "extraLines"> & {
+    private readonly props: Omit<
+      PriceSnapshotProps,
+      "discountAmount" | "discountSnapshot" | "extraLines" | "subtotalAmount"
+    > & {
+      discountAmount: Money;
+      discountSnapshot: BookingDiscountSnapshot | null;
       extraLines: BookingExtraPriceLine[];
+      subtotalAmount: Money;
     },
   ) {}
 
   static create(input: PriceSnapshotProps) {
     const extraLines = input.extraLines.map(BookingExtraPriceLine.create);
     const currency = input.totalAmount.currency;
+    const discountAmount =
+      input.discountAmount ??
+      Money.create({
+        amountMinor: 0,
+        currency,
+      });
 
     assertSameCurrency(input.basePrice, currency);
     assertSameCurrency(input.depositAmount, currency);
+    assertSameCurrency(discountAmount, currency);
     assertSameCurrency(input.remainingAmount, currency);
 
     const extraTotal = extraLines.reduce(
       (total, line) => total + line.totalPrice.amountMinor,
       0,
     );
-    const expectedTotal = input.basePrice.amountMinor + extraTotal;
+    const expectedSubtotal = input.basePrice.amountMinor + extraTotal;
+    const subtotalAmount =
+      input.subtotalAmount ??
+      Money.create({
+        amountMinor: expectedSubtotal,
+        currency,
+      });
+
+    assertSameCurrency(subtotalAmount, currency);
+
+    if (subtotalAmount.amountMinor !== expectedSubtotal) {
+      throw domainError(
+        "BOOKING_PRICE_SNAPSHOT_INVALID",
+        "Booking subtotal must match base price plus selected extras.",
+      );
+    }
+
+    if (discountAmount.amountMinor > subtotalAmount.amountMinor) {
+      throw domainError(
+        "BOOKING_PRICE_SNAPSHOT_INVALID",
+        "Booking discount cannot be greater than subtotal.",
+      );
+    }
+
+    if (discountAmount.amountMinor > 0 && !input.discountSnapshot) {
+      throw domainError(
+        "BOOKING_PRICE_SNAPSHOT_INVALID",
+        "Booking discount requires a coupon snapshot.",
+      );
+    }
+
+    const expectedTotal = subtotalAmount.amountMinor - discountAmount.amountMinor;
 
     if (input.totalAmount.amountMinor !== expectedTotal) {
       throw domainError(
         "BOOKING_PRICE_SNAPSHOT_INVALID",
-        "Booking total must match base price plus selected extras.",
+        "Booking total must match subtotal minus discount.",
       );
     }
 
@@ -91,7 +152,10 @@ export class PriceSnapshot {
 
     return new PriceSnapshot({
       ...input,
+      discountAmount,
+      discountSnapshot: input.discountSnapshot ?? null,
       extraLines,
+      subtotalAmount,
     });
   }
 
@@ -108,9 +172,12 @@ export class PriceSnapshot {
       basePrice: this.props.basePrice.toSnapshot(),
       capturedAt: this.props.capturedAt.toISOString(),
       depositAmount: this.props.depositAmount.toSnapshot(),
+      discountAmount: this.props.discountAmount.toSnapshot(),
+      discountSnapshot: this.props.discountSnapshot,
       extraLines: this.props.extraLines.map((line) => line.toSnapshot()),
       remainingAmount: this.props.remainingAmount.toSnapshot(),
       remainingPaymentMethod: "CASH_ON_BOARD",
+      subtotalAmount: this.props.subtotalAmount.toSnapshot(),
       totalAmount: this.props.totalAmount.toSnapshot(),
     };
   }

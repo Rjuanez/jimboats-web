@@ -20,6 +20,7 @@ import type {
   PublicBookingActions,
   PublicBookingConsents,
   PublicBookingContent,
+  PublicBookingCouponPreview,
   PublicBookingCustomer,
   PublicBookingExperienceAvailability,
   PublicBookingStepId,
@@ -87,6 +88,11 @@ export function PublicBookingWorkspace({
   const [consents, setConsents] =
     useState<PublicBookingConsents>(initialConsents);
   const [formError, setFormError] = useState<string | null>(null);
+  const [couponCode, setCouponCode] = useState("");
+  const [couponPreview, setCouponPreview] =
+    useState<PublicBookingCouponPreview | null>(null);
+  const [couponError, setCouponError] = useState<string | null>(null);
+  const [couponLoading, setCouponLoading] = useState(false);
   const [checkoutClientSecret, setCheckoutClientSecret] = useState<
     string | null
   >(null);
@@ -149,6 +155,10 @@ export function PublicBookingWorkspace({
   const totalAmount = (selectedExperience?.price ?? 0) + extrasAmount;
   const selectedDepositAmount =
     selectedExperience?.depositAmount ?? content.depositAmount;
+  const finalTotalAmount = couponPreview?.totalAmount ?? totalAmount;
+  const finalDepositAmount =
+    couponPreview?.depositAmount ?? selectedDepositAmount;
+  const finalDiscountAmount = couponPreview?.discountAmount ?? 0;
   const maxGuestCount = Math.max(selectedExperience?.capacity ?? 1, 1);
   const canContinueExperience = Boolean(
     selectedExperience && selectedDate && selectedTimeSlot,
@@ -270,6 +280,7 @@ export function PublicBookingWorkspace({
     setCustomer(initialCustomer);
     setConsents(initialConsents);
     setFormError(null);
+    resetCoupon();
     setCheckoutClientSecret(null);
     setCheckoutSessionId(null);
     setIsSubmittingPayment(false);
@@ -277,14 +288,54 @@ export function PublicBookingWorkspace({
     setAvailabilityErrorExperienceId(null);
   };
 
+  const resetCoupon = () => {
+    setCouponCode("");
+    setCouponPreview(null);
+    setCouponError(null);
+    setCouponLoading(false);
+  };
+
+  const invalidateCoupon = () => {
+    setCouponPreview(null);
+    setCouponError(null);
+  };
+
   const toggleExtra = (extraId: string) => {
     setCheckoutClientSecret(null);
     setCheckoutSessionId(null);
+    invalidateCoupon();
     setSelectedExtraIds((current) =>
       current.includes(extraId)
         ? current.filter((selectedId) => selectedId !== extraId)
         : [...current, extraId],
     );
+  };
+
+  const applyCoupon = async () => {
+    if (!selectedExperience || !couponCode.trim()) {
+      return;
+    }
+
+    setCouponLoading(true);
+    setCouponError(null);
+    setCouponPreview(null);
+
+    const result = await actions.previewCoupon({
+      code: couponCode,
+      depositAmountMinor: Math.round(selectedDepositAmount * 100),
+      experienceId: selectedExperience.id,
+      subtotalAmountMinor: Math.round(totalAmount * 100),
+    });
+
+    if (result.ok) {
+      setCouponPreview(result.data);
+      setCouponCode(result.data.code);
+      setCouponLoading(false);
+      return;
+    }
+
+    setCouponError(result.message);
+    setCouponLoading(false);
   };
 
   const submitPayment = async () => {
@@ -325,6 +376,7 @@ export function PublicBookingWorkspace({
 
     const result = await actions.startCheckout({
       consents,
+      couponCode: couponPreview?.code ?? null,
       customer: {
         email,
         fullName,
@@ -387,6 +439,7 @@ export function PublicBookingWorkspace({
                     setSelectedExtraIds([]);
                     setCheckoutClientSecret(null);
                     setCheckoutSessionId(null);
+                    invalidateCoupon();
                     scrollToBookingSection(timeSelectionId);
                   }}
                   onSelectExperience={(experienceId) => {
@@ -400,6 +453,7 @@ export function PublicBookingWorkspace({
                     setGuestCount(1);
                     setCheckoutClientSecret(null);
                     setCheckoutSessionId(null);
+                    invalidateCoupon();
                     setLoadingAvailabilityExperienceId(
                       availabilityReady ? null : experienceId,
                     );
@@ -411,6 +465,7 @@ export function PublicBookingWorkspace({
                     setSelectedExtraIds([]);
                     setCheckoutClientSecret(null);
                     setCheckoutSessionId(null);
+                    invalidateCoupon();
                     scrollToBookingSection(continueAnchorId);
                   }}
                   selectedDateId={selectedDateId}
@@ -429,6 +484,7 @@ export function PublicBookingWorkspace({
                     setSelectedExtraIds([]);
                     setCheckoutClientSecret(null);
                     setCheckoutSessionId(null);
+                    invalidateCoupon();
                     setActiveStep("payment");
                   }}
                   onToggleExtra={toggleExtra}
@@ -446,7 +502,7 @@ export function PublicBookingWorkspace({
                       formatPrice={formatPrice}
                       selectedDate={selectedDate}
                       selectedTimeSlot={selectedTimeSlot}
-                      totalAmount={totalAmount}
+                      totalAmount={finalTotalAmount}
                     />
                   ) : null}
                   <PublicBookingPaymentStep
@@ -457,13 +513,18 @@ export function PublicBookingWorkspace({
                     checkoutClientSecret={checkoutClientSecret}
                     consents={consents}
                     content={content}
+                    couponAppliedCode={couponPreview?.code ?? null}
+                    couponCode={couponCode}
+                    couponError={couponError}
+                    couponLoading={couponLoading}
                     customer={customer}
-                    depositAmount={selectedDepositAmount}
+                    depositAmount={finalDepositAmount}
                     error={formError}
                     formatPrice={formatPrice}
                     formId={paymentFormId}
                     guestCount={guestCount}
                     maxGuestCount={maxGuestCount}
+                    onApplyCoupon={applyCoupon}
                     onBack={() => {
                       setFormError(null);
                     setCheckoutClientSecret(null);
@@ -471,8 +532,16 @@ export function PublicBookingWorkspace({
                     setActiveStep("extras");
                     }}
                     onChangeConsents={setConsents}
+                    onChangeCouponCode={(code) => {
+                      setCouponCode(code);
+                      setCouponPreview(null);
+                      setCouponError(null);
+                      setCheckoutClientSecret(null);
+                      setCheckoutSessionId(null);
+                    }}
                     onChangeCustomer={setCustomer}
                     onChangeGuestCount={setGuestCount}
+                    onRemoveCoupon={resetCoupon}
                     onSubmit={submitPayment}
                     stripePublishableKey={stripePublishableKey}
                     checkoutSessionId={checkoutSessionId}
@@ -489,14 +558,14 @@ export function PublicBookingWorkspace({
                   consents={consents}
                   content={content}
                   customer={customer}
-                  depositAmount={selectedDepositAmount}
+                  depositAmount={finalDepositAmount}
                   experience={selectedExperience}
                   extras={selectedExtras}
                   formatPrice={formatPrice}
                   onStartOver={resetBooking}
                   selectedDate={selectedDate}
                   selectedTimeSlot={selectedTimeSlot}
-                  totalAmount={totalAmount}
+                  totalAmount={finalTotalAmount}
                 />
               ) : null}
             </div>
@@ -507,13 +576,14 @@ export function PublicBookingWorkspace({
                 className="hidden h-fit lg:sticky lg:top-32 lg:block"
                 consents={activeStep === "payment" ? consents : undefined}
                 content={content}
-                depositAmount={selectedDepositAmount}
+                depositAmount={finalDepositAmount}
+                discountAmount={finalDiscountAmount}
                 experience={selectedExperience}
                 extras={selectedExtras}
                 formatPrice={formatPrice}
                 selectedDate={selectedDate}
                 selectedTimeSlot={selectedTimeSlot}
-                totalAmount={totalAmount}
+                totalAmount={finalTotalAmount}
               />
             ) : null}
           </div>
@@ -523,7 +593,7 @@ export function PublicBookingWorkspace({
         activeStep={activeStep}
         canContinueExperience={canContinueExperience}
         content={content}
-        depositAmount={selectedDepositAmount}
+        depositAmount={finalDepositAmount}
         experience={selectedExperience}
         formatPrice={formatPrice}
         onContinueExperience={() => setActiveStep("extras")}
@@ -533,7 +603,7 @@ export function PublicBookingWorkspace({
         paymentSubmitting={isSubmittingPayment}
         selectedDate={selectedDate}
         selectedTimeSlot={selectedTimeSlot}
-        totalAmount={totalAmount}
+        totalAmount={finalTotalAmount}
       />
       <PublicBookingFooter content={content} />
     </div>

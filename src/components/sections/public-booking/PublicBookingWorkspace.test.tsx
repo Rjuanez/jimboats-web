@@ -288,6 +288,16 @@ function createActions(
   },
 ): PublicBookingActions {
   return {
+    previewCoupon: vi.fn().mockResolvedValue({
+      data: {
+        code: "TEST10",
+        depositAmount: 100,
+        discountAmount: 29,
+        remainingAmount: 161,
+        totalAmount: 261,
+      },
+      ok: true,
+    }),
     startCheckout: vi.fn().mockResolvedValue(result),
   };
 }

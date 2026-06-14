@@ -12,6 +12,7 @@ const pages = [
   { name: "admin experiences", path: "/admin/experiences" },
   { name: "admin calendar", path: "/admin/calendar" },
   { name: "admin bookings", path: "/admin/bookings" },
+  { name: "admin coupons", path: "/admin/coupons" },
   { name: "admin new booking", path: "/admin/bookings/new" },
   {
     name: "admin booking detail",

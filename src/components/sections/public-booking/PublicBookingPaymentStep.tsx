@@ -27,6 +27,10 @@ type PublicBookingPaymentStepProps = {
   cancellationPolicySummary: string;
   consents: PublicBookingConsents;
   content: PublicBookingContent;
+  couponAppliedCode: string | null;
+  couponCode: string;
+  couponError: string | null;
+  couponLoading: boolean;
   customer: PublicBookingCustomer;
   depositAmount: number;
   error: string | null;
@@ -35,9 +39,12 @@ type PublicBookingPaymentStepProps = {
   guestCount: number;
   maxGuestCount: number;
   onBack: () => void;
+  onApplyCoupon: () => Promise<void>;
   onChangeConsents: (consents: PublicBookingConsents) => void;
+  onChangeCouponCode: (code: string) => void;
   onChangeCustomer: (customer: PublicBookingCustomer) => void;
   onChangeGuestCount: (guestCount: number) => void;
+  onRemoveCoupon: () => void;
   onSubmit: () => Promise<void>;
   stripePublishableKey: string;
   submitting: boolean;
@@ -49,6 +56,10 @@ export function PublicBookingPaymentStep({
   cancellationPolicySummary,
   consents,
   content,
+  couponAppliedCode,
+  couponCode,
+  couponError,
+  couponLoading,
   customer,
   depositAmount,
   error,
@@ -57,9 +68,12 @@ export function PublicBookingPaymentStep({
   guestCount,
   maxGuestCount,
   onBack,
+  onApplyCoupon,
   onChangeConsents,
+  onChangeCouponCode,
   onChangeCustomer,
   onChangeGuestCount,
+  onRemoveCoupon,
   onSubmit,
   stripePublishableKey,
   submitting,
@@ -214,6 +228,55 @@ export function PublicBookingPaymentStep({
               </span>
             </label>
           </div>
+        </section>
+
+        <section
+          aria-labelledby="public-booking-coupon-title"
+          className="border-b border-sand/20 px-5 py-6 lg:px-8 lg:py-8"
+        >
+          <h2
+            className="font-display text-2xl leading-none text-text lg:text-3xl"
+            id="public-booking-coupon-title"
+          >
+            {labels.coupon}
+          </h2>
+          <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+            <PublicTextField
+              autoComplete="off"
+              className="rounded-2xl sm:flex-1"
+              disabled={submitting || couponLoading || Boolean(couponAppliedCode)}
+              label={labels.coupon}
+              name="couponCode"
+              onChange={(event) => onChangeCouponCode(event.currentTarget.value)}
+              placeholder={labels.couponPlaceholder}
+              value={couponCode}
+            />
+            <Button
+              className="sm:self-end"
+              disabled={submitting || couponLoading || !couponCode.trim()}
+              loading={couponLoading}
+              onClick={couponAppliedCode ? onRemoveCoupon : onApplyCoupon}
+              shape="pill"
+              size="lg"
+              type="button"
+              variant={couponAppliedCode ? "secondary" : "accent"}
+            >
+              {couponAppliedCode ? labels.couponRemove : labels.couponApply}
+            </Button>
+          </div>
+          {couponAppliedCode ? (
+            <p className="mt-3 text-sm font-semibold text-primary" role="status">
+              {labels.couponApplied(couponAppliedCode)}
+            </p>
+          ) : null}
+          {couponError ? (
+            <p
+              className="mt-3 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-800"
+              role="alert"
+            >
+              {couponError}
+            </p>
+          ) : null}
         </section>
 
         <section
