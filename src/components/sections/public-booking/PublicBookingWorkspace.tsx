@@ -122,6 +122,9 @@ export function PublicBookingWorkspace({
   const activeCalendar = selectedExperienceId
     ? (selectedExperienceAvailability?.calendar ?? emptyCalendar)
     : content.calendar;
+  const activeCalendarDays = activeCalendar.months?.length
+    ? activeCalendar.months.flatMap((month) => month.days)
+    : activeCalendar.days;
   const activeTimeSlots = selectedDateId
     ? (selectedExperienceAvailability?.timeSlotsByDate[selectedDateId] ?? [])
     : [];
@@ -132,7 +135,7 @@ export function PublicBookingWorkspace({
       ? dictionary.booking.experienceStep.availabilityError
       : null;
   const selectedDate =
-    activeCalendar.days.find((day) => day.id === selectedDateId) ?? null;
+    activeCalendarDays.find((day) => day.id === selectedDateId) ?? null;
   const selectedTimeSlot =
     activeTimeSlots.find((slot) => slot.id === selectedTimeSlotId) ?? null;
   const compatibleExtras = selectedExperienceId

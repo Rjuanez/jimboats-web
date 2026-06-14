@@ -197,6 +197,61 @@ describe("PublicBookingWorkspace", () => {
     );
   });
 
+  it("continues after selecting a date in a later calendar month", async () => {
+    const user = userEvent.setup();
+    const content = getPublicBookingMockPage();
+    const sunsetAvailability = content.availabilityByExperienceId["sunset-cruise"];
+    const julyDate = {
+      ariaLabel: "Wednesday July 1, 2026",
+      dateLabel: "Jul 1",
+      dayLabel: "1",
+      id: "2026-07-01",
+    };
+    const availability = {
+      ...sunsetAvailability,
+      calendar: {
+        ...sunsetAvailability.calendar,
+        months: [
+          ...(sunsetAvailability.calendar.months ?? []),
+          {
+            days: [julyDate],
+            id: "2026-07",
+            monthLabel: "July 2026",
+          },
+        ],
+      },
+      timeSlotsByDate: {
+        ...sunsetAvailability.timeSlotsByDate,
+        "2026-07-01": sunsetAvailability.timeSlotsByDate["2026-06-15"] ?? [],
+      },
+    };
+
+    render(
+      <PublicBookingWorkspace
+        actions={createActions()}
+        content={{
+          ...content,
+          availabilityByExperienceId: {
+            ...content.availabilityByExperienceId,
+            "sunset-cruise": availability,
+          },
+        }}
+        stripePublishableKey="pk_test_component"
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: /sunset cruise/i }));
+    await user.click(screen.getByRole("button", { name: /next month/i }));
+    await user.click(
+      screen.getByRole("button", { name: /select wednesday july 1, 2026/i }),
+    );
+    await user.click(screen.getByRole("button", { name: "18:30" }));
+
+    expect(
+      screen.getByRole("button", { name: /continue to extras/i }),
+    ).toBeEnabled();
+  });
+
   it("renders embedded checkout when Stripe creates a client secret", async () => {
     const user = userEvent.setup();
     const actions = createActions();
