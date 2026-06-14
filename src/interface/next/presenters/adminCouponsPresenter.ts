@@ -15,6 +15,10 @@ import type {
 } from "@/modules/coupons/application/AdminCouponDtos";
 
 export async function getAdminCouponsPage(): Promise<AdminCouponsPageData> {
+  if (process.env.JIMBOATS_ADMIN_PREVIEW_DATA === "1") {
+    return getAdminCouponsPreviewPage();
+  }
+
   const { getContainer } = await import("@/container");
   const workspace = await getContainer().adminCoupons.getWorkspace();
 
