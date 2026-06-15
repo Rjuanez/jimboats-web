@@ -3,11 +3,10 @@ import { notFound } from "next/navigation";
 
 import { PublicBookingReturnSection } from "@/components/sections/public-booking/PublicBookingReturnSection";
 import { getContainer } from "@/container";
-import {
-  parsePublicLocale,
-  type PublicLocale,
-} from "@/i18n/locales";
+import { parsePublicLocale, type PublicLocale } from "@/i18n/locales";
 import { getPublicDictionary } from "@/i18n/public";
+import { PublicClientAnalyticsBoundary } from "@/interface/next/analytics/PublicClientAnalyticsBoundary";
+import { getPublicStatsigConfig } from "@/interface/next/config/publicStatsigConfig";
 
 export const dynamic = "force-dynamic";
 
@@ -47,17 +46,26 @@ export default async function PublicBookingSuccessPage({
     ? sessionParam[0]
     : sessionParam;
   const content = await getReturnContent(sessionId);
+  const statsigConfig = getPublicStatsigConfig();
 
   return (
-    <PublicBookingReturnSection
-      content={content}
-      dictionary={{
-        ...dictionary.returnPage,
-        backToJimBoats: dictionary.common.backToJimBoats,
+    <PublicClientAnalyticsBoundary
+      config={statsigConfig}
+      metadata={{
+        locale,
+        path: `/${locale}/book/success`,
       }}
-      locale={locale}
-      sessionId={sessionId}
-    />
+    >
+      <PublicBookingReturnSection
+        content={content}
+        dictionary={{
+          ...dictionary.returnPage,
+          backToJimBoats: dictionary.common.backToJimBoats,
+        }}
+        locale={locale}
+        sessionId={sessionId}
+      />
+    </PublicClientAnalyticsBoundary>
   );
 }
 

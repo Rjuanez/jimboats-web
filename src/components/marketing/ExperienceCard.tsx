@@ -80,6 +80,9 @@ export function ExperienceCard({
           <a
             aria-label={`${ctaLabel}: ${title}`}
             className="group inline-flex min-h-12 flex-shrink-0 items-center justify-center gap-3 rounded-full border border-text/70 bg-transparent px-5 text-xs font-semibold uppercase tracking-[0.22em] text-text transition-[background-color,border-color,color,transform] duration-300 ease-out hover:-translate-y-px hover:border-text hover:bg-text hover:text-white focus-visible:-translate-y-px focus-visible:border-text focus-visible:bg-text focus-visible:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-text sm:px-6"
+            data-analytics-cta-location="experience_card"
+            data-analytics-event="booking_cta_clicked"
+            data-analytics-experience-id={id}
             href={ctaHref}
           >
             <span>{ctaLabel}</span>

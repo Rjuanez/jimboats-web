@@ -63,6 +63,8 @@ export function LandingFooter({
                   <a
                     aria-label={link.label}
                     className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-sand/35 bg-background text-text transition hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text"
+                    data-analytics-event="social_link_clicked"
+                    data-analytics-social-network={link.network}
                     href={link.href}
                     key={link.label}
                   >
@@ -94,12 +96,22 @@ export function LandingFooter({
             <ul className="mt-5 space-y-3 text-sm leading-7 text-text-muted lg:text-base">
               <li>{contact.place}</li>
               <li>
-                <a href={`tel:${contact.phone.replaceAll(" ", "")}`}>
+                <a
+                  data-analytics-contact-method="phone"
+                  data-analytics-event="contact_link_clicked"
+                  href={`tel:${contact.phone.replaceAll(" ", "")}`}
+                >
                   {contact.phone}
                 </a>
               </li>
               <li>
-                <a href={`mailto:${contact.email}`}>{contact.email}</a>
+                <a
+                  data-analytics-contact-method="email"
+                  data-analytics-event="contact_link_clicked"
+                  href={`mailto:${contact.email}`}
+                >
+                  {contact.email}
+                </a>
               </li>
             </ul>
           </address>

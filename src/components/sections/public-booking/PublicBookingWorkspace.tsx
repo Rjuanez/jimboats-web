@@ -1,8 +1,13 @@
 "use client";
 
 import { LifeBuoy } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import {
+  useClientAnalytics,
+  type ClientAnalyticsEventName,
+  type ClientAnalyticsMetadata,
+} from "@/components/analytics/ClientAnalytics";
 import { Container } from "@/components/layout/Container";
 import { cn } from "@/design/variants";
 import { getPublicDictionary } from "@/i18n/public";
@@ -101,6 +106,8 @@ export function PublicBookingWorkspace({
   );
   const [isSubmittingPayment, setIsSubmittingPayment] = useState(false);
   const didMountRef = useRef(false);
+  const trackedStepRef = useRef<PublicBookingStepId | null>(null);
+  const analytics = useClientAnalytics();
   const dictionary = getPublicDictionary(content.locale);
 
   const selectedExperience =
@@ -183,6 +190,19 @@ export function PublicBookingWorkspace({
 
   const formatPrice = (amount: number) =>
     `${content.currencySymbol}${amount.toLocaleString(content.locale)}`;
+  const trackBookingEvent = useCallback(
+    (
+      eventName: ClientAnalyticsEventName,
+      metadata?: ClientAnalyticsMetadata,
+    ) => {
+      analytics.track(eventName, {
+        currency: "EUR",
+        locale: content.locale,
+        ...metadata,
+      });
+    },
+    [analytics, content.locale],
+  );
 
   useEffect(() => {
     if (!didMountRef.current) {
@@ -203,6 +223,44 @@ export function PublicBookingWorkspace({
       document.body.scrollTop = 0;
     });
   }, [activeStep]);
+
+  useEffect(() => {
+    if (trackedStepRef.current === activeStep) {
+      return;
+    }
+
+    trackedStepRef.current = activeStep;
+
+    if (activeStep === "extras") {
+      trackBookingEvent("booking_extras_viewed", {
+        amount_minor: Math.round(totalAmount * 100),
+        experience_id: selectedExperienceId ?? "",
+        extras_count: activeExtras.length,
+      });
+    }
+
+    if (activeStep === "payment") {
+      trackBookingEvent("booking_payment_viewed", {
+        amount_minor: Math.round(finalTotalAmount * 100),
+        coupon_applied: Boolean(couponPreview),
+        deposit_amount_minor: Math.round(finalDepositAmount * 100),
+        experience_id: selectedExperienceId ?? "",
+        extras_count: selectedExtras.length,
+        guest_count: guestCount,
+      });
+    }
+  }, [
+    activeExtras.length,
+    activeStep,
+    couponPreview,
+    finalDepositAmount,
+    finalTotalAmount,
+    guestCount,
+    selectedExperienceId,
+    selectedExtras.length,
+    totalAmount,
+    trackBookingEvent,
+  ]);
 
   useEffect(() => {
     if (!selectedExperienceId) {
@@ -234,11 +292,21 @@ export function PublicBookingWorkspace({
         }
 
         const availability = responseBody.availability;
+        const availableDatesCount = availability.calendar.months?.length
+          ? availability.calendar.months.reduce(
+              (count, month) => count + month.days.length,
+              0,
+            )
+          : availability.calendar.days.length;
 
         setAvailabilityByExperienceId((current) => ({
           ...current,
           [selectedExperienceId]: availability,
         }));
+        trackBookingEvent("booking_availability_loaded", {
+          available_dates_count: availableDatesCount,
+          experience_id: selectedExperienceId,
+        });
       })
       .catch((error: unknown) => {
         if (error instanceof DOMException && error.name === "AbortError") {
@@ -246,6 +314,9 @@ export function PublicBookingWorkspace({
         }
 
         setAvailabilityErrorExperienceId(selectedExperienceId);
+        trackBookingEvent("booking_availability_failed", {
+          experience_id: selectedExperienceId,
+        });
       })
       .finally(() => {
         setLoadingAvailabilityExperienceId((current) =>
@@ -256,7 +327,12 @@ export function PublicBookingWorkspace({
     return () => {
       controller.abort();
     };
-  }, [availabilityByExperienceId, content.locale, selectedExperienceId]);
+  }, [
+    availabilityByExperienceId,
+    content.locale,
+    selectedExperienceId,
+    trackBookingEvent,
+  ]);
 
   const scrollToBookingSection = (sectionId: string) => {
     window.setTimeout(() => {
@@ -304,9 +380,16 @@ export function PublicBookingWorkspace({
   };
 
   const toggleExtra = (extraId: string) => {
+    const selected = !selectedExtraIds.includes(extraId);
+
     setCheckoutClientSecret(null);
     setCheckoutSessionId(null);
     invalidateCoupon();
+    trackBookingEvent("booking_extra_toggled", {
+      extra_id: extraId,
+      experience_id: selectedExperienceId ?? "",
+      selected,
+    });
     setSelectedExtraIds((current) =>
       current.includes(extraId)
         ? current.filter((selectedId) => selectedId !== extraId)
@@ -319,6 +402,10 @@ export function PublicBookingWorkspace({
       return;
     }
 
+    trackBookingEvent("booking_coupon_entered", {
+      amount_minor: Math.round(totalAmount * 100),
+      experience_id: selectedExperience.id,
+    });
     setCouponLoading(true);
     setCouponError(null);
     setCouponPreview(null);
@@ -334,11 +421,22 @@ export function PublicBookingWorkspace({
       setCouponPreview(result.data);
       setCouponCode(result.data.code);
       setCouponLoading(false);
+      trackBookingEvent("booking_coupon_applied", {
+        coupon_status: "applied",
+        deposit_amount_minor: Math.round(result.data.depositAmount * 100),
+        discount_amount_minor: Math.round(result.data.discountAmount * 100),
+        experience_id: selectedExperience.id,
+        total_amount_minor: Math.round(result.data.totalAmount * 100),
+      });
       return;
     }
 
     setCouponError(result.message);
     setCouponLoading(false);
+    trackBookingEvent("booking_coupon_failed", {
+      coupon_status: "failed",
+      experience_id: selectedExperience.id,
+    });
   };
 
   const submitPayment = async () => {
@@ -349,26 +447,50 @@ export function PublicBookingWorkspace({
     if (!selectedExperience || !selectedDate || !selectedTimeSlot) {
       setActiveStep("experience");
       setFormError(null);
+      trackBookingEvent("booking_validation_failed", {
+        reason: "missing_selection",
+        step: "payment",
+      });
       return;
     }
 
     if (guestCount < 1 || guestCount > selectedExperience.capacity) {
       setFormError(dictionary.booking.errors.invalidGuests);
+      trackBookingEvent("booking_validation_failed", {
+        experience_id: selectedExperience.id,
+        reason: "invalid_guests",
+        step: "payment",
+      });
       return;
     }
 
     if (!fullName || !email) {
       setFormError(dictionary.booking.errors.missingCustomer);
+      trackBookingEvent("booking_validation_failed", {
+        experience_id: selectedExperience.id,
+        reason: "missing_customer",
+        step: "payment",
+      });
       return;
     }
 
     if (!consents.ticketEmail && !consents.ticketWhatsapp) {
       setFormError(dictionary.booking.errors.missingDeliveryChannel);
+      trackBookingEvent("booking_validation_failed", {
+        experience_id: selectedExperience.id,
+        reason: "missing_delivery_channel",
+        step: "payment",
+      });
       return;
     }
 
     if (consents.ticketWhatsapp && !phone) {
       setFormError(dictionary.booking.errors.missingWhatsappPhone);
+      trackBookingEvent("booking_validation_failed", {
+        experience_id: selectedExperience.id,
+        reason: "missing_whatsapp_phone",
+        step: "payment",
+      });
       return;
     }
 
@@ -376,6 +498,17 @@ export function PublicBookingWorkspace({
     setIsSubmittingPayment(true);
     setCheckoutClientSecret(null);
     setCheckoutSessionId(null);
+    trackBookingEvent("booking_checkout_started", {
+      amount_minor: Math.round(finalTotalAmount * 100),
+      coupon_applied: Boolean(couponPreview),
+      delivery_email_enabled: consents.ticketEmail,
+      delivery_whatsapp_enabled: consents.ticketWhatsapp,
+      deposit_amount_minor: Math.round(finalDepositAmount * 100),
+      experience_id: selectedExperience.id,
+      extras_count: selectedExtras.length,
+      guest_count: guestCount,
+      marketing_consent_enabled: consents.marketing,
+    });
 
     const result = await actions.startCheckout({
       consents,
@@ -402,12 +535,24 @@ export function PublicBookingWorkspace({
       setCheckoutClientSecret(result.data.checkoutClientSecret);
       setCheckoutSessionId(result.data.paymentProviderSessionId);
       setIsSubmittingPayment(false);
+      trackBookingEvent("booking_checkout_ready", {
+        amount_minor: Math.round(finalTotalAmount * 100),
+        coupon_applied: Boolean(couponPreview),
+        deposit_amount_minor: Math.round(finalDepositAmount * 100),
+        experience_id: selectedExperience.id,
+        extras_count: selectedExtras.length,
+        guest_count: guestCount,
+      });
       scrollToBookingSection("public-booking-embedded-checkout");
       return;
     }
 
     setFormError(result.message);
     setIsSubmittingPayment(false);
+    trackBookingEvent("booking_checkout_failed", {
+      experience_id: selectedExperience.id,
+      reason: "checkout_action_failed",
+    });
   };
 
   return (
@@ -437,6 +582,10 @@ export function PublicBookingWorkspace({
                   content={content}
                   formatPrice={formatPrice}
                   onSelectDate={(dayId) => {
+                    trackBookingEvent("booking_date_selected", {
+                      date_id: dayId,
+                      experience_id: selectedExperienceId ?? "",
+                    });
                     setSelectedDateId(dayId);
                     setSelectedTimeSlotId(null);
                     setSelectedExtraIds([]);
@@ -446,9 +595,22 @@ export function PublicBookingWorkspace({
                     scrollToBookingSection(timeSelectionId);
                   }}
                   onSelectExperience={(experienceId) => {
-                    const availabilityReady =
-                      Boolean(availabilityByExperienceId[experienceId]);
+                    const experience = content.experiences.find(
+                      (current) => current.id === experienceId,
+                    );
+                    const availabilityReady = Boolean(
+                      availabilityByExperienceId[experienceId],
+                    );
 
+                    trackBookingEvent("booking_experience_selected", {
+                      amount_minor: Math.round((experience?.price ?? 0) * 100),
+                      capacity: experience?.capacity ?? 0,
+                      deposit_amount_minor: Math.round(
+                        (experience?.depositAmount ?? content.depositAmount) *
+                          100,
+                      ),
+                      experience_id: experienceId,
+                    });
                     setSelectedExperienceId(experienceId);
                     setSelectedDateId(null);
                     setSelectedTimeSlotId(null);
@@ -464,6 +626,15 @@ export function PublicBookingWorkspace({
                     scrollToBookingSection(dateSelectionId);
                   }}
                   onSelectTimeSlot={(timeSlotId) => {
+                    const slot = activeTimeSlots.find(
+                      (current) => current.id === timeSlotId,
+                    );
+
+                    trackBookingEvent("booking_time_selected", {
+                      experience_id: selectedExperienceId ?? "",
+                      start_time: slot?.startTime ?? "",
+                      time_slot_id: timeSlotId,
+                    });
                     setSelectedTimeSlotId(timeSlotId);
                     setSelectedExtraIds([]);
                     setCheckoutClientSecret(null);
@@ -530,9 +701,9 @@ export function PublicBookingWorkspace({
                     onApplyCoupon={applyCoupon}
                     onBack={() => {
                       setFormError(null);
-                    setCheckoutClientSecret(null);
-                    setCheckoutSessionId(null);
-                    setActiveStep("extras");
+                      setCheckoutClientSecret(null);
+                      setCheckoutSessionId(null);
+                      setActiveStep("extras");
                     }}
                     onChangeConsents={setConsents}
                     onChangeCouponCode={(code) => {

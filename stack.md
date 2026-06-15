@@ -172,22 +172,24 @@ No se recomienda:
 
 ## Desarrollo local
 
-Cuando exista la app, los comandos esperados son:
+El desarrollo local normal se levanta con Docker Compose:
 
 ```bash
 pnpm install
-pnpm db:up
-pnpm db:migrate
-pnpm dev
+pnpm dev:docker
 ```
 
 Convenciones esperadas:
 
-- `pnpm db:up` levanta PostgreSQL local con Docker Compose.
+- `pnpm dev:docker` levanta la app, PostgreSQL, Caddy y workers locales.
+- Caddy expone la app en `http://localhost:3000`.
+- PostgreSQL vive en la red interna de Docker Compose y no se expone al host.
+- `DATABASE_URL` local apunta al servicio interno `db`.
+- `pnpm db:up` solo levanta PostgreSQL para tareas operativas concretas.
+- `pnpm db:migrate:docker` aplica migraciones usando la red interna de Docker.
 - `pnpm db:down` para servicios locales sin borrar volumenes.
-- `pnpm db:reset` reinicia la base local y aplica migraciones.
-- `pnpm db:migrate` ejecuta migraciones de desarrollo.
-- `pnpm dev` arranca Next.js en modo desarrollo.
+- `pnpm db:reset` reinicia la base local y aplica migraciones cuando se use un entorno con acceso a PostgreSQL.
+- `pnpm dev` directo desde el host no es el camino por defecto y solo debe usarse si se configura un `DATABASE_URL` accesible desde el host.
 
 Estos comandos deben definirse en `package.json` cuando se cree la app.
 

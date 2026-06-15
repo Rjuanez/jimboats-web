@@ -121,6 +121,8 @@ export function LandingHeader({
           <div className="flex items-center gap-3">
             <Button
               className="hidden sm:inline-flex"
+              data-analytics-cta-location="header"
+              data-analytics-event="booking_cta_clicked"
               href={cta.href}
               shape="pill"
               size="sm"
@@ -162,9 +164,7 @@ export function LandingHeader({
           >
             <X aria-hidden="true" className="h-5 w-5" />
           </button>
-          <span className="mb-12 font-display text-4xl text-text">
-            {brand}
-          </span>
+          <span className="mb-12 font-display text-4xl text-text">{brand}</span>
           <nav aria-label="Mobile menu" className="flex flex-1 flex-col gap-8">
             {navigation.map((item) => (
               <a
@@ -184,7 +184,14 @@ export function LandingHeader({
               variant="solid"
             />
           </Suspense>
-          <Button href={cta.href} shape="pill" size="xl" variant="accent">
+          <Button
+            data-analytics-cta-location="mobile_menu"
+            data-analytics-event="booking_cta_clicked"
+            href={cta.href}
+            shape="pill"
+            size="xl"
+            variant="accent"
+          >
             {cta.label}
           </Button>
         </div>

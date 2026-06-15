@@ -1,3 +1,5 @@
+"use client";
+
 import {
   CalendarDays,
   CircleAlert,
@@ -7,11 +9,16 @@ import {
   Users,
   type LucideIcon,
 } from "lucide-react";
-import type { ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 
+import { useClientAnalytics } from "@/components/analytics/ClientAnalytics";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/Button";
-import { createLocalizedPath, localeToIntlLocale, type PublicLocale } from "@/i18n/locales";
+import {
+  createLocalizedPath,
+  localeToIntlLocale,
+  type PublicLocale,
+} from "@/i18n/locales";
 import type { PublicDictionary } from "@/i18n/public";
 
 export type PublicBookingAccessContent = {
@@ -78,8 +85,39 @@ export function PublicBookingAccessSection({
   dictionary,
   locale,
 }: PublicBookingAccessSectionProps) {
+  const analytics = useClientAnalytics();
+  const trackedAccessRef = useRef(false);
+
+  useEffect(() => {
+    if (trackedAccessRef.current) {
+      return;
+    }
+
+    trackedAccessRef.current = true;
+
+    if (!content) {
+      analytics.track("booking_access_failed", {
+        locale,
+        status: "MISSING_OR_INVALID",
+      });
+      return;
+    }
+
+    analytics.track("booking_access_viewed", {
+      amount_minor: Math.round(content.payment.totalAmount * 100),
+      deposit_amount_minor: Math.round(content.payment.depositAmount * 100),
+      extras_count: content.extras.length,
+      guest_count: content.guestCount,
+      locale,
+      remaining_amount_minor: Math.round(content.payment.remainingAmount * 100),
+      status: content.status,
+    });
+  }, [analytics, content, locale]);
+
   if (!content) {
-    return <InvalidBookingAccessState dictionary={dictionary} locale={locale} />;
+    return (
+      <InvalidBookingAccessState dictionary={dictionary} locale={locale} />
+    );
   }
 
   const cancellationSummary =
@@ -91,6 +129,7 @@ export function PublicBookingAccessSection({
       <Container className="max-w-5xl">
         <div className="mb-6">
           <Button
+            data-analytics-event="booking_access_home_clicked"
             href={createLocalizedPath(locale)}
             shape="pill"
             size="md"
@@ -179,7 +218,10 @@ export function PublicBookingAccessSection({
             </div>
 
             <div className="space-y-5">
-              <InfoBlock icon={ShieldCheck} title={copy.cancellationPolicyTitle}>
+              <InfoBlock
+                icon={ShieldCheck}
+                title={copy.cancellationPolicyTitle}
+              >
                 {content.cancellationPolicy ? (
                   <>
                     <p className="text-sm font-semibold text-text">
@@ -220,6 +262,8 @@ export function PublicBookingAccessSection({
                 </p>
                 <div className="mt-4">
                   <Button
+                    data-analytics-contact-method="email"
+                    data-analytics-event="booking_access_support_clicked"
                     href="mailto:info@jimboatscharter.com"
                     shape="pill"
                     size="md"
@@ -257,6 +301,7 @@ function InvalidBookingAccessState({
           </p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <Button
+              data-analytics-event="booking_access_home_clicked"
               href={createLocalizedPath(locale)}
               shape="pill"
               size="lg"
@@ -265,6 +310,8 @@ function InvalidBookingAccessState({
               {dictionary.common.backToJimBoats}
             </Button>
             <Button
+              data-analytics-contact-method="email"
+              data-analytics-event="booking_access_support_clicked"
               href="mailto:info@jimboatscharter.com"
               shape="pill"
               size="lg"
@@ -313,7 +360,9 @@ function InfoBlock({
   return (
     <section className="rounded-3xl border border-sand/35 bg-white p-5">
       <div className="flex items-center gap-3">
-        {Icon ? <Icon aria-hidden="true" className="size-5 text-primary" /> : null}
+        {Icon ? (
+          <Icon aria-hidden="true" className="size-5 text-primary" />
+        ) : null}
         <h2 className="font-display text-2xl leading-tight">{title}</h2>
       </div>
       <div className="mt-4">{children}</div>

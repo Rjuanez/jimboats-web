@@ -18,3 +18,4 @@ Decision files use:
 
 - [ADR-0001: Booking Payment And Availability Rules](0001-booking-payment-and-availability-rules.md)
 - [ADR-0002: Backpanel Configurable Product](0002-backpanel-configurable-product.md)
+- [ADR-0003: Client Analytics With Statsig](0003-client-analytics-with-statsig.md)

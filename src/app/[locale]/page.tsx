@@ -9,6 +9,8 @@ import {
   type PublicLocale,
 } from "@/i18n/locales";
 import { getPublicDictionary } from "@/i18n/public";
+import { PublicClientAnalyticsBoundary } from "@/interface/next/analytics/PublicClientAnalyticsBoundary";
+import { getPublicStatsigConfig } from "@/interface/next/config/publicStatsigConfig";
 import {
   createHomeLandingStructuredData,
   getHomeLandingPage,
@@ -56,13 +58,25 @@ export async function generateMetadata({
   };
 }
 
-export default async function LocalizedHomePage({ params }: LocalizedPageProps) {
+export default async function LocalizedHomePage({
+  params,
+}: LocalizedPageProps) {
   const locale = await resolveLocale(params);
   const content = await getHomeLandingPage(locale);
+  const statsigConfig = getPublicStatsigConfig();
 
   return (
     <>
-      <HomeLandingPage content={content} />
+      <PublicClientAnalyticsBoundary
+        config={statsigConfig}
+        metadata={{
+          locale,
+          path: `/${locale}`,
+        }}
+        viewEventName="landing_viewed"
+      >
+        <HomeLandingPage content={content} />
+      </PublicClientAnalyticsBoundary>
       <script
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(createHomeLandingStructuredData(content)),

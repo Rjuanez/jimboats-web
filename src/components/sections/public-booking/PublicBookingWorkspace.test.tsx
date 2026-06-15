@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import { ClientAnalyticsProvider } from "@/components/analytics/ClientAnalytics";
 import { getPublicBookingMockPage } from "@/interface/next/presenters/publicBookingMockPresenter";
 
 import { PublicBookingWorkspace } from "./PublicBookingWorkspace";
@@ -197,10 +198,79 @@ describe("PublicBookingWorkspace", () => {
     );
   });
 
+  it("tracks booking funnel events without private customer or payment data", async () => {
+    const user = userEvent.setup();
+    const actions = createActions();
+    const track = vi.fn();
+
+    render(
+      <ClientAnalyticsProvider analytics={{ track }}>
+        <PublicBookingWorkspace
+          actions={actions}
+          content={getPublicBookingMockPage()}
+          stripePublishableKey="pk_test_component"
+        />
+      </ClientAnalyticsProvider>,
+    );
+
+    await user.click(screen.getByRole("button", { name: /sunset cruise/i }));
+    await user.click(
+      screen.getByRole("button", { name: /select monday june 15, 2026/i }),
+    );
+    await user.click(screen.getByRole("button", { name: "18:30" }));
+    await user.click(
+      screen.getByRole("button", { name: /continue to extras/i }),
+    );
+    await user.click(
+      screen.getByRole("button", { name: /mediterranean drinks/i }),
+    );
+    await user.click(
+      screen.getByRole("button", { name: /continue to payment/i }),
+    );
+    await user.type(screen.getByLabelText("Full name"), "Sailor Guest");
+    await user.type(screen.getByLabelText("Email address"), "sailor@test.com");
+    await user.type(
+      screen.getByRole("textbox", { name: /^phone/i }),
+      "+34 600 000 000",
+    );
+    await user.click(
+      screen.getByRole("button", { name: /secure payment €100/i }),
+    );
+
+    expect(track).toHaveBeenCalledWith(
+      "booking_experience_selected",
+      expect.objectContaining({
+        experience_id: "sunset-cruise",
+      }),
+    );
+    expect(track).toHaveBeenCalledWith(
+      "booking_checkout_started",
+      expect.objectContaining({
+        delivery_email_enabled: true,
+        experience_id: "sunset-cruise",
+        extras_count: 1,
+      }),
+    );
+    expect(track).toHaveBeenCalledWith(
+      "booking_checkout_ready",
+      expect.objectContaining({
+        experience_id: "sunset-cruise",
+      }),
+    );
+
+    const analyticsPayload = JSON.stringify(track.mock.calls);
+
+    expect(analyticsPayload).not.toContain("Sailor Guest");
+    expect(analyticsPayload).not.toContain("sailor@test.com");
+    expect(analyticsPayload).not.toContain("+34 600 000 000");
+    expect(analyticsPayload).not.toContain("cs_test_123");
+  });
+
   it("continues after selecting a date in a later calendar month", async () => {
     const user = userEvent.setup();
     const content = getPublicBookingMockPage();
-    const sunsetAvailability = content.availabilityByExperienceId["sunset-cruise"];
+    const sunsetAvailability =
+      content.availabilityByExperienceId["sunset-cruise"];
     const julyDate = {
       ariaLabel: "Wednesday July 1, 2026",
       dateLabel: "Jul 1",

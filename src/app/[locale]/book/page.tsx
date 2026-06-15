@@ -12,7 +12,9 @@ import {
   previewPublicBookingCouponAction,
   startPublicBookingCheckoutAction,
 } from "@/interface/next/actions/publicBookingActions";
+import { PublicClientAnalyticsBoundary } from "@/interface/next/analytics/PublicClientAnalyticsBoundary";
 import { getPublicStripePublishableKey } from "@/interface/next/config/publicStripeConfig";
+import { getPublicStatsigConfig } from "@/interface/next/config/publicStatsigConfig";
 import { getPublicBookingPage } from "@/interface/next/presenters/publicBookingPresenter";
 
 export const dynamic = "force-dynamic";
@@ -60,17 +62,30 @@ export default async function PublicBookingPage({
   const initialExperienceId = Array.isArray(experienceParam)
     ? experienceParam[0]
     : experienceParam;
+  const statsigConfig = getPublicStatsigConfig();
 
   return (
-    <PublicBookingWorkspace
-      actions={{
-        previewCoupon: previewPublicBookingCouponAction,
-        startCheckout: startPublicBookingCheckoutAction,
+    <PublicClientAnalyticsBoundary
+      config={statsigConfig}
+      metadata={{
+        ...(initialExperienceId
+          ? { initial_experience_id: initialExperienceId }
+          : {}),
+        locale,
+        path: `/${locale}/book`,
       }}
-      content={content}
-      initialExperienceId={initialExperienceId}
-      stripePublishableKey={stripePublishableKey}
-    />
+      viewEventName="booking_page_viewed"
+    >
+      <PublicBookingWorkspace
+        actions={{
+          previewCoupon: previewPublicBookingCouponAction,
+          startCheckout: startPublicBookingCheckoutAction,
+        }}
+        content={content}
+        initialExperienceId={initialExperienceId}
+        stripePublishableKey={stripePublishableKey}
+      />
+    </PublicClientAnalyticsBoundary>
   );
 }
 

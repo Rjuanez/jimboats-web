@@ -245,6 +245,8 @@ function HeroSection({ content }: { content: HomeLandingContent["hero"] }) {
         </p>
         <Button
           className="mt-10 shadow-[0_20px_40px_-10px_rgb(0_0_0_/_0.4)] lg:mt-14"
+          data-analytics-cta-location="hero"
+          data-analytics-event="booking_cta_clicked"
           href={content.cta.href}
           shape="pill"
           size="xl"
@@ -431,6 +433,8 @@ function FinalCtaSection({
         </h2>
         <Button
           className="mt-9 shadow-[0_20px_40px_-10px_rgb(0_0_0_/_0.3)] lg:mt-12"
+          data-analytics-cta-location="final_cta"
+          data-analytics-event="booking_cta_clicked"
           href={finalCta.cta.href}
           shape="pill"
           size="xl"

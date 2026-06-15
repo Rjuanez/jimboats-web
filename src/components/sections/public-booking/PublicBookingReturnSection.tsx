@@ -1,8 +1,9 @@
 "use client";
 
 import { CheckCircle2, Clock3, Mail, Sailboat, XCircle } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
+import { useClientAnalytics } from "@/components/analytics/ClientAnalytics";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/design/variants";
@@ -43,6 +44,8 @@ export function PublicBookingReturnSection({
 }: PublicBookingReturnSectionProps) {
   const [currentContent, setCurrentContent] = useState(content);
   const [timedOut, setTimedOut] = useState(false);
+  const analytics = useClientAnalytics();
+  const trackedStatusRef = useRef<string | null>(null);
   const waitingForFinalStatus =
     currentContent?.status === "PENDING_PAYMENT" && !timedOut;
   const state = currentContent
@@ -52,7 +55,41 @@ export function PublicBookingReturnSection({
     currentContent !== null && currentContent.status !== "PENDING_PAYMENT";
 
   useEffect(() => {
-    if (currentContent?.status === "CONFIRMED" && currentContent.bookingAccessUrl) {
+    const statusKey = currentContent
+      ? `${currentContent.status}:${timedOut ? "timed_out" : "active"}`
+      : "missing";
+
+    if (trackedStatusRef.current === statusKey) {
+      return;
+    }
+
+    trackedStatusRef.current = statusKey;
+
+    analytics.track("booking_success_viewed", {
+      amount_minor: currentContent
+        ? currentContent.paidDepositAmount + currentContent.remainingAmount
+        : 0,
+      deposit_amount_minor: currentContent?.paidDepositAmount ?? 0,
+      locale,
+      status: currentContent?.status ?? "MISSING",
+      timed_out: timedOut,
+    });
+
+    if (currentContent?.status === "CONFIRMED") {
+      analytics.track("booking_confirmed", {
+        amount_minor:
+          currentContent.paidDepositAmount + currentContent.remainingAmount,
+        deposit_amount_minor: currentContent.paidDepositAmount,
+        locale,
+      });
+    }
+  }, [analytics, currentContent, locale, timedOut]);
+
+  useEffect(() => {
+    if (
+      currentContent?.status === "CONFIRMED" &&
+      currentContent.bookingAccessUrl
+    ) {
       window.location.assign(currentContent.bookingAccessUrl);
     }
   }, [currentContent?.bookingAccessUrl, currentContent?.status]);
@@ -178,7 +215,10 @@ export function PublicBookingReturnSection({
           <div className="space-y-4 px-6 py-6 lg:px-10 lg:py-8">
             {showBookingDetails ? (
               <div className="flex items-start gap-3 rounded-2xl bg-sky-light/45 p-4">
-                <Mail aria-hidden="true" className="mt-0.5 size-5 text-primary" />
+                <Mail
+                  aria-hidden="true"
+                  className="mt-0.5 size-5 text-primary"
+                />
                 <p className="text-sm leading-6 text-text-muted">
                   {formatWillSendPass(
                     dictionary.willSendPass,
@@ -195,6 +235,8 @@ export function PublicBookingReturnSection({
               )}
             >
               <Button
+                data-analytics-cta-location="booking_return"
+                data-analytics-event="booking_cta_clicked"
                 href={createLocalizedPath(locale, "/book")}
                 shape="pill"
                 size="lg"
@@ -203,6 +245,8 @@ export function PublicBookingReturnSection({
                 {dictionary.bookAnother}
               </Button>
               <Button
+                data-analytics-contact-method="email"
+                data-analytics-event="contact_link_clicked"
                 href="mailto:info@jimboatscharter.com"
                 shape="pill"
                 size="lg"

@@ -3,11 +3,10 @@ import { notFound } from "next/navigation";
 
 import { PublicBookingAccessSection } from "@/components/sections/public-booking/PublicBookingAccessSection";
 import { getContainer } from "@/container";
-import {
-  parsePublicLocale,
-  type PublicLocale,
-} from "@/i18n/locales";
+import { parsePublicLocale, type PublicLocale } from "@/i18n/locales";
 import { getPublicDictionary } from "@/i18n/public";
+import { PublicClientAnalyticsBoundary } from "@/interface/next/analytics/PublicClientAnalyticsBoundary";
+import { getPublicStatsigConfig } from "@/interface/next/config/publicStatsigConfig";
 import { parsePublicBookingAccess } from "@/interface/next/validators/publicBookingValidators";
 
 export const dynamic = "force-dynamic";
@@ -50,13 +49,22 @@ export default async function PublicBookingAccessPage({
     reference,
     token,
   });
+  const statsigConfig = getPublicStatsigConfig();
 
   return (
-    <PublicBookingAccessSection
-      content={content}
-      dictionary={dictionary}
-      locale={locale}
-    />
+    <PublicClientAnalyticsBoundary
+      config={statsigConfig}
+      metadata={{
+        locale,
+        path: `/${locale}/bookings/[reference]`,
+      }}
+    >
+      <PublicBookingAccessSection
+        content={content}
+        dictionary={dictionary}
+        locale={locale}
+      />
+    </PublicClientAnalyticsBoundary>
   );
 }
 

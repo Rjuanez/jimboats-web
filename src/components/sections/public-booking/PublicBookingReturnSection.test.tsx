@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import { ClientAnalyticsProvider } from "@/components/analytics/ClientAnalytics";
 import { getPublicDictionary } from "@/i18n/public";
 
 import {
@@ -60,6 +61,48 @@ describe("PublicBookingReturnSection", () => {
     );
     expect(screen.getByText("Reference")).toBeVisible();
     expect(screen.getByText("JB-2026-0001")).toBeVisible();
+  });
+
+  it("tracks payment return status without private booking data", async () => {
+    const track = vi.fn();
+    const dictionary = getPublicDictionary("en");
+
+    render(
+      <ClientAnalyticsProvider analytics={{ track }}>
+        <PublicBookingReturnSection
+          content={confirmedContent}
+          dictionary={{
+            ...dictionary.returnPage,
+            backToJimBoats: dictionary.common.backToJimBoats,
+          }}
+          locale="en"
+          sessionId="cs_test_123"
+        />
+      </ClientAnalyticsProvider>,
+    );
+
+    await waitFor(() => {
+      expect(track).toHaveBeenCalledWith(
+        "booking_success_viewed",
+        expect.objectContaining({
+          locale: "en",
+          status: "CONFIRMED",
+        }),
+      );
+    });
+    expect(track).toHaveBeenCalledWith(
+      "booking_confirmed",
+      expect.objectContaining({
+        deposit_amount_minor: 10000,
+        locale: "en",
+      }),
+    );
+
+    const analyticsPayload = JSON.stringify(track.mock.calls);
+
+    expect(analyticsPayload).not.toContain("sailor@example.com");
+    expect(analyticsPayload).not.toContain("JB-2026-0001");
+    expect(analyticsPayload).not.toContain("cs_test_123");
   });
 });
 
