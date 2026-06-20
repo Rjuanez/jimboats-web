@@ -4,6 +4,7 @@ import {
   ExternalLink,
   Link2,
   Mail,
+  MessageCircle,
   Phone,
   ReceiptText,
   UserRound,
@@ -100,6 +101,17 @@ export function AdminBookingDetailSection({
             <Link2 className="size-4" aria-hidden="true" />
             Generate access link
           </Button>
+          {booking.whatsappEnabled ? (
+            <Button
+              href={buildWhatsAppUrl(booking)}
+              rel="noreferrer"
+              target="_blank"
+              variant="secondary"
+            >
+              <MessageCircle className="size-4" aria-hidden="true" />
+              Open WhatsApp
+            </Button>
+          ) : null}
           <Button
             className="border-rose-200 text-rose-700 hover:bg-rose-50"
             disabled={booking.status !== "confirmed" || isSaving}
@@ -163,6 +175,15 @@ export function AdminBookingDetailSection({
                 label="Phone"
                 value={booking.customerPhone || "Not provided"}
               />
+              <Fact
+                icon={<MessageCircle className="size-4" aria-hidden="true" />}
+                label="WhatsApp pass"
+                value={
+                  booking.whatsappEnabled
+                    ? booking.whatsappPhone
+                    : "Not requested"
+                }
+              />
             </div>
           </Surface>
 
@@ -223,6 +244,17 @@ export function AdminBookingDetailSection({
             </p>
           </Surface>
 
+          <Surface title="Operational acknowledgement">
+            <Fact
+              label="Seen status"
+              value={
+                booking.needsAcknowledgement
+                  ? "Not seen yet"
+                  : booking.operationsSeenLabel
+              }
+            />
+          </Surface>
+
           <AdminBookingAuditTimeline entries={booking.auditEntries} />
         </div>
       </div>
@@ -280,4 +312,18 @@ function formatDateTime(value: string) {
     month: "short",
     year: "numeric",
   }).format(new Date(value));
+}
+
+function buildWhatsAppUrl(booking: AdminBooking) {
+  const phone = booking.whatsappPhone.replace(/\D/g, "");
+  const text = [
+    `Hola ${booking.customerName},`,
+    `tenemos confirmada tu reserva ${booking.reference}`,
+    `para ${booking.experienceName}`,
+    `el ${formatDate(booking.localDate)} de ${booking.startTime} a ${booking.endTime}`,
+    `para ${booking.guestCount} personas.`,
+    "Gracias, JimBoats.",
+  ].join(" ");
+
+  return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
 }

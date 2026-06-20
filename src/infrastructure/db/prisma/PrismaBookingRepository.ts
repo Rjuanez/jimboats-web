@@ -4,6 +4,7 @@ import type {
   AdminCreatedBookingPersistence,
   BookingAuditAction,
   BookingAuditEntryReadModel,
+  BookingNotificationPreferenceReadModel,
   AdminUpdatedBookingPersistence,
   BookingAuditEntryWriteModel,
   BookingCalendarBlockUpdateModel,
@@ -62,6 +63,7 @@ type BookingUpdateManyArgs = {
   data: BookingUpdateArgs["data"];
   where: {
     id: string;
+    operationsSeenAt?: null;
     status?: string;
   };
 };
@@ -97,6 +99,10 @@ type PaymentRecordUpdateArgs = {
 
 type BookingNotificationPreferenceCreateArgs = {
   data: BookingNotificationPreferenceCreateModel;
+};
+
+type BookingNotificationPreferenceFindManyArgs = {
+  where?: unknown;
 };
 
 type PaymentProviderEventCreateArgs = {
@@ -178,6 +184,9 @@ type PaymentRecordDelegate = {
 
 type BookingNotificationPreferenceDelegate = {
   create(args: BookingNotificationPreferenceCreateArgs): Promise<unknown>;
+  findMany(
+    args: BookingNotificationPreferenceFindManyArgs,
+  ): Promise<BookingNotificationPreferenceRecord[]>;
 };
 
 type PaymentProviderEventDelegate = {
@@ -461,6 +470,26 @@ export class PrismaBookingRepository implements BookingRepository {
     });
 
     return records.map(auditEntryFromPrismaRecord);
+  }
+
+  async listNotificationPreferencesForBookings(
+    bookingIds: string[],
+  ): Promise<BookingNotificationPreferenceReadModel[]> {
+    const uniqueBookingIds = [...new Set(bookingIds)];
+
+    if (uniqueBookingIds.length === 0) {
+      return [];
+    }
+
+    const records = await this.prisma.bookingNotificationPreference.findMany({
+      where: {
+        bookingId: {
+          in: uniqueBookingIds,
+        },
+      },
+    });
+
+    return records.map(notificationPreferenceFromPrismaRecord);
   }
 
   async listExperienceOptions() {
@@ -913,6 +942,41 @@ export class PrismaBookingRepository implements BookingRepository {
     });
   }
 
+  async markOperationsSeen(input: { bookingId: string; seenAt: Date }) {
+    const current = await this.prisma.booking.findUnique({
+      include: bookingInclude,
+      where: {
+        id: input.bookingId,
+      },
+    });
+
+    if (!current) {
+      return "NOT_FOUND" as const;
+    }
+
+    if (current.status !== "CONFIRMED") {
+      return "NOT_CONFIRMED" as const;
+    }
+
+    if (current.operationsSeenAt) {
+      return "ALREADY_SEEN" as const;
+    }
+
+    const updated = await this.prisma.booking.updateMany({
+      data: {
+        operationsSeenAt: input.seenAt,
+        updatedAt: input.seenAt,
+      },
+      where: {
+        id: input.bookingId,
+        operationsSeenAt: null,
+        status: "CONFIRMED",
+      },
+    });
+
+    return updated.count > 0 ? ("MARKED" as const) : ("ALREADY_SEEN" as const);
+  }
+
   async saveAdminCancelledBooking(input: AdminCancelledBookingPersistence) {
     const snapshot = input.booking.toSnapshot();
 
@@ -1048,6 +1112,8 @@ type BookingNotificationPreferenceCreateModel = {
   whatsappPhone: string | null;
 };
 
+type BookingNotificationPreferenceRecord = BookingNotificationPreferenceCreateModel;
+
 type PaymentProviderEventCreateModel = {
   eventType: string;
   failureReason: string | null;
@@ -1135,6 +1201,19 @@ function notificationPreferencesToPrismaCreateModel(input: {
     whatsappConsentStatus: snapshot.whatsapp.consentStatus,
     whatsappEnabled: snapshot.whatsapp.enabled,
     whatsappPhone: snapshot.whatsapp.destination,
+  };
+}
+
+function notificationPreferenceFromPrismaRecord(
+  record: BookingNotificationPreferenceRecord,
+): BookingNotificationPreferenceReadModel {
+  return {
+    bookingId: record.bookingId,
+    whatsapp: {
+      consentStatus: record.whatsappConsentStatus,
+      destination: record.whatsappPhone,
+      enabled: record.whatsappEnabled,
+    },
   };
 }
 

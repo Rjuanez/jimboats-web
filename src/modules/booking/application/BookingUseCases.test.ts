@@ -4,6 +4,7 @@ import { ApplicationError } from "@/shared/application/ApplicationError";
 
 import { BackpanelCancelBookingUseCase } from "./BackpanelCancelBookingUseCase";
 import { BackpanelCreateBookingUseCase } from "./BackpanelCreateBookingUseCase";
+import { BackpanelMarkBookingSeenUseCase } from "./BackpanelMarkBookingSeenUseCase";
 import { BackpanelUpdateBookingUseCase } from "./BackpanelUpdateBookingUseCase";
 import type { BookingCalendarSynchronizer } from "./BookingCalendarSyncService";
 import { CreatePublicBookingCheckoutUseCase } from "./CreatePublicBookingCheckoutUseCase";
@@ -97,6 +98,7 @@ describe("Booking use cases", () => {
     ).execute();
 
     expect(workspace.summary.confirmedBookings).toBe(1);
+    expect(workspace.summary.unacknowledgedBookings).toBe(0);
     expect(workspace.bookings[0]).toMatchObject({
       auditEntries: [
         {
@@ -108,6 +110,63 @@ describe("Booking use cases", () => {
       status: "CONFIRMED",
     });
     expect(workspace.experienceOptions).toHaveLength(1);
+  });
+
+  it("marks a confirmed booking as seen for operations", async () => {
+    const dependencies = createDependencies();
+    await new CreatePublicBookingCheckoutUseCase(
+      dependencies.bookings,
+      dependencies.ids,
+      dependencies.clock,
+      dependencies.paymentProvider,
+    ).execute(createPublicCheckoutCommand());
+    await new HandleDepositPaymentWebhookUseCase(
+      dependencies.bookings,
+      dependencies.clock,
+      dependencies.paymentProvider,
+    ).execute({
+      rawBody: "paid",
+      signature: "stripe-signature",
+    });
+
+    const pendingWorkspace = await new GetAdminBookingsWorkspaceUseCase(
+      dependencies.bookings,
+    ).execute();
+
+    expect(pendingWorkspace.summary.unacknowledgedBookings).toBe(1);
+    expect(pendingWorkspace.bookings[0]).toMatchObject({
+      notificationPreference: {
+        whatsapp: {
+          destination: "+34 600 000 000",
+          enabled: true,
+        },
+      },
+      operationsSeenAt: null,
+    });
+
+    dependencies.bookings.advanceClock(new Date("2026-06-01T10:03:00.000Z"));
+
+    const result = await new BackpanelMarkBookingSeenUseCase(
+      dependencies.bookings,
+      dependencies.clock,
+    ).execute({
+      bookingId: "booking-1",
+    });
+
+    expect(result).toEqual({
+      bookingId: "booking-1",
+      seenAt: "2026-06-01T10:03:00.000Z",
+      status: "MARKED",
+    });
+
+    const workspace = await new GetAdminBookingsWorkspaceUseCase(
+      dependencies.bookings,
+    ).execute();
+
+    expect(workspace.summary.unacknowledgedBookings).toBe(0);
+    expect(workspace.bookings[0]?.operationsSeenAt).toBe(
+      "2026-06-01T10:03:00.000Z",
+    );
   });
 
   it("updates a confirmed booking and its calendar block", async () => {
@@ -876,6 +935,21 @@ class InMemoryBookingRepository implements BookingRepository {
     return this.auditEntries.filter((entry) => requestedIds.has(entry.resourceId));
   }
 
+  async listNotificationPreferencesForBookings(bookingIds: string[]) {
+    const requestedIds = new Set(bookingIds);
+
+    return this.publicPending &&
+      requestedIds.has(this.publicPending.booking.id)
+      ? [
+          {
+            bookingId: this.publicPending.booking.id,
+            whatsapp: this.publicPending.notificationPreferences.toSnapshot()
+              .whatsapp,
+          },
+        ]
+      : [];
+  }
+
   async listExperienceOptions() {
     return this.experiences();
   }
@@ -970,6 +1044,29 @@ class InMemoryBookingRepository implements BookingRepository {
     this.bookings.set(input.booking.id, input.booking);
 
     return "RECORDED" as const;
+  }
+
+  async markOperationsSeen(input: { bookingId: string; seenAt: Date }) {
+    const current = this.bookings.get(input.bookingId);
+
+    if (!current) {
+      return "NOT_FOUND" as const;
+    }
+
+    if (current.status !== "CONFIRMED") {
+      return "NOT_CONFIRMED" as const;
+    }
+
+    if (current.toSnapshot().operationsSeenAt) {
+      return "ALREADY_SEEN" as const;
+    }
+
+    this.bookings.set(
+      input.bookingId,
+      current.markOperationsSeen({ seenAt: input.seenAt }),
+    );
+
+    return "MARKED" as const;
   }
 
   async markCalendarSyncFailed(input: {

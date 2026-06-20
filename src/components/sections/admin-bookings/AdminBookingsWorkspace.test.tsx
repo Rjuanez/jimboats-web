@@ -23,8 +23,32 @@ describe("AdminBookingsWorkspace", () => {
     expect(
       screen.getByRole("heading", { level: 1, name: "Bookings" }),
     ).toBeVisible();
-    expect(screen.getByText("JB-2026-0001")).toBeVisible();
-    expect(screen.getByText("Sailor Guest")).toBeVisible();
+    expect(screen.getAllByText("JB-2026-0001")[0]).toBeVisible();
+    expect(screen.getAllByText("Sailor Guest")[0]).toBeVisible();
+    expect(
+      screen.getByRole("heading", { name: "Bookings to acknowledge" }),
+    ).toBeVisible();
+  });
+
+  it("marks a booking as seen from the list", async () => {
+    const pageData = getAdminBookingsPreviewPage();
+    const user = userEvent.setup();
+    const actions = createActions(pageData.state);
+
+    render(
+      <AdminBookingsWorkspace
+        actions={actions}
+        initialState={pageData.state}
+        navItems={pageData.navItems}
+        view="list"
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: /mark as seen/i }));
+
+    expect(actions.markSeen).toHaveBeenCalledWith({
+      bookingId: "booking-preview-1",
+    });
   });
 
   it("renders the booking create form and submits controlled input", async () => {
@@ -72,6 +96,10 @@ describe("AdminBookingsWorkspace", () => {
     expect(screen.getByText("Payment snapshot")).toBeVisible();
     expect(screen.getByText("Activity")).toBeVisible();
     expect(screen.getByText("Booking was created.")).toBeVisible();
+    expect(screen.getByRole("link", { name: /open whatsapp/i })).toHaveAttribute(
+      "href",
+      expect.stringContaining("https://wa.me/34600000000"),
+    );
   });
 
   it("submits booking detail edits", async () => {
@@ -175,6 +203,13 @@ function createActions(
       data: {
         expiresAt: "2027-06-05T12:00:00.000Z",
         url: "https://jimboats.test/access",
+      },
+      ok: true as const,
+    })),
+    markSeen: vi.fn(async () => ({
+      data: {
+        bookingId: "booking-preview-1",
+        state,
       },
       ok: true as const,
     })),

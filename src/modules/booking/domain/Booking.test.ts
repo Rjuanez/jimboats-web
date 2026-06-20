@@ -131,6 +131,7 @@ describe("Booking domain", () => {
         holdExpiresAt: null,
         id: "booking-1",
         internalNotes: "",
+        operationsSeenAt: null,
         paymentRecordId: paymentRecord.id,
         priceSnapshot: PriceSnapshot.create({
           basePrice: money(1_200_00),
@@ -349,6 +350,7 @@ function createBooking(patch: Partial<Parameters<typeof Booking.create>[0]> = {}
     holdExpiresAt: null,
     id: "booking-1",
     internalNotes: "",
+    operationsSeenAt: now,
     paymentRecordId: paymentRecord.id,
     priceSnapshot: PriceSnapshot.create({
       basePrice: money(1_200_00),

@@ -11,13 +11,21 @@ export class GetAdminBookingsWorkspaceUseCase {
       this.bookings.listExperienceOptions(),
       this.bookings.listExtraOptions(),
     ]);
-    const auditEntries = await this.bookings.listAuditEntriesForBookings(
-      bookings.map((booking) => booking.toSnapshot().id),
-    );
+    const bookingIds = bookings.map((booking) => booking.toSnapshot().id);
+    const [auditEntries, notificationPreferences] = await Promise.all([
+      this.bookings.listAuditEntriesForBookings(bookingIds),
+      this.bookings.listNotificationPreferencesForBookings(bookingIds),
+    ]);
     const auditEntriesByBookingId = new Map<
       string,
       typeof auditEntries
     >();
+    const notificationPreferencesByBookingId = new Map(
+      notificationPreferences.map((preference) => [
+        preference.bookingId,
+        preference,
+      ]),
+    );
 
     for (const entry of auditEntries) {
       const currentEntries = auditEntriesByBookingId.get(entry.resourceId) ?? [];
@@ -32,6 +40,8 @@ export class GetAdminBookingsWorkspaceUseCase {
         return {
           ...dto,
           auditEntries: auditEntriesByBookingId.get(dto.id) ?? [],
+          notificationPreference:
+            notificationPreferencesByBookingId.get(dto.id) ?? null,
         };
       })
       .sort((left, right) => right.createdAt.localeCompare(left.createdAt));
@@ -53,6 +63,10 @@ export class GetAdminBookingsWorkspaceUseCase {
           (booking) => booking.status === "PENDING_PAYMENT",
         ).length,
         totalBookings: bookingDtos.length,
+        unacknowledgedBookings: bookingDtos.filter(
+          (booking) =>
+            booking.status === "CONFIRMED" && booking.operationsSeenAt === null,
+        ).length,
       },
     };
   }

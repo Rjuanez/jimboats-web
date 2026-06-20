@@ -4,6 +4,7 @@ import {
   cancelAdminBookingAction,
   createAdminBookingAction,
   issueAdminBookingAccessLinkAction,
+  markAdminBookingSeenAction,
   updateAdminBookingAction,
 } from "@/interface/next/actions/adminBookingActions";
 import { getAdminBookingsPage } from "@/interface/next/presenters/adminBookingsPresenter";
@@ -14,6 +15,7 @@ const actions = {
   cancelBooking: cancelAdminBookingAction,
   createBooking: createAdminBookingAction,
   issueAccessLink: issueAdminBookingAccessLinkAction,
+  markSeen: markAdminBookingSeenAction,
   updateBooking: updateAdminBookingAction,
 } satisfies AdminBookingActions;
 

@@ -4,6 +4,7 @@ import type {
   AdminBookingCancelInput,
   AdminBookingCreateInput,
   AdminBookingIssueAccessLinkInput,
+  AdminBookingMarkSeenInput,
   AdminBookingUpdateInput,
 } from "@/components/sections/admin-bookings/AdminBookingTypes";
 
@@ -50,6 +51,10 @@ export const adminBookingIssueAccessLinkSchema = z.object({
   bookingId: z.string().trim().min(1, "Booking is required."),
 });
 
+export const adminBookingMarkSeenSchema = z.object({
+  bookingId: z.string().trim().min(1, "Booking is required."),
+});
+
 export function parseAdminBookingCreate(input: AdminBookingCreateInput) {
   return adminBookingCreateSchema.parse(input);
 }
@@ -66,4 +71,8 @@ export function parseAdminBookingIssueAccessLink(
   input: AdminBookingIssueAccessLinkInput,
 ) {
   return adminBookingIssueAccessLinkSchema.parse(input);
+}
+
+export function parseAdminBookingMarkSeen(input: AdminBookingMarkSeenInput) {
+  return adminBookingMarkSeenSchema.parse(input);
 }

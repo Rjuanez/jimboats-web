@@ -72,6 +72,7 @@ export type PrismaBookingRecord = {
   holdExpiresAt: Date | null;
   id: string;
   internalNotes: string;
+  operationsSeenAt: Date | null;
   paymentRecordId: string;
   priceCapturedAt: Date;
   selectedEndMinutes: number;
@@ -114,6 +115,7 @@ export type PrismaBookingWriteModel = {
     guestCount: number;
     holdExpiresAt: Date | null;
     internalNotes: string;
+    operationsSeenAt: Date | null;
     paymentRecordId: string;
     priceCapturedAt: Date;
     reference: string;
@@ -236,6 +238,7 @@ export function bookingFromPrismaRecord(record: PrismaBookingRecord) {
     holdExpiresAt: record.holdExpiresAt,
     id: record.id,
     internalNotes: record.internalNotes,
+    operationsSeenAt: record.operationsSeenAt,
     paymentRecordId: record.paymentRecordId,
     priceSnapshot: PriceSnapshot.create({
       basePrice: Money.create({
@@ -332,6 +335,9 @@ export function bookingToPrismaWriteModel(
         ? new Date(snapshot.holdExpiresAt)
         : null,
       internalNotes: snapshot.internalNotes,
+      operationsSeenAt: snapshot.operationsSeenAt
+        ? new Date(snapshot.operationsSeenAt)
+        : null,
       paymentRecordId: snapshot.paymentRecordId,
       priceCapturedAt: new Date(snapshot.priceSnapshot.capturedAt),
       reference: snapshot.reference,

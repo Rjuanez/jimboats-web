@@ -117,6 +117,7 @@ function createBooking(
     holdExpiresAt: null,
     id: "booking-1",
     internalNotes: "",
+    operationsSeenAt: createdAt,
     paymentRecordId: "payment-1",
     priceSnapshot: PriceSnapshot.create({
       basePrice: money(1_200_00),

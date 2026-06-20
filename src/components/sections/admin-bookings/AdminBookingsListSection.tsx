@@ -1,21 +1,57 @@
-import { CalendarDays, Plus, ReceiptText, UserRound } from "lucide-react";
+import {
+  CalendarDays,
+  CheckCircle2,
+  Plus,
+  ReceiptText,
+  UserRound,
+} from "lucide-react";
 
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Surface } from "@/components/ui/Surface";
 
-import type { AdminBooking, AdminBookingsState } from "./AdminBookingTypes";
+import type {
+  AdminBooking,
+  AdminBookingActions,
+  AdminBookingsState,
+} from "./AdminBookingTypes";
 
 type AdminBookingsListSectionProps = {
+  isSaving: boolean;
+  markSeen: AdminBookingActions["markSeen"];
   state: AdminBookingsState;
 };
 
 export function AdminBookingsListSection({
+  isSaving,
+  markSeen,
   state,
 }: AdminBookingsListSectionProps) {
+  const unacknowledgedBookings = state.bookings.filter(
+    (booking) => booking.needsAcknowledgement,
+  );
+
   return (
     <div className="space-y-5">
       <BookingsHeader state={state} />
+      {unacknowledgedBookings.length > 0 ? (
+        <Surface
+          description="Confirmed reservations that still need someone to acknowledge they have been seen."
+          title="Bookings to acknowledge"
+        >
+          <div className="grid gap-3">
+            {unacknowledgedBookings.map((booking) => (
+              <BookingRow
+                booking={booking}
+                isSaving={isSaving}
+                key={booking.id}
+                markSeen={markSeen}
+                showQuickAcknowledge
+              />
+            ))}
+          </div>
+        </Surface>
+      ) : null}
       <Surface
         action={
           <Button href="/admin/bookings/new">
@@ -54,8 +90,12 @@ function BookingsHeader({ state }: { state: AdminBookingsState }) {
           Create and inspect reservations before checkout is connected to the public site.
         </p>
       </div>
-      <div className="grid gap-3 sm:grid-cols-2 lg:min-w-[34rem] xl:grid-cols-4">
+      <div className="grid gap-3 sm:grid-cols-2 lg:min-w-[42rem] xl:grid-cols-5">
         <MetricTile label="Total" value={state.summary.totalBookings} />
+        <MetricTile
+          label="To accept"
+          value={state.summary.unacknowledgedBookings}
+        />
         <MetricTile label="Confirmed" value={state.summary.confirmedBookings} />
         <MetricTile
           label="Pending"
@@ -78,7 +118,21 @@ function MetricTile({ label, value }: { label: string; value: number }) {
   );
 }
 
-function BookingRow({ booking }: { booking: AdminBooking }) {
+function BookingRow({
+  booking,
+  isSaving = false,
+  markSeen,
+  showQuickAcknowledge = false,
+}: {
+  booking: AdminBooking;
+  isSaving?: boolean;
+  markSeen?: AdminBookingActions["markSeen"];
+  showQuickAcknowledge?: boolean;
+}) {
+  async function markCurrentBookingSeen() {
+    await markSeen?.({ bookingId: booking.id });
+  }
+
   return (
     <article className="grid gap-4 rounded-lg border border-slate-200 bg-white p-4 shadow-sm lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)_auto] lg:items-center">
       <div className="min-w-0">
@@ -87,6 +141,9 @@ function BookingRow({ booking }: { booking: AdminBooking }) {
             {booking.reference}
           </h2>
           <StatusBadge booking={booking} />
+          {booking.needsAcknowledgement ? (
+            <Badge tone="amber">Not seen</Badge>
+          ) : null}
         </div>
         <p className="mt-2 text-sm leading-6 text-slate-600">
           {booking.experienceName}
@@ -116,6 +173,16 @@ function BookingRow({ booking }: { booking: AdminBooking }) {
         </p>
       </div>
       <div className="flex flex-wrap gap-2 lg:justify-end">
+        {showQuickAcknowledge ? (
+          <Button
+            disabled={isSaving}
+            onClick={markCurrentBookingSeen}
+            variant="primary"
+          >
+            <CheckCircle2 className="size-4" aria-hidden="true" />
+            Mark as seen
+          </Button>
+        ) : null}
         <Button href={`/admin/bookings/${booking.id}`} variant="secondary">
           View detail
         </Button>

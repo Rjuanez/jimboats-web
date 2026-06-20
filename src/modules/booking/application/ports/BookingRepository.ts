@@ -137,6 +137,15 @@ export type BookingAuditEntryReadModel = {
   resourceType: "BOOKING";
 };
 
+export type BookingNotificationPreferenceReadModel = {
+  bookingId: string;
+  whatsapp: {
+    consentStatus: "GRANTED" | "NOT_ASKED" | "REVOKED";
+    destination: string | null;
+    enabled: boolean;
+  };
+};
+
 export type BookingOutboxEventWriteModel = {
   aggregateId: string;
   aggregateType: "BOOKING";
@@ -228,6 +237,12 @@ export type PaymentHoldHeartbeatPersistence = {
 
 export type PaymentHoldHeartbeatPersistenceResult = "RECORDED" | "SKIPPED";
 
+export type BookingOperationsSeenResult =
+  | "ALREADY_SEEN"
+  | "MARKED"
+  | "NOT_CONFIRMED"
+  | "NOT_FOUND";
+
 export type BookingCalendarOverlapReadModel = {
   id: string;
   protectedEndAt: Date;
@@ -267,6 +282,9 @@ export type BookingRepository = {
   listAuditEntriesForBookings(
     bookingIds: string[],
   ): Promise<BookingAuditEntryReadModel[]>;
+  listNotificationPreferencesForBookings(
+    bookingIds: string[],
+  ): Promise<BookingNotificationPreferenceReadModel[]>;
   listExperienceOptions(): Promise<BookingExperienceOptionReadModel[]>;
   listExtraOptions(): Promise<BookingExtraOptionReadModel[]>;
   saveAdminCancelledBooking(input: AdminCancelledBookingPersistence): Promise<void>;
@@ -294,4 +312,8 @@ export type BookingRepository = {
     externalEventId: string;
     syncedAt: Date;
   }): Promise<void>;
+  markOperationsSeen(input: {
+    bookingId: string;
+    seenAt: Date;
+  }): Promise<BookingOperationsSeenResult>;
 };

@@ -143,6 +143,7 @@ export function bookingRecord(
     holdExpiresAt: null,
     id: "booking-1",
     internalNotes: "",
+    operationsSeenAt: new Date("2026-06-01T10:00:00.000Z"),
     paymentRecordId: "payment-1",
     priceCapturedAt: new Date("2026-06-01T10:00:00.000Z"),
     reference: "JB-2026-0001",

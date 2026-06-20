@@ -10,16 +10,26 @@ import type {
 export type AdminBookingDto = BookingSnapshot & {
   auditEntries?: AdminBookingAuditEntryDto[];
   endTime: string;
+  notificationPreference?: AdminBookingNotificationPreferenceDto | null;
   startTime: string;
 };
 
 export type AdminBookingAuditEntryDto = BookingAuditEntryReadModel;
+
+export type AdminBookingNotificationPreferenceDto = {
+  whatsapp: {
+    consentStatus: "GRANTED" | "NOT_ASKED" | "REVOKED";
+    destination: string | null;
+    enabled: boolean;
+  };
+};
 
 export type AdminBookingSummaryDto = {
   cancelledBookings: number;
   confirmedBookings: number;
   pendingPaymentBookings: number;
   totalBookings: number;
+  unacknowledgedBookings: number;
 };
 
 export type AdminBookingsWorkspaceDto = {
@@ -79,6 +89,16 @@ export type BackpanelCancelBookingCommand = {
 
 export type BackpanelIssueBookingAccessLinkCommand = {
   bookingId: string;
+};
+
+export type BackpanelMarkBookingSeenCommand = {
+  bookingId: string;
+};
+
+export type BackpanelMarkBookingSeenDto = {
+  bookingId: string;
+  seenAt: string;
+  status: "ALREADY_SEEN" | "MARKED" | "NOT_CONFIRMED" | "NOT_FOUND";
 };
 
 export type BackpanelIssuedBookingAccessLinkDto = {

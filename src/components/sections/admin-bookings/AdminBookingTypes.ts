@@ -43,6 +43,9 @@ export type AdminBooking = {
   id: string;
   internalNotes: string;
   localDate: string;
+  needsAcknowledgement: boolean;
+  operationsSeenAt: string | null;
+  operationsSeenLabel: string;
   reference: string;
   remainingAmount: number;
   slotKey: string | null;
@@ -50,6 +53,8 @@ export type AdminBooking = {
   status: AdminBookingStatus;
   statusLabel: string;
   totalAmount: number;
+  whatsappEnabled: boolean;
+  whatsappPhone: string;
 };
 
 export type AdminBookingSlotOption = {
@@ -81,6 +86,7 @@ export type AdminBookingsSummary = {
   confirmedBookings: number;
   pendingPaymentBookings: number;
   totalBookings: number;
+  unacknowledgedBookings: number;
 };
 
 export type AdminBookingsState = {
@@ -127,6 +133,10 @@ export type AdminBookingIssueAccessLinkInput = {
   bookingId: string;
 };
 
+export type AdminBookingMarkSeenInput = {
+  bookingId: string;
+};
+
 export type AdminBookingIssuedAccessLink = {
   expiresAt: string;
   url: string;
@@ -156,6 +166,11 @@ export type AdminBookingActions = {
   issueAccessLink: (
     input: AdminBookingIssueAccessLinkInput,
   ) => Promise<AdminBookingActionResult<AdminBookingIssuedAccessLink>>;
+  markSeen: (
+    input: AdminBookingMarkSeenInput,
+  ) => Promise<
+    AdminBookingActionResult<{ bookingId: string; state: AdminBookingsState }>
+  >;
   updateBooking: (
     input: AdminBookingUpdateInput,
   ) => Promise<

@@ -31,6 +31,7 @@ export type BookingProps = {
   holdExpiresAt: Date | null;
   id: string;
   internalNotes: string;
+  operationsSeenAt: Date | null;
   paymentRecordId: string;
   priceSnapshot: PriceSnapshot;
   reference: string;
@@ -55,6 +56,7 @@ export type BookingSnapshot = {
   holdExpiresAt: string | null;
   id: string;
   internalNotes: string;
+  operationsSeenAt: string | null;
   paymentRecordId: string;
   priceSnapshot: PriceSnapshotSnapshot;
   reference: string;
@@ -163,6 +165,10 @@ export class Booking {
     assertDate(input.updatedAt, "Booking update date is invalid.");
     assertNullableDate(input.cancelledAt, "Booking cancellation date is invalid.");
     assertNullableDate(
+      input.operationsSeenAt,
+      "Booking operations seen date is invalid.",
+    );
+    assertNullableDate(
       input.checkoutLastSeenAt,
       "Booking checkout heartbeat date is invalid.",
     );
@@ -213,6 +219,7 @@ export class Booking {
       holdExpiresAt: null,
       id: input.id,
       internalNotes: input.internalNotes,
+      operationsSeenAt: input.createdAt,
       paymentRecordId: input.paymentRecord.id,
       priceSnapshot: input.priceSnapshot,
       reference: input.reference,
@@ -253,6 +260,7 @@ export class Booking {
       holdExpiresAt: input.holdExpiresAt,
       id: input.id,
       internalNotes: "",
+      operationsSeenAt: null,
       paymentRecordId: input.paymentRecord.id,
       priceSnapshot: input.priceSnapshot,
       reference: input.reference,
@@ -319,6 +327,7 @@ export class Booking {
       confirmedAt: input.confirmedAt,
       checkoutLastSeenAt: null,
       holdExpiresAt: null,
+      operationsSeenAt: null,
       status: "CONFIRMED",
       updatedAt: input.confirmedAt,
     });
@@ -370,6 +379,18 @@ export class Booking {
     });
   }
 
+  markOperationsSeen(input: { seenAt: Date }) {
+    if (this.props.status !== "CONFIRMED" || this.props.operationsSeenAt) {
+      return this;
+    }
+
+    return Booking.create({
+      ...this.props,
+      operationsSeenAt: input.seenAt,
+      updatedAt: input.seenAt,
+    });
+  }
+
   toSnapshot(): BookingSnapshot {
     return {
       calendarBlockId: this.props.calendarBlockId,
@@ -395,6 +416,7 @@ export class Booking {
       holdExpiresAt: this.props.holdExpiresAt?.toISOString() ?? null,
       id: this.props.id,
       internalNotes: this.props.internalNotes,
+      operationsSeenAt: this.props.operationsSeenAt?.toISOString() ?? null,
       paymentRecordId: this.props.paymentRecordId,
       priceSnapshot: this.props.priceSnapshot.toSnapshot(),
       reference: this.props.reference,

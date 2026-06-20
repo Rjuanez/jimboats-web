@@ -15,6 +15,7 @@ import type {
   AdminBookingCancelInput,
   AdminBookingCreateInput,
   AdminBookingIssueAccessLinkInput,
+  AdminBookingMarkSeenInput,
   AdminBookingUpdateInput,
   AdminBookingsPageData,
   AdminBookingView,
@@ -111,6 +112,24 @@ export function AdminBookingsWorkspace({
     return result;
   }
 
+  async function markSeen(input: AdminBookingMarkSeenInput) {
+    setIsSaving(true);
+    setMessage(null);
+    setError(null);
+
+    const result = await actions.markSeen(input);
+
+    if (result.ok) {
+      setState(result.data.state);
+      setMessage("Booking marked as seen.");
+    } else {
+      setError(result.message);
+    }
+
+    setIsSaving(false);
+    return result;
+  }
+
   return (
     <AdminShell activeItemId="bookings" navItems={navItems}>
       <SaveStatus error={error} isSaving={isSaving} message={message} />
@@ -120,6 +139,7 @@ export function AdminBookingsWorkspace({
         createBooking,
         isSaving,
         issueAccessLink,
+        markSeen,
         state,
         updateBooking,
         view,
@@ -134,6 +154,7 @@ function renderView({
   createBooking,
   isSaving,
   issueAccessLink,
+  markSeen,
   state,
   updateBooking,
   view,
@@ -149,6 +170,9 @@ function renderView({
   issueAccessLink: (
     input: AdminBookingIssueAccessLinkInput,
   ) => ReturnType<AdminBookingActions["issueAccessLink"]>;
+  markSeen: (
+    input: AdminBookingMarkSeenInput,
+  ) => ReturnType<AdminBookingActions["markSeen"]>;
   state: AdminBookingsPageData["state"];
   updateBooking: (
     input: AdminBookingUpdateInput,
@@ -156,7 +180,13 @@ function renderView({
   view: AdminBookingView;
 }) {
   if (view === "list") {
-    return <AdminBookingsListSection state={state} />;
+    return (
+      <AdminBookingsListSection
+        isSaving={isSaving}
+        markSeen={markSeen}
+        state={state}
+      />
+    );
   }
 
   if (view === "create") {

@@ -64,6 +64,9 @@ const previewState: AdminBookingsState = {
       id: "booking-preview-1",
       internalNotes: "Manual booking from WhatsApp.",
       localDate: "2026-06-10",
+      needsAcknowledgement: true,
+      operationsSeenAt: null,
+      operationsSeenLabel: "Not seen yet",
       reference: "JB-2026-0001",
       remainingAmount: 1190,
       slotKey: "morning",
@@ -71,6 +74,8 @@ const previewState: AdminBookingsState = {
       status: "confirmed",
       statusLabel: "Confirmed",
       totalAmount: 1290,
+      whatsappEnabled: true,
+      whatsappPhone: "+34 600 000 000",
     },
   ],
   experienceOptions: [
@@ -104,6 +109,7 @@ const previewState: AdminBookingsState = {
     confirmedBookings: 1,
     pendingPaymentBookings: 0,
     totalBookings: 1,
+    unacknowledgedBookings: 1,
   },
 };
 
@@ -163,6 +169,12 @@ function presentBooking(booking: AdminBookingDto): AdminBooking {
     id: booking.id,
     internalNotes: booking.internalNotes,
     localDate: booking.selectedSlot.localDate,
+    needsAcknowledgement:
+      booking.status === "CONFIRMED" && booking.operationsSeenAt === null,
+    operationsSeenAt: booking.operationsSeenAt,
+    operationsSeenLabel: booking.operationsSeenAt
+      ? formatAuditDate(new Date(booking.operationsSeenAt))
+      : "Not seen yet",
     reference: booking.reference,
     remainingAmount: fromMoney(booking.priceSnapshot.remainingAmount),
     slotKey: booking.selectedSlot.slotKey,
@@ -170,6 +182,11 @@ function presentBooking(booking: AdminBookingDto): AdminBooking {
     status: booking.status.toLowerCase() as AdminBooking["status"],
     statusLabel: statusLabel(booking.status),
     totalAmount: fromMoney(booking.priceSnapshot.totalAmount),
+    whatsappEnabled:
+      booking.notificationPreference?.whatsapp.enabled === true &&
+      booking.notificationPreference.whatsapp.consentStatus === "GRANTED" &&
+      Boolean(booking.notificationPreference.whatsapp.destination),
+    whatsappPhone: booking.notificationPreference?.whatsapp.destination ?? "",
   };
 }
 

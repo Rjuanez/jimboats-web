@@ -8,6 +8,7 @@ import type {
   AdminBookingCancelInput,
   AdminBookingCreateInput,
   AdminBookingIssueAccessLinkInput,
+  AdminBookingMarkSeenInput,
   AdminBookingUpdateInput,
   AdminBookingsState,
 } from "@/components/sections/admin-bookings/AdminBookingTypes";
@@ -19,6 +20,7 @@ import {
   parseAdminBookingCancel,
   parseAdminBookingCreate,
   parseAdminBookingIssueAccessLink,
+  parseAdminBookingMarkSeen,
   parseAdminBookingUpdate,
 } from "../validators/adminBookingValidators";
 
@@ -142,6 +144,30 @@ export async function issueAdminBookingAccessLinkAction(
     });
 
     return ok(issued);
+  } catch (error) {
+    return failure(error);
+  }
+}
+
+export async function markAdminBookingSeenAction(
+  input: AdminBookingMarkSeenInput,
+): Promise<
+  AdminBookingActionResult<{
+    bookingId: string;
+    state: AdminBookingsState;
+  }>
+> {
+  try {
+    const commandInput = parseAdminBookingMarkSeen(input);
+    const container = getContainer();
+    const result = await container.adminBookings.markSeen({
+      bookingId: commandInput.bookingId,
+    });
+
+    return ok({
+      bookingId: result.bookingId,
+      state: await loadState(container),
+    });
   } catch (error) {
     return failure(error);
   }

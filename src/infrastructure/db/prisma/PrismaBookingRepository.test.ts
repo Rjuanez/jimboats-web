@@ -699,6 +699,14 @@ class InMemoryBookingClient implements PrismaBookingRepositoryClient {
         return { count: 0 };
       }
 
+      if (
+        "operationsSeenAt" in args.where &&
+        args.where.operationsSeenAt === null &&
+        record.operationsSeenAt !== null
+      ) {
+        return { count: 0 };
+      }
+
       this.records.set(args.where.id, {
         ...record,
         ...args.data,
@@ -786,6 +794,17 @@ class InMemoryBookingClient implements PrismaBookingRepositoryClient {
       >[0],
     ) => {
       this.notificationPreferences.push(args.data);
+    },
+    findMany: async (
+      args: Parameters<
+        PrismaBookingRepositoryClient["bookingNotificationPreference"]["findMany"]
+      >[0],
+    ) => {
+      const ids = readStringArrayFilter(args.where, "bookingId");
+
+      return this.notificationPreferences.filter((preference) =>
+        ids.includes(preference.bookingId),
+      );
     },
   };
 

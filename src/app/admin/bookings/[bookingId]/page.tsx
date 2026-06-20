@@ -4,9 +4,11 @@ import {
   cancelAdminBookingAction,
   createAdminBookingAction,
   issueAdminBookingAccessLinkAction,
+  markAdminBookingSeenAction,
   updateAdminBookingAction,
 } from "@/interface/next/actions/adminBookingActions";
 import { getAdminBookingsPage } from "@/interface/next/presenters/adminBookingsPresenter";
+import { getContainer } from "@/container";
 
 export const dynamic = "force-dynamic";
 
@@ -14,6 +16,7 @@ const actions = {
   cancelBooking: cancelAdminBookingAction,
   createBooking: createAdminBookingAction,
   issueAccessLink: issueAdminBookingAccessLinkAction,
+  markSeen: markAdminBookingSeenAction,
   updateBooking: updateAdminBookingAction,
 } satisfies AdminBookingActions;
 
@@ -26,10 +29,13 @@ type AdminBookingDetailPageProps = {
 export default async function AdminBookingDetailPage({
   params,
 }: AdminBookingDetailPageProps) {
-  const [{ bookingId }, pageData] = await Promise.all([
-    params,
-    getAdminBookingsPage(),
-  ]);
+  const { bookingId } = await params;
+
+  if (process.env.JIMBOATS_ADMIN_PREVIEW_DATA !== "1") {
+    await getContainer().adminBookings.markSeen({ bookingId });
+  }
+
+  const pageData = await getAdminBookingsPage();
 
   return (
     <AdminBookingsWorkspace

@@ -17,12 +17,14 @@ import type {
   BackpanelCancelBookingCommand,
   BackpanelCreateBookingCommand,
   BackpanelIssueBookingAccessLinkCommand,
+  BackpanelMarkBookingSeenCommand,
   BackpanelUpdateBookingCommand,
 } from "@/modules/booking/application/AdminBookingDtos";
 import { BookingCalendarSyncService } from "@/modules/booking/application/BookingCalendarSyncService";
 import { BackpanelCancelBookingUseCase } from "@/modules/booking/application/BackpanelCancelBookingUseCase";
 import { BackpanelCreateBookingUseCase } from "@/modules/booking/application/BackpanelCreateBookingUseCase";
 import { BackpanelIssueBookingAccessLinkUseCase } from "@/modules/booking/application/BackpanelIssueBookingAccessLinkUseCase";
+import { BackpanelMarkBookingSeenUseCase } from "@/modules/booking/application/BackpanelMarkBookingSeenUseCase";
 import { BackpanelUpdateBookingUseCase } from "@/modules/booking/application/BackpanelUpdateBookingUseCase";
 import { CreatePublicBookingCheckoutUseCase } from "@/modules/booking/application/CreatePublicBookingCheckoutUseCase";
 import { ExitPublicBookingCheckoutUseCase } from "@/modules/booking/application/ExitPublicBookingCheckoutUseCase";
@@ -452,6 +454,10 @@ export function getContainer() {
     bookingClock,
     bookingCalendarSync,
   );
+  const backpanelMarkBookingSeenUseCase = new BackpanelMarkBookingSeenUseCase(
+    bookingRepository,
+    bookingClock,
+  );
   const getPublicBookingPageUseCase = new GetPublicBookingPageUseCase(
     publicBookingCatalogReader,
     bookingClock,
@@ -609,6 +615,8 @@ export function getContainer() {
       getWorkspace: () => getAdminBookingsWorkspaceUseCase.execute(),
       issueAccessLink: (command: BackpanelIssueBookingAccessLinkCommand) =>
         backpanelIssueBookingAccessLinkUseCase.execute(command),
+      markSeen: (command: BackpanelMarkBookingSeenCommand) =>
+        backpanelMarkBookingSeenUseCase.execute(command),
       updateBackpanelBooking: (command: BackpanelUpdateBookingCommand) =>
         backpanelUpdateBookingUseCase.execute(command),
     },

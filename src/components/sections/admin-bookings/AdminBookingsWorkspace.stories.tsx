@@ -29,6 +29,13 @@ const actions = {
     },
     ok: true as const,
   }),
+  markSeen: async () => ({
+    data: {
+      bookingId: "booking-preview-1",
+      state: pageData.state,
+    },
+    ok: true as const,
+  }),
   updateBooking: async () => ({
     data: {
       bookingId: "booking-preview-1",
