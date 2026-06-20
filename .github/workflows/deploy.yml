@@ -11,7 +11,72 @@ permissions:
   packages: write
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      app: ${{ steps.detect.outputs.app }}
+      deploy: ${{ steps.detect.outputs.deploy }}
+      infra: ${{ steps.detect.outputs.infra }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Detect changed areas
+        id: detect
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "app=true" >> "$GITHUB_OUTPUT"
+            echo "infra=true" >> "$GITHUB_OUTPUT"
+            echo "deploy=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          before="${{ github.event.before }}"
+          if [ -n "$before" ] && [ "$before" != "0000000000000000000000000000000000000000" ]; then
+            base="$before"
+          else
+            base="$(git rev-parse HEAD^)"
+          fi
+
+          changed_files="$(git diff --name-only "$base" HEAD)"
+          app=false
+          infra=false
+
+          while IFS= read -r file; do
+            [ -n "$file" ] || continue
+
+            case "$file" in
+              .dockerignore|.env.example|.nvmrc|.storybook/*|Dockerfile|eslint.config.mjs|media/*|next-env.d.ts|next.config.ts|package.json|playwright.config.ts|pnpm-lock.yaml|postcss.config.mjs|prisma.config.mjs|prisma/*|public/*|scripts/*|src/*|tests/*|tsconfig.json|vitest.config.ts|vitest.setup.ts)
+                app=true
+                ;;
+            esac
+
+            case "$file" in
+              .github/workflows/*|docker-compose.yml|infra/*)
+                infra=true
+                ;;
+            esac
+          done <<< "$changed_files"
+
+          deploy=false
+          if [ "$app" = "true" ] || [ "$infra" = "true" ]; then
+            deploy=true
+          fi
+
+          echo "Changed files:"
+          printf '%s\n' "$changed_files"
+          echo "app=$app" >> "$GITHUB_OUTPUT"
+          echo "infra=$infra" >> "$GITHUB_OUTPUT"
+          echo "deploy=$deploy" >> "$GITHUB_OUTPUT"
+
   verify:
+    needs: changes
+    if: needs.changes.outputs.app == 'true'
     runs-on: macos-latest
     steps:
       - name: Checkout
@@ -70,8 +135,45 @@ jobs:
       - name: Visual checks
         run: pnpm test:visual
 
+  deploy-config:
+    needs: changes
+    if: needs.changes.outputs.infra == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Validate production Docker Compose
+        env:
+          ADMIN_BASIC_AUTH_HASH: hash
+          ADMIN_BASIC_AUTH_USER: admin
+          APP_DOMAIN: example.com
+          APP_IMAGE: ghcr.io/example/jimboats-web:latest
+          CADDY_EMAIL: admin@example.com
+          DATABASE_URL: postgresql://jimboats:jimboats@db:5432/jimboats?schema=public
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: pk_test
+          POSTGRES_DB: jimboats
+          POSTGRES_PASSWORD: jimboats
+          POSTGRES_USER: jimboats
+          PUBLIC_SITE_URL: https://example.com
+          PUSH_ACTIVATION_CODE: test-code
+          PUSH_VAPID_PRIVATE_KEY: test-private-key
+          PUSH_VAPID_PUBLIC_KEY: test-public-key
+          PUSH_VAPID_SUBJECT: mailto:admin@example.com
+          STRIPE_SECRET_KEY: sk_test
+          STRIPE_WEBHOOK_SECRET: whsec_test
+        run: docker compose -f infra/production/docker-compose.yml config >/tmp/jimboats-production-compose.yml
+
   publish-and-deploy:
-    needs: verify
+    needs:
+      - changes
+      - verify
+      - deploy-config
+    if: |
+      always()
+      && needs.changes.outputs.deploy == 'true'
+      && (needs.changes.outputs.app != 'true' || needs.verify.result == 'success')
+      && (needs.changes.outputs.infra != 'true' || needs.deploy-config.result == 'success')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -82,9 +184,11 @@ jobs:
         run: echo "repository=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
 
       - name: Setup Docker Buildx
+        if: needs.changes.outputs.app == 'true'
         uses: docker/setup-buildx-action@v4
 
       - name: Login to GHCR
+        if: needs.changes.outputs.app == 'true'
         uses: docker/login-action@v4
         with:
           registry: ghcr.io
@@ -92,6 +196,7 @@ jobs:
           password: ${{ github.token }}
 
       - name: Build and push image
+        if: needs.changes.outputs.app == 'true'
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -138,6 +243,7 @@ jobs:
 
       - name: Deploy on VPS
         env:
+          APP_CHANGED: ${{ needs.changes.outputs.app }}
           GHCR_TOKEN: ${{ github.token }}
           IMAGE_REPOSITORY: ${{ steps.image.outputs.repository }}
           IMAGE_TAG: ${{ github.sha }}
@@ -150,5 +256,31 @@ jobs:
           VPS_PORT="${VPS_PORT:-22}"
           : "${VPS_HOST:?VPS_HOST secret is required}"
           : "${VPS_USER:?VPS_USER secret is required}"
+          DEPLOY_IMAGE_TAG="$IMAGE_TAG"
+          if [ "$APP_CHANGED" != "true" ]; then
+            DEPLOY_IMAGE_TAG="latest"
+          fi
           SSH_OPTS=(-o BatchMode=yes -o IdentitiesOnly=yes -i ~/.ssh/id_ed25519 -p "$VPS_PORT")
-          ssh "${SSH_OPTS[@]}" "$VPS_USER@$VPS_HOST" "APP_DIR='$VPS_APP_DIR' IMAGE_REPOSITORY='$IMAGE_REPOSITORY' IMAGE_TAG='$IMAGE_TAG' GHCR_USERNAME='${{ github.actor }}' GHCR_TOKEN='$GHCR_TOKEN' sh '$VPS_APP_DIR/infra/deploy/deploy.sh'"
+          ssh "${SSH_OPTS[@]}" "$VPS_USER@$VPS_HOST" "APP_DIR='$VPS_APP_DIR' IMAGE_REPOSITORY='$IMAGE_REPOSITORY' IMAGE_TAG='$DEPLOY_IMAGE_TAG' GHCR_USERNAME='${{ github.actor }}' GHCR_TOKEN='$GHCR_TOKEN' sh '$VPS_APP_DIR/infra/deploy/deploy.sh'"
+
+  result:
+    needs:
+      - changes
+      - publish-and-deploy
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check deploy result
+        run: |
+          set -euo pipefail
+          deploy="${{ needs.changes.outputs.deploy }}"
+          deploy_result="${{ needs.publish-and-deploy.result }}"
+
+          if [ "$deploy" = "true" ] && [ "$deploy_result" != "success" ]; then
+            echo "Deploy did not pass: $deploy_result" >&2
+            exit 1
+          fi
+
+          if [ "$deploy" != "true" ]; then
+            echo "No app or infra changes detected; deploy skipped."
+          fi

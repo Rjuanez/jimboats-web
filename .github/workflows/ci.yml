@@ -10,7 +10,64 @@ permissions:
   contents: read
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      app: ${{ steps.detect.outputs.app }}
+      infra: ${{ steps.detect.outputs.infra }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Detect changed areas
+        id: detect
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            base_ref="${{ github.base_ref }}"
+            git fetch --no-tags --prune --depth=1 origin "$base_ref"
+            base="origin/$base_ref"
+          else
+            before="${{ github.event.before }}"
+            if [ -n "$before" ] && [ "$before" != "0000000000000000000000000000000000000000" ]; then
+              base="$before"
+            else
+              base="$(git rev-parse HEAD^)"
+            fi
+          fi
+
+          changed_files="$(git diff --name-only "$base" HEAD)"
+          app=false
+          infra=false
+
+          while IFS= read -r file; do
+            [ -n "$file" ] || continue
+
+            case "$file" in
+              .dockerignore|.env.example|.nvmrc|.storybook/*|Dockerfile|eslint.config.mjs|media/*|next-env.d.ts|next.config.ts|package.json|playwright.config.ts|pnpm-lock.yaml|postcss.config.mjs|prisma.config.mjs|prisma/*|public/*|scripts/*|src/*|tests/*|tsconfig.json|vitest.config.ts|vitest.setup.ts)
+                app=true
+                ;;
+            esac
+
+            case "$file" in
+              .github/workflows/*|docker-compose.yml|infra/*)
+                infra=true
+                ;;
+            esac
+          done <<< "$changed_files"
+
+          echo "Changed files:"
+          printf '%s\n' "$changed_files"
+          echo "app=$app" >> "$GITHUB_OUTPUT"
+          echo "infra=$infra" >> "$GITHUB_OUTPUT"
+
   verify:
+    needs: changes
+    if: needs.changes.outputs.app == 'true'
     runs-on: macos-latest
     steps:
       - name: Checkout
@@ -68,3 +125,62 @@ jobs:
 
       - name: Visual checks
         run: pnpm test:visual
+
+  deploy-config:
+    needs: changes
+    if: needs.changes.outputs.infra == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Validate production Docker Compose
+        env:
+          ADMIN_BASIC_AUTH_HASH: hash
+          ADMIN_BASIC_AUTH_USER: admin
+          APP_DOMAIN: example.com
+          APP_IMAGE: ghcr.io/example/jimboats-web:latest
+          CADDY_EMAIL: admin@example.com
+          DATABASE_URL: postgresql://jimboats:jimboats@db:5432/jimboats?schema=public
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: pk_test
+          POSTGRES_DB: jimboats
+          POSTGRES_PASSWORD: jimboats
+          POSTGRES_USER: jimboats
+          PUBLIC_SITE_URL: https://example.com
+          PUSH_ACTIVATION_CODE: test-code
+          PUSH_VAPID_PRIVATE_KEY: test-private-key
+          PUSH_VAPID_PUBLIC_KEY: test-public-key
+          PUSH_VAPID_SUBJECT: mailto:admin@example.com
+          STRIPE_SECRET_KEY: sk_test
+          STRIPE_WEBHOOK_SECRET: whsec_test
+        run: docker compose -f infra/production/docker-compose.yml config >/tmp/jimboats-production-compose.yml
+
+  result:
+    needs:
+      - changes
+      - verify
+      - deploy-config
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check CI result
+        run: |
+          set -euo pipefail
+          app="${{ needs.changes.outputs.app }}"
+          infra="${{ needs.changes.outputs.infra }}"
+          verify_result="${{ needs.verify.result }}"
+          deploy_config_result="${{ needs.deploy-config.result }}"
+
+          if [ "$app" = "true" ] && [ "$verify_result" != "success" ]; then
+            echo "App verification did not pass: $verify_result" >&2
+            exit 1
+          fi
+
+          if [ "$infra" = "true" ] && [ "$deploy_config_result" != "success" ]; then
+            echo "Deploy config verification did not pass: $deploy_config_result" >&2
+            exit 1
+          fi
+
+          if [ "$app" != "true" ] && [ "$infra" != "true" ]; then
+            echo "No app or infra changes detected; expensive checks skipped."
+          fi
