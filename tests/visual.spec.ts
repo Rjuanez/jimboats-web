@@ -44,6 +44,20 @@ test("admin experiences desktop visual baseline", async ({ page }) => {
   });
 });
 
+test("admin dashboard desktop visual baseline", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.addInitScript(() => {
+    window.localStorage.clear();
+  });
+  await page.goto("/admin", { waitUntil: "networkidle" });
+  await hideDevelopmentIndicators(page);
+
+  await expect(page).toHaveScreenshot("admin-dashboard-desktop.png", {
+    fullPage: true,
+    maxDiffPixels: 2,
+  });
+});
+
 test("admin experiences mobile visual baseline", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.addInitScript(() => {

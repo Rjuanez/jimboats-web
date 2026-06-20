@@ -269,6 +269,29 @@ enum NotificationDeliveryStatus {
   SENT
 }
 
+enum PushSubscriptionPlatform {
+  ANDROID
+  DESKTOP
+  IOS
+  UNKNOWN
+}
+
+enum PushSubscriptionPermission {
+  DEFAULT
+  DENIED
+  GRANTED
+}
+
+enum PushSubscriptionStatus {
+  ACTIVE
+  DISABLED
+}
+
+enum PushDeliveryAttemptStatus {
+  FAILED
+  SENT
+}
+
 model Experience {
   id                        String                       @id
   internalName              String                       @map("internal_name")
@@ -1010,4 +1033,49 @@ model NotificationDelivery {
   @@index([channel, status], map: "notification_deliveries_channel_status_idx")
   @@index([outboxMessageId, ruleId], map: "notification_deliveries_outbox_rule_idx")
   @@map("notification_deliveries")
+}
+
+model PushSubscription {
+  id                String                     @id @default(dbgenerated("gen_random_uuid()::text"))
+  label             String
+  endpoint          String                     @unique
+  p256dh            String
+  auth              String
+  platform          PushSubscriptionPlatform
+  permission        PushSubscriptionPermission
+  status            PushSubscriptionStatus     @default(ACTIVE)
+  userAgent         String?                    @map("user_agent")
+  displayMode       String?                    @map("display_mode")
+  lastTestSentAt    DateTime?                  @map("last_test_sent_at") @db.Timestamptz(3)
+  lastSuccessAt     DateTime?                  @map("last_success_at") @db.Timestamptz(3)
+  lastFailureAt     DateTime?                  @map("last_failure_at") @db.Timestamptz(3)
+  lastFailureReason String?                    @map("last_failure_reason")
+  disabledAt        DateTime?                  @map("disabled_at") @db.Timestamptz(3)
+  createdAt         DateTime                   @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime                   @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deliveryAttempts  PushDeliveryAttempt[]
+
+  @@index([status, updatedAt], map: "push_subscriptions_status_updated_at_idx")
+  @@index([platform], map: "push_subscriptions_platform_idx")
+  @@map("push_subscriptions")
+}
+
+model PushDeliveryAttempt {
+  id             String                    @id @default(dbgenerated("gen_random_uuid()::text"))
+  subscriptionId String                    @map("subscription_id")
+  bookingId      String?                   @map("booking_id")
+  eventType      String                    @map("event_type")
+  title          String
+  body           String
+  url            String
+  status         PushDeliveryAttemptStatus
+  provider       String
+  failureReason  String?                   @map("failure_reason")
+  sentAt         DateTime                  @map("sent_at") @db.Timestamptz(3)
+  subscription   PushSubscription          @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  createdAt      DateTime                  @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@index([subscriptionId, sentAt], map: "push_delivery_attempts_subscription_sent_at_idx")
+  @@index([bookingId, eventType], map: "push_delivery_attempts_booking_event_idx")
+  @@map("push_delivery_attempts")
 }

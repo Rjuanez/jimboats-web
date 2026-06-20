@@ -116,10 +116,15 @@ import type {
   UpdateNotificationTemplateCommand,
 } from "@/modules/notifications/application/NotificationDtos";
 import { GetAdminNotificationsWorkspaceUseCase } from "@/modules/notifications/application/GetAdminNotificationsWorkspaceUseCase";
+import { GetPushNotificationsSetupUseCase } from "@/modules/notifications/application/GetPushNotificationsSetupUseCase";
 import { PreviewNotificationTemplateUseCase } from "@/modules/notifications/application/PreviewNotificationTemplateUseCase";
 import { ProcessNextNotificationWorkUseCase } from "@/modules/notifications/application/ProcessNextNotificationWorkUseCase";
 import { ProcessOutboxNotificationEventUseCase } from "@/modules/notifications/application/ProcessOutboxNotificationEventUseCase";
+import { RegisterPushSubscriptionUseCase } from "@/modules/notifications/application/RegisterPushSubscriptionUseCase";
+import { SendBroadcastPushTestNotificationUseCase } from "@/modules/notifications/application/SendBroadcastPushTestNotificationUseCase";
 import { SendBookingNotificationUseCase } from "@/modules/notifications/application/SendBookingNotificationUseCase";
+import { SendOperationalBookingPushUseCase } from "@/modules/notifications/application/SendOperationalBookingPushUseCase";
+import { SendPushTestNotificationUseCase } from "@/modules/notifications/application/SendPushTestNotificationUseCase";
 import { UpdateNotificationRuleUseCase } from "@/modules/notifications/application/UpdateNotificationRuleUseCase";
 import { UpdateNotificationTemplateUseCase } from "@/modules/notifications/application/UpdateNotificationTemplateUseCase";
 
@@ -164,6 +169,8 @@ import { PrismaNotificationRuleRepository } from "./infrastructure/db/prisma/Pri
 import type { PrismaNotificationRuleRepositoryClient } from "./infrastructure/db/prisma/PrismaNotificationRuleRepository";
 import { PrismaNotificationTemplateRepository } from "./infrastructure/db/prisma/PrismaNotificationTemplateRepository";
 import type { PrismaNotificationTemplateRepositoryClient } from "./infrastructure/db/prisma/PrismaNotificationTemplateRepository";
+import { PrismaPushSubscriptionRepository } from "./infrastructure/db/prisma/PrismaPushSubscriptionRepository";
+import type { PrismaPushSubscriptionRepositoryClient } from "./infrastructure/db/prisma/PrismaPushSubscriptionRepository";
 import { PrismaPublicBookingCatalogReader } from "./infrastructure/db/prisma/PrismaPublicBookingCatalogReader";
 import type { PrismaPublicBookingCatalogReaderClient } from "./infrastructure/db/prisma/PrismaPublicBookingCatalogReader";
 import { getPrismaClient } from "./infrastructure/db/prisma/prismaClient";
@@ -177,6 +184,10 @@ import { createNotificationProviderFromEnv } from "./infrastructure/notification
 import { SimpleTemplateRenderer } from "./infrastructure/notifications/SimpleTemplateRenderer";
 import { StaticNotificationPreviewFixtureProvider } from "./infrastructure/notifications/StaticNotificationPreviewFixtureProvider";
 import { SystemNotificationClock } from "./infrastructure/notifications/SystemNotificationClock";
+import {
+  createWebPushNotificationSenderFromEnv,
+  getPushVapidPublicKeyFromEnv,
+} from "./infrastructure/notifications/WebPushNotificationSender";
 import { createStripeDepositPaymentProviderFromEnv } from "./infrastructure/payments/StripeDepositPaymentProvider";
 import { createLocalMediaStorageFromEnv } from "./infrastructure/storage/local/LocalMediaStorage";
 
@@ -238,6 +249,9 @@ export function getContainer() {
   const notificationAuditRepository = new PrismaNotificationAuditRepository(
     prisma as unknown as PrismaNotificationAuditRepositoryClient,
   );
+  const pushSubscriptionRepository = new PrismaPushSubscriptionRepository(
+    prisma as unknown as PrismaPushSubscriptionRepositoryClient,
+  );
   const mediaUnitOfWork = new PrismaMediaLibraryUnitOfWork(
     prisma as unknown as PrismaMediaLibraryUnitOfWorkClient,
   );
@@ -255,6 +269,8 @@ export function getContainer() {
   const notificationIds = new CryptoNotificationIdGenerator();
   const notificationRenderer = new SimpleTemplateRenderer();
   const notificationProvider = createNotificationProviderFromEnv();
+  const pushNotificationSender = createWebPushNotificationSenderFromEnv();
+  const pushActivationCode = process.env.PUSH_ACTIVATION_CODE?.trim() || null;
   const notificationPreviewFixtures =
     new StaticNotificationPreviewFixtureProvider();
   const depositPaymentProvider = createLazyDepositPaymentProvider();
@@ -527,6 +543,12 @@ export function getContainer() {
       notificationPreviewFixtures,
       notificationRenderer,
     );
+  const sendOperationalBookingPushUseCase =
+    new SendOperationalBookingPushUseCase(
+      pushSubscriptionRepository,
+      pushNotificationSender,
+      notificationClock,
+    );
   const processOutboxNotificationEventUseCase =
     new ProcessOutboxNotificationEventUseCase(
       notificationOutboxRepository,
@@ -538,6 +560,7 @@ export function getContainer() {
       notificationIds,
       notificationClock,
       issueBookingAccessLinkUseCase,
+      sendOperationalBookingPushUseCase,
     );
   const sendBookingNotificationUseCase = new SendBookingNotificationUseCase(
     notificationDeliveryRepository,
@@ -550,6 +573,30 @@ export function getContainer() {
       notificationDeliveryRepository,
       processOutboxNotificationEventUseCase,
       notificationProvider,
+      notificationClock,
+    );
+  const getPushNotificationsSetupUseCase =
+    new GetPushNotificationsSetupUseCase(
+      pushSubscriptionRepository,
+      getPushVapidPublicKeyFromEnv(),
+      Boolean(pushActivationCode),
+    );
+  const registerPushSubscriptionUseCase =
+    new RegisterPushSubscriptionUseCase(
+      pushSubscriptionRepository,
+      pushActivationCode,
+    );
+  const sendPushTestNotificationUseCase =
+    new SendPushTestNotificationUseCase(
+      pushSubscriptionRepository,
+      pushNotificationSender,
+      notificationClock,
+      pushActivationCode,
+    );
+  const sendBroadcastPushTestNotificationUseCase =
+    new SendBroadcastPushTestNotificationUseCase(
+      pushSubscriptionRepository,
+      pushNotificationSender,
       notificationClock,
     );
 
@@ -657,6 +704,17 @@ export function getContainer() {
         updateNotificationRuleUseCase.execute(command),
       updateTemplate: (command: UpdateNotificationTemplateCommand) =>
         updateNotificationTemplateUseCase.execute(command),
+    },
+    adminPushNotifications: {
+      getSetup: () => getPushNotificationsSetupUseCase.execute(),
+      registerSubscription: (
+        command: Parameters<RegisterPushSubscriptionUseCase["execute"]>[0],
+      ) => registerPushSubscriptionUseCase.execute(command),
+      sendBroadcastTest: () =>
+        sendBroadcastPushTestNotificationUseCase.execute(),
+      sendTest: (
+        command: Parameters<SendPushTestNotificationUseCase["execute"]>[0],
+      ) => sendPushTestNotificationUseCase.execute(command),
     },
     mediaWorker: {
       processNextJob: () => processNextMediaProcessingJobUseCase.execute(),

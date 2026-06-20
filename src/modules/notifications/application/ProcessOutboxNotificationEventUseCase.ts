@@ -25,6 +25,7 @@ import type {
   OutboxRepository,
 } from "./ports/OutboxRepository";
 import type { TemplateRenderer } from "./ports/TemplateRenderer";
+import type { SendOperationalBookingPushUseCase } from "./SendOperationalBookingPushUseCase";
 import { NotificationChannel } from "../domain/NotificationChannel";
 import {
   NotificationDelivery,
@@ -60,6 +61,7 @@ export class ProcessOutboxNotificationEventUseCase {
     private readonly ids: NotificationIdGenerator,
     private readonly clock: NotificationClock,
     private readonly bookingAccessLinks?: BookingAccessLinkIssuer,
+    private readonly operationalPush?: SendOperationalBookingPushUseCase,
   ) {}
 
   async execute(
@@ -85,6 +87,11 @@ export class ProcessOutboxNotificationEventUseCase {
       if (!booking) {
         throw applicationError("BOOKING_NOT_FOUND", "Booking was not found.");
       }
+
+      await this.sendOperationalPushIfNeeded({
+        booking,
+        outboxMessage,
+      });
 
       const matchingRules = await this.rules.listByEventType(
         outboxMessage.eventType,
@@ -339,6 +346,39 @@ export class ProcessOutboxNotificationEventUseCase {
 
     return issued.url;
   }
+
+  private async sendOperationalPushIfNeeded(input: {
+    booking: NotificationBookingReadModel;
+    outboxMessage: NotificationOutboxMessageReadModel;
+  }) {
+    if (
+      !this.operationalPush ||
+      input.outboxMessage.eventType !== "BookingCreated"
+    ) {
+      return;
+    }
+
+    await this.operationalPush.execute({
+      bookingId: input.booking.id,
+      bookingReference: input.booking.reference,
+      customerName: input.booking.customerName,
+      eventType: input.outboxMessage.eventType,
+      experienceName: readPayloadString(
+        input.booking.templatePayload,
+        "experience.name",
+      ),
+      localDate: readPayloadString(
+        input.booking.templatePayload,
+        "booking.selectedLocalDate",
+      ),
+      startTime: minutesToTimeLabel(
+        readPayloadNumber(
+          input.booking.templatePayload,
+          "booking.selectedStartMinutes",
+        ),
+      ),
+    });
+  }
 }
 
 function assertSupportedOutboxMessage(
@@ -445,6 +485,29 @@ function resolvePayloadPath(payload: NotificationPayload, path: string) {
   }
 
   return current;
+}
+
+function readPayloadString(payload: NotificationPayload, path: string) {
+  const value = resolvePayloadPath(payload, path);
+
+  return typeof value === "string" && value.trim() ? value : null;
+}
+
+function readPayloadNumber(payload: NotificationPayload, path: string) {
+  const value = resolvePayloadPath(payload, path);
+
+  return typeof value === "number" && Number.isFinite(value) ? value : null;
+}
+
+function minutesToTimeLabel(minutes: number | null) {
+  if (minutes === null) {
+    return null;
+  }
+
+  const hours = Math.floor(minutes / 60);
+  const rest = minutes % 60;
+
+  return `${String(hours).padStart(2, "0")}:${String(rest).padStart(2, "0")}`;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
