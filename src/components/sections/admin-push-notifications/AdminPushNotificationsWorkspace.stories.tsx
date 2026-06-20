@@ -14,6 +14,16 @@ const actions: AdminPushNotificationActions = {
       ok: true,
     };
   },
+  async sendBroadcastTest() {
+    return {
+      data: {
+        failed: 0,
+        sent: 1,
+        total: 1,
+      },
+      ok: true,
+    };
+  },
   async sendTest() {
     return {
       data: {

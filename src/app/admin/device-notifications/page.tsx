@@ -4,6 +4,7 @@ import { adminNavItems } from "@/components/layout/AdminNavigation";
 import { AdminPushNotificationsWorkspace } from "@/components/sections/admin-push-notifications/AdminPushNotificationsWorkspace";
 import {
   registerPushSubscriptionAction,
+  sendBroadcastPushTestNotificationAction,
   sendPushTestNotificationAction,
 } from "@/interface/next/actions/pushNotificationActions";
 
@@ -24,6 +25,7 @@ export default async function AdminDeviceNotificationsPage() {
       <AdminPushNotificationsWorkspace
         actions={{
           registerSubscription: registerPushSubscriptionAction,
+          sendBroadcastTest: sendBroadcastPushTestNotificationAction,
           sendTest: sendPushTestNotificationAction,
         }}
         setup={setup}

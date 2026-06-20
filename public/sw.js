@@ -29,7 +29,7 @@ self.addEventListener("push", (event) => {
       badge: "/icon-192.png",
       body,
       data: { url },
-      icon: "/icon-192.png",
+      icon: "/icon-512.png",
       tag:
         typeof payload.tag === "string" && payload.tag.trim()
           ? payload.tag

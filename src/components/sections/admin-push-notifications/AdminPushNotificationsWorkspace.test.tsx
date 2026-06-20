@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import userEvent from "@testing-library/user-event";
+import { describe, expect, it, vi } from "vitest";
 
 import type { PushNotificationsSetupDto } from "@/modules/notifications/application/PushNotificationDtos";
 
@@ -21,6 +22,39 @@ describe("AdminPushNotificationsWorkspace", () => {
     expect(screen.getByText("iPhone Pedro")).toBeInTheDocument();
     expect(screen.getByText("Activation code")).toBeInTheDocument();
   });
+
+  it("sends a broadcast test from the device notifications screen", async () => {
+    const user = userEvent.setup();
+    const sendBroadcastTest = vi.fn(async () => ({
+      data: {
+        failed: 0,
+        sent: 1,
+        total: 1,
+      },
+      ok: true as const,
+    }));
+
+    render(
+      <AdminPushNotificationsWorkspace
+        actions={{
+          ...actions,
+          sendBroadcastTest,
+        }}
+        setup={setup}
+      />,
+    );
+
+    await user.click(
+      screen.getByRole("button", {
+        name: "Send test to all",
+      }),
+    );
+
+    expect(sendBroadcastTest).toHaveBeenCalledTimes(1);
+    expect(
+      await screen.findByText("Tests sent: 1. Failed: 0. Total: 1."),
+    ).toBeInTheDocument();
+  });
 });
 
 const actions: AdminPushNotificationActions = {
@@ -28,6 +62,16 @@ const actions: AdminPushNotificationActions = {
     return {
       data: {
         subscription: setup.subscriptions[0],
+      },
+      ok: true,
+    };
+  },
+  async sendBroadcastTest() {
+    return {
+      data: {
+        failed: 0,
+        sent: 1,
+        total: 1,
       },
       ok: true,
     };

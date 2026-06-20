@@ -193,6 +193,23 @@ export function AdminPushNotificationsWorkspace({
     });
   }
 
+  function sendTestToAllDevices() {
+    startTransition(async () => {
+      setMessage(null);
+
+      const result = await actions.sendBroadcastTest();
+
+      if (!result.ok) {
+        setMessage(result.message);
+        return;
+      }
+
+      setMessage(
+        `Tests sent: ${result.data.sent}. Failed: ${result.data.failed}. Total: ${result.data.total}.`,
+      );
+    });
+  }
+
   return (
     <div className="space-y-6">
       <header className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -282,7 +299,21 @@ export function AdminPushNotificationsWorkspace({
           </div>
         </Surface>
 
-        <Surface title="Connected devices">
+        <Surface
+          action={
+            <Button
+              className="justify-center gap-2"
+              disabled={isPending}
+              onClick={sendTestToAllDevices}
+              size="sm"
+              variant="secondary"
+            >
+              <Send className="size-4" aria-hidden="true" />
+              Send test to all
+            </Button>
+          }
+          title="Connected devices"
+        >
           <div className="space-y-3">
             {subscriptions.length === 0 ? (
               <p className="text-sm leading-6 text-slate-600">
@@ -444,7 +475,8 @@ function detectDevice(): DeviceDetection {
   const userAgent = navigator.userAgent || null;
   const platform = detectPlatform(userAgent);
   const isStandalone =
-    window.matchMedia("(display-mode: standalone)").matches ||
+    (typeof window.matchMedia === "function" &&
+      window.matchMedia("(display-mode: standalone)").matches) ||
     Boolean(
       "standalone" in navigator &&
         (navigator as Navigator & { standalone?: boolean }).standalone,

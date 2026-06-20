@@ -1,4 +1,5 @@
 import type {
+  BroadcastPushTestNotificationResultDto,
   PushSubscriptionDto,
 } from "@/modules/notifications/application/PushNotificationDtos";
 import type {
@@ -20,6 +21,9 @@ export type AdminPushNotificationActions = {
   registerSubscription(
     input: PushSubscriptionInput,
   ): Promise<PushNotificationActionResult<{ subscription: PushSubscriptionDto }>>;
+  sendBroadcastTest(): Promise<
+    PushNotificationActionResult<BroadcastPushTestNotificationResultDto>
+  >;
   sendTest(
     input: PushTestInput,
   ): Promise<PushNotificationActionResult<{ status: "FAILED" | "SENT" }>>;
