@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Caveat_Brush, Inter } from "next/font/google";
 import type { ReactNode } from "react";
 
@@ -31,7 +31,20 @@ export const metadata: Metadata = {
     ],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "JimBoats OS",
+  },
   manifest: "/manifest.webmanifest",
+};
+
+export const viewport: Viewport = {
+  colorScheme: "light",
+  initialScale: 1,
+  themeColor: "#f8fafc",
+  viewportFit: "cover",
+  width: "device-width",
 };
 
 export default function RootLayout({
