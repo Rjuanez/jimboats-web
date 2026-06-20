@@ -69,7 +69,7 @@ pull_with_retry "postgres:17-alpine"
 
 docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" up -d db
 docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" run --rm app prisma migrate deploy --config ./prisma.config.mjs
-docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" up -d app media-worker booking-calendar-sync-worker notification-worker caddy
+docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" up -d app media-worker booking-calendar-sync-worker booking-hold-expiration-worker notification-worker caddy
 docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" ps
 
 curl \

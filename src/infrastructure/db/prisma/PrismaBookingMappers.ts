@@ -48,6 +48,7 @@ export type PrismaBookingRecord = {
   cancelledAt: Date | null;
   cancellationPolicySnapshot?: BookingCancellationPolicySnapshot | null;
   cancellationPolicyVersionId?: string | null;
+  checkoutLastSeenAt: Date | null;
   confirmedAt: Date | null;
   createdAt: Date;
   createdByUserId: string | null;
@@ -94,6 +95,7 @@ export type PrismaBookingWriteModel = {
   booking: {
     calendarBlockId: string;
     cancelledAt: Date | null;
+    checkoutLastSeenAt: Date | null;
     confirmedAt: Date | null;
     createdAt: Date;
     createdByUserId: string | null;
@@ -217,6 +219,7 @@ export function bookingFromPrismaRecord(record: PrismaBookingRecord) {
     calendarBlockId: record.calendarBlockId,
     cancelledAt: record.cancelledAt,
     cancellationPolicySnapshot: record.cancellationPolicySnapshot ?? null,
+    checkoutLastSeenAt: record.checkoutLastSeenAt,
     confirmedAt: record.confirmedAt,
     createdAt: record.createdAt,
     createdByUserId: record.createdByUserId,
@@ -306,6 +309,9 @@ export function bookingToPrismaWriteModel(
       cancellationPolicySnapshot: snapshot.cancellationPolicySnapshot,
       cancellationPolicyVersionId:
         snapshot.cancellationPolicySnapshot?.versionId ?? null,
+      checkoutLastSeenAt: snapshot.checkoutLastSeenAt
+        ? new Date(snapshot.checkoutLastSeenAt)
+        : null,
       confirmedAt: snapshot.confirmedAt ? new Date(snapshot.confirmedAt) : null,
       createdAt: new Date(snapshot.createdAt),
       createdByUserId: snapshot.createdByUserId,

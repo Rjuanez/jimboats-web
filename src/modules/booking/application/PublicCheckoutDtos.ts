@@ -52,6 +52,15 @@ export type ExitPublicBookingCheckoutResultDto = {
   bookingId: string | null;
 };
 
+export type RecordPublicBookingCheckoutHeartbeatCommand = {
+  providerSessionId: string;
+};
+
+export type RecordPublicBookingCheckoutHeartbeatResultDto = {
+  action: "IGNORED" | "RECORDED";
+  bookingId: string | null;
+};
+
 export type HandleDepositPaymentWebhookCommand = {
   rawBody: string;
   signature: string | null;

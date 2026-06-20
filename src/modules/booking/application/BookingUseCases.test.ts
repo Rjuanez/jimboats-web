@@ -10,6 +10,7 @@ import { CreatePublicBookingCheckoutUseCase } from "./CreatePublicBookingCheckou
 import { ExitPublicBookingCheckoutUseCase } from "./ExitPublicBookingCheckoutUseCase";
 import { GetAdminBookingsWorkspaceUseCase } from "./GetAdminBookingsWorkspaceUseCase";
 import { HandleDepositPaymentWebhookUseCase } from "./HandleDepositPaymentWebhookUseCase";
+import { RecordPublicBookingCheckoutHeartbeatUseCase } from "./RecordPublicBookingCheckoutHeartbeatUseCase";
 import { ReleaseExpiredBookingHoldsUseCase } from "./ReleaseExpiredBookingHoldsUseCase";
 import type { BookingIdGenerator } from "./ports/BookingIdGenerator";
 import type {
@@ -26,6 +27,7 @@ import type {
   DepositPaymentFailedPersistence,
   DepositPaymentSucceededPersistence,
   PaymentHoldReleasedPersistence,
+  PaymentHoldHeartbeatPersistence,
   PublicPendingBookingPersistence,
 } from "./ports/BookingRepository";
 import type {
@@ -466,6 +468,69 @@ describe("Booking use cases", () => {
     });
   });
 
+  it("releases inactive payment holds before creating a new public checkout", async () => {
+    const dependencies = createDependencies();
+    await new CreatePublicBookingCheckoutUseCase(
+      dependencies.bookings,
+      dependencies.ids,
+      dependencies.clock,
+      dependencies.paymentProvider,
+    ).execute(createPublicCheckoutCommand());
+    dependencies.bookings.advanceClock(new Date("2026-06-01T10:02:01.000Z"));
+    dependencies.bookings.setOverlaps([
+      {
+        id: "calendar-booking-1",
+        protectedEndAt: new Date("2026-06-10T12:30:00.000Z"),
+        protectedStartAt: new Date("2026-06-10T07:30:00.000Z"),
+      },
+    ]);
+
+    const result = await new CreatePublicBookingCheckoutUseCase(
+      dependencies.bookings,
+      dependencies.ids,
+      dependencies.clock,
+      dependencies.paymentProvider,
+      undefined,
+      undefined,
+      new ReleaseExpiredBookingHoldsUseCase(
+        dependencies.bookings,
+        dependencies.clock,
+      ),
+    ).execute(createPublicCheckoutCommand());
+
+    expect(result.bookingId).toBe("booking-1");
+    expect(dependencies.bookings.releasedHolds[0]?.booking.toSnapshot()).toMatchObject({
+      status: "EXPIRED",
+    });
+  });
+
+  it("records public checkout heartbeat while payment is pending", async () => {
+    const dependencies = createDependencies();
+    await new CreatePublicBookingCheckoutUseCase(
+      dependencies.bookings,
+      dependencies.ids,
+      dependencies.clock,
+      dependencies.paymentProvider,
+    ).execute(createPublicCheckoutCommand());
+    dependencies.bookings.advanceClock(new Date("2026-06-01T10:01:00.000Z"));
+
+    const result = await new RecordPublicBookingCheckoutHeartbeatUseCase(
+      dependencies.bookings,
+      dependencies.clock,
+    ).execute({
+      providerSessionId: "cs_test_123",
+    });
+
+    expect(result).toEqual({
+      action: "RECORDED",
+      bookingId: "booking-1",
+    });
+    expect(dependencies.bookings.heartbeats[0]?.booking.toSnapshot()).toMatchObject({
+      checkoutLastSeenAt: "2026-06-01T10:01:00.000Z",
+      status: "PENDING_PAYMENT",
+    });
+  });
+
   it("marks pending public checkout holds as exited", async () => {
     const dependencies = createDependencies();
     await new CreatePublicBookingCheckoutUseCase(
@@ -686,6 +751,7 @@ class InMemoryBookingRepository implements BookingRepository {
   cancelled: AdminCancelledBookingPersistence | null = null;
   depositFailed: DepositPaymentFailedPersistence | null = null;
   depositSucceeded: DepositPaymentSucceededPersistence | null = null;
+  heartbeats: PaymentHoldHeartbeatPersistence[] = [];
   publicPending: PublicPendingBookingPersistence | null = null;
   releasedHolds: PaymentHoldReleasedPersistence[] = [];
   saved: AdminCreatedBookingPersistence | null = null;
@@ -759,15 +825,25 @@ class InMemoryBookingRepository implements BookingRepository {
     return booking ? { booking, paymentRecord } : null;
   }
 
-  async findExpiredPaymentHolds(input: { limit: number; now: Date }) {
+  async findExpiredPaymentHolds(input: {
+    inactiveSince?: Date;
+    limit: number;
+    now: Date;
+  }) {
     return [...this.bookings.values()]
       .filter((booking) => {
         const snapshot = booking.toSnapshot();
+        const expiredByLimit =
+          snapshot.holdExpiresAt !== null &&
+          new Date(snapshot.holdExpiresAt) <= input.now;
+        const expiredByInactivity =
+          input.inactiveSince !== undefined &&
+          (snapshot.checkoutLastSeenAt === null ||
+            new Date(snapshot.checkoutLastSeenAt) <= input.inactiveSince);
 
         return (
           snapshot.status === "PENDING_PAYMENT" &&
-          snapshot.holdExpiresAt !== null &&
-          new Date(snapshot.holdExpiresAt) <= input.now
+          (expiredByLimit || expiredByInactivity)
         );
       })
       .slice(0, input.limit)
@@ -881,6 +957,19 @@ class InMemoryBookingRepository implements BookingRepository {
     this.paymentRecords.set(input.paymentRecord.id, input.paymentRecord);
 
     return "RELEASED" as const;
+  }
+
+  async savePaymentHoldHeartbeat(input: PaymentHoldHeartbeatPersistence) {
+    const current = this.bookings.get(input.booking.id);
+
+    if (current?.status !== "PENDING_PAYMENT") {
+      return "SKIPPED" as const;
+    }
+
+    this.heartbeats.push(input);
+    this.bookings.set(input.booking.id, input.booking);
+
+    return "RECORDED" as const;
   }
 
   async markCalendarSyncFailed(input: {

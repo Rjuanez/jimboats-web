@@ -4,6 +4,8 @@ import { loadStripe } from "@stripe/stripe-js";
 import type { StripeEmbeddedCheckout } from "@stripe/stripe-js";
 import { useEffect, useId, useMemo, useRef } from "react";
 
+const checkoutHeartbeatIntervalMs = 30_000;
+
 type PublicBookingEmbeddedCheckoutProps = {
   checkoutClientSecret: string;
   checkoutSessionId: string | null;
@@ -66,9 +68,6 @@ export function PublicBookingEmbeddedCheckout({
 
     return () => {
       cancelled = true;
-      if (checkoutSessionId && !completedRef.current) {
-        notifyCheckoutExited(checkoutSessionId);
-      }
       mountedCheckout?.destroy();
     };
   }, [
@@ -78,6 +77,43 @@ export function PublicBookingEmbeddedCheckout({
     returnPath,
     stripePromise,
   ]);
+
+  useEffect(() => {
+    if (!checkoutSessionId) {
+      return;
+    }
+
+    notifyCheckoutHeartbeat(checkoutSessionId);
+    const heartbeatInterval = window.setInterval(() => {
+      if (!completedRef.current) {
+        notifyCheckoutHeartbeat(checkoutSessionId);
+      }
+    }, checkoutHeartbeatIntervalMs);
+
+    return () => {
+      window.clearInterval(heartbeatInterval);
+    };
+  }, [checkoutSessionId]);
+
+  useEffect(() => {
+    if (!checkoutSessionId) {
+      return;
+    }
+
+    const activeCheckoutSessionId = checkoutSessionId;
+
+    function notifyExitWhenLeavingPage() {
+      if (!completedRef.current) {
+        notifyCheckoutExited(activeCheckoutSessionId);
+      }
+    }
+
+    window.addEventListener("pagehide", notifyExitWhenLeavingPage);
+
+    return () => {
+      window.removeEventListener("pagehide", notifyExitWhenLeavingPage);
+    };
+  }, [checkoutSessionId]);
 
   return (
     <section
@@ -91,6 +127,20 @@ export function PublicBookingEmbeddedCheckout({
 }
 
 function notifyCheckoutExited(checkoutSessionId: string) {
+  notifyCheckoutEndpoint(
+    "/api/public-booking/checkout-exit",
+    checkoutSessionId,
+  );
+}
+
+function notifyCheckoutHeartbeat(checkoutSessionId: string) {
+  notifyCheckoutEndpoint(
+    "/api/public-booking/checkout-heartbeat",
+    checkoutSessionId,
+  );
+}
+
+function notifyCheckoutEndpoint(endpoint: string, checkoutSessionId: string) {
   const payload = JSON.stringify({
     providerSessionId: checkoutSessionId,
   });
@@ -100,12 +150,12 @@ function notifyCheckoutExited(checkoutSessionId: string) {
       type: "application/json",
     });
 
-    navigator.sendBeacon("/api/public-booking/checkout-exit", body);
+    navigator.sendBeacon(endpoint, body);
     return;
   }
 
   try {
-    void fetch("/api/public-booking/checkout-exit", {
+    void fetch(endpoint, {
       body: payload,
       cache: "no-store",
       headers: {
@@ -115,6 +165,6 @@ function notifyCheckoutExited(checkoutSessionId: string) {
       method: "POST",
     }).catch(() => undefined);
   } catch {
-    // Best-effort exit signal; checkout teardown must never block the page.
+    // Best-effort checkout signal; teardown and heartbeat must never block UI.
   }
 }

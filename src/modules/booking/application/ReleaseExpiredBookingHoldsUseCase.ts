@@ -3,6 +3,8 @@ import type { ReleaseCouponRedemptionUseCase } from "@/modules/coupons/applicati
 import type { BookingClock } from "./ports/BookingClock";
 import type { BookingRepository } from "./ports/BookingRepository";
 
+const checkoutHeartbeatTimeoutMs = 2 * 60_000;
+
 export type ReleaseExpiredBookingHoldsResultDto = {
   expiredBookingIds: string[];
 };
@@ -20,6 +22,7 @@ export class ReleaseExpiredBookingHoldsUseCase {
   }): Promise<ReleaseExpiredBookingHoldsResultDto> {
     const now = input.now ?? this.clock.now();
     const expiredHolds = await this.bookings.findExpiredPaymentHolds({
+      inactiveSince: new Date(now.getTime() - checkoutHeartbeatTimeoutMs),
       limit: input.limit,
       now,
     });

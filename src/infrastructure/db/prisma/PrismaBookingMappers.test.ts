@@ -111,6 +111,7 @@ export function bookingRecord(
     cancelledAt: null,
     cashRemainingAmountMinor: 1_190_00,
     cashRemainingCurrency: "EUR",
+    checkoutLastSeenAt: null,
     confirmedAt: new Date("2026-06-01T10:00:00.000Z"),
     createdAt: new Date("2026-06-01T10:00:00.000Z"),
     createdByUserId: "admin-user",

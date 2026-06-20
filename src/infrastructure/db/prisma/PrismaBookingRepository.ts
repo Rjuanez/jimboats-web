@@ -12,6 +12,7 @@ import type {
   DepositPaymentFailedPersistence,
   DepositPaymentSucceededPersistence,
   PaymentHoldReleasedPersistence,
+  PaymentHoldHeartbeatPersistence,
   PaymentProviderEventWriteModel,
   PublicPendingBookingPersistence,
 } from "@/modules/booking/application/ports/BookingRepository";
@@ -379,7 +380,32 @@ export class PrismaBookingRepository implements BookingRepository {
     };
   }
 
-  async findExpiredPaymentHolds(input: { limit: number; now: Date }) {
+  async findExpiredPaymentHolds(input: {
+    inactiveSince?: Date;
+    limit: number;
+    now: Date;
+  }) {
+    const expirationFilters: Array<Record<string, unknown>> = [
+      {
+        holdExpiresAt: {
+          lte: input.now,
+        },
+      },
+    ];
+
+    if (input.inactiveSince) {
+      expirationFilters.push(
+        {
+          checkoutLastSeenAt: {
+            lte: input.inactiveSince,
+          },
+        },
+        {
+          checkoutLastSeenAt: null,
+        },
+      );
+    }
+
     const records = await this.prisma.booking.findMany({
       include: bookingInclude,
       orderBy: {
@@ -387,9 +413,7 @@ export class PrismaBookingRepository implements BookingRepository {
       },
       take: input.limit,
       where: {
-        holdExpiresAt: {
-          lte: input.now,
-        },
+        OR: expirationFilters,
         status: "PENDING_PAYMENT",
       },
     });
@@ -701,6 +725,7 @@ export class PrismaBookingRepository implements BookingRepository {
 
         await transaction.booking.update({
           data: {
+            checkoutLastSeenAt: null,
             confirmedAt: booking.confirmedAt
               ? new Date(booking.confirmedAt)
               : null,
@@ -770,6 +795,7 @@ export class PrismaBookingRepository implements BookingRepository {
 
         await transaction.booking.update({
           data: {
+            checkoutLastSeenAt: null,
             holdExpiresAt: booking.holdExpiresAt
               ? new Date(booking.holdExpiresAt)
               : null,
@@ -825,6 +851,7 @@ export class PrismaBookingRepository implements BookingRepository {
           holdExpiresAt: booking.holdExpiresAt
             ? new Date(booking.holdExpiresAt)
             : null,
+          checkoutLastSeenAt: null,
           status: booking.status,
           updatedAt: new Date(booking.updatedAt),
         },
@@ -862,6 +889,27 @@ export class PrismaBookingRepository implements BookingRepository {
       });
 
       return "RELEASED" as const;
+    });
+  }
+
+  async savePaymentHoldHeartbeat(input: PaymentHoldHeartbeatPersistence) {
+    const booking = input.booking.toSnapshot();
+
+    return this.prisma.$transaction(async (transaction) => {
+      const updatedBookings = await transaction.booking.updateMany({
+        data: {
+          checkoutLastSeenAt: input.seenAt,
+          updatedAt: new Date(booking.updatedAt),
+        },
+        where: {
+          id: booking.id,
+          status: "PENDING_PAYMENT",
+        },
+      });
+
+      return updatedBookings.count > 0
+        ? ("RECORDED" as const)
+        : ("SKIPPED" as const);
     });
   }
 

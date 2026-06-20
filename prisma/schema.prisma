@@ -590,6 +590,7 @@ model Booking {
   cancellationPolicyVersionId String?                        @map("cancellation_policy_version_id")
   cancellationPolicySnapshot  Json?                          @map("cancellation_policy_snapshot")
   holdExpiresAt               DateTime?                      @map("hold_expires_at") @db.Timestamptz(3)
+  checkoutLastSeenAt          DateTime?                      @map("checkout_last_seen_at") @db.Timestamptz(3)
   confirmedAt                 DateTime?                      @map("confirmed_at") @db.Timestamptz(3)
   cancelledAt                 DateTime?                      @map("cancelled_at") @db.Timestamptz(3)
   internalNotes               String                         @default("") @map("internal_notes")
@@ -607,6 +608,7 @@ model Booking {
   couponRedemptions           CouponRedemption[]
 
   @@index([status], map: "bookings_status_idx")
+  @@index([status, holdExpiresAt, checkoutLastSeenAt], map: "bookings_payment_hold_expiration_idx")
   @@index([experienceId], map: "bookings_experience_id_idx")
   @@index([cancellationPolicyVersionId], map: "bookings_cancellation_policy_version_id_idx")
   @@index([customerEmail], map: "bookings_customer_email_idx")

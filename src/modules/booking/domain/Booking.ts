@@ -20,6 +20,7 @@ export type BookingProps = {
   calendarBlockId: string;
   cancelledAt: Date | null;
   cancellationPolicySnapshot?: BookingCancellationPolicySnapshot | null;
+  checkoutLastSeenAt: Date | null;
   confirmedAt: Date | null;
   createdAt: Date;
   createdByUserId: string | null;
@@ -43,6 +44,7 @@ export type BookingSnapshot = {
   calendarBlockId: string;
   cancelledAt: string | null;
   cancellationPolicySnapshot: BookingCancellationPolicySnapshot | null;
+  checkoutLastSeenAt: string | null;
   confirmedAt: string | null;
   createdAt: string;
   createdByUserId: string | null;
@@ -160,6 +162,10 @@ export class Booking {
     assertDate(input.createdAt, "Booking creation date is invalid.");
     assertDate(input.updatedAt, "Booking update date is invalid.");
     assertNullableDate(input.cancelledAt, "Booking cancellation date is invalid.");
+    assertNullableDate(
+      input.checkoutLastSeenAt,
+      "Booking checkout heartbeat date is invalid.",
+    );
     assertNullableDate(input.holdExpiresAt, "Booking hold expiration is invalid.");
 
     return new Booking({
@@ -196,6 +202,7 @@ export class Booking {
       calendarBlockId: input.calendarBlockId,
       cancelledAt: null,
       cancellationPolicySnapshot: input.cancellationPolicySnapshot ?? null,
+      checkoutLastSeenAt: null,
       confirmedAt: input.createdAt,
       createdAt: input.createdAt,
       createdByUserId: input.createdByUserId,
@@ -235,6 +242,7 @@ export class Booking {
       calendarBlockId: input.calendarBlockId,
       cancelledAt: null,
       cancellationPolicySnapshot: input.cancellationPolicySnapshot ?? null,
+      checkoutLastSeenAt: input.createdAt,
       confirmedAt: null,
       createdAt: input.createdAt,
       createdByUserId: null,
@@ -309,6 +317,7 @@ export class Booking {
     return Booking.create({
       ...this.props,
       confirmedAt: input.confirmedAt,
+      checkoutLastSeenAt: null,
       holdExpiresAt: null,
       status: "CONFIRMED",
       updatedAt: input.confirmedAt,
@@ -320,6 +329,7 @@ export class Booking {
 
     return Booking.create({
       ...this.props,
+      checkoutLastSeenAt: null,
       holdExpiresAt: null,
       status: "PAYMENT_FAILED",
       updatedAt: input.failedAt,
@@ -331,6 +341,7 @@ export class Booking {
 
     return Booking.create({
       ...this.props,
+      checkoutLastSeenAt: null,
       holdExpiresAt: null,
       status: "EXPIRED",
       updatedAt: input.expiredAt,
@@ -342,9 +353,20 @@ export class Booking {
 
     return Booking.create({
       ...this.props,
+      checkoutLastSeenAt: null,
       holdExpiresAt: null,
       status: "EXITED",
       updatedAt: input.exitedAt,
+    });
+  }
+
+  touchPaymentHoldHeartbeat(input: { seenAt: Date }) {
+    assertPendingPayment(this.props.status);
+
+    return Booking.create({
+      ...this.props,
+      checkoutLastSeenAt: input.seenAt,
+      updatedAt: input.seenAt,
     });
   }
 
@@ -362,6 +384,7 @@ export class Booking {
             })),
           }
         : null,
+      checkoutLastSeenAt: this.props.checkoutLastSeenAt?.toISOString() ?? null,
       confirmedAt: this.props.confirmedAt?.toISOString() ?? null,
       createdAt: this.props.createdAt.toISOString(),
       createdByUserId: this.props.createdByUserId,

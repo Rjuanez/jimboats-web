@@ -37,6 +37,7 @@ describe("Booking domain", () => {
     const booking = createPublicPendingBooking({ holdExpiresAt });
 
     expect(booking.toSnapshot()).toMatchObject({
+      checkoutLastSeenAt: "2026-06-01T10:00:00.000Z",
       confirmedAt: null,
       createdByUserId: null,
       holdExpiresAt: holdExpiresAt.toISOString(),
@@ -52,9 +53,23 @@ describe("Booking domain", () => {
     });
 
     expect(booking.toSnapshot()).toMatchObject({
+      checkoutLastSeenAt: null,
       confirmedAt: confirmedAt.toISOString(),
       holdExpiresAt: null,
       status: "CONFIRMED",
+    });
+  });
+
+  it("records a checkout heartbeat while payment is pending", () => {
+    const seenAt = new Date("2026-06-01T10:01:30.000Z");
+    const booking = createPublicPendingBooking().touchPaymentHoldHeartbeat({
+      seenAt,
+    });
+
+    expect(booking.toSnapshot()).toMatchObject({
+      checkoutLastSeenAt: seenAt.toISOString(),
+      status: "PENDING_PAYMENT",
+      updatedAt: seenAt.toISOString(),
     });
   });
 
@@ -65,6 +80,7 @@ describe("Booking domain", () => {
     });
 
     expect(booking.toSnapshot()).toMatchObject({
+      checkoutLastSeenAt: null,
       holdExpiresAt: null,
       status: "EXPIRED",
       updatedAt: expiredAt.toISOString(),
@@ -78,6 +94,7 @@ describe("Booking domain", () => {
     });
 
     expect(booking.toSnapshot()).toMatchObject({
+      checkoutLastSeenAt: null,
       holdExpiresAt: null,
       status: "EXITED",
       updatedAt: exitedAt.toISOString(),
@@ -97,6 +114,7 @@ describe("Booking domain", () => {
       Booking.create({
         calendarBlockId: "calendar-block-1",
         cancelledAt: null,
+        checkoutLastSeenAt: now,
         confirmedAt: null,
         createdAt: now,
         createdByUserId: null,
@@ -314,6 +332,7 @@ function createBooking(patch: Partial<Parameters<typeof Booking.create>[0]> = {}
   return Booking.create({
     calendarBlockId: "calendar-block-1",
     cancelledAt: null,
+    checkoutLastSeenAt: null,
     confirmedAt: now,
     createdAt: now,
     createdByUserId: "admin-user",

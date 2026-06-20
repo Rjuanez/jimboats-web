@@ -100,6 +100,7 @@ function createBooking(
   return Booking.create({
     calendarBlockId: "block-booking-1",
     cancelledAt: null,
+    checkoutLastSeenAt: null,
     confirmedAt: createdAt,
     createdAt,
     createdByUserId: "admin-user",

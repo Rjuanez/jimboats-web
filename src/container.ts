@@ -33,6 +33,7 @@ import { GetPublicBookingPageUseCase } from "@/modules/booking/application/GetPu
 import { GetPublicBookingCheckoutReturnUseCase } from "@/modules/booking/application/GetPublicBookingCheckoutReturnUseCase";
 import { HandleDepositPaymentWebhookUseCase } from "@/modules/booking/application/HandleDepositPaymentWebhookUseCase";
 import { IssueBookingAccessLinkUseCase } from "@/modules/booking/application/IssueBookingAccessLinkUseCase";
+import { RecordPublicBookingCheckoutHeartbeatUseCase } from "@/modules/booking/application/RecordPublicBookingCheckoutHeartbeatUseCase";
 import { ReconcileBookingCalendarSyncUseCase } from "@/modules/booking/application/ReconcileBookingCalendarSyncUseCase";
 import { ReleaseExpiredBookingHoldsUseCase } from "@/modules/booking/application/ReleaseExpiredBookingHoldsUseCase";
 import { SaveCancellationPolicyUseCase } from "@/modules/booking/application/SaveCancellationPolicyUseCase";
@@ -49,6 +50,7 @@ import type {
   GetPublicBookingCheckoutReturnQuery,
   HandleDepositPaymentWebhookCommand,
   PreviewPublicBookingCouponCommand,
+  RecordPublicBookingCheckoutHeartbeatCommand,
 } from "@/modules/booking/application/PublicCheckoutDtos";
 import type {
   ChangeAdminCouponStatusCommand,
@@ -455,6 +457,11 @@ export function getContainer() {
       bookingClock,
       releaseCouponRedemptionUseCase,
     );
+  const recordPublicBookingCheckoutHeartbeatUseCase =
+    new RecordPublicBookingCheckoutHeartbeatUseCase(
+      bookingRepository,
+      bookingClock,
+    );
   const getAdminCancellationPoliciesWorkspaceUseCase =
     new GetAdminCancellationPoliciesWorkspaceUseCase(
       cancellationPolicyRepository,
@@ -694,6 +701,9 @@ export function getContainer() {
           now: bookingClock.now(),
           subtotalAmountMinor: command.subtotalAmountMinor,
         }),
+      recordCheckoutHeartbeat: (
+        command: RecordPublicBookingCheckoutHeartbeatCommand,
+      ) => recordPublicBookingCheckoutHeartbeatUseCase.execute(command),
       viewBooking: (query: ViewBookingByAccessTokenQuery) =>
         viewBookingByAccessTokenUseCase.execute(query),
     },

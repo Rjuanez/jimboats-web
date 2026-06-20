@@ -221,6 +221,13 @@ export type PaymentHoldReleasedPersistence = {
 
 export type PaymentHoldReleasedPersistenceResult = "RELEASED" | "SKIPPED";
 
+export type PaymentHoldHeartbeatPersistence = {
+  booking: Booking;
+  seenAt: Date;
+};
+
+export type PaymentHoldHeartbeatPersistenceResult = "RECORDED" | "SKIPPED";
+
 export type BookingCalendarOverlapReadModel = {
   id: string;
   protectedEndAt: Date;
@@ -248,6 +255,7 @@ export type BookingRepository = {
     providerSessionId: string,
   ): Promise<BookingPaymentReadModel | null>;
   findExpiredPaymentHolds(input: {
+    inactiveSince?: Date;
     limit: number;
     now: Date;
   }): Promise<BookingPaymentReadModel[]>;
@@ -273,6 +281,9 @@ export type BookingRepository = {
   savePaymentHoldReleased(
     input: PaymentHoldReleasedPersistence,
   ): Promise<PaymentHoldReleasedPersistenceResult>;
+  savePaymentHoldHeartbeat(
+    input: PaymentHoldHeartbeatPersistence,
+  ): Promise<PaymentHoldHeartbeatPersistenceResult>;
   savePublicPendingBooking(input: PublicPendingBookingPersistence): Promise<void>;
   markCalendarSyncFailed(input: {
     bookingId: string;

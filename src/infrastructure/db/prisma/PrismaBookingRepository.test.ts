@@ -369,6 +369,80 @@ describe("PrismaBookingRepository", () => {
     });
   });
 
+  it("loads inactive public payment holds and records checkout heartbeats", async () => {
+    const client = new InMemoryBookingClient();
+    const repository = new PrismaBookingRepository(client);
+    const persistence = createPersistence();
+    const pendingBooking = bookingFromPrismaRecord(
+      bookingRecord({
+        checkoutLastSeenAt: new Date("2026-06-01T10:00:00.000Z"),
+        confirmedAt: null,
+        holdExpiresAt: new Date("2026-06-01T10:30:00.000Z"),
+        source: "PUBLIC_CHECKOUT",
+        status: "PENDING_PAYMENT",
+      }),
+    );
+    const paymentRecord = PaymentRecord.createStripePendingDeposit({
+      amount: Money.create({ amountMinor: 10_000, currency: "EUR" }),
+      bookingId: "booking-1",
+      createdAt: new Date("2026-06-01T10:00:00.000Z"),
+      id: "payment-1",
+    });
+
+    await repository.savePublicPendingBooking({
+      booking: pendingBooking,
+      calendarBlock: {
+        ...persistence.calendarBlock,
+        expiresAt: new Date("2026-06-01T10:30:00.000Z"),
+        source: "BOOKING_HOLD",
+      },
+      extraLineIds: new Map(),
+      notificationPreferences: {
+        toSnapshot: () => ({
+          consentCapturedAt: "2026-06-01T10:00:00.000Z",
+          consentNotes: "test",
+          consentSource: "CHECKOUT" as const,
+          email: {
+            consentStatus: "GRANTED" as const,
+            destination: "sailor@example.com",
+            enabled: true,
+          },
+          preferredLocale: "en" as const,
+          whatsapp: {
+            consentStatus: "NOT_ASKED" as const,
+            destination: null,
+            enabled: false,
+          },
+        }),
+      } as never,
+      paymentRecord,
+    });
+
+    await expect(
+      repository.findExpiredPaymentHolds({
+        inactiveSince: new Date("2026-06-01T10:02:00.000Z"),
+        limit: 10,
+        now: new Date("2026-06-01T10:02:00.000Z"),
+      }),
+    ).resolves.toHaveLength(1);
+
+    const touched = pendingBooking.touchPaymentHoldHeartbeat({
+      seenAt: new Date("2026-06-01T10:01:30.000Z"),
+    });
+
+    await expect(
+      repository.savePaymentHoldHeartbeat({
+        booking: touched,
+        seenAt: new Date("2026-06-01T10:01:30.000Z"),
+      }),
+    ).resolves.toBe("RECORDED");
+    const loaded = await repository.findById("booking-1");
+
+    expect(loaded?.toSnapshot()).toMatchObject({
+      checkoutLastSeenAt: "2026-06-01T10:01:30.000Z",
+    });
+  });
+
   it("skips payment hold release when a payment race already changed status", async () => {
     const client = new InMemoryBookingClient();
     const repository = new PrismaBookingRepository(client);
@@ -566,8 +640,28 @@ class InMemoryBookingClient implements PrismaBookingRepositoryClient {
         extras: [],
       });
     },
-    findMany: async () => {
-      return [...this.records.values()].map((record) => this.hydrate(record.id)!);
+    findMany: async (
+      args: Parameters<PrismaBookingRepositoryClient["booking"]["findMany"]>[0],
+    ) => {
+      const criteria = readObject(args.where);
+      const orFilters = Array.isArray(criteria.OR) ? criteria.OR : [];
+
+      return [...this.records.values()]
+        .filter((record) => {
+          if (criteria.status && record.status !== criteria.status) {
+            return false;
+          }
+
+          if (orFilters.length === 0) {
+            return true;
+          }
+
+          return orFilters.some((filter) =>
+            bookingMatchesFilter(record, readObject(filter)),
+          );
+        })
+        .slice(0, args.take ?? undefined)
+        .map((record) => this.hydrate(record.id)!);
     },
     findUnique: async (
       args: Parameters<PrismaBookingRepositoryClient["booking"]["findUnique"]>[0],
@@ -932,6 +1026,33 @@ function readStringArrayFilter(input: unknown, property: string) {
   return Array.isArray(value)
     ? value.filter((item): item is string => typeof item === "string")
     : [];
+}
+
+function bookingMatchesFilter(
+  record: PrismaBookingRecord,
+  filter: Record<string, unknown>,
+) {
+  if ("checkoutLastSeenAt" in filter) {
+    if (filter.checkoutLastSeenAt === null) {
+      return record.checkoutLastSeenAt === null;
+    }
+
+    const lte = readObject(filter.checkoutLastSeenAt).lte;
+
+    return lte instanceof Date && record.checkoutLastSeenAt !== null
+      ? record.checkoutLastSeenAt <= lte
+      : false;
+  }
+
+  if ("holdExpiresAt" in filter) {
+    const lte = readObject(filter.holdExpiresAt).lte;
+
+    return lte instanceof Date && record.holdExpiresAt !== null
+      ? record.holdExpiresAt <= lte
+      : false;
+  }
+
+  return true;
 }
 
 function readObject(input: unknown): Record<string, unknown> {
