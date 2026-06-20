@@ -71,6 +71,19 @@ describe("Booking domain", () => {
     });
   });
 
+  it("marks pending public booking holds as exited", () => {
+    const exitedAt = new Date("2026-06-01T10:12:00.000Z");
+    const booking = createPublicPendingBooking().exitPaymentHold({
+      exitedAt,
+    });
+
+    expect(booking.toSnapshot()).toMatchObject({
+      holdExpiresAt: null,
+      status: "EXITED",
+      updatedAt: exitedAt.toISOString(),
+    });
+  });
+
   it("rejects public pending bookings without a hold expiration", () => {
     const now = new Date("2026-06-01T10:00:00.000Z");
     const paymentRecord = PaymentRecord.createStripePendingDeposit({

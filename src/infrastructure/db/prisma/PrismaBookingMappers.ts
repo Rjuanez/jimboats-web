@@ -120,7 +120,13 @@ export type PrismaBookingWriteModel = {
     selectedSlotKey: string | null;
     selectedStartMinutes: number;
     source: "BACKPANEL" | "PUBLIC_CHECKOUT";
-    status: "CANCELLED" | "CONFIRMED" | "EXPIRED" | "PAYMENT_FAILED" | "PENDING_PAYMENT";
+    status:
+      | "CANCELLED"
+      | "CONFIRMED"
+      | "EXPIRED"
+      | "EXITED"
+      | "PAYMENT_FAILED"
+      | "PENDING_PAYMENT";
     subtotalAmountMinor: number;
     subtotalCurrency: CurrencyCode;
     timeZone: string;
@@ -492,6 +498,7 @@ function bookingStatusFromPrisma(value: string) {
     value === "PENDING_PAYMENT" ||
     value === "CONFIRMED" ||
     value === "EXPIRED" ||
+    value === "EXITED" ||
     value === "PAYMENT_FAILED" ||
     value === "CANCELLED"
   ) {

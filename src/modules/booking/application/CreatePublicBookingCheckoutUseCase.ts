@@ -10,6 +10,7 @@ import type { BookingRepository } from "./ports/BookingRepository";
 import type { BookingCalendarBlockWriteModel } from "./ports/BookingRepository";
 import type { CancellationPolicyRepository } from "./ports/CancellationPolicyRepository";
 import type { DepositPaymentProvider } from "./ports/DepositPaymentProvider";
+import type { ReleaseExpiredBookingHoldsUseCase } from "./ReleaseExpiredBookingHoldsUseCase";
 import type { ReserveCouponRedemptionUseCase } from "@/modules/coupons/application/ReserveCouponRedemptionUseCase";
 import type {
   CreatePublicBookingCheckoutCommand,
@@ -31,6 +32,7 @@ export class CreatePublicBookingCheckoutUseCase {
     private readonly paymentProvider: DepositPaymentProvider,
     private readonly cancellationPolicies?: CancellationPolicyRepository,
     private readonly coupons?: ReserveCouponRedemptionUseCase,
+    private readonly expiredHolds?: ReleaseExpiredBookingHoldsUseCase,
   ) {}
 
   async execute(
@@ -55,6 +57,10 @@ export class CreatePublicBookingCheckoutUseCase {
       command,
       experience,
       extraOptions,
+      now,
+    });
+    await this.expiredHolds?.execute({
+      limit: 100,
       now,
     });
     const overlaps = await this.bookings.findActiveCalendarOverlaps(

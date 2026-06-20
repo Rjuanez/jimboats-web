@@ -403,5 +403,9 @@ function statusLabel(status: AdminBookingDto["status"]) {
     return "Expired";
   }
 
+  if (status === "EXITED") {
+    return "Exited checkout";
+  }
+
   return "Cancelled";
 }

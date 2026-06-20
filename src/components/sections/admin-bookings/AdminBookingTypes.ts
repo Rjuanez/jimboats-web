@@ -4,6 +4,7 @@ export type AdminBookingStatus =
   | "cancelled"
   | "confirmed"
   | "expired"
+  | "exited"
   | "payment_failed"
   | "pending_payment";
 

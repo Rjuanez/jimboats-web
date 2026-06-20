@@ -5,6 +5,7 @@ import { getContainer } from "@/container";
 const finalStatuses = new Set([
   "CANCELLED",
   "CONFIRMED",
+  "EXITED",
   "EXPIRED",
   "PAYMENT_FAILED",
 ]);

@@ -25,6 +25,7 @@ import { BackpanelCreateBookingUseCase } from "@/modules/booking/application/Bac
 import { BackpanelIssueBookingAccessLinkUseCase } from "@/modules/booking/application/BackpanelIssueBookingAccessLinkUseCase";
 import { BackpanelUpdateBookingUseCase } from "@/modules/booking/application/BackpanelUpdateBookingUseCase";
 import { CreatePublicBookingCheckoutUseCase } from "@/modules/booking/application/CreatePublicBookingCheckoutUseCase";
+import { ExitPublicBookingCheckoutUseCase } from "@/modules/booking/application/ExitPublicBookingCheckoutUseCase";
 import type { SaveCancellationPolicyCommand } from "@/modules/booking/application/AdminCancellationPolicyDtos";
 import { GetAdminCancellationPoliciesWorkspaceUseCase } from "@/modules/booking/application/GetAdminCancellationPoliciesWorkspaceUseCase";
 import { GetAdminBookingsWorkspaceUseCase } from "@/modules/booking/application/GetAdminBookingsWorkspaceUseCase";
@@ -33,6 +34,7 @@ import { GetPublicBookingCheckoutReturnUseCase } from "@/modules/booking/applica
 import { HandleDepositPaymentWebhookUseCase } from "@/modules/booking/application/HandleDepositPaymentWebhookUseCase";
 import { IssueBookingAccessLinkUseCase } from "@/modules/booking/application/IssueBookingAccessLinkUseCase";
 import { ReconcileBookingCalendarSyncUseCase } from "@/modules/booking/application/ReconcileBookingCalendarSyncUseCase";
+import { ReleaseExpiredBookingHoldsUseCase } from "@/modules/booking/application/ReleaseExpiredBookingHoldsUseCase";
 import { SaveCancellationPolicyUseCase } from "@/modules/booking/application/SaveCancellationPolicyUseCase";
 import { ViewBookingByAccessTokenUseCase } from "@/modules/booking/application/ViewBookingByAccessTokenUseCase";
 import type { ViewBookingByAccessTokenQuery } from "@/modules/booking/application/BookingAccessDtos";
@@ -43,6 +45,7 @@ import type {
 import type { DepositPaymentProvider } from "@/modules/booking/application/ports/DepositPaymentProvider";
 import type {
   CreatePublicBookingCheckoutCommand,
+  ExitPublicBookingCheckoutCommand,
   GetPublicBookingCheckoutReturnQuery,
   HandleDepositPaymentWebhookCommand,
   PreviewPublicBookingCouponCommand,
@@ -273,6 +276,12 @@ export function getContainer() {
   const releaseCouponRedemptionUseCase = new ReleaseCouponRedemptionUseCase(
     couponRepository,
   );
+  const releaseExpiredBookingHoldsUseCase =
+    new ReleaseExpiredBookingHoldsUseCase(
+      bookingRepository,
+      bookingClock,
+      releaseCouponRedemptionUseCase,
+    );
   const getAdminCouponsWorkspaceUseCase = new GetAdminCouponsWorkspaceUseCase(
     couponRepository,
     experienceRepository,
@@ -428,6 +437,7 @@ export function getContainer() {
   const getPublicBookingPageUseCase = new GetPublicBookingPageUseCase(
     publicBookingCatalogReader,
     bookingClock,
+    releaseExpiredBookingHoldsUseCase,
   );
   const createPublicBookingCheckoutUseCase =
     new CreatePublicBookingCheckoutUseCase(
@@ -437,6 +447,13 @@ export function getContainer() {
       depositPaymentProvider,
       cancellationPolicyRepository,
       reserveCouponRedemptionUseCase,
+      releaseExpiredBookingHoldsUseCase,
+    );
+  const exitPublicBookingCheckoutUseCase =
+    new ExitPublicBookingCheckoutUseCase(
+      bookingRepository,
+      bookingClock,
+      releaseCouponRedemptionUseCase,
     );
   const getAdminCancellationPoliciesWorkspaceUseCase =
     new GetAdminCancellationPoliciesWorkspaceUseCase(
@@ -647,12 +664,18 @@ export function getContainer() {
       reconcile: (input: { limit: number }) =>
         reconcileBookingCalendarSyncUseCase.execute(input),
     },
+    bookingHoldExpirationWorker: {
+      releaseExpired: (input: { limit: number }) =>
+        releaseExpiredBookingHoldsUseCase.execute(input),
+    },
     notificationWorker: {
       processNextWork: () => processNextNotificationWorkUseCase.execute(),
     },
     publicBooking: {
       createCheckout: (command: CreatePublicBookingCheckoutCommand) =>
         createPublicBookingCheckoutUseCase.execute(command),
+      exitCheckout: (command: ExitPublicBookingCheckoutCommand) =>
+        exitPublicBookingCheckoutUseCase.execute(command),
       getAvailability: (query: GetPublicBookingAvailabilityQuery) =>
         getPublicBookingPageUseCase.executeAvailability(query),
       getCheckoutReturn: (query: GetPublicBookingCheckoutReturnQuery) =>

@@ -45,6 +45,7 @@ export type BuyerBookingAccessReadModel = {
       | "CANCELLED"
       | "CONFIRMED"
       | "EXPIRED"
+      | "EXITED"
       | "PAYMENT_FAILED"
       | "PENDING_PAYMENT";
     timeZone: string;

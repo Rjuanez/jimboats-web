@@ -374,6 +374,57 @@ export function PublicBookingWorkspace({
     setCouponLoading(false);
   };
 
+  const refreshAvailability = async (experienceId: string) => {
+    const availabilityUrl = `/api/public-booking/availability?locale=${encodeURIComponent(
+      content.locale,
+    )}&experienceId=${encodeURIComponent(experienceId)}`;
+    const response = await fetch(availabilityUrl, {
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      throw new Error("Availability request failed.");
+    }
+
+    const responseBody = (await response.json()) as {
+      availability?: PublicBookingExperienceAvailability;
+    };
+
+    if (!responseBody.availability) {
+      throw new Error("Availability response was empty.");
+    }
+
+    setAvailabilityByExperienceId((current) => ({
+      ...current,
+      [experienceId]: responseBody.availability!,
+    }));
+
+    return responseBody.availability;
+  };
+
+  const selectedSlotIsAvailable = (
+    availability: PublicBookingExperienceAvailability,
+  ) => {
+    if (!selectedDate || !selectedTimeSlot) {
+      return false;
+    }
+
+    return Boolean(
+      availability.timeSlotsByDate[selectedDate.id]?.some(
+        (slot) => slot.id === selectedTimeSlot.id && slot.available,
+      ),
+    );
+  };
+
+  const showSelectedSlotUnavailable = () => {
+    setCheckoutClientSecret(null);
+    setCheckoutSessionId(null);
+    setSelectedTimeSlotId(null);
+    setActiveStep("experience");
+    setFormError(dictionary.booking.errors.slotUnavailable);
+    scrollToBookingSection("public-booking-date-selection");
+  };
+
   const invalidateCoupon = () => {
     setCouponPreview(null);
     setCouponError(null);
@@ -510,6 +561,30 @@ export function PublicBookingWorkspace({
       marketing_consent_enabled: consents.marketing,
     });
 
+    try {
+      const refreshedAvailability = await refreshAvailability(
+        selectedExperience.id,
+      );
+
+      if (!selectedSlotIsAvailable(refreshedAvailability)) {
+        showSelectedSlotUnavailable();
+        setIsSubmittingPayment(false);
+        trackBookingEvent("booking_checkout_failed", {
+          experience_id: selectedExperience.id,
+          reason: "slot_unavailable_before_checkout",
+        });
+        return;
+      }
+    } catch {
+      setFormError(dictionary.booking.experienceStep.availabilityError);
+      setIsSubmittingPayment(false);
+      trackBookingEvent("booking_checkout_failed", {
+        experience_id: selectedExperience.id,
+        reason: "availability_refresh_failed",
+      });
+      return;
+    }
+
     const result = await actions.startCheckout({
       consents,
       couponCode: couponPreview?.code ?? null,
@@ -544,6 +619,22 @@ export function PublicBookingWorkspace({
         guest_count: guestCount,
       });
       scrollToBookingSection("public-booking-embedded-checkout");
+      return;
+    }
+
+    if (result.code === "CALENDAR_BLOCK_OVERLAP") {
+      try {
+        await refreshAvailability(selectedExperience.id);
+      } catch {
+        setAvailabilityErrorExperienceId(selectedExperience.id);
+      }
+
+      showSelectedSlotUnavailable();
+      setIsSubmittingPayment(false);
+      trackBookingEvent("booking_checkout_failed", {
+        experience_id: selectedExperience.id,
+        reason: "slot_unavailable_after_checkout_attempt",
+      });
       return;
     }
 

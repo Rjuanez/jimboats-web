@@ -184,7 +184,7 @@ export class PaymentRecord {
   markCancelled(input: {
     failureReason: string;
     providerPaymentIntentId?: string | null;
-    providerSessionId: string;
+    providerSessionId?: string | null;
   }) {
     return PaymentRecord.create({
       ...this.props,
@@ -192,7 +192,7 @@ export class PaymentRecord {
       paidAt: null,
       providerPaymentIntentId:
         input.providerPaymentIntentId ?? this.props.providerPaymentIntentId,
-      providerSessionId: input.providerSessionId,
+      providerSessionId: input.providerSessionId ?? this.props.providerSessionId,
       status: "CANCELLED",
     });
   }

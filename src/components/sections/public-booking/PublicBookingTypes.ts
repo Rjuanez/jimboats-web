@@ -118,6 +118,7 @@ export type PublicBookingCheckoutActionResult<TData> =
       ok: true;
     }
   | {
+      code?: string;
       message: string;
       ok: false;
     };

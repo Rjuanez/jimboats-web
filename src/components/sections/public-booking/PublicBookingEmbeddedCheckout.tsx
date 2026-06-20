@@ -2,7 +2,7 @@
 
 import { loadStripe } from "@stripe/stripe-js";
 import type { StripeEmbeddedCheckout } from "@stripe/stripe-js";
-import { useEffect, useId, useMemo } from "react";
+import { useEffect, useId, useMemo, useRef } from "react";
 
 type PublicBookingEmbeddedCheckoutProps = {
   checkoutClientSecret: string;
@@ -20,6 +20,7 @@ export function PublicBookingEmbeddedCheckout({
   stripePublishableKey,
 }: PublicBookingEmbeddedCheckoutProps) {
   const checkoutContainerId = useId().replace(/:/g, "");
+  const completedRef = useRef(false);
   const stripePromise = useMemo(
     () => loadStripe(stripePublishableKey),
     [stripePublishableKey],
@@ -43,6 +44,7 @@ export function PublicBookingEmbeddedCheckout({
             return;
           }
 
+          completedRef.current = true;
           window.location.assign(
             `${returnPath}?session_id=${encodeURIComponent(
               checkoutSessionId,
@@ -64,6 +66,9 @@ export function PublicBookingEmbeddedCheckout({
 
     return () => {
       cancelled = true;
+      if (checkoutSessionId && !completedRef.current) {
+        notifyCheckoutExited(checkoutSessionId);
+      }
       mountedCheckout?.destroy();
     };
   }, [
@@ -83,4 +88,33 @@ export function PublicBookingEmbeddedCheckout({
       <div id={checkoutContainerId} />
     </section>
   );
+}
+
+function notifyCheckoutExited(checkoutSessionId: string) {
+  const payload = JSON.stringify({
+    providerSessionId: checkoutSessionId,
+  });
+
+  if (typeof navigator.sendBeacon === "function") {
+    const body = new Blob([payload], {
+      type: "application/json",
+    });
+
+    navigator.sendBeacon("/api/public-booking/checkout-exit", body);
+    return;
+  }
+
+  try {
+    void fetch("/api/public-booking/checkout-exit", {
+      body: payload,
+      cache: "no-store",
+      headers: {
+        "content-type": "application/json",
+      },
+      keepalive: true,
+      method: "POST",
+    }).catch(() => undefined);
+  } catch {
+    // Best-effort exit signal; checkout teardown must never block the page.
+  }
 }

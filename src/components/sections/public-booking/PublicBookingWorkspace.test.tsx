@@ -121,6 +121,7 @@ describe("PublicBookingWorkspace", () => {
 
   it("starts secure checkout with the selected booking details", async () => {
     const user = userEvent.setup();
+    stubAvailabilityRefresh();
     const actions = createActions({
       message: "Stripe is unavailable in this test.",
       ok: false,
@@ -200,6 +201,7 @@ describe("PublicBookingWorkspace", () => {
 
   it("tracks booking funnel events without private customer or payment data", async () => {
     const user = userEvent.setup();
+    stubAvailabilityRefresh();
     const actions = createActions();
     const track = vi.fn();
 
@@ -324,6 +326,7 @@ describe("PublicBookingWorkspace", () => {
 
   it("renders embedded checkout when Stripe creates a client secret", async () => {
     const user = userEvent.setup();
+    stubAvailabilityRefresh();
     const actions = createActions();
 
     render(
@@ -402,6 +405,20 @@ describe("PublicBookingWorkspace", () => {
     );
   });
 });
+
+function stubAvailabilityRefresh() {
+  const content = getPublicBookingMockPage();
+
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async () => ({
+      json: async () => ({
+        availability: content.availabilityByExperienceId["sunset-cruise"],
+      }),
+      ok: true,
+    })),
+  );
+}
 
 function createActions(
   result: Awaited<ReturnType<PublicBookingActions["startCheckout"]>> = {

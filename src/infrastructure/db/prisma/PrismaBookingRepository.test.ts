@@ -289,6 +289,172 @@ describe("PrismaBookingRepository", () => {
     expect(extras).toMatchObject([{ id: "champagne" }]);
     expect(overlaps).toMatchObject([{ id: "block-active" }]);
   });
+
+  it("loads and releases expired public payment holds", async () => {
+    const client = new InMemoryBookingClient();
+    const repository = new PrismaBookingRepository(client);
+    const persistence = createPersistence();
+    const pendingBooking = bookingFromPrismaRecord(
+      bookingRecord({
+        confirmedAt: null,
+        holdExpiresAt: new Date("2026-06-01T10:30:00.000Z"),
+        source: "PUBLIC_CHECKOUT",
+        status: "PENDING_PAYMENT",
+      }),
+    );
+    const paymentRecord = PaymentRecord.createStripePendingDeposit({
+      amount: Money.create({ amountMinor: 10_000, currency: "EUR" }),
+      bookingId: "booking-1",
+      createdAt: new Date("2026-06-01T10:00:00.000Z"),
+      id: "payment-1",
+    });
+
+    await repository.savePublicPendingBooking({
+      booking: pendingBooking,
+      calendarBlock: {
+        ...persistence.calendarBlock,
+        expiresAt: new Date("2026-06-01T10:30:00.000Z"),
+        source: "BOOKING_HOLD",
+      },
+      extraLineIds: new Map(),
+      notificationPreferences: {
+        toSnapshot: () => ({
+          consentCapturedAt: "2026-06-01T10:00:00.000Z",
+          consentNotes: "test",
+          consentSource: "CHECKOUT" as const,
+          email: {
+            consentStatus: "GRANTED" as const,
+            destination: "sailor@example.com",
+            enabled: true,
+          },
+          preferredLocale: "en" as const,
+          whatsapp: {
+            consentStatus: "NOT_ASKED" as const,
+            destination: null,
+            enabled: false,
+          },
+        }),
+      } as never,
+      paymentRecord,
+    });
+
+    const expiredHolds = await repository.findExpiredPaymentHolds({
+      limit: 10,
+      now: new Date("2026-06-01T10:31:00.000Z"),
+    });
+
+    expect(expiredHolds).toHaveLength(1);
+
+    await expect(
+      repository.savePaymentHoldReleased({
+        booking: expiredHolds[0].booking.expirePaymentHold({
+          expiredAt: new Date("2026-06-01T10:31:00.000Z"),
+        }),
+        calendarBlockId: "block-booking-1",
+        paymentRecord: expiredHolds[0].paymentRecord.markCancelled({
+          failureReason: "expired",
+        }),
+        releasedAt: new Date("2026-06-01T10:31:00.000Z"),
+      }),
+    ).resolves.toBe("RELEASED");
+
+    await expect(repository.findById("booking-1")).resolves.toMatchObject({
+      status: "EXPIRED",
+    });
+    expect(client.calendarBlocks[0]).toMatchObject({
+      status: "RELEASED",
+    });
+    expect(client.paymentRecords[0]).toMatchObject({
+      status: "CANCELLED",
+    });
+  });
+
+  it("skips payment hold release when a payment race already changed status", async () => {
+    const client = new InMemoryBookingClient();
+    const repository = new PrismaBookingRepository(client);
+    const persistence = createPersistence();
+    const pendingBooking = bookingFromPrismaRecord(
+      bookingRecord({
+        confirmedAt: null,
+        holdExpiresAt: new Date("2026-06-01T10:30:00.000Z"),
+        source: "PUBLIC_CHECKOUT",
+        status: "PENDING_PAYMENT",
+      }),
+    );
+    const paymentRecord = PaymentRecord.createStripePendingDeposit({
+      amount: Money.create({ amountMinor: 10_000, currency: "EUR" }),
+      bookingId: "booking-1",
+      createdAt: new Date("2026-06-01T10:00:00.000Z"),
+      id: "payment-1",
+    });
+
+    await repository.savePublicPendingBooking({
+      booking: pendingBooking,
+      calendarBlock: {
+        ...persistence.calendarBlock,
+        expiresAt: new Date("2026-06-01T10:30:00.000Z"),
+        source: "BOOKING_HOLD",
+      },
+      extraLineIds: new Map(),
+      notificationPreferences: {
+        toSnapshot: () => ({
+          consentCapturedAt: "2026-06-01T10:00:00.000Z",
+          consentNotes: "test",
+          consentSource: "CHECKOUT" as const,
+          email: {
+            consentStatus: "GRANTED" as const,
+            destination: "sailor@example.com",
+            enabled: true,
+          },
+          preferredLocale: "en" as const,
+          whatsapp: {
+            consentStatus: "NOT_ASKED" as const,
+            destination: null,
+            enabled: false,
+          },
+        }),
+      } as never,
+      paymentRecord,
+    });
+
+    const expiredHolds = await repository.findExpiredPaymentHolds({
+      limit: 10,
+      now: new Date("2026-06-01T10:31:00.000Z"),
+    });
+    await client.booking.update({
+      data: {
+        confirmedAt: new Date("2026-06-01T10:30:30.000Z"),
+        holdExpiresAt: null,
+        status: "CONFIRMED",
+      },
+      where: {
+        id: "booking-1",
+      },
+    });
+
+    await expect(
+      repository.savePaymentHoldReleased({
+        booking: expiredHolds[0].booking.expirePaymentHold({
+          expiredAt: new Date("2026-06-01T10:31:00.000Z"),
+        }),
+        calendarBlockId: "block-booking-1",
+        paymentRecord: expiredHolds[0].paymentRecord.markCancelled({
+          failureReason: "expired",
+        }),
+        releasedAt: new Date("2026-06-01T10:31:00.000Z"),
+      }),
+    ).resolves.toBe("SKIPPED");
+
+    await expect(repository.findById("booking-1")).resolves.toMatchObject({
+      status: "CONFIRMED",
+    });
+    expect(client.calendarBlocks[0]).toMatchObject({
+      status: "ACTIVE",
+    });
+    expect(client.paymentRecords[0]).toMatchObject({
+      status: "PENDING",
+    });
+  });
 });
 
 class InMemoryBookingClient implements PrismaBookingRepositoryClient {
@@ -424,6 +590,28 @@ class InMemoryBookingClient implements PrismaBookingRepositoryClient {
         ...args.data,
       });
     },
+    updateMany: async (
+      args: Parameters<
+        PrismaBookingRepositoryClient["booking"]["updateMany"]
+      >[0],
+    ) => {
+      const record = this.records.get(args.where.id);
+
+      if (!record) {
+        return { count: 0 };
+      }
+
+      if (args.where.status && record.status !== args.where.status) {
+        return { count: 0 };
+      }
+
+      this.records.set(args.where.id, {
+        ...record,
+        ...args.data,
+      });
+
+      return { count: 1 };
+    },
   };
 
   readonly bookingExtra = {
@@ -464,6 +652,14 @@ class InMemoryBookingClient implements PrismaBookingRepositoryClient {
         args.where,
         "providerSessionId",
       );
+      const id = readStringProperty(args.where, "id");
+
+      if (id) {
+        return (
+          this.paymentRecords.find((paymentRecord) => paymentRecord.id === id) ??
+          null
+        );
+      }
 
       return (
         this.paymentRecords.find(

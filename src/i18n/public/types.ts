@@ -24,7 +24,12 @@ export type PublicDictionary = {
     remainingOnboard: string;
     status: string;
     statusLabels: Record<
-      "CANCELLED" | "CONFIRMED" | "EXPIRED" | "PAYMENT_FAILED" | "PENDING_PAYMENT",
+      | "CANCELLED"
+      | "CONFIRMED"
+      | "EXPIRED"
+      | "EXITED"
+      | "PAYMENT_FAILED"
+      | "PENDING_PAYMENT",
       string
     >;
     total: string;
@@ -55,6 +60,7 @@ export type PublicDictionary = {
       missingCustomer: string;
       missingDeliveryChannel: string;
       missingWhatsappPhone: string;
+      slotUnavailable: string;
     };
     experienceStep: {
       availableDates: string;

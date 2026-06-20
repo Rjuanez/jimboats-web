@@ -43,6 +43,15 @@ export type PublicBookingCheckoutDto = {
   reference: string;
 };
 
+export type ExitPublicBookingCheckoutCommand = {
+  providerSessionId: string;
+};
+
+export type ExitPublicBookingCheckoutResultDto = {
+  action: "EXITED" | "IGNORED";
+  bookingId: string | null;
+};
+
 export type HandleDepositPaymentWebhookCommand = {
   rawBody: string;
   signature: string | null;
@@ -70,6 +79,7 @@ export type PublicBookingCheckoutReturnDto = {
     | "CANCELLED"
     | "CONFIRMED"
     | "EXPIRED"
+    | "EXITED"
     | "PAYMENT_FAILED"
     | "PENDING_PAYMENT";
 };

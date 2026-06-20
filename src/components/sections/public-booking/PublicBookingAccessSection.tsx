@@ -70,6 +70,7 @@ export type PublicBookingAccessContent = {
     | "CANCELLED"
     | "CONFIRMED"
     | "EXPIRED"
+    | "EXITED"
     | "PAYMENT_FAILED"
     | "PENDING_PAYMENT";
 };

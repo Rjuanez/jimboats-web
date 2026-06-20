@@ -11,9 +11,11 @@ import type {
   BookingOutboxEventWriteModel,
   DepositPaymentFailedPersistence,
   DepositPaymentSucceededPersistence,
+  PaymentHoldReleasedPersistence,
   PaymentProviderEventWriteModel,
   PublicPendingBookingPersistence,
 } from "@/modules/booking/application/ports/BookingRepository";
+import { ApplicationError } from "@/shared/application/ApplicationError";
 
 import {
   bookingExperienceOptionFromPrismaRecord,
@@ -52,6 +54,14 @@ type BookingUpdateArgs = {
   };
   where: {
     id: string;
+  };
+};
+
+type BookingUpdateManyArgs = {
+  data: BookingUpdateArgs["data"];
+  where: {
+    id: string;
+    status?: string;
   };
 };
 
@@ -149,6 +159,7 @@ type BookingDelegate = {
   findMany(args: BookingFindArgs): Promise<PrismaBookingRecord[]>;
   findUnique(args: BookingFindArgs): Promise<PrismaBookingRecord | null>;
   update(args: BookingUpdateArgs): Promise<unknown>;
+  updateMany(args: BookingUpdateManyArgs): Promise<{ count: number }>;
 };
 
 type BookingExtraDelegate = {
@@ -368,6 +379,42 @@ export class PrismaBookingRepository implements BookingRepository {
     };
   }
 
+  async findExpiredPaymentHolds(input: { limit: number; now: Date }) {
+    const records = await this.prisma.booking.findMany({
+      include: bookingInclude,
+      orderBy: {
+        holdExpiresAt: "asc",
+      },
+      take: input.limit,
+      where: {
+        holdExpiresAt: {
+          lte: input.now,
+        },
+        status: "PENDING_PAYMENT",
+      },
+    });
+    const results = [];
+
+    for (const booking of records) {
+      const paymentRecord = await this.prisma.paymentRecord.findFirst({
+        where: {
+          id: booking.paymentRecordId,
+        },
+      });
+
+      if (!paymentRecord) {
+        continue;
+      }
+
+      results.push({
+        booking: bookingFromPrismaRecord(booking),
+        paymentRecord: paymentRecordFromPrismaRecord(paymentRecord),
+      });
+    }
+
+    return results;
+  }
+
   async listAuditEntriesForBookings(
     bookingIds: string[],
   ): Promise<BookingAuditEntryReadModel[]> {
@@ -528,59 +575,70 @@ export class PrismaBookingRepository implements BookingRepository {
       input.paymentRecord,
     );
 
-    await this.prisma.$transaction(async (transaction) => {
-      await transaction.booking.create({
-        data: {
-          id: bookingWriteModel.id,
-          ...bookingWriteModel.booking,
-        },
-      });
+    try {
+      await this.prisma.$transaction(async (transaction) => {
+        await transaction.booking.create({
+          data: {
+            id: bookingWriteModel.id,
+            ...bookingWriteModel.booking,
+          },
+        });
 
-      if (bookingWriteModel.extras.length > 0) {
-        await transaction.bookingExtra.createMany({
-          data: bookingWriteModel.extras.map((extra) => ({
+        if (bookingWriteModel.extras.length > 0) {
+          await transaction.bookingExtra.createMany({
+            data: bookingWriteModel.extras.map((extra) => ({
+              bookingId: bookingWriteModel.id,
+              ...extra,
+            })),
+          });
+        }
+
+        await transaction.paymentRecord.create({
+          data: paymentWriteModel,
+        });
+
+        await transaction.calendarBlock.create({
+          data: calendarBlockToPrismaCreateModel(input.calendarBlock),
+        });
+
+        await transaction.bookingNotificationPreference.create({
+          data: notificationPreferencesToPrismaCreateModel({
             bookingId: bookingWriteModel.id,
-            ...extra,
-          })),
-        });
-      }
-
-      await transaction.paymentRecord.create({
-        data: paymentWriteModel,
-      });
-
-      await transaction.calendarBlock.create({
-        data: calendarBlockToPrismaCreateModel(input.calendarBlock),
-      });
-
-      await transaction.bookingNotificationPreference.create({
-        data: notificationPreferencesToPrismaCreateModel({
-          bookingId: bookingWriteModel.id,
-          preferences: input.notificationPreferences,
-        }),
-      });
-
-      if (input.couponRedemption) {
-        await transaction.couponRedemption.create({
-          data: couponRedemptionToPrismaCreateModel(input.couponRedemption),
-        });
-        await transaction.couponEvent.create({
-          data: couponEventToPrismaCreateModel({
-            bookingId: input.couponRedemption.bookingId,
-            couponId: input.couponRedemption.couponId,
-            couponVersionId: input.couponRedemption.couponVersionId,
-            metadataJson: {
-              code: input.couponRedemption.couponSnapshot.code,
-              discountAmountMinor:
-                input.couponRedemption.discountAmount.amountMinor,
-            },
-            occurredAt: input.couponRedemption.reservedAt,
-            redemptionId: input.couponRedemption.id,
-            type: "COUPON_RESERVED",
+            preferences: input.notificationPreferences,
           }),
         });
+
+        if (input.couponRedemption) {
+          await transaction.couponRedemption.create({
+            data: couponRedemptionToPrismaCreateModel(input.couponRedemption),
+          });
+          await transaction.couponEvent.create({
+            data: couponEventToPrismaCreateModel({
+              bookingId: input.couponRedemption.bookingId,
+              couponId: input.couponRedemption.couponId,
+              couponVersionId: input.couponRedemption.couponVersionId,
+              metadataJson: {
+                code: input.couponRedemption.couponSnapshot.code,
+                discountAmountMinor:
+                  input.couponRedemption.discountAmount.amountMinor,
+              },
+              occurredAt: input.couponRedemption.reservedAt,
+              redemptionId: input.couponRedemption.id,
+              type: "COUPON_RESERVED",
+            }),
+          });
+        }
+      });
+    } catch (error) {
+      if (isCalendarOverlapConstraintError(error)) {
+        throw new ApplicationError(
+          "CALENDAR_BLOCK_OVERLAP",
+          "This departure time is no longer available.",
+        );
       }
-    });
+
+      throw error;
+    }
   }
 
   async saveAdminUpdatedBooking(input: AdminUpdatedBookingPersistence) {
@@ -755,6 +813,56 @@ export class PrismaBookingRepository implements BookingRepository {
 
       throw error;
     }
+  }
+
+  async savePaymentHoldReleased(input: PaymentHoldReleasedPersistence) {
+    const booking = input.booking.toSnapshot();
+    const paymentRecord = paymentRecordToPrismaWriteModel(input.paymentRecord);
+
+    return this.prisma.$transaction(async (transaction) => {
+      const updatedBookings = await transaction.booking.updateMany({
+        data: {
+          holdExpiresAt: booking.holdExpiresAt
+            ? new Date(booking.holdExpiresAt)
+            : null,
+          status: booking.status,
+          updatedAt: new Date(booking.updatedAt),
+        },
+        where: {
+          id: booking.id,
+          status: "PENDING_PAYMENT",
+        },
+      });
+
+      if (updatedBookings.count === 0) {
+        return "SKIPPED" as const;
+      }
+
+      await transaction.paymentRecord.update({
+        data: {
+          failureReason: paymentRecord.failureReason,
+          paidAt: paymentRecord.paidAt,
+          providerPaymentIntentId: paymentRecord.providerPaymentIntentId,
+          providerSessionId: paymentRecord.providerSessionId,
+          status: paymentRecord.status,
+        },
+        where: {
+          id: paymentRecord.id,
+        },
+      });
+
+      await transaction.calendarBlock.update({
+        data: {
+          status: "RELEASED",
+          updatedAt: input.releasedAt,
+        },
+        where: {
+          id: input.calendarBlockId,
+        },
+      });
+
+      return "RELEASED" as const;
+    });
   }
 
   async saveAdminCancelledBooking(input: AdminCancelledBookingPersistence) {
@@ -1116,6 +1224,22 @@ function isUniqueConstraintError(error: unknown) {
     error !== null &&
     "code" in error &&
     error.code === "P2002"
+  );
+}
+
+function isCalendarOverlapConstraintError(error: unknown) {
+  if (typeof error !== "object" || error === null) {
+    return false;
+  }
+
+  const record = error as { code?: unknown; message?: unknown; meta?: unknown };
+  const message = typeof record.message === "string" ? record.message : "";
+  const meta = JSON.stringify(record.meta ?? {});
+
+  return (
+    (record.code === "P2004" || record.code === "P2010") &&
+    (message.includes("calendar_blocks_active_protected_range_no_overlap") ||
+      meta.includes("calendar_blocks_active_protected_range_no_overlap"))
   );
 }
 

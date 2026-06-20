@@ -31,6 +31,7 @@ export const enPublicDictionary = {
       CANCELLED: "Cancelled",
       CONFIRMED: "Confirmed",
       EXPIRED: "Expired",
+      EXITED: "Payment abandoned",
       PAYMENT_FAILED: "Payment failed",
       PENDING_PAYMENT: "Pending payment",
     },
@@ -63,6 +64,8 @@ export const enPublicDictionary = {
       missingCustomer: "Add your name and email before confirming.",
       missingDeliveryChannel: "Choose at least one channel for the booking pass.",
       missingWhatsappPhone: "Add a phone number to receive the pass by WhatsApp.",
+      slotUnavailable:
+        "That departure time has just become unavailable. Please choose another time.",
     },
     experienceStep: {
       availableDates: "Available dates",

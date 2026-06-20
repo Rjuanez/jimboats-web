@@ -37,6 +37,7 @@ const statusLabels = {
   CANCELLED: "Cancelada",
   CONFIRMED: "Confirmada",
   EXPIRED: "Expirada",
+  EXITED: "Pago abandonado",
   PAYMENT_FAILED: "Pago fallido",
   PENDING_PAYMENT: "Pendiente",
 } as const;
@@ -45,6 +46,7 @@ const statusColorIds = {
   CANCELLED: "11",
   CONFIRMED: "10",
   EXPIRED: "8",
+  EXITED: "8",
   PAYMENT_FAILED: "11",
   PENDING_PAYMENT: "5",
 } as const;

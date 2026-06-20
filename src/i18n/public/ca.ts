@@ -33,6 +33,7 @@ export const caPublicDictionary = {
       CANCELLED: "Cancel·lada",
       CONFIRMED: "Confirmada",
       EXPIRED: "Caducada",
+      EXITED: "Pagament abandonat",
       PAYMENT_FAILED: "Pagament fallit",
       PENDING_PAYMENT: "Pagament pendent",
     },
@@ -65,6 +66,8 @@ export const caPublicDictionary = {
       missingCustomer: "Afegeix el teu nom i email abans de confirmar.",
       missingDeliveryChannel: "Tria almenys un canal per rebre el passi.",
       missingWhatsappPhone: "Afegeix un telèfon per rebre el passi per WhatsApp.",
+      slotUnavailable:
+        "Aquest horari acaba de deixar d'estar disponible. Tria una altra hora.",
     },
     experienceStep: {
       availableDates: "Dates disponibles",

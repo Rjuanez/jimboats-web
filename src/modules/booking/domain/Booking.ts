@@ -10,6 +10,7 @@ export type BookingStatus =
   | "CANCELLED"
   | "CONFIRMED"
   | "EXPIRED"
+  | "EXITED"
   | "PAYMENT_FAILED"
   | "PENDING_PAYMENT";
 
@@ -65,6 +66,7 @@ const supportedStatuses = new Set<BookingStatus>([
   "PENDING_PAYMENT",
   "CONFIRMED",
   "EXPIRED",
+  "EXITED",
   "PAYMENT_FAILED",
   "CANCELLED",
 ]);
@@ -332,6 +334,17 @@ export class Booking {
       holdExpiresAt: null,
       status: "EXPIRED",
       updatedAt: input.expiredAt,
+    });
+  }
+
+  exitPaymentHold(input: { exitedAt: Date }) {
+    assertPendingPayment(this.props.status);
+
+    return Booking.create({
+      ...this.props,
+      holdExpiresAt: null,
+      status: "EXITED",
+      updatedAt: input.exitedAt,
     });
   }
 

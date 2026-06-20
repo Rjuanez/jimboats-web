@@ -107,6 +107,7 @@ function failure<TData = never>(
 ): PublicBookingCheckoutActionResult<TData> {
   if (error instanceof ApplicationError || error instanceof DomainError) {
     return {
+      code: error.code,
       message: error.message,
       ok: false,
     };
@@ -118,6 +119,8 @@ function failure<TData = never>(
       ok: false,
     };
   }
+
+  console.error("Public booking action failed.", error);
 
   return {
     message: fallbackMessage,

@@ -11,6 +11,7 @@ import { LocaleCode } from "@/shared/domain/LocaleCode";
 import type { MoneySnapshot } from "@/shared/domain/Money";
 
 import type { BookingClock } from "./ports/BookingClock";
+import type { ReleaseExpiredBookingHoldsUseCase } from "./ReleaseExpiredBookingHoldsUseCase";
 import type {
   PublicBookingCalendarBlockReadModel,
   PublicBookingCatalogExperienceReadModel,
@@ -34,6 +35,7 @@ export class GetPublicBookingPageUseCase {
   constructor(
     private readonly catalog: PublicBookingCatalogReader,
     private readonly clock: BookingClock,
+    private readonly expiredHolds?: ReleaseExpiredBookingHoldsUseCase,
   ) {}
 
   async execute(
@@ -44,6 +46,9 @@ export class GetPublicBookingPageUseCase {
     const experiences = await this.catalog.listBookableExperiences({ locale });
     const availabilityWindow = createAvailabilityWindow(now, experiences);
     const includeAvailability = query.includeAvailability ?? true;
+    if (includeAvailability) {
+      await this.releaseExpiredHolds(now);
+    }
     const blocks = includeAvailability
       ? await this.catalog.listActiveCalendarBlocks(
           calendarBlockRangeForWindow(availabilityWindow),
@@ -115,6 +120,7 @@ export class GetPublicBookingPageUseCase {
     }
 
     const availabilityWindow = createAvailabilityWindow(now, experiences);
+    await this.releaseExpiredHolds(now);
     const blocks = await this.catalog.listActiveCalendarBlocks(
       calendarBlockRangeForWindow(availabilityWindow),
     );
@@ -123,6 +129,13 @@ export class GetPublicBookingPageUseCase {
       blocks,
       experience,
       localDates: availabilityWindow.localDates,
+      now,
+    });
+  }
+
+  private async releaseExpiredHolds(now: Date) {
+    await this.expiredHolds?.execute({
+      limit: 100,
       now,
     });
   }

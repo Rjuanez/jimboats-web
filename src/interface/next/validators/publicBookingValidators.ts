@@ -60,6 +60,10 @@ export const publicBookingAccessSchema = z.object({
   token: z.string().trim().min(1),
 });
 
+export const publicBookingCheckoutExitSchema = z.object({
+  providerSessionId: z.string().trim().min(1, "Checkout session is required."),
+});
+
 export function parsePublicBookingCheckout(input: PublicBookingCheckoutInput) {
   return publicBookingCheckoutSchema.parse(input);
 }
@@ -73,4 +77,8 @@ export function parsePublicBookingAccess(input: {
   token: unknown;
 }) {
   return publicBookingAccessSchema.parse(input);
+}
+
+export function parsePublicBookingCheckoutExit(input: unknown) {
+  return publicBookingCheckoutExitSchema.parse(input);
 }

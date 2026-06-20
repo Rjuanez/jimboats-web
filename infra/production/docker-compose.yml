@@ -107,6 +107,20 @@ services:
       db:
         condition: service_healthy
 
+  booking-hold-expiration-worker:
+    image: ${APP_IMAGE:?APP_IMAGE is required}
+    restart: unless-stopped
+    command: node .worker/booking-hold-expiration-worker.cjs
+    environment:
+      BOOKING_HOLD_EXPIRATION_INTERVAL_MS: ${BOOKING_HOLD_EXPIRATION_INTERVAL_MS:-60000}
+      BOOKING_HOLD_EXPIRATION_LIMIT: ${BOOKING_HOLD_EXPIRATION_LIMIT:-100}
+      DATABASE_URL: ${DATABASE_URL:?DATABASE_URL is required}
+      NEXT_TELEMETRY_DISABLED: "1"
+      NODE_ENV: production
+    depends_on:
+      db:
+        condition: service_healthy
+
   notification-worker:
     image: ${APP_IMAGE:?APP_IMAGE is required}
     restart: unless-stopped
