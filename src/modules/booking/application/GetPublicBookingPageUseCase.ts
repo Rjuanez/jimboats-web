@@ -281,7 +281,7 @@ function buildSlotCandidates(
           slot.endMinutes - slot.startMinutes >= experience.durationMinutes,
       )
       .map((slot) => ({
-        endMinutes: slot.endMinutes,
+        endMinutes: slot.startMinutes + experience.durationMinutes,
         id: slot.id,
         slotKey: slot.id,
         startMinutes: slot.startMinutes,

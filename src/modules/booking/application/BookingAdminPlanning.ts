@@ -239,11 +239,11 @@ function resolveSlotKey(input: {
         return (
           slot.id === requestedSlotKey.trim() &&
           slot.startMinutes === startMinutes &&
-          slot.endMinutes === endMinutes
+          slot.endMinutes >= endMinutes
         );
       }
 
-      return slot.startMinutes === startMinutes && slot.endMinutes === endMinutes;
+      return slot.startMinutes === startMinutes && slot.endMinutes >= endMinutes;
     });
 
     if (!matchingSlot) {

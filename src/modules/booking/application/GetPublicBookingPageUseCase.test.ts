@@ -208,6 +208,46 @@ describe("GetPublicBookingPageUseCase", () => {
     ]);
   });
 
+  it("publishes fixed slot end times using the experience duration", async () => {
+    const useCase = new GetPublicBookingPageUseCase(
+      new FakePublicBookingCatalogReader({
+        experiences: [
+          createExperience({
+            durationMinutes: 180,
+            slotPolicy: {
+              fixedSlots: [
+                {
+                  enabled: true,
+                  endMinutes: 14 * 60,
+                  id: "wide-morning",
+                  label: "Wide morning",
+                  startMinutes: 10 * 60,
+                },
+              ],
+              mode: "FIXED_SLOTS",
+              timeZone: "Europe/Madrid",
+            },
+          }),
+        ],
+      }),
+      fixedClock(),
+    );
+
+    const page = await useCase.execute({ locale: "en" });
+
+    expect(
+      page.availabilityByExperienceId["morning-breeze-charter"]
+        ?.timeSlotsByDate["2026-06-11"],
+    ).toMatchObject([
+      {
+        endMinutes: 13 * 60,
+        id: "wide-morning",
+        label: "10:00",
+        startMinutes: 10 * 60,
+      },
+    ]);
+  });
+
   it("does not double count the buffer around adjacent booked slots", async () => {
     const useCase = new GetPublicBookingPageUseCase(
       new FakePublicBookingCatalogReader({

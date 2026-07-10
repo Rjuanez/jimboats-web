@@ -463,6 +463,52 @@ describe("Booking use cases", () => {
     });
   });
 
+  it("creates a public checkout hold from a fixed slot that covers the experience duration", async () => {
+    const dependencies = createDependencies({
+      experiences: [
+        createBookingExperienceOption({
+          durationMinutes: 3 * 60,
+          slotPolicy: {
+            fixedSlots: [
+              {
+                enabled: true,
+                endMinutes: 14 * 60,
+                id: "wide-morning",
+                label: "Wide morning",
+                startMinutes: 10 * 60,
+              },
+            ],
+            mode: "FIXED_SLOTS",
+            timeZone: "Europe/Madrid",
+          },
+        }),
+      ],
+    });
+
+    const result = await new CreatePublicBookingCheckoutUseCase(
+      dependencies.bookings,
+      dependencies.ids,
+      dependencies.clock,
+      dependencies.paymentProvider,
+    ).execute(
+      createPublicCheckoutCommand({
+        endTime: "13:00",
+        slotKey: "wide-morning",
+      }),
+    );
+
+    expect(result).toMatchObject({
+      bookingId: "booking-1",
+      checkoutClientSecret: "cs_test_embedded_secret",
+    });
+    expect(
+      dependencies.bookings.publicPending?.calendarBlock,
+    ).toMatchObject({
+      visibleEndMinutes: 13 * 60,
+      visibleStartMinutes: 10 * 60,
+    });
+  });
+
   it("creates a public checkout hold next to existing buffered blocks", async () => {
     const dependencies = createDependencies({
       overlaps: [
@@ -705,9 +751,13 @@ describe("Booking use cases", () => {
 });
 
 function createDependencies(input: {
+  experiences?: BookingExperienceOptionReadModel[];
   overlaps?: BookingCalendarOverlapReadModel[];
 } = {}) {
-  const bookings = new InMemoryBookingRepository(input.overlaps ?? []);
+  const bookings = new InMemoryBookingRepository(
+    input.overlaps ?? [],
+    input.experiences,
+  );
 
   return {
     bookings,
@@ -800,6 +850,55 @@ function createPublicCheckoutCommand(
   };
 }
 
+function createBookingExperienceOption(
+  patch: Partial<BookingExperienceOptionReadModel> = {},
+): BookingExperienceOptionReadModel {
+  return {
+    allowsManualScheduling: true,
+    basePrice: moneyDto(1_200_00),
+    bufferMinutes: 30,
+    capacity: 10,
+    depositAmount: moneyDto(10_000),
+    durationMinutes: 4 * 60,
+    extraSelectionRules: [
+      {
+        capacityReduction: 2,
+        enabled: true,
+        extraId: "champagne",
+        limitPerBooking: 1,
+        noticeMinutes: 24 * 60,
+        priceOverride: null,
+      },
+    ],
+    id: "sunset-cruise",
+    internalName: "Sunset Cruise",
+    maximumAdvanceMonths: 6,
+    minimumAdvanceMinutes: 60,
+    slotPolicy: {
+      fixedSlots: [
+        {
+          enabled: true,
+          endMinutes: 16 * 60,
+          id: "afternoon",
+          label: "Afternoon",
+          startMinutes: 12 * 60,
+        },
+        {
+          enabled: true,
+          endMinutes: 14 * 60,
+          id: "morning",
+          label: "Morning",
+          startMinutes: 10 * 60,
+        },
+      ],
+      mode: "FIXED_SLOTS",
+      timeZone: "Europe/Madrid",
+    },
+    status: "PUBLISHED",
+    ...patch,
+  };
+}
+
 class InMemoryBookingRepository implements BookingRepository {
   private readonly auditEntries: BookingAuditEntryReadModel[] = [];
   private readonly bookings = new Map<string, Booking>();
@@ -816,7 +915,10 @@ class InMemoryBookingRepository implements BookingRepository {
   saved: AdminCreatedBookingPersistence | null = null;
   updated: AdminUpdatedBookingPersistence | null = null;
 
-  constructor(private overlaps: BookingCalendarOverlapReadModel[]) {}
+  constructor(
+    private overlaps: BookingCalendarOverlapReadModel[],
+    private readonly experienceOptions?: BookingExperienceOptionReadModel[],
+  ) {}
 
   setOverlaps(overlaps: BookingCalendarOverlapReadModel[]) {
     this.overlaps = overlaps;
@@ -1101,51 +1203,7 @@ class InMemoryBookingRepository implements BookingRepository {
   }
 
   private experiences(): BookingExperienceOptionReadModel[] {
-    return [
-      {
-        allowsManualScheduling: true,
-        basePrice: moneyDto(1_200_00),
-        bufferMinutes: 30,
-        capacity: 10,
-        depositAmount: moneyDto(10_000),
-        durationMinutes: 4 * 60,
-        extraSelectionRules: [
-          {
-            capacityReduction: 2,
-            enabled: true,
-            extraId: "champagne",
-            limitPerBooking: 1,
-            noticeMinutes: 24 * 60,
-            priceOverride: null,
-          },
-        ],
-        id: "sunset-cruise",
-        internalName: "Sunset Cruise",
-        maximumAdvanceMonths: 6,
-        minimumAdvanceMinutes: 60,
-        slotPolicy: {
-          fixedSlots: [
-            {
-              enabled: true,
-              endMinutes: 16 * 60,
-              id: "afternoon",
-              label: "Afternoon",
-              startMinutes: 12 * 60,
-            },
-            {
-              enabled: true,
-              endMinutes: 14 * 60,
-              id: "morning",
-              label: "Morning",
-              startMinutes: 10 * 60,
-            },
-          ],
-          mode: "FIXED_SLOTS",
-          timeZone: "Europe/Madrid",
-        },
-        status: "PUBLISHED",
-      },
-    ];
+    return this.experienceOptions ?? [createBookingExperienceOption()];
   }
 
   private extras(): BookingExtraOptionReadModel[] {
