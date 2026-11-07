@@ -1,0 +1,69 @@
+{
+  "source": "https://api.met.no/weatherapi/sunrise/3.0/documentation",
+  "checkedAt": "2026-11-03",
+  "timezone": "Europe/Madrid",
+  "latitude": 41.387,
+  "longitude": 2.201,
+  "rows": [
+    {
+      "date": "2026-01-15",
+      "sunrise": "08:15",
+      "sunset": "17:46"
+    },
+    {
+      "date": "2026-02-15",
+      "sunrise": "07:46",
+      "sunset": "18:24"
+    },
+    {
+      "date": "2026-03-15",
+      "sunrise": "07:03",
+      "sunset": "18:57"
+    },
+    {
+      "date": "2026-04-15",
+      "sunrise": "07:11",
+      "sunset": "20:31"
+    },
+    {
+      "date": "2026-05-15",
+      "sunrise": "06:32",
+      "sunset": "21:03"
+    },
+    {
+      "date": "2026-06-15",
+      "sunrise": "06:17",
+      "sunset": "21:26"
+    },
+    {
+      "date": "2026-07-15",
+      "sunrise": "06:30",
+      "sunset": "21:23"
+    },
+    {
+      "date": "2026-08-15",
+      "sunrise": "07:00",
+      "sunset": "20:50"
+    },
+    {
+      "date": "2026-09-15",
+      "sunrise": "07:31",
+      "sunset": "20:00"
+    },
+    {
+      "date": "2026-10-15",
+      "sunrise": "08:02",
+      "sunset": "19:10"
+    },
+    {
+      "date": "2026-11-15",
+      "sunrise": "07:39",
+      "sunset": "17:31"
+    },
+    {
+      "date": "2026-12-15",
+      "sunrise": "08:10",
+      "sunset": "17:22"
+    }
+  ]
+}

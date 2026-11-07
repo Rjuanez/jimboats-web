@@ -1,4 +1,5 @@
 "use client";
+import { adminEs, adminStatusLabels } from "@/i18n/admin/es";
 
 import {
   AlertCircle,
@@ -46,7 +47,7 @@ type AdminCouponsWorkspaceProps = {
 };
 
 const emptyCouponInput: AdminCouponInput = {
-  campaignName: "Seasonal campaign",
+  campaignName: adminEs["Seasonal campaign"],
   code: "",
   discountType: "PERCENTAGE",
   discountValue: 10,
@@ -62,7 +63,7 @@ const emptyBatchInput: AdminCouponBatchInput = {
   ...emptyCouponInput,
   codePrefix: "SUMMER",
   count: 10,
-  namePrefix: "Summer coupon",
+  namePrefix: adminEs["Summer coupon"],
 };
 
 export function AdminCouponsWorkspace({
@@ -102,7 +103,7 @@ export function AdminCouponsWorkspace({
       setState(result.data.state);
       return result.data;
     } catch {
-      setMessage("Unexpected error while saving the coupon.");
+      setMessage(adminEs["Unexpected error while saving the coupon."]);
       return null;
     } finally {
       setIsSaving(false);
@@ -159,17 +160,25 @@ function renderView({
 
   if (view === "create") {
     return (
-      <AdminCouponForm
-        experiences={state.experiences}
-        mode="create"
-        onSubmit={async (coupon) => {
-          const result = await runMutation(() => actions.createCoupon(coupon));
+      <div className="space-y-5">
+        <Header
+          eyebrow={adminEs["Commercial tools"]}
+          title={adminEs["New coupon"]}
+        />
+        <AdminCouponForm
+          experiences={state.experiences}
+          mode="create"
+          onSubmit={async (coupon) => {
+            const result = await runMutation(() =>
+              actions.createCoupon(coupon),
+            );
 
-          if (result) {
-            window.location.assign(`/admin/coupons/${result.couponId}`);
-          }
-        }}
-      />
+            if (result) {
+              window.location.assign(`/admin/coupons/${result.couponId}`);
+            }
+          }}
+        />
+      </div>
     );
   }
 
@@ -223,46 +232,46 @@ function AdminCouponsList({
               variant="secondary"
             >
               <Download className="size-4" aria-hidden="true" />
-              Export CSV
+              {adminEs["Export CSV"]}
             </Button>
-            <Button href="/admin/coupons/new">New coupon</Button>
+            <Button href="/admin/coupons/new">{adminEs["New coupon"]}</Button>
           </div>
         }
-        eyebrow="Commercial tools"
-        title="Coupons"
+        eyebrow={adminEs["Commercial tools"]}
+        title={adminEs["Coupons"]}
       />
       <div className="grid gap-4 lg:grid-cols-4">
         <MetricCard
           icon={TicketPercent}
-          label="Active coupons"
+          label={adminEs["Active coupons"]}
           value={`${metrics.activeCoupons}/${metrics.totalCoupons}`}
         />
         <MetricCard
           icon={CircleDollarSign}
-          label="Discount applied"
+          label={adminEs["Discount applied"]}
           value={formatEuros(metrics.discountAmount)}
         />
         <MetricCard
           icon={Clock3}
-          label="Conversion"
+          label={adminEs["Conversion"]}
           value={`${metrics.conversionRate}%`}
         />
         <MetricCard
           icon={Layers3}
-          label="Revenue after discount"
+          label={adminEs["Revenue after discount"]}
           value={formatEuros(metrics.confirmedRevenueAfterDiscount)}
         />
       </div>
       <AnalyticsGrid state={state} />
       <BatchGenerator
         experiences={state.experiences}
-        onSubmit={(batch) =>
-          runMutation(() => actions.generateBatch(batch))
-        }
+        onSubmit={(batch) => runMutation(() => actions.generateBatch(batch))}
       />
       <Surface
-        description="Create, pause and inspect tracked discount codes."
-        title="Coupon library"
+        description={
+          adminEs["Create, pause and inspect tracked discount codes."]
+        }
+        title={adminEs["Coupon library"]}
       >
         <div className="grid gap-3">
           {coupons.map((coupon) => (
@@ -282,10 +291,10 @@ function AdminCouponsList({
               <span className="text-sm text-slate-700">
                 {coupon.activeVersion
                   ? discountLabel(coupon.activeVersion)
-                  : "No active version"}
+                  : adminEs["No active version"]}
               </span>
               <span className="text-sm text-slate-700">
-                {coupon.confirmedRedemptions} confirmed
+                {coupon.confirmedRedemptions} {adminEs["confirmed"]}
               </span>
               <span className="md:text-right">
                 <CouponStatusBadge status={coupon.status} />
@@ -293,7 +302,9 @@ function AdminCouponsList({
             </a>
           ))}
           {coupons.length === 0 ? (
-            <p className="text-sm text-slate-600">No coupons created yet.</p>
+            <p className="text-sm text-slate-600">
+              {adminEs["No coupons created yet."]}
+            </p>
           ) : null}
         </div>
       </Surface>
@@ -340,58 +351,60 @@ function AdminCouponDetail({
               }
             />
             <Button href="/admin/coupons" variant="secondary">
-              Back
+              {adminEs["Back"]}
             </Button>
           </div>
         }
         eyebrow={coupon.displayCode}
         title={coupon.name}
       />
-      <Surface title="Status">
+      <Surface title={adminEs["Status"]}>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-1">
             <CouponStatusBadge status={coupon.status} />
             <p className="text-sm text-slate-600">
-              Updated {coupon.updatedAt}. {coupon.confirmedRedemptions} confirmed
-              redemptions.
+              {adminEs["Updated"]} {coupon.updatedAt}.{" "}
+              {coupon.confirmedRedemptions} {adminEs["confirmed redemptions."]}
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
-            {(["ACTIVE", "PAUSED", "DRAFT", "EXPIRED"] as const).map((status) => (
-              <Button
-                disabled={coupon.status === status}
-                key={status}
-                onClick={() =>
-                  void runMutation(() =>
-                    actions.changeStatus({
-                      couponId: coupon.id,
-                      status,
-                    }),
-                  )
-                }
-                size="sm"
-                variant={status === "ACTIVE" ? "primary" : "secondary"}
-              >
-                {statusLabel(status)}
-              </Button>
-            ))}
+            {(["ACTIVE", "PAUSED", "DRAFT", "EXPIRED"] as const).map(
+              (status) => (
+                <Button
+                  disabled={coupon.status === status}
+                  key={status}
+                  onClick={() =>
+                    void runMutation(() =>
+                      actions.changeStatus({
+                        couponId: coupon.id,
+                        status,
+                      }),
+                    )
+                  }
+                  size="sm"
+                  variant={status === "ACTIVE" ? "primary" : "secondary"}
+                >
+                  {statusLabel(status)}
+                </Button>
+              ),
+            )}
           </div>
         </div>
       </Surface>
       <div className="grid gap-4 lg:grid-cols-4">
         <MetricCard
           icon={TicketPercent}
-          label="Confirmed"
+          label={adminEs["Confirmed"]}
           value={String(coupon.confirmedRedemptions)}
         />
         <MetricCard
           icon={Clock3}
-          label="Reserved"
+          label={adminEs["Reserved"]}
           value={String(coupon.reservedRedemptions)}
         />
         <MetricCard
           icon={CircleDollarSign}
-          label="Discount applied"
+          label={adminEs["Discount applied"]}
           value={formatEuros(
             coupon.redemptions
               .filter((redemption) => redemption.status === "CONFIRMED")
@@ -400,11 +413,14 @@ function AdminCouponDetail({
         />
         <MetricCard
           icon={Layers3}
-          label="Revenue"
+          label={adminEs["Revenue"]}
           value={formatEuros(
             coupon.redemptions
               .filter((redemption) => redemption.status === "CONFIRMED")
-              .reduce((sum, redemption) => sum + redemption.finalTotalAmount, 0),
+              .reduce(
+                (sum, redemption) => sum + redemption.finalTotalAmount,
+                0,
+              ),
           )}
         />
       </div>
@@ -429,7 +445,7 @@ function AdminCouponDetail({
 function AnalyticsGrid({ state }: { state: AdminCouponsState }) {
   return (
     <div className="grid gap-5 xl:grid-cols-3">
-      <Surface title="Top coupons">
+      <Surface title={adminEs["Top coupons"]}>
         <div className="space-y-3">
           {state.ranking.map((item) => (
             <a
@@ -438,20 +454,22 @@ function AnalyticsGrid({ state }: { state: AdminCouponsState }) {
               key={item.id}
             >
               <div className="flex items-start justify-between gap-3">
-                <span className="font-semibold text-slate-950">{item.code}</span>
+                <span className="font-semibold text-slate-950">
+                  {item.code}
+                </span>
                 <span className="text-sm text-slate-600">
-                  {item.confirmedRedemptions} confirmed
+                  {item.confirmedRedemptions} {adminEs["confirmed"]}
                 </span>
               </div>
               <p className="mt-1 text-sm text-slate-600">
-                {formatEuros(item.discountAmount)} discounted ·{" "}
-                {formatEuros(item.revenueAfterDiscount)} revenue
+                {formatEuros(item.discountAmount)} {adminEs["discounted ·"]}{" "}
+                {formatEuros(item.revenueAfterDiscount)} {adminEs["revenue"]}
               </p>
             </a>
           ))}
         </div>
       </Surface>
-      <Surface title="Campaigns">
+      <Surface title={adminEs["Campaigns"]}>
         <div className="space-y-3">
           {state.campaigns.map((campaign) => (
             <div
@@ -463,35 +481,40 @@ function AnalyticsGrid({ state }: { state: AdminCouponsState }) {
                   {campaign.campaignName}
                 </span>
                 <span className="text-sm text-slate-600">
-                  {campaign.couponCount} codes
+                  {campaign.couponCount} {adminEs["codes"]}
                 </span>
               </div>
               <p className="mt-1 text-sm text-slate-600">
-                {campaign.confirmedRedemptions} confirmed ·{" "}
-                {formatEuros(campaign.discountAmount)} discounted
+                {campaign.confirmedRedemptions} {adminEs["confirmed ·"]}{" "}
+                {formatEuros(campaign.discountAmount)} {adminEs["discounted"]}
               </p>
             </div>
           ))}
         </div>
       </Surface>
-      <Surface title="Recent usage">
+      <Surface title={adminEs["Recent usage"]}>
         <div className="space-y-3">
           {state.usage.map((point) => (
-            <div className="rounded-md border border-slate-200 p-3" key={point.date}>
+            <div
+              className="rounded-md border border-slate-200 p-3"
+              key={point.date}
+            >
               <div className="flex items-start justify-between gap-3">
-                <span className="font-semibold text-slate-950">{point.date}</span>
+                <span className="font-semibold text-slate-950">
+                  {point.date}
+                </span>
                 <span className="text-sm text-slate-600">
                   {formatEuros(point.discountAmount)}
                 </span>
               </div>
               <p className="mt-1 text-sm text-slate-600">
-                {point.confirmed} confirmed · {point.reserved} reserved ·{" "}
-                {point.released} released
+                {point.confirmed} {adminEs["confirmed ·"]} {point.reserved}{" "}
+                {adminEs["reserved ·"]} {point.released} {adminEs["released"]}
               </p>
             </div>
           ))}
           {state.usage.length === 0 ? (
-            <p className="text-sm text-slate-600">No usage yet.</p>
+            <p className="text-sm text-slate-600">{adminEs["No usage yet."]}</p>
           ) : null}
         </div>
       </Surface>
@@ -511,8 +534,10 @@ function BatchGenerator({
 
   return (
     <Surface
-      description="Generate multiple trackable codes with shared campaign rules."
-      title="Batch generator"
+      description={
+        adminEs["Generate multiple trackable codes with shared campaign rules."]
+      }
+      title={adminEs["Batch generator"]}
     >
       <form
         className="space-y-5"
@@ -523,7 +548,7 @@ function BatchGenerator({
       >
         <FieldGrid>
           <TextField
-            label="Code prefix"
+            label={adminEs["Code prefix"]}
             onChange={(event) =>
               setInput((current) => ({
                 ...current,
@@ -533,7 +558,7 @@ function BatchGenerator({
             value={input.codePrefix}
           />
           <TextField
-            label="Name prefix"
+            label={adminEs["Name prefix"]}
             onChange={(event) =>
               setInput((current) => ({
                 ...current,
@@ -543,7 +568,7 @@ function BatchGenerator({
             value={input.namePrefix}
           />
           <TextField
-            label="Campaign"
+            label={adminEs["Campaign"]}
             onChange={(event) =>
               setInput((current) => ({
                 ...current,
@@ -553,7 +578,7 @@ function BatchGenerator({
             value={input.campaignName}
           />
           <NumberField
-            label="Quantity"
+            label={adminEs["Quantity"]}
             max={100}
             min={1}
             onChange={(event) =>
@@ -565,7 +590,7 @@ function BatchGenerator({
             value={input.count}
           />
           <SelectField
-            label="Discount type"
+            label={adminEs["Discount type"]}
             onChange={(event) =>
               setInput((current) => ({
                 ...current,
@@ -575,11 +600,15 @@ function BatchGenerator({
             }
             value={input.discountType}
           >
-            <option value="PERCENTAGE">Percentage</option>
-            <option value="FIXED_AMOUNT">Fixed amount</option>
+            <option value="PERCENTAGE">{adminEs["Percentage"]}</option>
+            <option value="FIXED_AMOUNT">{adminEs["Fixed amount"]}</option>
           </SelectField>
           <NumberField
-            label={input.discountType === "PERCENTAGE" ? "Percent" : "Amount"}
+            label={
+              input.discountType === "PERCENTAGE"
+                ? adminEs["Percent"]
+                : adminEs["Amount"]
+            }
             min={0}
             onChange={(event) =>
               setInput((current) => ({
@@ -590,7 +619,7 @@ function BatchGenerator({
             value={input.discountValue}
           />
           <DateField
-            label="Valid from"
+            label={adminEs["Valid from"]}
             onChange={(event) =>
               setInput((current) => ({
                 ...current,
@@ -600,7 +629,7 @@ function BatchGenerator({
             value={input.validFrom}
           />
           <DateField
-            label="Valid until"
+            label={adminEs["Valid until"]}
             onChange={(event) =>
               setInput((current) => ({
                 ...current,
@@ -614,7 +643,9 @@ function BatchGenerator({
           {experiences.map((experience) => (
             <CheckboxField
               checked={selectedExperienceIds.has(experience.id)}
-              description={experience.status}
+              description={
+                adminStatusLabels[experience.status] ?? experience.status
+              }
               key={experience.id}
               label={experience.name}
               onChange={(event) =>
@@ -639,7 +670,7 @@ function BatchGenerator({
         <div className="flex justify-end">
           <Button type="submit">
             <Layers3 className="size-4" aria-hidden="true" />
-            Generate batch
+            {adminEs["Generate batch"]}
           </Button>
         </div>
       </form>
@@ -665,7 +696,7 @@ function DuplicateCouponButton({
       }}
     >
       <label className="sr-only" htmlFor="duplicate-coupon-code">
-        New coupon code
+        {adminEs["New coupon code"]}
       </label>
       <input
         className="min-h-9 w-40 rounded-md border border-slate-300 bg-white px-3 text-sm text-slate-950 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
@@ -675,7 +706,7 @@ function DuplicateCouponButton({
       />
       <Button type="submit" variant="secondary">
         <Copy className="size-4" aria-hidden="true" />
-        Duplicate
+        {adminEs["Duplicate"]}
       </Button>
     </form>
   );
@@ -717,8 +748,14 @@ function AdminCouponForm({
 
   return (
     <Surface
-      description="Rule changes create a new version so historical redemptions remain traceable."
-      title={mode === "create" ? "Create coupon" : "Coupon rules"}
+      description={
+        adminEs[
+          "Rule changes create a new version so historical redemptions remain traceable."
+        ]
+      }
+      title={
+        mode === "create" ? adminEs["Create coupon"] : adminEs["Coupon rules"]
+      }
     >
       <form
         className="space-y-5"
@@ -730,7 +767,7 @@ function AdminCouponForm({
         <FieldGrid>
           <TextField
             disabled={mode === "edit"}
-            label="Code"
+            label={adminEs["Code"]}
             onChange={(event) =>
               setInput((current) => ({
                 ...current,
@@ -741,7 +778,7 @@ function AdminCouponForm({
             value={input.code}
           />
           <TextField
-            label="Internal name"
+            label={adminEs["Internal name"]}
             onChange={(event) =>
               setInput((current) => ({
                 ...current,
@@ -751,7 +788,7 @@ function AdminCouponForm({
             value={input.name}
           />
           <TextField
-            label="Campaign"
+            label={adminEs["Campaign"]}
             onChange={(event) =>
               setInput((current) => ({
                 ...current,
@@ -761,7 +798,7 @@ function AdminCouponForm({
             value={input.campaignName}
           />
           <SelectField
-            label="Status"
+            label={adminEs["Status"]}
             onChange={(event) =>
               setInput((current) => ({
                 ...current,
@@ -770,16 +807,16 @@ function AdminCouponForm({
             }
             value={input.status}
           >
-            <option value="DRAFT">Draft</option>
-            <option value="ACTIVE">Active</option>
-            <option value="PAUSED">Paused</option>
-            <option value="EXPIRED">Expired</option>
+            <option value="DRAFT">{adminEs["Draft"]}</option>
+            <option value="ACTIVE">{adminEs["Active"]}</option>
+            <option value="PAUSED">{adminEs["Paused"]}</option>
+            <option value="EXPIRED">{adminEs["Expired"]}</option>
           </SelectField>
         </FieldGrid>
 
         <FieldGrid>
           <SelectField
-            label="Discount type"
+            label={adminEs["Discount type"]}
             onChange={(event) =>
               setInput((current) => ({
                 ...current,
@@ -793,11 +830,15 @@ function AdminCouponForm({
             }
             value={input.discountType}
           >
-            <option value="PERCENTAGE">Percentage</option>
-            <option value="FIXED_AMOUNT">Fixed amount</option>
+            <option value="PERCENTAGE">{adminEs["Percentage"]}</option>
+            <option value="FIXED_AMOUNT">{adminEs["Fixed amount"]}</option>
           </SelectField>
           <NumberField
-            label={input.discountType === "PERCENTAGE" ? "Percent" : "Amount"}
+            label={
+              input.discountType === "PERCENTAGE"
+                ? adminEs["Percent"]
+                : adminEs["Amount"]
+            }
             min={0}
             onChange={(event) =>
               setInput((current) => ({
@@ -809,7 +850,7 @@ function AdminCouponForm({
             value={input.discountValue}
           />
           <DateField
-            label="Valid from"
+            label={adminEs["Valid from"]}
             onChange={(event) =>
               setInput((current) => ({
                 ...current,
@@ -819,7 +860,7 @@ function AdminCouponForm({
             value={input.validFrom}
           />
           <DateField
-            label="Valid until"
+            label={adminEs["Valid until"]}
             onChange={(event) =>
               setInput((current) => ({
                 ...current,
@@ -829,7 +870,7 @@ function AdminCouponForm({
             value={input.validUntil}
           />
           <NumberField
-            label="Total usage limit"
+            label={adminEs["Total usage limit"]}
             min={1}
             onChange={(event) =>
               setInput((current) => ({
@@ -839,23 +880,29 @@ function AdminCouponForm({
                   : null,
               }))
             }
-            placeholder="Unlimited"
+            placeholder={adminEs["Unlimited"]}
             value={input.maxTotalRedemptions ?? ""}
           />
         </FieldGrid>
 
         <div>
           <h3 className="text-sm font-semibold text-slate-950">
-            Experience limits
+            {adminEs["Experience limits"]}
           </h3>
           <p className="mt-1 text-sm text-slate-600">
-            Leave all unchecked to allow this coupon on every experience.
+            {
+              adminEs[
+                "Leave all unchecked to allow this coupon on every experience."
+              ]
+            }
           </p>
           <div className="mt-3 grid gap-3 md:grid-cols-2">
             {experiences.map((experience) => (
               <CheckboxField
                 checked={selectedExperienceIds.has(experience.id)}
-                description={experience.status}
+                description={
+                  adminStatusLabels[experience.status] ?? experience.status
+                }
                 key={experience.id}
                 label={experience.name}
                 onChange={(event) =>
@@ -881,7 +928,9 @@ function AdminCouponForm({
 
         <div className="flex justify-end">
           <Button type="submit">
-            {mode === "create" ? "Create coupon" : "Save coupon"}
+            {mode === "create"
+              ? adminEs["Create coupon"]
+              : adminEs["Save coupon"]}
           </Button>
         </div>
       </form>
@@ -898,7 +947,7 @@ function DetailGrid({
 }) {
   return (
     <div className="grid gap-5 xl:grid-cols-2">
-      <Surface title="Versions">
+      <Surface title={adminEs["Versions"]}>
         <div className="space-y-3">
           {coupon.versions.map((version) => (
             <div
@@ -908,15 +957,19 @@ function DetailGrid({
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="font-semibold text-slate-950">
-                    Version {version.versionNumber}
+                    {adminEs["Version"]} {version.versionNumber}
                   </p>
                   <p className="mt-1 text-sm text-slate-600">
                     {discountLabel(version)} · {version.validFrom}
-                    {version.validUntil ? ` to ${version.validUntil}` : ""}
+                    {version.validUntil
+                      ? adminEs.until(version.validUntil)
+                      : ""}
                   </p>
                 </div>
-        <Badge tone={version.status === "ACTIVE" ? "emerald" : "neutral"}>
-                  {version.status}
+                <Badge
+                  tone={version.status === "ACTIVE" ? "emerald" : "neutral"}
+                >
+                  {adminStatusLabels[version.status] ?? version.status}
                 </Badge>
               </div>
               <p className="mt-2 text-sm text-slate-600">
@@ -927,49 +980,62 @@ function DetailGrid({
         </div>
       </Surface>
 
-      <Surface title="Recent redemptions">
+      <Surface title={adminEs["Recent redemptions"]}>
         <div className="space-y-3">
           {coupon.redemptions.map((redemption) => (
-            <div className="rounded-md border border-slate-200 p-3" key={redemption.id}>
+            <div
+              className="rounded-md border border-slate-200 p-3"
+              key={redemption.id}
+            >
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <p className="truncate font-semibold text-slate-950">
                     {redemption.customerEmailNormalized}
                   </p>
                   <p className="mt-1 text-sm text-slate-600">
-                    {redemption.reservedAt} · Booking {redemption.bookingId}
+                    {redemption.reservedAt} {adminEs["· Booking"]}{" "}
+                    {redemption.bookingId}
                   </p>
                 </div>
                 <Badge
-                  tone={redemption.status === "CONFIRMED" ? "emerald" : "neutral"}
+                  tone={
+                    redemption.status === "CONFIRMED" ? "emerald" : "neutral"
+                  }
                 >
-                  {redemption.status}
+                  {adminStatusLabels[redemption.status] ?? redemption.status}
                 </Badge>
               </div>
               <p className="mt-2 text-sm text-slate-600">
-                Discount {formatEuros(redemption.discountAmount)} · Final total{" "}
+                {adminEs["Discount"]} {formatEuros(redemption.discountAmount)}{" "}
+                {adminEs["· Final total"]}{" "}
                 {formatEuros(redemption.finalTotalAmount)}
               </p>
             </div>
           ))}
           {coupon.redemptions.length === 0 ? (
-            <p className="text-sm text-slate-600">No redemptions yet.</p>
+            <p className="text-sm text-slate-600">
+              {adminEs["No redemptions yet."]}
+            </p>
           ) : null}
         </div>
       </Surface>
 
-      <Surface className="xl:col-span-2" title="Audit trail">
+      <Surface className="xl:col-span-2" title={adminEs["Audit trail"]}>
         <div className="grid gap-3 md:grid-cols-2">
           {coupon.events.map((event) => (
-            <div className="rounded-md border border-slate-200 p-3" key={event.id}>
+            <div
+              className="rounded-md border border-slate-200 p-3"
+              key={event.id}
+            >
               <p className="font-semibold text-slate-950">{event.label}</p>
               <p className="mt-1 text-sm text-slate-600">
-                {event.occurredAt} · {event.actorType}
+                {event.occurredAt} ·{" "}
+                {adminStatusLabels[event.actorType] ?? event.actorType}
                 {event.actorId ? ` (${event.actorId})` : ""}
               </p>
               {event.bookingId ? (
                 <p className="mt-1 text-xs text-slate-500">
-                  Booking {event.bookingId}
+                  {adminEs["Booking"]} {event.bookingId}
                 </p>
               ) : null}
             </div>
@@ -1004,16 +1070,20 @@ function Header({
 
 function MissingCoupon() {
   return (
-    <Surface title="Coupon not found">
+    <Surface title={adminEs["Coupon not found"]}>
       <div className="flex flex-col items-start gap-4">
         <div className="flex items-center gap-3 text-slate-700">
           <AlertCircle className="size-5 text-amber-600" aria-hidden="true" />
           <p className="text-sm leading-6">
-            This coupon does not exist or was changed from another session.
+            {
+              adminEs[
+                "This coupon does not exist or was changed from another session."
+              ]
+            }
           </p>
         </div>
         <Button href="/admin/coupons" variant="secondary">
-          Back to coupons
+          {adminEs["Back to coupons"]}
         </Button>
       </div>
     </Surface>
@@ -1041,7 +1111,7 @@ function SaveStatus({
       )}
       role={message ? "alert" : "status"}
     >
-      {message ?? "Saving coupon..."}
+      {message ?? adminEs["Saving coupon..."]}
     </div>
   );
 }
@@ -1074,21 +1144,17 @@ function MetricCard({
 
 function CouponStatusBadge({ status }: { status: AdminCoupon["status"] }) {
   const tone =
-    status === "ACTIVE"
-      ? "emerald"
-      : status === "PAUSED"
-        ? "amber"
-        : "neutral";
+    status === "ACTIVE" ? "emerald" : status === "PAUSED" ? "amber" : "neutral";
 
   return <Badge tone={tone}>{statusLabel(status)}</Badge>;
 }
 
 function statusLabel(status: AdminCoupon["status"]) {
   const labels = {
-    ACTIVE: "Active",
-    DRAFT: "Draft",
-    EXPIRED: "Expired",
-    PAUSED: "Paused",
+    ACTIVE: adminEs["Active"],
+    DRAFT: adminEs["Draft"],
+    EXPIRED: adminEs["Expired"],
+    PAUSED: adminEs["Paused"],
   };
 
   return labels[status];
@@ -1117,10 +1183,10 @@ function inputFromCoupon(coupon?: AdminCoupon): AdminCouponInput {
 
 function discountLabel(version: AdminCoupon["versions"][number]) {
   if (version.discountType === "PERCENTAGE") {
-    return `${version.discountValue}% off`;
+    return adminEs.percentDiscount(version.discountValue);
   }
 
-  return `${formatEuros(version.discountValue)} off`;
+  return adminEs.fixedDiscount(formatEuros(version.discountValue));
 }
 
 function experienceSummary(
@@ -1128,7 +1194,7 @@ function experienceSummary(
   experiences: AdminCouponsState["experiences"],
 ) {
   if (experienceIds.length === 0) {
-    return "All experiences";
+    return adminEs["All experiences"];
   }
 
   const names = experienceIds.map((id) => {
@@ -1139,7 +1205,7 @@ function experienceSummary(
 }
 
 function formatEuros(amount: number) {
-  return new Intl.NumberFormat("en", {
+  return new Intl.NumberFormat("es-ES", {
     currency: "EUR",
     style: "currency",
   }).format(amount);

@@ -41,7 +41,7 @@ export function PublicBookingHeader({
 
         <nav
           aria-label={copy.navLabel}
-          className="hidden items-center gap-10 md:flex"
+          className="hidden items-center gap-8 xl:flex"
         >
           <a
             className="text-sm font-semibold uppercase tracking-widest text-text-muted transition hover:text-text"
@@ -68,20 +68,52 @@ export function PublicBookingHeader({
             <LockKeyhole aria-hidden="true" className="size-4 text-primary" />
             {copy.secure}
           </span>
-          <LanguageSwitcher variant="solid" />
+          {content.languageLinks ? (
+            <nav
+              aria-label={
+                {
+                  es: "Idioma",
+                  en: "Language",
+                  ca: "Idioma",
+                  fr: "Langue",
+                  de: "Sprache",
+                  nl: "Taal",
+                }[content.locale]
+              }
+              className="flex flex-wrap gap-1"
+            >
+              {content.languageLinks.map((link) => (
+                <a
+                  key={link.locale}
+                  href={link.href}
+                  hrefLang={link.locale}
+                  aria-current={
+                    content.locale === link.locale ? "page" : undefined
+                  }
+                  className="inline-flex min-h-10 min-w-8 items-center justify-center rounded-full text-xs font-semibold aria-[current=page]:bg-primary-dark aria-[current=page]:text-white"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+          ) : (
+            <LanguageSwitcher variant="solid" />
+          )}
           <Button
             className="hidden md:inline-flex"
-            href={content.homeHref}
+            href={content.returnHref ?? content.homeHref}
             shape="pill"
             size="lg"
             variant="dark"
           >
-            {copy.backHome}
+            {content.returnHref
+              ? getPublicDictionary(content.locale).booking.labels.back
+              : copy.backHome}
           </Button>
           <a
             aria-label={copy.closeLabel}
             className="inline-flex size-10 items-center justify-center rounded-full text-text-muted transition hover:bg-sand/25 hover:text-text focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text md:hidden"
-            href={content.homeHref}
+            href={content.returnHref ?? content.homeHref}
           >
             <X aria-hidden="true" className="size-5" />
           </a>
@@ -90,6 +122,9 @@ export function PublicBookingHeader({
 
       <div className="border-t border-sand/20 px-4 pb-3 pt-1 md:hidden">
         <PublicBookingStepIndicator
+          label={
+            getPublicDictionary(content.locale).booking.labels.bookingSummary
+          }
           currentStepId={currentStepId}
           steps={content.steps}
           variant="compact"

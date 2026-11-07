@@ -61,11 +61,13 @@ describe("AdminCouponsWorkspace", () => {
       />,
     );
 
-    expect(screen.getByRole("heading", { name: "Coupons" })).toBeInTheDocument();
-    const library = screen.getByRole("region", { name: "Coupon library" });
+    expect(
+      screen.getByRole("heading", { name: "Cupones" }),
+    ).toBeInTheDocument();
+    const library = screen.getByRole("region", { name: "Cupones disponibles" });
 
     expect(within(library).getByText("TEST10")).toBeInTheDocument();
-    expect(within(library).getByText("10% off")).toBeInTheDocument();
+    expect(within(library).getByText("10% de descuento")).toBeInTheDocument();
   });
 
   it("submits edited coupon rules", async () => {
@@ -85,11 +87,11 @@ describe("AdminCouponsWorkspace", () => {
       />,
     );
 
-    const percentField = screen.getByLabelText("Percent");
+    const percentField = screen.getByLabelText("Porcentaje");
 
     await user.clear(percentField);
     await user.type(percentField, "15");
-    await user.click(screen.getByRole("button", { name: "Save coupon" }));
+    await user.click(screen.getByRole("button", { name: "Guardar cupón" }));
 
     await waitFor(() => {
       expect(updateCoupon).toHaveBeenCalled();
@@ -113,7 +115,7 @@ describe("AdminCouponsWorkspace", () => {
       />,
     );
 
-    await user.click(screen.getByRole("button", { name: /Generate batch/i }));
+    await user.click(screen.getByRole("button", { name: /Generar cupones/i }));
 
     await waitFor(() => {
       expect(generateBatch).toHaveBeenCalled();

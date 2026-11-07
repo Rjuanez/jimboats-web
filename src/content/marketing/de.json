@@ -1,0 +1,208 @@
+{
+  "nav": [
+    "Erlebnisse",
+    "Preise",
+    "Unser Boot",
+    "Anreise",
+    "Kontakt"
+  ],
+  "home": "Startseite",
+  "book": "Erlebnis auswählen",
+  "details": "Erlebnis entdecken",
+  "reserve": "Dauer und Datum wählen",
+  "from": "Ab",
+  "price": "Preis anfragen",
+  "perBoat": "Gesamtpreis für das Boot · nicht pro Person",
+  "duration": "Dauer",
+  "hour": "Stunde",
+  "hours": "Stunden",
+  "chooseHours": "Wie lange möchtest du auf dem Wasser sein?",
+  "hourNote": "Wählt eine verfügbare Dauer für dieses Erlebnis und seht anschließend Termine, Abfahrtszeiten und den Gesamtpreis.",
+  "priceNote": "Gesamtpreis pro Boot. Tagestour: 1–6 Stunden. Sonnenaufgang und Sonnenuntergang: 2–6 Stunden. Romantische Fahrt: 1–4 Stunden. Ein Getränk ist ab der ersten Stunde inklusive, Snacks bei Fahrten ab zwei Stunden.",
+  "languageNotice": "",
+  "skip": "Zum Inhalt",
+  "menu": "Menü",
+  "language": "Sprache",
+  "eyebrow": "BARCELONA IN DEINEM TEMPO",
+  "homeTitle": "Dein privates Boot in Barcelona.",
+  "homeDescription": "JimBoats Charter bietet private Bootsausflüge mit Skipper ab Port Olímpic in Barcelona für Gruppen mit bis zu sechs Personen an. Wählt eine Fahrt tagsüber, bei Sonnenaufgang, bei Sonnenuntergang oder einen romantischen Ausflug. Die Tagesfahrt kostet ab {startingPrice} für eine Stunde für das gesamte Boot, inklusive Skipper, Treibstoff und Versicherung.",
+  "heroLink": "Finde deinen Moment",
+  "heroAlt": "Die LENA von JimBoats vor der Küste Barcelonas",
+  "trust": [
+    "100 % private Boote",
+    "Mit Skipper",
+    "5,0★ Google Maps ({googleReviews} Bewertungen)",
+    "Port Olímpic, Barcelona"
+  ],
+  "experiencesTitle": "Vier Möglichkeiten, das Meer zu erleben.",
+  "experiencesDescription": "Wähle die Stimmung. Bestimme die Dauer.",
+  "names": {
+    "private": "Private Bootstour in Barcelona",
+    "sunset": "Bootstour zum Sonnenuntergang in Barcelona",
+    "sunrise": "Bootstour zum Sonnenaufgang in Barcelona",
+    "romantic": "Romantische Bootsfahrt in Barcelona",
+    "prices": "Preise für Bootstouren in Barcelona",
+    "boat": "LENA, unser Boot im menorquinischen Stil in Barcelona",
+    "contact": "Euer Treffpunkt in Barcelona",
+    "about": "Víctor und David, die Skipper von JimBoats"
+  },
+  "shortNames": {
+    "private": "Barcelona am Tag",
+    "sunset": "Die goldene Stunde",
+    "sunrise": "Das erste Licht",
+    "romantic": "Ein Moment zu zweit"
+  },
+  "descriptions": {
+    "private": "Lass den Trubel an Land. Genieße eine private Tour entlang der Küste, entdecke Barcelona aus einer anderen Perspektive und erlebe das Mittelmeer in eurem Tempo.",
+    "sunset": "Die Stadt wechselt ihre Farben und das Meer leuchtet golden. Genießt das letzte Tageslicht auf einem Boot, das nur für eure Gruppe reserviert ist.",
+    "sunrise": "Entdecke die Küste, während Barcelona erwacht. Eine private Tour für alle, die das erste Licht und einen besonderen Start in den Tag lieben.",
+    "romantic": "Eine Auszeit nur für euch. Wählt zwischen 1 und 4 Stunden, inklusive der Dekoration auf den Fotos. Wir haben verschiedene Dekorationen – fragt uns gerne nach besonderen Wünschen.",
+    "prices": "Vergleicht den Gesamtpreis für bis zu 6 Gäste: Tagestour von 1 bis 6 Stunden, Sonnenaufgang und Sonnenuntergang von 2 bis 6 und romantische Fahrt von 1 bis 4. Skipper, Kraftstoff und Versicherung inklusive.",
+    "boat": "LENA ist ein Llaut Llevant 39 (Punta Prima), 7,49 m lang und 3,03 m breit. Vom Port Olímpic aus nimmt der Skipper bis zu sechs Gäste auf private Fahrten mit.",
+    "contact": "Wir treffen uns im Port Olímpic. Seht euch den Liegeplatz an und stimmt die Anreise vor eurer Ausfahrt mit uns ab.",
+    "about": "Der Name JimBoats spielt auf ihren Nachnamen Jiménez an. Gemeinsam haben sie das Unternehmen gegründet, um Gästen die Küste von Barcelona auf einem privaten Boot zu zeigen."
+  },
+  "experienceHeading": "Eure Zeit auf dem Wasser",
+  "includeHeading": "Eine Ausfahrt nach euren Wünschen",
+  "includeItems": [
+    "Ein privates Boot für eure Gruppe",
+    "Skipper, Treibstoff und Versicherung inklusive",
+    "Abfahrt im Port Olímpic",
+    "Bis zu 6 Personen"
+  ],
+  "extrasNote": "Extras auf Anfrage.",
+  "routeHeading": "Barcelona aus einer anderen Perspektive",
+  "routeText": "Die Tour führt entlang der Küste Barcelonas. Route und Stopps stimmt der Skipper mit euch ab – abhängig von Dauer, Seegang und den Möglichkeiten des Tages.",
+  "sunsetNote": "Die Abfahrtszeit richtet sich nach dem Sonnenuntergang und variiert je nach Jahreszeit und gewählter Dauer.",
+  "sunriseNote": "Die Abfahrtszeit richtet sich nach dem Sonnenaufgang und variiert je nach Jahreszeit und gewählter Dauer.",
+  "faqTitle": "Bevor es an Bord geht",
+  "faqs": [
+    [
+      "Ist das Boot privat oder fahren andere Gäste mit?",
+      "Die Fahrt ist privat: Das Boot ist für eure Gruppe reserviert, mit einem Skipper an Bord. Es werden keine Plätze für weitere Gruppen auf eurer Fahrt verkauft."
+    ],
+    [
+      "Brauche ich einen Bootsführerschein?",
+      "Ihr braucht weder einen Bootsführerschein noch Segelerfahrung. Bei JimBoats ist ein Skipper dabei, der die Navigation übernimmt und die Route an die Bedingungen auf See anpasst."
+    ],
+    [
+      "Was kostet die Fahrt und welche Dauer kann ich wählen?",
+      "Tagestour: 1–6 Stunden. Sonnenaufgang und Sonnenuntergang: 2–6 Stunden. Romantische Fahrt: 1–4 Stunden. Der Preis gilt pro Boot für die gewählte Dauer, nicht pro Person. Je nach Verfügbarkeit könnt ihr bis zur Höchstdauer eures Erlebnisses verlängern."
+    ],
+    [
+      "Was ist enthalten und was kostet extra?",
+      "Der Preis beinhaltet die private Nutzung des Bootes, Skipper, Treibstoff und Versicherung. Ihr braucht keinen Bootsführerschein. Extras wie Paddleboard, eFoil oder Fotograf werden je nach Verfügbarkeit separat gebucht und zum Bootspreis hinzugefügt."
+    ],
+    [
+      "Wie buche ich?",
+      "Öffnet ein Erlebnis, wählt die Dauer und geht zur Buchung, um Datum, Abfahrtszeit, Gruppengröße und Gesamtpreis zu prüfen. Lest die Bedingungen vor der Bestätigung. Besondere Wünsche besprecht ihr am besten vorher per WhatsApp."
+    ],
+    [
+      "Wo steigen wir ein und wie kommen wir dorthin?",
+      "Wir starten am Port Olímpic, Moll de Xaloc, Pantalan 5, in Barcelona. Die Karte und den Link zur Wegbeschreibung findet ihr auf dieser Seite. Bestätigt den genauen Treffpunkt mit JimBoats und plant genügend Zeit zum Einsteigen ein."
+    ],
+    [
+      "Wie viele Gäste können mitkommen? Auch Kinder?",
+      "Alle Erlebnisse sind für bis zu 6 Personen geeignet, einschließlich Kindern. Nennt uns bei der Buchung das Alter kleinerer Kinder und ob ihr Hilfe beim Einsteigen benötigt."
+    ],
+    [
+      "Was unterscheidet die Tagesfahrt von Sonnenaufgang und Sonnenuntergang?",
+      "Tagsüber erlebt ihr die Küste bei Tageslicht. Die anderen beiden Fahrten orientieren sich am ersten beziehungsweise letzten Licht des Tages. Ihre Abfahrtszeiten hängen vom Datum und der gewählten Dauer ab."
+    ],
+    [
+      "Wann ist die beste Jahreszeit für eine Bootsfahrt in Barcelona?",
+      "Frühling und Sommer bieten längere Tage. Herbst und Winter haben eine andere Atmosphäre; eine warme zusätzliche Schicht ist dann besonders hilfreich. Fahrten hängen von der Verfügbarkeit und vor allem von den Bedingungen auf See ab."
+    ],
+    [
+      "Was sollten wir mitbringen?",
+      "Sonnenschutz, Sonnenbrille, bequeme Schuhe und eine zusätzliche Kleidungsschicht gegen die Brise sind sinnvoll. Wenn ihr schwimmen möchtet, bringt Badesachen und ein Handtuch mit und fragt vorher nach: Badestopps hängen von Dauer und Seegang ab."
+    ],
+    [
+      "Können wir einen Geburtstag, Jahrestag oder Heiratsantrag planen?",
+      "Ja, sprecht mit uns über eure private Fahrt zu einem besonderen Anlass. Die romantische Fahrt beinhaltet die Dekoration auf den Fotos. Wir haben verschiedene Dekorationen; besondere Wünsche stimmen wir gerne vor der Buchung mit euch ab."
+    ],
+    [
+      "Was passiert bei schlechtem Wetter oder einer Stornierung?",
+      "Der Skipper beurteilt, ob eine Fahrt möglich ist oder angepasst werden muss. Änderungen, Stornierungen und mögliche Erstattungen richten sich nach euren Buchungsbedingungen. Lest sie vor der Bestätigung und meldet euch frühzeitig bei JimBoats, wenn sich eure Pläne ändern."
+    ]
+  ],
+  "findTitle": "Wir sehen uns im Port Olímpic.",
+  "findText": "Eure Fahrt beginnt im Port Olímpic, direkt am Mittelmeer und nur wenige Schritte von der Stadt entfernt.",
+  "directions": "Route anzeigen",
+  "weather": "Wettervorhersage ansehen",
+  "reviewsTitle": "Zeit auf dem Meer. Erinnerungen zum Teilen.",
+  "reviewsText": "Erlebnisse mit JimBoats, von unseren Gästen in ihren eigenen Worten erzählt.",
+  "whatsapp": "Über WhatsApp schreiben",
+  "footerText": "Private Bootstouren in Barcelona. Das Mittelmeer mit euren Lieblingsmenschen.",
+  "aboutLink": "Über uns",
+  "otherExperiences": "Entdecke einen anderen Moment",
+  "pricesHeading": "Dein Erlebnis. Deine Zeit.",
+  "tableExperience": "Erlebnis",
+  "tableDuration": "Dauer zur Auswahl",
+  "tablePrice": "Gesamtpreis",
+  "boatHeading": "Warum wir dieses Boot gewählt haben",
+  "boatText": "Die Form von LENA erinnert Víctor und David an Menorca. Sie suchten ein Boot, auf dem sich die Gäste an Deck bewegen und in Ruhe etwas zusammen trinken können.",
+  "aboutHeading": "Sprich direkt mit uns",
+  "aboutText": "Vor der Ausfahrt beantworten wir eure Fragen zu Dauer, Treffpunkt und Bedingungen. Ihr erreicht uns per Telefon, E-Mail und WhatsApp.",
+  "preview": "Lokale Vorschau · Testbuchungen.",
+  "bookingTitle": "Plane deine Ausfahrt",
+  "bookingIntro": "Wähle Erlebnis, Dauer und Datum. Diese lokale Vorschau bestätigt keine Verfügbarkeit, erstellt keine Buchungen und nimmt keine Zahlungen an.",
+  "date": "Wunschdatum",
+  "guests": "Personen in eurer Gruppe",
+  "summary": "Deine Ausfahrt",
+  "request": "Diese Ausfahrt über WhatsApp anfragen",
+  "bookingNote": "JimBoats bestätigt Abfahrtszeit, Kapazität und Preis. Du kannst die Nachricht in WhatsApp vor dem Senden prüfen.",
+  "back": "Zurück zum Erlebnis",
+  "message": "Hallo, ich interessiere mich für {experience} in Barcelona für {hours} Stunden am {date} mit {guests} Personen. Könnt ihr Verfügbarkeit, Kapazität und Gesamtpreis bestätigen?",
+  "dateMissing": "Wähle ein Datum für deine Anfrage.",
+  "pending": "Noch zu bestätigen",
+  "bookingEnglish": "Die Buchung wird auf Englisch fortgesetzt.",
+  "bookingHoursLabel": "Stunden auf dem Wasser",
+  "provisionalPrice": "Vorläufiger Preis · lokale Vorschau",
+  "faqIntro": "Dauer, Buchung und Treffpunkt. Die wichtigsten Antworten, damit ihr die Zeit auf dem Meer genießen könnt.",
+  "weatherTitle": "Das Wetter in Barcelona",
+  "weatherNote": "Unverbindliche Wettervorhersage für die Umgebung. Der Skipper bestätigt die Bedingungen für eure Fahrt.",
+  "mapTitle": "Karte zum Treffpunkt von JimBoats im Port Olímpic",
+  "reviewsCountLabel": "Bewertungen auf",
+  "reviewsExcerptLabel": "Bewertungen von Gästen",
+  "reviewsCheckedLabel": "Abgerufen am",
+  "reviewsReadLabel": "Bewertung lesen ·",
+  "reviewsPreviousLabel": "Vorherige Bewertung",
+  "reviewsNextLabel": "Nächste Bewertung",
+  "reviewsEyebrow": "Gästebewertungen",
+  "reviewsOriginalLabel": "Originalauszug",
+  "reviewsShowOriginalLabel": "Originalauszug ansehen",
+  "reviewsTranslations": {
+    "emma": "Vom ersten Moment an Bord an machte Víctor das gesamte Erlebnis persönlich, entspannt und ganz auf uns zugeschnitten.",
+    "asante": "Er war freundlich und professionell und sorgte dafür, dass sich das Erlebnis von Anfang bis Ende unkompliziert und entspannt anfühlte.",
+    "stefania": "ins Meer springen, das Paddleboard benutzen und in der Sonne entspannen, während wir unsere eigene Musik hörten.",
+    "adam": "das Boot war gut mit Getränken und köstlichem Schinken ausgestattet. Er ließ uns sogar den Lautsprecher an Bord benutzen.",
+    "kateryna": "Wir fuhren am Abend hinaus, um die Drohnenshow vom Wasser aus anzusehen, und es war ein unglaubliches Erlebnis.",
+    "alina": "Wir feierten den Junggesellinnenabschied meiner Schwester, und das ist eine tolle Idee dafür!",
+    "megan": "Wir haben gerade zu sechst eine zweistündige private Bootsfahrt mit Víctor gemacht und waren BEGEISTERT!",
+    "francessca": "Es war eine private Fahrt nur für unsere Gruppe, wirklich vertraut und persönlich; sie hat unseren Tag wirklich verschönert."
+  },
+  "reviewsTranslationLabel": "Übersetzter Auszug",
+  "reviewsShowTranslationLabel": "Übersetzung ansehen",
+  "reviewsAnd": "und",
+  "capacityLabel": "Bis zu 6 Personen",
+  "victorBio": "Víctor ist in Barcelona aufgewachsen. Als Miteigentümer und Skipper kennt er die Küstenschifffahrt, Überfahrten zwischen Festland und Inseln sowie Ankermanöver aus eigener Erfahrung. Besonders gern zeigt er seinen Gästen die Barceloneta im Abendlicht. Zu seinen spanischen Befähigungsnachweisen gehören Capitán de Yate und PPER.",
+  "davidBio": "David ist Mitgründer und Skipper. Er bereitet das Boot vor, organisiert die Buchungen und fährt mit den Gästen hinaus. Vor dem Ablegen prüft er Wind und Seegang, um die Route zu wählen. Am liebsten verlässt er den Hafen bei Sonnenaufgang. Er besitzt die spanischen Befähigungsnachweise Capitán de Yate und PPER.",
+  "support": {
+    "metro": "Mit der Metro",
+    "metroRoute": "Nimm die Linie L4 bis Ciutadella | Vila Olímpica. Geh von der Station zum Port Olímpic und im Hafen weiter bis zum Moll de Xaloc, Pantalan 5.",
+    "access": "Zu Fuß, mit dem Auto oder Taxi",
+    "accessRoute": "Der Zugang am Moll de Mestral ist für Fußgänger und Fahrzeuge geöffnet. Hier gelangst du ohne Treppen in den Hafen.",
+    "portGuide": "Hafenzugänge ansehen",
+    "contactMessage": "Hallo JimBoats, ich habe eine Frage zum Treffpunkt im Port Olímpic.",
+    "meeting": "Euer Treffpunkt",
+    "arrival": "Kommt am besten 15 Minuten vor Abfahrt. Wenn ihr uns im Hafen nicht findet, schickt uns den Namen eurer Buchung per WhatsApp.",
+    "specs": "LENA auf einen Blick",
+    "length": "Länge",
+    "beam": "Breite",
+    "model": "Modell",
+    "conditions": "Vor der Buchung",
+    "experiences": "Fahrten entdecken",
+    "optional": "Extras auf Anfrage"
+  }
+}

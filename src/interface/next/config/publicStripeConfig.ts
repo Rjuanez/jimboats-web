@@ -1,4 +1,5 @@
 export function getPublicStripePublishableKey() {
+  if (process.env.JIMBOATS_LOCAL_BOOKINGS === "1") return "";
   if (process.env.JIMBOATS_ADMIN_PREVIEW_DATA === "1") {
     return "pk_test_jimboats_preview";
   }

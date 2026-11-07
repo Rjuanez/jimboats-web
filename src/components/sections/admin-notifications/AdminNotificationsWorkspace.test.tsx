@@ -24,12 +24,12 @@ describe("AdminNotificationsWorkspace", () => {
     );
 
     expect(
-      screen.getByRole("heading", { level: 1, name: "Notifications" }),
+      screen.getByRole("heading", { level: 1, name: "Notificaciones" }),
     ).toBeVisible();
     expect(
-      screen.getByRole("heading", { level: 2, name: "Booking created" }),
+      screen.getByRole("heading", { level: 2, name: "Reserva creada" }),
     ).toBeVisible();
-    expect(screen.getByText("Active rules")).toBeVisible();
+    expect(screen.getByText("Reglas activas")).toBeVisible();
   });
 
   it("submits notification rule edits", async () => {
@@ -46,8 +46,8 @@ describe("AdminNotificationsWorkspace", () => {
       />,
     );
 
-    await user.click(screen.getAllByRole("button", { name: /edit/i })[0]!);
-    await user.click(screen.getByRole("button", { name: /save rule/i }));
+    await user.click(screen.getAllByRole("button", { name: /Editar/i })[0]!);
+    await user.click(screen.getByRole("button", { name: /Guardar regla/i }));
 
     expect(actions.saveRule).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -71,10 +71,12 @@ describe("AdminNotificationsWorkspace", () => {
     );
 
     await user.type(
-      screen.getByLabelText("Template id"),
+      screen.getByLabelText("ID de la plantilla"),
       "browser-test-template",
     );
-    await user.click(screen.getByRole("button", { name: /save template/i }));
+    await user.click(
+      screen.getByRole("button", { name: /Guardar plantilla/i }),
+    );
 
     expect(actions.saveTemplate).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -98,11 +100,13 @@ describe("AdminNotificationsWorkspace", () => {
       />,
     );
 
-    await user.click(screen.getByRole("button", { name: /render preview/i }));
+    await user.click(
+      screen.getByRole("button", { name: /Mostrar vista previa/i }),
+    );
 
     expect(actions.previewTemplate).toHaveBeenCalledWith(
       expect.objectContaining({
-        locale: "en",
+        locale: "es",
         templateId: "template-preview-email-created",
       }),
     );
@@ -122,7 +126,7 @@ describe("AdminNotificationsWorkspace", () => {
       />,
     );
 
-    await user.click(screen.getByRole("button", { name: /mark sent/i }));
+    await user.click(screen.getByRole("button", { name: /Enviar mensaje/i }));
 
     expect(actions.sendDelivery).toHaveBeenCalledWith({
       notificationDeliveryId: "delivery-preview-2",
@@ -130,7 +134,9 @@ describe("AdminNotificationsWorkspace", () => {
   });
 });
 
-function createActions(state: AdminNotificationsState): AdminNotificationActions {
+function createActions(
+  state: AdminNotificationsState,
+): AdminNotificationActions {
   return {
     previewTemplate: vi.fn(async () => ({
       data: {

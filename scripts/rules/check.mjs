@@ -240,11 +240,6 @@ function assertForbiddenPatterns() {
       message: "Do not leave pending implementation placeholders",
     },
     {
-      pattern: /\/fr\b|French|Frances|frances/,
-      message:
-        "Initial locales are es, en and ca; do not introduce fr/French references",
-    },
-    {
       pattern: /\bSMS\b|internal channel/i,
       message:
         "Notification channels currently modeled for the product are email and WhatsApp",

@@ -13,6 +13,7 @@ import type {
 } from "./PublicBookingTypes";
 
 type PublicBookingExperienceStepProps = {
+  onChangeHours?: (hours: number) => void;
   calendar: PublicBookingCalendarModel;
   availabilityError?: string | null;
   availabilityLoading?: boolean;
@@ -28,6 +29,7 @@ type PublicBookingExperienceStepProps = {
 };
 
 export function PublicBookingExperienceStep({
+  onChangeHours,
   calendar,
   availabilityError,
   availabilityLoading = false,
@@ -41,50 +43,96 @@ export function PublicBookingExperienceStep({
   selectedTimeSlotId,
   timeSlots,
 }: PublicBookingExperienceStepProps) {
+  const labels = getPublicDictionary(content.locale).booking.labels;
   const copy = getPublicDictionary(content.locale).booking.experienceStep;
 
   return (
     <div className="space-y-6 lg:space-y-16">
       <header className="px-1 lg:px-0">
         <h1 className="font-display text-4xl leading-tight text-text lg:text-6xl">
-          <span className="lg:hidden">{copy.mobileTitle}</span>
-          <span className="hidden lg:inline">{copy.desktopTitle}</span>
+          <span className="lg:hidden">
+            {content.hourly?.title ?? copy.mobileTitle}
+          </span>
+          <span className="hidden lg:inline">
+            {content.hourly?.title ?? copy.desktopTitle}
+          </span>
         </h1>
         <p className="mt-1 max-w-2xl text-sm font-light leading-6 text-text-muted lg:mt-4 lg:text-lg lg:leading-8">
           {copy.subtitle}
         </p>
       </header>
 
-      <section
-        aria-labelledby="experience-selection-title"
-        className="px-1 lg:px-0"
-      >
-        <h2
-          className="font-display text-2xl leading-none text-text lg:text-3xl"
-          id="experience-selection-title"
+      {content.hourly ? (
+        <section
+          className="rounded-3xl border border-sand/50 bg-white p-6 sm:p-8"
+          aria-labelledby="duration-selection-title"
         >
-          <span className="lg:hidden">{copy.experienceMobileTitle}</span>
-          <span className="hidden lg:inline">{copy.experienceDesktopTitle}</span>
-        </h2>
-        <div className="mt-4 grid gap-4 lg:mt-8 lg:grid-cols-2 lg:gap-6">
-          {content.experiences.length > 0 ? (
-            content.experiences.map((experience) => (
-              <ExperienceOption
-                experience={experience}
-                fromLabel={copy.from}
-                formatPrice={formatPrice}
-                key={experience.id}
-                onSelect={onSelectExperience}
-                selected={experience.id === selectedExperienceId}
-              />
-            ))
-          ) : (
-            <div className="rounded-3xl border border-sand/35 bg-white px-5 py-8 text-sm text-text-muted shadow-soft lg:col-span-2">
-              {copy.emptyExperiences}
-            </div>
-          )}
-        </div>
-      </section>
+          <p className="font-display text-2xl">
+            {
+              content.experiences.find(
+                (item) => item.id === selectedExperienceId,
+              )?.title
+            }
+          </p>
+          <h2
+            id="duration-selection-title"
+            className="mt-5 text-sm font-semibold"
+          >
+            {content.hourly.durationLabel}
+          </h2>
+          <div className="mt-4 flex flex-wrap gap-3">
+            {content.hourly.rates.map((rate) => (
+              <button
+                type="button"
+                key={rate.hours}
+                aria-pressed={content.hourly?.hours === rate.hours}
+                onClick={() => onChangeHours?.(rate.hours)}
+                className={cn(
+                  "min-h-12 min-w-16 rounded-2xl border-2 px-4 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-4",
+                  content.hourly?.hours === rate.hours
+                    ? "border-primary bg-primary text-white"
+                    : "border-sand/50 hover:border-primary",
+                )}
+              >
+                {rate.hours} h
+              </button>
+            ))}
+          </div>
+        </section>
+      ) : (
+        <section
+          aria-labelledby="experience-selection-title"
+          className="px-1 lg:px-0"
+        >
+          <h2
+            className="font-display text-2xl leading-none text-text lg:text-3xl"
+            id="experience-selection-title"
+          >
+            <span className="lg:hidden">{copy.experienceMobileTitle}</span>
+            <span className="hidden lg:inline">
+              {copy.experienceDesktopTitle}
+            </span>
+          </h2>
+          <div className="mt-4 grid gap-4 lg:mt-8 lg:grid-cols-2 lg:gap-6">
+            {content.experiences.length > 0 ? (
+              content.experiences.map((experience) => (
+                <ExperienceOption
+                  experience={experience}
+                  fromLabel={copy.from}
+                  formatPrice={formatPrice}
+                  key={experience.id}
+                  onSelect={onSelectExperience}
+                  selected={experience.id === selectedExperienceId}
+                />
+              ))
+            ) : (
+              <div className="rounded-3xl border border-sand/35 bg-white px-5 py-8 text-sm text-text-muted shadow-soft lg:col-span-2">
+                {copy.emptyExperiences}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
 
       {selectedExperienceId ? (
         <section
@@ -146,7 +194,13 @@ export function PublicBookingExperienceStep({
             <span className="lg:hidden">{copy.timeMobileTitle}</span>
             <span className="hidden lg:inline">{copy.timeDesktopTitle}</span>
           </h2>
-          <div className="mt-4 grid grid-cols-3 gap-3 lg:mt-8 lg:flex lg:flex-wrap lg:gap-4">
+          <p className="mt-3 text-sm text-text-muted">{labels.timeRange}</p>
+          {selectedExperienceId === "daytrip" ? (
+            <p className="mt-2 text-sm leading-6 text-text-muted">
+              {labels.daytimeOnly}
+            </p>
+          ) : null}
+          <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-3 lg:mt-8 lg:flex lg:flex-wrap lg:gap-4">
             {timeSlots.length > 0 ? (
               timeSlots.map((slot) => (
                 <TimeSlotButton
@@ -157,7 +211,7 @@ export function PublicBookingExperienceStep({
                 />
               ))
             ) : (
-              <div className="col-span-3 rounded-3xl border border-sand/35 bg-white px-5 py-6 text-sm text-text-muted shadow-soft">
+              <div className="col-span-full rounded-3xl border border-sand/35 bg-white px-5 py-6 text-sm text-text-muted shadow-soft">
                 {copy.departureTimesUnavailable}
               </div>
             )}
@@ -259,7 +313,7 @@ function TimeSlotButton({
       aria-label={`${slot.label}${slot.available ? "" : " unavailable"}`}
       aria-pressed={selected}
       className={cn(
-        "min-h-12 rounded-2xl border-2 px-4 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text lg:min-h-14 lg:rounded-full lg:px-8",
+        "min-h-12 rounded-2xl border-2 px-4 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text lg:min-h-14 lg:rounded-full lg:px-5",
         selected && "scale-[1.03] border-primary bg-primary text-white",
         !selected &&
           slot.available &&

@@ -59,8 +59,8 @@ export class BackpanelCreateBookingUseCase {
       now,
     });
     const overlaps = await this.bookings.findActiveCalendarOverlaps(
-      plan.selectedStartAt,
-      plan.selectedEndAt,
+      experience.hourlyRates !== undefined ? plan.protectedStartAt : plan.selectedStartAt,
+      experience.hourlyRates !== undefined ? plan.protectedEndAt : plan.selectedEndAt,
     );
 
     if (overlaps.length > 0) {

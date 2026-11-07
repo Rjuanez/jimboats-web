@@ -330,3 +330,27 @@ pnpm media:prepare
 - La decision inicial es usar IP efimera en el VPS porque el downtime por cambio de IP es aceptable.
 - La IP efimera no se considera estable si la VM se para, suspende, recrea o cambia de red.
 - No se introduce Cloudflare Tunnel, IP estatica o proveedor externo para evitar este riesgo sin decision explicita.
+
+## Copia SEO local aprobada (2026-11-01)
+
+El marketing usa es, en, fr, de y nl con contenido local y HTML generado.
+Catalan se conserva como ruta heredada, sin migracion ni borrado.
+El paseo privado permite 1–6 horas; atardecer, amanecer y romántico permiten 2–6 horas.
+El marketing, imágenes y políticas se editan en archivos. El panel conserva las operaciones,
+incluida la configuración de horarios en `/admin/availability`.
+
+`pnpm db:hourly:setup` prepara PostgreSQL aislado con Docker Compose en loopback 55439,
+la base `jimboats_hourly_preview` y un volumen persistente independiente. Aplica migraciones
+y semillas idempotentes, sin importar reservas ni datos personales de producción.
+`pnpm dev:hourly` inicia la web en el host, en loopback 3102, y los procesos de notificaciones
+y expiración de retenciones. `pnpm start:hourly` usa una compilación standalone previa y
+copia sus recursos estáticos automáticamente. Esta topología de desarrollo local es la
+excepción aprobada al stack Docker completo de producción.
+
+El panel y las reservas usan persistencia y disponibilidad reales en la base local.
+Las tarifas provisionales solo están habilitadas en ese entorno. El pago se confirma con
+un adaptador local sin cobros; las notificaciones se procesan y registran con proveedor
+console, sin entrega externa. Google Calendar y push externo están desactivados.
+No hacen falta workers de media o galería para el contenido estático.
+`pnpm dev:seo` conserva únicamente el modo visual para pruebas de regresión con fixtures;
+no es el entorno operativo de pruebas del usuario. No se ha modificado el despliegue real.

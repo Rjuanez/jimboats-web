@@ -1,3 +1,4 @@
+import type { HourlyRate } from "../../domain/HourlyRate";
 import type { MoneySnapshot } from "@/shared/domain/Money";
 import type { CouponRedemptionWriteModel } from "@/modules/coupons/application/CouponDtos";
 
@@ -47,6 +48,7 @@ export type BookingExtraSelectionRuleReadModel = {
 };
 
 export type BookingExperienceOptionReadModel = {
+  hourlyRates?: HourlyRate[];
   allowsManualScheduling: boolean;
   basePrice: MoneySnapshot;
   bufferMinutes: number;

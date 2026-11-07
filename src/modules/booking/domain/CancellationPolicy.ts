@@ -82,6 +82,7 @@ export type BookingCancellationPolicySnapshot = {
   tiers: CancellationPolicyTierSnapshot[];
   version: number;
   versionId: string;
+  termsDocument?: string;
 };
 
 export class CancellationPolicyTier {

@@ -1,0 +1,521 @@
+{
+  "labels": {
+    "name": "Blog",
+    "title": "Barcelona, con tiempo para disfrutarla.",
+    "seoTitle": "Guías de Barcelona: atardeceres y planes en pareja",
+    "description": "Ideas para ver el atardecer y el amanecer en Barcelona, elegir un plan en pareja y descubrir la ciudad desde el mar.",
+    "eyebrow": "EL CUADERNO DE JIMBOATS",
+    "read": "Leer la guía",
+    "toc": "En esta guía",
+    "related": "Más ideas para tu escapada",
+    "sources": "Fuentes y datos prácticos",
+    "updated": "Actualizado",
+    "by": "Por",
+    "faq": "Preguntas frecuentes",
+    "experience": "Ver la experiencia",
+    "prices": "Comparar precios",
+    "contact": "Cómo llegar a Port Olímpic",
+    "all": "Todas las guías",
+    "relatedExperience": "Prepara tu salida",
+    "photo": "Barcelona desde el mar · JimBoats",
+    "source": "Información del lugar"
+  },
+  "articles": {
+    "sunset": {
+      "slug": "donde-ver-atardecer-barcelona",
+      "title": "Dónde ver el atardecer en Barcelona",
+      "seoTitle": "Dónde ver el atardecer en Barcelona",
+      "description": "Montjuïc, el paseo marítimo o el mar: elige dónde ver el atardecer en Barcelona, consulta horarios orientativos y prepara tu tarde sin prisas.",
+      "category": "La última luz",
+      "imageAlt": "Vista del mar y del atardecer durante una salida de JimBoats",
+      "lead": "Para ver el atardecer en Barcelona, decide primero qué quieres contemplar: el sol bajando hacia las montañas, la ciudad iluminada o el cambio de luz sobre el Mediterráneo. No todas las vistas muestran lo mismo. Estas tres opciones te ayudan a elegir una tarde a tu medida.",
+      "sections": [
+        {
+          "id": "orientacion",
+          "title": "Antes de elegir: el sol no se pone frente a la playa",
+          "paragraphs": [
+            "La costa de Barcelona mira hacia el este y el sureste. Al atardecer, el sol baja hacia el interior; desde la orilla puedes disfrutar de la luz sobre el agua, pero no debes esperar verlo desaparecer en el horizonte marino. Desde un barco cambia la perspectiva: puedes mirar hacia la ciudad mientras cae la tarde.",
+            "Si lo que buscas es el sol saliendo sobre el Mediterráneo, elige el amanecer. Para una foto del skyline con luz cálida o un paseo al final del día, el atardecer tiene otro atractivo."
+          ]
+        },
+        {
+          "id": "montjuic",
+          "title": "Montjuïc: una tarde con vistas a la ciudad",
+          "paragraphs": [
+            "Los miradores de Montjuïc permiten contemplar Barcelona desde arriba. El Mirador de l’Alcalde es una opción para ver la ciudad y el puerto; el entorno del Mirador del Migdia ofrece otra orientación para la última luz.",
+            "Escoge un punto concreto y comprueba el acceso antes de salir. Subir a un mirador y visitar el castillo son planes distintos: no des por hecho que un recinto estará abierto a la hora de la puesta de sol. Deja resuelto también el regreso, sobre todo si te quedas hasta que oscurezca."
+          ],
+          "sourceIds": [
+            "montjuic",
+            "outdoors"
+          ]
+        },
+        {
+          "id": "paseo-maritimo",
+          "title": "Barceloneta y paseo marítimo: un plan flexible",
+          "paragraphs": [
+            "El frente marítimo encaja si prefieres caminar, parar cuando te apetezca y no depender de una reserva. Puedes combinar la luz de la tarde con un paseo hacia Port Olímpic y elegir sobre la marcha cuánto tiempo dedicarle.",
+            "Aquí el protagonismo está en el ambiente y en los colores, no en un sol poniéndose sobre el mar. Si quieres cenar después, deja margen para el paseo y reserva el restaurante por separado; no calcules toda la tarde alrededor de una única foto."
+          ]
+        },
+        {
+          "id": "desde-el-mar",
+          "title": "Desde un barco privado: el skyline como escenario",
+          "paragraphs": [
+            "Salir de Port Olímpic permite ver el litoral desde fuera y compartir el momento con tu grupo. JimBoats ofrece una experiencia privada de atardecer para hasta seis personas, con patrón, combustible y seguro incluidos.",
+            "Esta salida empieza en dos horas; puedes elegir una duración mayor entre las opciones disponibles. Desde dos horas se incluyen bebidas y snacks. El horario de la puesta de sol es una referencia para escoger el día, no una hora de embarque: la salida disponible se consulta al reservar."
+          ]
+        },
+        {
+          "id": "horario",
+          "title": "A qué hora es el atardecer en Barcelona",
+          "paragraphs": [
+            "La hora cambia cada día y con el horario de verano. Como orientación para Port Olímpic, el 15 de enero de 2026 la puesta de sol es a las 17:46; el 15 de junio, a las 21:26; y el 15 de septiembre, a las 20:00. Son referencias de esas fechas en hora local, no un horario válido para todo el mes.",
+            "En la ficha de atardecer tienes la tabla mensual y la hora solar del día. Para una fecha concreta, revisa el dato antes de organizar el transporte. Las nubes y la visibilidad pueden cambiar el aspecto del cielo aunque la hora astronómica sea la misma."
+          ],
+          "sourceIds": [
+            "solar"
+          ]
+        },
+        {
+          "id": "elegir",
+          "title": "Cómo elegir sin llenar la tarde de planes",
+          "paragraphs": [
+            "Elige el mirador si buscas altura; el paseo marítimo si valoras la flexibilidad; y el barco privado si prefieres pasar ese tiempo con los tuyos en el mar. No hace falta combinar las tres opciones en una tarde."
+          ],
+          "bullets": [
+            "Llega antes del momento que quieres ver, con margen para encontrar tu sitio.",
+            "Comprueba la previsión y lleva una capa ligera para la brisa.",
+            "Si reservas barco, revisa el punto de encuentro y la hora de salida de tu reserva."
+          ]
+        },
+        {
+          "id": "jimboats",
+          "title": "Consejos de los patrones de JimBoats",
+          "paragraphs": [
+            "Víctor recomienda acercarse al final del paseo de la Barceloneta para ver la luz sobre el Hotel W. Si salís en barco, su consejo es llegar al puerto unos 15 minutos antes."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "¿Se ve ponerse el sol en el mar desde la Barceloneta?",
+          "La puesta de sol ocurre hacia el interior. Desde la playa verás el cambio de luz sobre el mar; desde el agua puedes contemplar la ciudad al atardecer."
+        ],
+        [
+          "¿El paseo de atardecer es privado?",
+          "Sí. En JimBoats el barco se reserva para tu grupo, de hasta seis personas, y os acompaña un patrón."
+        ],
+        [
+          "¿La hora de puesta de sol es la hora de salida?",
+          "No. Son datos diferentes. Consulta la salida disponible para tu fecha en el proceso de reserva."
+        ]
+      ],
+      "cta": {
+        "title": "La última luz, desde vuestro barco.",
+        "text": "Consulta la experiencia de atardecer, sus duraciones, lo que incluye y las fechas disponibles antes de reservar."
+      }
+    },
+    "sunrise": {
+      "slug": "donde-ver-amanecer-barcelona",
+      "title": "Dónde ver el amanecer en Barcelona",
+      "seoTitle": "Dónde ver el amanecer en Barcelona: playas y horarios",
+      "description": "Elige entre Barceloneta, Bogatell y una salida privada desde Port Olímpic. Horarios orientativos y consejos para preparar el amanecer en Barcelona.",
+      "category": "El primer sol",
+      "imageAlt": "Luz del amanecer sobre el mar en la experiencia de JimBoats",
+      "lead": "El amanecer en Barcelona es un plan para mirar hacia el Mediterráneo. La playa te permite decidir sobre la marcha; una salida privada añade la perspectiva de la costa desde el agua. La elección depende de cuánto quieras madrugar, cómo llegarás y con quién compartes la mañana.",
+      "sections": [
+        {
+          "id": "barceloneta",
+          "title": "Barceloneta: empezar el día junto al mar",
+          "paragraphs": [
+            "El paseo junto a la Barceloneta es una opción si te alojas cerca del frente marítimo y quieres llegar andando. Busca un tramo con vista despejada hacia el agua y detente unos minutos para decidir el encuadre antes de sacar la cámara.",
+            "Conviene llegar antes de la salida del sol para ver cómo cambia la luz. Ese margen es una recomendación para disfrutar del paisaje, no una garantía de colores ni de un cielo despejado. Después puedes continuar el paseo y buscar desayuno cuando abran los locales."
+          ]
+        },
+        {
+          "id": "bogatell",
+          "title": "Bogatell y Nova Icària: otra parte del litoral",
+          "paragraphs": [
+            "Bogatell está entre Nova Icària y Mar Bella. Nova Icària queda junto a Port Olímpic: ambas permiten plantear una mañana en la costa sin tener que empezar en la Barceloneta.",
+            "Elige la playa por la facilidad de llegar desde tu alojamiento, no por una promesa de tenerla vacía. Antes de salir, comprueba tu recorrido y el transporte disponible a esa hora; el horario de un día laborable puede ser distinto del de un fin de semana."
+          ],
+          "sourceIds": [
+            "bogatell",
+            "outdoors"
+          ]
+        },
+        {
+          "id": "a-bordo",
+          "title": "Ver el amanecer desde un barco privado",
+          "paragraphs": [
+            "Desde Port Olímpic, la experiencia de amanecer de JimBoats permite salir con tu propio grupo de hasta seis personas. La duración mínima es de dos horas, con patrón, combustible, seguro, bebidas y snacks incluidos.",
+            "Es una opción para parejas, amigos o familias que quieren dedicar la mañana al mar. Los snacks no son un desayuno completo. Si tienes pensado comer después, organiza ese momento aparte y deja margen tras el regreso; el recorrido depende de la duración y de las condiciones del día."
+          ]
+        },
+        {
+          "id": "horario",
+          "title": "A qué hora amanece en Barcelona",
+          "paragraphs": [
+            "No hay una única hora de amanecer para toda la temporada. Como referencia, en Port Olímpic el sol sale a las 08:15 el 15 de enero de 2026, a las 06:17 el 15 de junio y a las 07:31 el 15 de septiembre. Las horas son locales e incluyen el horario de verano cuando corresponde.",
+            "La ficha de la experiencia reúne una tabla mensual orientativa y la hora solar del día. Comprueba la fecha exacta y diferencia siempre la salida del sol de la salida del barco: para embarcar debes seguir la hora de tu reserva."
+          ],
+          "sourceIds": [
+            "solar"
+          ]
+        },
+        {
+          "id": "preparacion",
+          "title": "Prepara la mañana antes de acostarte",
+          "paragraphs": [
+            "Decide el punto de llegada y cómo volverás para no improvisar todavía de noche. Una capa ligera, calzado cómodo y el teléfono cargado suelen resultar más útiles que un itinerario muy apretado. Si vas a hacer fotos, deja listo el equipo la noche anterior.",
+            "Con niños o un grupo, acuerda el plan con todos: un amanecer implica madrugar también en vacaciones. Si alguien prefiere una salida más tardía, el paseo de día puede encajar mejor que forzar una hora que no disfrutará."
+          ],
+          "bullets": [
+            "Consulta nubes, viento y hora solar para tu fecha.",
+            "Prepara el trayecto hasta la playa o el punto de embarque.",
+            "Organiza el desayuno aparte si quieres algo más que los snacks de a bordo."
+          ]
+        },
+        {
+          "id": "elegir",
+          "title": "Playa o barco: dos maneras distintas de verlo",
+          "paragraphs": [
+            "La playa ofrece libertad para quedarte poco tiempo o seguir caminando. El barco privado requiere una reserva y una hora de encuentro, pero convierte la mañana en una experiencia compartida en el mar. Elige según el tiempo que quieras dedicar, no solo según la foto que tienes en mente."
+          ]
+        },
+        {
+          "id": "jimboats",
+          "title": "Consejos de los patrones de JimBoats",
+          "paragraphs": [
+            "David disfruta especialmente de la salida de puerto cuando la ciudad aún duerme. Recomienda mirar la previsión la víspera, porque la calma de primera hora depende del viento y del estado del mar."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "¿La hora de amanecer cambia durante el año?",
+          "Sí. Cambia cada día y las horas locales también reflejan el cambio al horario de verano. Usa una referencia de la fecha concreta."
+        ],
+        [
+          "¿Se incluye desayuno en la salida de JimBoats?",
+          "La experiencia de dos horas incluye bebidas y snacks. No se anuncia como desayuno completo."
+        ],
+        [
+          "¿Se puede reservar una hora de amanecer?",
+          "La experiencia de amanecer empieza en dos horas. Las opciones disponibles y sus precios aparecen al consultar la ficha y la reserva."
+        ]
+      ],
+      "cta": {
+        "title": "Un comienzo de día diferente.",
+        "text": "Descubre la salida privada de amanecer, consulta lo que incluye y elige la fecha que encaje con vuestra mañana."
+      }
+    },
+    "romantic": {
+      "slug": "planes-romanticos-barcelona",
+      "title": "Planes románticos en Barcelona para disfrutar en pareja",
+      "seoTitle": "Planes románticos en Barcelona",
+      "description": "Ideas para una cita o aniversario en Barcelona: pasear por el Gòtic, parar en la Ciutadella y compartir una salida privada en barco con patrón.",
+      "category": "Tiempo para dos",
+      "imageAlt": "Mesa preparada a bordo de JimBoats con la costa de Barcelona al fondo",
+      "lead": "Un plan romántico en Barcelona puede empezar con un paseo y terminar mirando la ciudad desde el mar. Lo importante es elegir el ritmo que os apetece a los dos. Aquí tienes opciones para una cita, un aniversario o una tarde juntos, sin convertir el día en una lista de visitas.",
+      "sections": [
+        {
+          "id": "gotic",
+          "title": "Un paseo por el Gòtic, sin un recorrido rígido",
+          "paragraphs": [
+            "Las calles y plazas del Barri Gòtic invitan a caminar entre edificios históricos. Podéis tomar la zona de la Catedral como referencia y decidir sobre la marcha dónde parar, sin intentar ver todo el barrio en una sola cita.",
+            "Este plan funciona si disfrutáis explorando a pie. Para añadir una visita interior, consultad sus entradas y horarios por separado. Reservar cada minuto deja poco espacio para sentarse a conversar; basta con un punto de partida y una idea de dónde terminar."
+          ],
+          "sourceIds": [
+            "gotic"
+          ]
+        },
+        {
+          "id": "ciutadella",
+          "title": "La Ciutadella: una pausa entre paseos",
+          "paragraphs": [
+            "El parque de la Ciutadella reúne caminos, vegetación, un lago y una cascada monumental. Puede ser una pausa agradable antes de continuar hacia la zona del mar, especialmente si preferís un plan que no dependa de una actividad reservada.",
+            "Comprobad el acceso del parque para el día elegido y no baséis el plan en encontrar siempre disponible una actividad del lago. Para un aniversario, un rato juntos sin prisas puede encajar mejor que añadir otra visita con entrada."
+          ],
+          "sourceIds": [
+            "ciutadella"
+          ]
+        },
+        {
+          "id": "frente-maritimo",
+          "title": "Caminar junto al mar y elegir dónde parar",
+          "paragraphs": [
+            "El paseo marítimo permite combinar conversación, vistas y una parada para comer o tomar algo. Elegid el tramo que mejor conecte con vuestro alojamiento o con la siguiente actividad; no necesitáis recorrer todo el litoral.",
+            "Si queréis cenar después de una salida en barco, reservad la mesa con margen suficiente tras el regreso. Restaurante y navegación son reservas independientes: no hace falta que la velada dependa de llegar al minuto."
+          ]
+        },
+        {
+          "id": "barco-privado",
+          "title": "Un barco para vosotros, con patrón",
+          "paragraphs": [
+            "La experiencia romántica de JimBoats es una salida privada desde Port Olímpic, de 1 a 4 horas. El patrón se ocupa de la navegación; el precio corresponde al barco para vuestro grupo, no a dos plazas en una excursión compartida.",
+            "Se incluyen patrón, combustible, seguro, la decoración de las fotos y bebida desde la primera hora; desde dos horas también hay snacks. La capacidad máxima es de seis personas. Si preferís centrar la salida en la última luz, también podéis elegir la experiencia de atardecer.",
+            "La experiencia romántica incluye la decoración que ves en las fotos. Tenemos varias decoraciones; si quieres algo especial, cuéntanos tu idea para acordar los detalles antes de reservar."
+          ]
+        },
+        {
+          "id": "presupuesto",
+          "title": "Elegir el plan según tiempo y presupuesto",
+          "paragraphs": [
+            "Para una cita flexible, escoged un paseo y una parada que os apetezca. Para una ocasión con una actividad central, reservad primero esa experiencia y organizad el resto alrededor. En el barco, comparad duración, precio total y extras antes de decidir.",
+            "No hace falta reservar la salida más larga para que sea especial. Pensad cuánto tiempo queréis pasar navegando y si preferís completar el día con otro plan en tierra. La página de precios permite comparar las experiencias de JimBoats sin confundir importe por barco con importe por persona."
+          ]
+        },
+        {
+          "id": "sorpresa",
+          "title": "Si preparas una sorpresa o un aniversario",
+          "paragraphs": [
+            "Coordina la fecha y la hora con quien organiza la actividad, aunque el resto del plan sea una sorpresa. Explica qué necesitas y pide confirmación de los detalles que sean importantes para vosotros. No des por hecho que una foto vista en otra web describe lo que incluye tu reserva."
+          ],
+          "bullets": [
+            "Elige una actividad principal y deja espacio entre planes.",
+            "Confirma por separado cualquier detalle especial o suplemento.",
+            "Revisa las condiciones de cancelación y la previsión antes de salir."
+          ]
+        },
+        {
+          "id": "jimboats",
+          "title": "Consejos de los patrones de JimBoats",
+          "paragraphs": [
+            "La experiencia romántica incluye la decoración que ves en las fotos. Tenemos varias decoraciones; si quieres algo especial, cuéntanos tu idea para acordar los detalles antes de reservar."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "¿El paseo romántico es solo para dos personas?",
+          "Podéis reservarlo para salir en pareja. El barco es privado para vuestro grupo y admite hasta seis personas; os acompaña un patrón."
+        ],
+        [
+          "¿Qué decoración incluye? ¿Podemos pedir otros detalles?",
+          "La experiencia romántica incluye la decoración que ves en las fotos. Tenemos varias decoraciones; si quieres algo especial, cuéntanos tu idea para acordar los detalles antes de reservar. La cena o el fotógrafo se consultan por separado."
+        ],
+        [
+          "¿Romántico y atardecer son lo mismo?",
+          "No. Romántico describe el tipo de ocasión; atardecer se centra en el momento del día. Consulta cada ficha y escoge la que mejor encaje con vuestro plan."
+        ]
+      ],
+      "cta": {
+        "title": "Vuestro momento, a bordo.",
+        "text": "Consulta la experiencia romántica y sus condiciones. Si tienes una idea especial, cuéntanosla antes de reservar."
+      },
+      "updatedAt": "2026-11-05"
+    },
+    "food": {
+      "slug": "aperitivo-en-barco-barcelona",
+      "title": "Aperitivo en barco en Barcelona: qué se sirve a bordo",
+      "seoTitle": "Aperitivo en barco en Barcelona: qué se sirve a bordo",
+      "description": "Un paseo corto para brindar o dos horas para compartir una tabla. Así se prepara el aperitivo en LENA según vuestro grupo.",
+      "category": "El aperitivo",
+      "imageAlt": "Un grupo compartiendo el aperitivo bajo el toldo de LENA",
+      "lead": "Un paseo corto para brindar o dos horas para compartir una tabla. Así se prepara el aperitivo en LENA según vuestro grupo.",
+      "sections": [
+        {
+          "id": "plan",
+          "title": "Una hora para brindar",
+          "paragraphs": [
+            "Si queréis salir de Port Olímpic, ver la Barceloneta desde el agua y brindar juntos antes de volver a tierra, podéis elegir el paseo privado de una hora. La bebida está incluida desde esa primera hora. Es una buena opción si después tenéis mesa reservada en Barcelona y os apetece empezar el plan en el mar."
+          ]
+        },
+        {
+          "id": "duration",
+          "title": "Qué lleva la tabla",
+          "paragraphs": [
+            "{food} La idea es picar algo entre conversación y conversación mientras navegáis. Si estáis organizando el día alrededor de una comida o una cena, pensad en la tabla como el aperitivo que la precede. Así podéis escoger la hora del paseo y la de la mesa con margen para regresar a puerto."
+          ]
+        },
+        {
+          "id": "group",
+          "title": "Elegir las bebidas del grupo",
+          "paragraphs": [
+            "{drinks} Por ejemplo, si dos personas quieren brindar con cava y las demás prefieren algo sin alcohol, decidlo al preparar la salida. Es más útil saber cuántos sois y qué os gusta que pedir una botella de cada tipo. El patrón podrá preparar el barco con una selección pensada para vosotros."
+          ]
+        },
+        {
+          "id": "on-board",
+          "title": "Cómo encajarlo en la salida",
+          "paragraphs": [
+            "Para compartir la tabla, elegid al menos dos horas. Podéis hacerlo en el paseo de día o elegir la luz del amanecer o del atardecer. Si os interesa el paisaje tanto como el aperitivo, contadle al patrón qué parte del plan os hace más ilusión. La ruta se decide con el viento y el estado del mar del día.",
+            "Antes de embarcar, poned en común las preferencias del grupo. Si alguien tiene una alergia o necesita consultar un ingrediente, escribid a JimBoats antes de reservar para saber qué se puede preparar. Acordad también dónde os reuniréis si llegáis al puerto por separado. Tener esos detalles resueltos os deja tiempo para disfrutar del primer brindis."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "¿La salida de una hora incluye la tabla?",
+          "La tabla se sirve desde dos horas. La salida de una hora incluye bebida."
+        ],
+        [
+          "¿Podemos combinar cava y bebidas sin alcohol?",
+          "Sí. Indicad vuestras preferencias y el número de invitados para que el equipo prepare la selección."
+        ]
+      ],
+      "cta": {
+        "title": "Paseo privado en barco por Barcelona",
+        "text": "Deja el ruido en tierra. Un paseo privado por el litoral para conversar, mirar Barcelona desde otra perspectiva y disfrutar del Mediterráneo a vuestro ritmo."
+      }
+    },
+    "birthday": {
+      "slug": "cumpleanos-en-barco-barcelona",
+      "title": "Cómo organizar un cumpleaños en barco en Barcelona",
+      "seoTitle": "Cómo organizar un cumpleaños en barco en Barcelona",
+      "description": "Una guía para celebrar en privado con hasta seis personas: elegir la duración, preparar el brindis y coordinar una sorpresa desde Port Olímpic.",
+      "category": "Celebraciones",
+      "imageAlt": "Tres invitadas a bordo en el puerto",
+      "lead": "Una guía para celebrar en privado con hasta seis personas: elegir la duración, preparar el brindis y coordinar una sorpresa desde Port Olímpic.",
+      "sections": [
+        {
+          "id": "plan",
+          "title": "Empezad por la lista de invitados",
+          "paragraphs": [
+            "En LENA caben hasta seis invitados. Antes de elegir fecha, contad a la persona que cumple años y a quienes queréis que la acompañen. La reserva es por el barco completo y el patrón se ocupa de navegar. Esto os permite reunir al grupo sin comprar plazas por separado ni depender de que otra gente se apunte a la salida."
+          ]
+        },
+        {
+          "id": "duration",
+          "title": "Elegid la duración pensando en el plan",
+          "paragraphs": [
+            "Si la sorpresa es dar una vuelta y brindar antes de comer en tierra, una hora en el paseo diurno puede encajar. Si queréis sentaros con el aperitivo, abrir los regalos y charlar un rato frente a la costa, elegid desde dos horas. Para celebrar con la última luz, la experiencia de atardecer también empieza en dos horas. Comprobad el total en la tabla de precios antes de repartir gastos."
+          ]
+        },
+        {
+          "id": "group",
+          "title": "El brindis y la música",
+          "paragraphs": [
+            "{drinks} Para las salidas de dos horas o más se añade la tabla de aperitivo para compartir. Podéis preparar una lista corta de canciones en vuestro móvil para el altavoz Bluetooth de a bordo. Nombrar a una persona encargada de la música y otra del brindis ayuda a disfrutar también a quien organiza el cumpleaños."
+          ]
+        },
+        {
+          "id": "on-board",
+          "title": "Si preparáis una sorpresa",
+          "paragraphs": [
+            "Una tarta, flores, decoración o un fotógrafo necesitan coordinación previa y pueden llevar suplemento. Antes de contar con un detalle, preguntad si se puede organizar en la fecha elegida y cuánto cuesta. Si queréis mantenerlo en secreto, usad un único contacto para hablar con el equipo y acordad cómo reconoceréis al grupo al llegar.",
+            "Para el encuentro, compartid con todos la ubicación del Moll de Xaloc y quedad unos quince minutos antes de zarpar. Si después tenéis restaurante o entradas para otro plan, dejad margen entre el regreso y la siguiente cita. La celebración empieza mejor si todos sabéis dónde y cuándo estar aunque el homenajeado todavía no sepa qué le espera."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "¿Cuántas personas podemos ir al cumpleaños?",
+          "Hasta seis invitados, contando a quien cumple años."
+        ],
+        [
+          "¿Viene incluida la decoración?",
+          "La decoración es opcional y se paga aparte. Consultad los detalles con el equipo antes de reservar."
+        ]
+      ],
+      "cta": {
+        "title": "Paseo privado en barco por Barcelona",
+        "text": "Deja el ruido en tierra. Un paseo privado por el litoral para conversar, mirar Barcelona desde otra perspectiva y disfrutar del Mediterráneo a vuestro ritmo."
+      }
+    },
+    "hen": {
+      "slug": "despedida-soltera-barco-barcelona",
+      "title": "Despedida de soltera en barco en Barcelona: un plan privado para seis",
+      "seoTitle": "Despedida de soltera en barco en Barcelona",
+      "description": "Organiza una despedida de soltera en barco en Barcelona para hasta seis personas: presupuesto, aperitivo, bebidas y fotos reales a bordo del LENA.",
+      "category": "Celebraciones",
+      "imageAlt": "La novia y una amiga celebran una despedida de soltera a bordo del LENA en Barcelona",
+      "lead": "Un barco reservado para vuestro grupo, vuestra música y Barcelona al otro lado de la borda. Si buscáis una despedida de soltera para hasta seis personas, el LENA permite compartir un paseo privado con patrón desde Port Olímpic. Esta guía os ayuda a elegir la duración, repartir el presupuesto y preparar una sorpresa sin complicaciones.",
+      "sections": [
+        {
+          "id": "grupo",
+          "title": "El primer paso: contar a la novia dentro del grupo",
+          "paragraphs": [
+            "La capacidad es de hasta seis personas invitadas, incluida la novia. La reserva es para el barco completo, así que no compartiréis la salida con otros grupos. Antes de elegir fecha, cerrad la lista de asistentes: si sois más de seis, el LENA no es la opción adecuada para embarcar juntas.",
+            "LENA es un llaüt mediterráneo de 7,49 metros, con espacios para sentarse, tomar el aperitivo y disfrutar de la costa. Para un grupo pequeño que quiere conversar, brindar y hacer fotos, el tamaño y el carácter del barco son parte del plan."
+          ],
+          "photo": {
+            "slug": "hen-party-bride",
+            "alt": "La novia en la proa del LENA, con el Hotel W y la costa de Barcelona al fondo"
+          }
+        },
+        {
+          "id": "presupuesto",
+          "title": "Cuánto cuesta una despedida de soltera en barco",
+          "paragraphs": [
+            "El paseo privado diurno cuesta {private1h} por una hora, {private2h} por dos horas y {private3h} por tres horas. Son precios finales del barco completo, con patrón, combustible y seguro incluidos. No necesitáis licencia.",
+            "Si sois seis y elegís dos horas, el reparto sale a {perGuest2h} por persona; la reserva sigue siendo de {private2h} por el barco, no una venta de plazas individuales. Si sois menos, el precio del barco es el mismo. La experiencia al atardecer empieza en dos horas por {sunset2h}. Los extras opcionales se añaden aparte.",
+            "Una hora puede encajar como sorpresa breve entre otros planes. Para disfrutar del aperitivo sin tener que pensar enseguida en la vuelta, dos horas ofrecen más margen. Tres horas permiten dedicar más tiempo a la salida; una parada para bañarse depende de las condiciones del mar y de la decisión del patrón."
+          ]
+        },
+        {
+          "id": "aperitivo",
+          "title": "Bebidas, aperitivo y vuestra playlist",
+          "paragraphs": [
+            "{drinks}",
+            "{food} La salida de una hora incluye bebida, pero no la tabla de aperitivo.",
+            "Preparad una selección de preferencias del grupo: por ejemplo, cava para el brindis y opciones sin alcohol para quien las prefiera. Las cantidades se adaptan al número de personas; no es barra libre ni incluye consumir todas las opciones de la carta. Si hay alergias o necesidades alimentarias, consultadlo antes de reservar.",
+            "El altavoz Bluetooth está incluido en todas las experiencias. Podéis traer la playlist de la novia en el móvil y dejar preparada la canción del brindis."
+          ],
+          "photo": {
+            "slug": "hen-party-toast",
+            "alt": "Un detalle de la despedida de soltera a bordo, con el mar de Barcelona al fondo"
+          }
+        },
+        {
+          "id": "ruta",
+          "title": "Cómo organizar las dos horas desde Port Olímpic",
+          "paragraphs": [
+            "Quedad en el punto de encuentro del Moll de Xaloc unos quince minutos antes. Enviad el enlace de contacto a todo el grupo para que cada una tenga la ubicación. Después de embarcar, el patrón os explica lo necesario para la salida y os lleva por el litoral de Barcelona.",
+            "Podéis reservar un momento para las fotos, otro para el aperitivo y dejar el resto para disfrutar del mar. Comentad al patrón si os interesa bañaros; no deis por garantizada una parada. El paddle surf es un extra opcional de 20 € por reserva, que debéis seleccionar si está disponible.",
+            "Si después tenéis restaurante u otro plan, dejad margen entre el regreso al puerto y la siguiente cita. Para una salida al atardecer, consultad la hora de puesta de sol de vuestra fecha antes de organizar el resto de la tarde."
+          ],
+          "photo": {
+            "slug": "hen-party-paddle",
+            "alt": "Una invitada disfruta del paddle surf junto al LENA; se reserva como extra"
+          }
+        },
+        {
+          "id": "sorpresa",
+          "title": "Preparar la sorpresa sin cargar a quien organiza",
+          "paragraphs": [
+            "Elegid una persona de contacto con JimBoats y otra que se encargue de reunir al grupo. Pasadnos por WhatsApp la fecha, cuántas sois y si la novia conoce el plan. Acordar estos tres detalles evita mensajes cruzados el día de la salida.",
+            "Flores, decoración, tarta o un fotógrafo necesitan coordinación previa y pueden tener suplemento. Consultad qué se puede organizar antes de comprarlos. Las fotos de esta guía son de una despedida a bordo; no significan que la decoración o los accesorios de las invitadas formen parte de la reserva."
+          ],
+          "photo": {
+            "slug": "hen-party-preparations",
+            "alt": "La novia y una amiga preparan el velo durante la celebración a bordo"
+          }
+        },
+        {
+          "id": "reserva",
+          "title": "De la idea a la reserva",
+          "paragraphs": [
+            "Abrid la ficha del paseo privado, elegid las horas y consultad el calendario. Después podéis seleccionar los extras disponibles y completar los datos de la reserva. Si necesitáis organizar una sorpresa o tenéis dudas sobre el grupo, escribidnos por WhatsApp antes de pagar.",
+            "La cancelación es gratuita hasta 48 horas antes de la salida. Con menos margen, contactad por WhatsApp para hablar con el equipo. Si JimBoats cancela por malas condiciones, se devuelve el dinero y el capitán se pone en contacto con vosotras."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "¿Podemos ir siete si una es la novia?",
+          "No. El máximo es de seis personas invitadas en total, incluida la novia."
+        ],
+        [
+          "¿Hay aperitivo y bebidas incluidos?",
+          "La bebida está incluida desde una hora. La tabla de aperitivo se incluye a partir de dos horas, con cantidades adaptadas al grupo. No es barra libre."
+        ],
+        [
+          "¿El barco se comparte con otra despedida?",
+          "No. Reserváis el LENA en privado para vuestro grupo, con patrón incluido."
+        ],
+        [
+          "¿La decoración de despedida está incluida?",
+          "No está incluida en el precio del paseo. Consultad las posibilidades y el suplemento antes de reservar."
+        ]
+      ],
+      "cta": {
+        "title": "Elegid vuestro paseo privado en Barcelona",
+        "text": "Consultad las horas y la disponibilidad del LENA para vuestro grupo de hasta seis personas. Para preparar una sorpresa, os ayudamos por WhatsApp."
+      },
+      "updatedAt": "2026-11-05"
+    }
+  }
+}

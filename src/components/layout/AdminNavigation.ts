@@ -1,4 +1,6 @@
+import { adminEs } from "@/i18n/admin/es";
 export type AdminNavItemId =
+  | "availability"
   | "bookings"
   | "calendar"
   | "cancellation-policies"
@@ -20,25 +22,19 @@ export type AdminNavItem = {
 };
 
 export const adminNavItems: AdminNavItem[] = [
-  { href: "/admin", id: "dashboard", label: "Dashboard" },
-  { href: "/admin/calendar", id: "calendar", label: "Calendar" },
-  { href: "/admin/bookings", id: "bookings", label: "Bookings" },
+  { href: "/admin", id: "dashboard", label: adminEs["Dashboard"] },
+  { href: "/admin/bookings", id: "bookings", label: adminEs["Bookings"] },
+  { href: "/admin/availability", id: "availability", label: "Horarios" },
+  { href: "/admin/calendar", id: "calendar", label: adminEs["Calendar"] },
+  { href: "/admin/coupons", id: "coupons", label: adminEs["Coupons"] },
+  {
+    href: "/admin/notifications/rules",
+    id: "notifications",
+    label: adminEs["Notifications"],
+  },
   {
     href: "/admin/device-notifications",
     id: "device-notifications",
-    label: "Device notifications",
+    label: adminEs["Devices"],
   },
-  {
-    href: "/admin/cancellation-policies",
-    id: "cancellation-policies",
-    label: "Cancellation policies",
-  },
-  { href: "/admin/experiences", id: "experiences", label: "Experiences" },
-  { href: "/admin/extras", id: "extras", label: "Extras" },
-  { href: "/admin/coupons", id: "coupons", label: "Coupons" },
-  { href: "/admin/media", id: "media", label: "Media" },
-  { href: "/admin/notifications/rules", id: "notifications", label: "Notifications" },
-  { href: "/admin/content", id: "content", label: "Content" },
-  { href: "/admin/localization", id: "localization", label: "Localization" },
-  { href: "/admin/settings", id: "settings", label: "Settings" },
 ];

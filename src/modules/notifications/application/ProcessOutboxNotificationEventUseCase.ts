@@ -270,6 +270,12 @@ export class ProcessOutboxNotificationEventUseCase {
       subject: translation.subject,
     });
     const deliveryStatus = input.rule.deliveryStatusForRule();
+    const termsDocument =
+      ruleSnapshot.channel === "EMAIL" &&
+      input.outboxMessage.eventType === "BookingDepositPaid" &&
+      ruleSnapshot.notificationType === "BOOKING_CONFIRMED_DEPOSIT_PAID"
+        ? input.booking.termsDocument
+        : undefined;
     const providerTemplateId =
       ruleSnapshot.channel === "WHATSAPP"
         ? templateSnapshot.providerTemplateId
@@ -298,7 +304,7 @@ export class ProcessOutboxNotificationEventUseCase {
       locale: LocaleCode.create(locale),
       notificationType: NotificationType.create(ruleSnapshot.notificationType),
       outboxMessageId: input.outboxMessage.id,
-      payload,
+      payload: termsDocument ? { ...payload, bookingTermsDocument: termsDocument } : payload,
       providerTemplateId,
       providerVariables:
         ruleSnapshot.channel === "WHATSAPP"

@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { getBookingPrivacyNotice } from "@/content/privacy/booking";
 import type {
   PublicBookingCalendar,
   PublicBookingContent,
@@ -264,6 +265,7 @@ function publicBookingFixture(): PublicBookingContent {
       "sunset-private-cruise": [drinks, toast],
     },
     footerLinks: [],
+    privacy: getBookingPrivacyNotice("en"),
     homeHref: "/en",
     locale: "en",
     maxAdvanceLabel: "Bookings are available up to 6 months ahead.",

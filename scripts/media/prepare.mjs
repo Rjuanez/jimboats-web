@@ -39,7 +39,7 @@ for (const item of manifest.items) {
         width,
         withoutEnlargement: true,
       })
-      .webp({ quality: 82 })
+      .webp({ quality: item.quality ?? 82 })
       .toFile(outputPath);
   }
 }

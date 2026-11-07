@@ -150,10 +150,6 @@ export function PublicBookingConfirmationStep({
                 : labels.whatsappPass
             }
           />
-          <p className="text-sm leading-6 text-text-muted">
-            {labels.promotions}:{" "}
-            {consents.marketing ? labels.accepted : labels.notAccepted}.
-          </p>
         </div>
       </section>
 

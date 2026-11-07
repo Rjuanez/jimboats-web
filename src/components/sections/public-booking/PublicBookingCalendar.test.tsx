@@ -25,7 +25,7 @@ describe("PublicBookingCalendar", () => {
     expect(screen.getByText("July 2026")).toBeVisible();
 
     await user.click(
-      screen.getByRole("button", { name: "Select Tuesday July 7, 2026" }),
+      screen.getByRole("button", { name: "Tuesday July 7, 2026" }),
     );
 
     expect(onSelectDate).toHaveBeenCalledWith("2026-07-07");

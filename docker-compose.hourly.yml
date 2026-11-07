@@ -1,0 +1,19 @@
+name: jimboats-hourly-preview
+services:
+  db:
+    image: postgres:17.7-alpine
+    environment:
+      POSTGRES_USER: jimboats
+      POSTGRES_PASSWORD: local-preview-only
+      POSTGRES_DB: jimboats_hourly_preview
+    ports:
+      - "127.0.0.1:55439:5432"
+    volumes:
+      - hourly_preview_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U jimboats -d jimboats_hourly_preview"]
+      interval: 2s
+      timeout: 2s
+      retries: 15
+volumes:
+  hourly_preview_data:

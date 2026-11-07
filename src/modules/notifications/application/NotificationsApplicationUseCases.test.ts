@@ -78,6 +78,21 @@ describe("Notifications application use cases", () => {
     ]);
   });
 
+  it("persists the booking terms with the paid confirmation for email retries", async () => {
+    const bed = createTestBed();
+    const termsDocument = "Conditions de réservation · JimBoats";
+    const notificationType = NotificationType.create("BOOKING_CONFIRMED_DEPOSIT_PAID");
+    bed.bookings.bookings.set("booking-1", { ...createBooking(), termsDocument });
+    bed.outbox.messages.set("outbox-1", { ...createOutboxMessage(), eventType: "BookingDepositPaid" });
+    bed.rules.rules.set("rule-email", createRule({ eventType: "BookingDepositPaid", notificationType }));
+    bed.templates.templates.set("template-email", createTemplate({ eventType: "BookingDepositPaid", notificationType }));
+
+    const result = await bed.createProcessOutboxUseCase().execute({ outboxMessageId: "outbox-1" });
+
+    expect(bed.deliveries.deliveries.get(result.createdDeliveryIds[0])?.toSnapshot().payload)
+      .toHaveProperty("bookingTermsDocument", termsDocument);
+  });
+
   it("records consent skips without failing the outbox", async () => {
     const bed = createTestBed();
     const booking = createBooking();

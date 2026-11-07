@@ -2,7 +2,11 @@
 	email {$CADDY_EMAIL}
 }
 
-{$APP_DOMAIN}, www.{$APP_DOMAIN} {
+www.{$APP_DOMAIN} {
+	redir https://{$APP_DOMAIN}{uri} permanent
+}
+
+{$APP_DOMAIN} {
 	encode zstd gzip
 
 	@admin path /admin /admin/*

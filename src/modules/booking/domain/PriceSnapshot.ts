@@ -117,7 +117,8 @@ export class PriceSnapshot {
       );
     }
 
-    const expectedTotal = subtotalAmount.amountMinor - discountAmount.amountMinor;
+    const expectedTotal =
+      subtotalAmount.amountMinor - discountAmount.amountMinor;
 
     if (input.totalAmount.amountMinor !== expectedTotal) {
       throw domainError(
@@ -165,6 +166,24 @@ export class PriceSnapshot {
 
   get totalAmount() {
     return this.props.totalAmount;
+  }
+
+  withUpfrontPayment(amount: Money) {
+    assertSameCurrency(amount, this.props.totalAmount.currency);
+    if (amount.amountMinor > this.props.totalAmount.amountMinor) {
+      throw domainError(
+        "BOOKING_DEPOSIT_AMOUNT_INVALID",
+        "The new total cannot be lower than the amount already paid.",
+      );
+    }
+    return PriceSnapshot.create({
+      ...this.props,
+      depositAmount: amount,
+      remainingAmount: Money.create({
+        amountMinor: this.props.totalAmount.amountMinor - amount.amountMinor,
+        currency: amount.currency,
+      }),
+    });
   }
 
   toSnapshot(): PriceSnapshotSnapshot {

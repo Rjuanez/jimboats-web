@@ -1,0 +1,521 @@
+{
+  "labels": {
+    "name": "Blog",
+    "title": "Barcelone, le temps d’en profiter.",
+    "seoTitle": "Guides de Barcelone : mer et couchers de soleil",
+    "description": "Où voir le soleil se lever ou se coucher à Barcelone, que faire en amoureux et comment découvrir la ville depuis la mer : les guides JimBoats.",
+    "eyebrow": "LE CARNET JIMBOATS",
+    "read": "Lire le guide",
+    "toc": "Dans ce guide",
+    "related": "D’autres idées pour votre séjour",
+    "sources": "Sources et informations pratiques",
+    "updated": "Mis à jour le",
+    "by": "Par",
+    "faq": "Questions fréquentes",
+    "experience": "Découvrir l’expérience",
+    "prices": "Comparer les tarifs",
+    "contact": "Rejoindre Port Olímpic",
+    "all": "Tous les guides",
+    "relatedExperience": "Préparez votre sortie",
+    "photo": "Barcelone vue de la mer · JimBoats",
+    "source": "Informations sur le lieu"
+  },
+  "articles": {
+    "sunset": {
+      "slug": "ou-voir-coucher-soleil-barcelone",
+      "title": "Où voir le coucher de soleil à Barcelone",
+      "seoTitle": "Coucher de soleil à Barcelone : lieux et horaires",
+      "description": "Montjuïc, une promenade en bord de mer ou un bateau privé : choisissez votre cadre pour le coucher de soleil à Barcelone et préparez votre soirée.",
+      "category": "La dernière lumière",
+      "imageAlt": "La mer au coucher du soleil lors d’une sortie JimBoats",
+      "lead": "Pour choisir où voir le coucher de soleil à Barcelone, demandez-vous ce que vous souhaitez regarder : le soleil descendant vers les collines, la ville dans une lumière chaude ou les couleurs sur la Méditerranée. Ces trois points de vue offrent des soirées différentes.",
+      "sections": [
+        {
+          "id": "orientation",
+          "title": "Le soleil se couche du côté de la terre",
+          "paragraphs": [
+            "Le littoral de Barcelone est orienté vers l’est et le sud-est. Le soir, le soleil descend vers l’intérieur des terres. Depuis la plage, vous pouvez apprécier les reflets sur l’eau, mais ne vous attendez pas à le voir disparaître dans la mer. Depuis un bateau, vous pouvez regarder vers la ville et sa silhouette.",
+            "Si vous souhaitez voir le soleil apparaître au-dessus de la Méditerranée, choisissez le lever du soleil. Le coucher convient plutôt à une vue de la ville dans la lumière du soir ou à une promenade tranquille."
+          ]
+        },
+        {
+          "id": "montjuic",
+          "title": "Montjuïc : prendre de la hauteur",
+          "paragraphs": [
+            "Montjuïc offre plusieurs points de vue sur Barcelone. Le Mirador de l’Alcalde donne sur la ville et le port ; les environs du Mirador del Migdia proposent une autre orientation pour profiter de la dernière lumière.",
+            "Choisissez un endroit précis et vérifiez son accès. Visiter le château et rejoindre un belvédère sont deux activités différentes : un site fermé peut ne plus être accessible à l’heure du coucher du soleil. Prévoyez aussi le retour si vous restez jusqu’à la nuit."
+          ],
+          "sourceIds": [
+            "montjuic",
+            "outdoors"
+          ]
+        },
+        {
+          "id": "promenade",
+          "title": "La Barceloneta et le front de mer : garder sa liberté",
+          "paragraphs": [
+            "Le front de mer se prête à une soirée sans réservation. Marchez, arrêtez-vous quand vous le souhaitez et poursuivez vers Port Olímpic si cela vous convient. Vous décidez sur place du temps à y consacrer.",
+            "L’intérêt est ici l’ambiance et les couleurs, plutôt que le soleil plongeant dans l’eau. Pour dîner ensuite, prévoyez une marge après la promenade et réservez le restaurant séparément. Toute la soirée n’a pas à dépendre d’une seule photographie."
+          ]
+        },
+        {
+          "id": "en-mer",
+          "title": "Un bateau privé face à la silhouette de Barcelone",
+          "paragraphs": [
+            "Partir de Port Olímpic permet de regarder le littoral depuis le large et de partager ce moment avec votre groupe. JimBoats propose une sortie privée au coucher du soleil pour six personnes maximum, avec skipper, carburant et assurance inclus.",
+            "Cette expérience commence à deux heures, avec des durées plus longues parmi les options proposées. Boissons et snacks sont inclus à partir de deux heures. L’heure du coucher du soleil sert à préparer votre journée ; ce n’est pas l’heure d’embarquement. Consultez le départ disponible lors de la réservation."
+          ]
+        },
+        {
+          "id": "horaires",
+          "title": "À quelle heure le soleil se couche-t-il à Barcelone ?",
+          "paragraphs": [
+            "L’heure change chaque jour et avec le passage à l’heure d’été. À titre de repères datés pour Port Olímpic, le soleil se couche à 17 h 46 le 15 janvier 2026, à 21 h 26 le 15 juin et à 20 h le 15 septembre. Ces heures locales concernent ces dates, pas l’ensemble du mois.",
+            "La page de l’expérience présente un tableau mensuel indicatif et l’heure solaire du jour. Vérifiez votre date avant d’organiser le transport. Nuages et visibilité peuvent modifier le paysage sans changer l’heure astronomique."
+          ],
+          "sourceIds": [
+            "solar"
+          ]
+        },
+        {
+          "id": "choisir",
+          "title": "Choisir un cadre et prendre son temps",
+          "paragraphs": [
+            "Choisissez un belvédère pour la hauteur, la promenade pour la souplesse ou un bateau privé pour passer ce moment ensemble en mer. Il n’est pas nécessaire de combiner les trois dans la même soirée."
+          ],
+          "bullets": [
+            "Arrivez assez tôt pour trouver votre place.",
+            "Consultez la météo et prévoyez une couche légère contre la brise.",
+            "Pour le bateau, suivez le lieu de rendez-vous et l’heure indiqués sur votre réservation."
+          ]
+        },
+        {
+          "id": "jimboats",
+          "title": "Les conseils des skippers de JimBoats",
+          "paragraphs": [
+            "Víctor recommande le bout de la promenade de la Barceloneta pour voir l’hôtel W dans la lumière du soir. Pour une sortie en bateau, il conseille d’arriver au port environ 15 minutes avant le départ."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "Le soleil se couche-t-il dans la mer depuis la Barceloneta ?",
+          "Il se couche du côté de la terre. Depuis la plage, vous profitez de la lumière sur l’eau ; depuis un bateau, vous pouvez regarder la ville au crépuscule."
+        ],
+        [
+          "La sortie JimBoats au coucher du soleil est-elle privée ?",
+          "Oui. Le bateau est réservé à votre groupe de six personnes maximum, accompagné d’un skipper."
+        ],
+        [
+          "L’heure du coucher du soleil correspond-elle au départ ?",
+          "Non. Consultez le départ disponible à la date choisie pendant la réservation."
+        ]
+      ],
+      "cta": {
+        "title": "La dernière lumière, depuis votre bateau.",
+        "text": "Découvrez la sortie au coucher du soleil, ses durées, ses prestations et les dates disponibles avant de réserver."
+      }
+    },
+    "sunrise": {
+      "slug": "ou-voir-lever-soleil-barcelone",
+      "title": "Où voir le lever du soleil à Barcelone",
+      "seoTitle": "Lever du soleil à Barcelone : plages et horaires",
+      "description": "Barceloneta, Bogatell ou sortie privée depuis Port Olímpic : préparez votre lever de soleil à Barcelone avec des repères horaires et des conseils pratiques.",
+      "category": "Les premières lueurs",
+      "imageAlt": "La lumière du matin sur la mer pendant l’expérience JimBoats",
+      "lead": "Le lever du soleil à Barcelone invite à regarder vers la Méditerranée. La plage laisse de la liberté ; une sortie privée permet aussi de contempler la côte depuis l’eau. Choisissez selon votre trajet, vos compagnons de voyage et le temps que vous souhaitez consacrer à la matinée.",
+      "sections": [
+        {
+          "id": "barceloneta",
+          "title": "La Barceloneta : commencer la journée près de l’eau",
+          "paragraphs": [
+            "La promenade de la Barceloneta est une option pratique si vous logez près du littoral et souhaitez venir à pied. Cherchez un endroit avec une vue dégagée vers l’eau et prenez le temps de choisir votre cadre.",
+            "Arriver avant le lever du soleil permet de suivre l’évolution de la lumière. Cela ne garantit ni un ciel dégagé ni des couleurs particulières. Vous pourrez ensuite prolonger la promenade et chercher un petit-déjeuner à l’ouverture des cafés."
+          ]
+        },
+        {
+          "id": "bogatell",
+          "title": "Bogatell et Nova Icària : un autre morceau de littoral",
+          "paragraphs": [
+            "Bogatell se trouve entre Nova Icària et Mar Bella. Nova Icària est voisine de Port Olímpic : ces deux plages permettent de commencer la matinée ailleurs qu’à la Barceloneta.",
+            "Choisissez surtout selon la facilité d’accès depuis votre hébergement, sans supposer que la plage sera déserte. Vérifiez l’itinéraire et les transports à cette heure matinale ; les services peuvent varier entre semaine et week-end."
+          ],
+          "sourceIds": [
+            "bogatell",
+            "outdoors"
+          ]
+        },
+        {
+          "id": "a-bord",
+          "title": "Voir le lever du soleil depuis un bateau privé",
+          "paragraphs": [
+            "L’expérience JimBoats part de Port Olímpic avec votre groupe de six personnes maximum. Elle commence à deux heures et comprend skipper, carburant, assurance, boissons et snacks.",
+            "Elle convient aux couples, amis ou familles qui souhaitent consacrer la matinée à la mer. Les snacks ne constituent pas un petit-déjeuner complet. Prévoyez un repas séparé si vous en souhaitez un, avec de la marge après le retour. Le parcours dépend de la durée et des conditions du jour."
+          ]
+        },
+        {
+          "id": "horaires",
+          "title": "À quelle heure le soleil se lève-t-il à Barcelone ?",
+          "paragraphs": [
+            "L’heure varie au fil de l’année. Pour Port Olímpic, quelques repères datés sont 8 h 15 le 15 janvier 2026, 6 h 17 le 15 juin et 7 h 31 le 15 septembre. Il s’agit de l’heure locale, tenant compte de l’heure d’été lorsqu’elle s’applique.",
+            "La fiche de l’expérience contient un tableau mensuel indicatif et l’heure solaire du jour. Vérifiez la date exacte et distinguez le lever du soleil du départ du bateau : pour embarquer, suivez votre réservation."
+          ],
+          "sourceIds": [
+            "solar"
+          ]
+        },
+        {
+          "id": "preparer",
+          "title": "Préparer la matinée dès la veille",
+          "paragraphs": [
+            "Décidez où arriver et comment repartir pour éviter d’improviser dans l’obscurité. Une couche légère, des chaussures confortables et un téléphone chargé sont souvent plus utiles qu’un programme chargé. Préparez aussi votre appareil photo la veille.",
+            "Avec des enfants ou plusieurs voyageurs, vérifiez que tout le monde souhaite se lever tôt. Une sortie en journée peut être préférable si quelqu’un n’apprécierait pas ce départ matinal."
+          ],
+          "bullets": [
+            "Vérifiez les nuages, le vent et l’heure solaire à la date choisie.",
+            "Préparez le trajet vers la plage ou le lieu d’embarquement.",
+            "Organisez un petit-déjeuner séparé si vous souhaitez plus que les snacks à bord."
+          ]
+        },
+        {
+          "id": "choisir",
+          "title": "Plage ou bateau : deux façons de vivre le matin",
+          "paragraphs": [
+            "La plage permet de rester brièvement ou de continuer à marcher. Le bateau privé demande une réservation et un rendez-vous, mais transforme la matinée en moment partagé en mer. Choisissez selon le temps que vous souhaitez vivre ensemble, pas seulement selon la photo envisagée."
+          ]
+        },
+        {
+          "id": "jimboats",
+          "title": "Les conseils des skippers de JimBoats",
+          "paragraphs": [
+            "David aime quitter le port quand la ville dort encore. Il conseille de regarder la météo la veille, car le calme du matin dépend du vent et de la houle."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "L’heure du lever du soleil change-t-elle pendant l’année ?",
+          "Oui, chaque jour. Les heures locales tiennent aussi compte du passage à l’heure d’été. Vérifiez la date précise."
+        ],
+        [
+          "Le petit-déjeuner est-il inclus chez JimBoats ?",
+          "L’expérience de deux heures inclut boissons et snacks. Elle n’est pas présentée comme un petit-déjeuner complet."
+        ],
+        [
+          "Peut-on réserver une heure au lever du soleil ?",
+          "L’expérience commence à deux heures. Consultez les durées et tarifs disponibles sur la fiche et dans la réservation."
+        ]
+      ],
+      "cta": {
+        "title": "Une autre façon de commencer la journée.",
+        "text": "Découvrez la sortie privée au lever du soleil, ce qu’elle comprend et les dates qui conviennent à votre matinée."
+      }
+    },
+    "romantic": {
+      "slug": "idees-romantiques-barcelone",
+      "title": "Barcelone en amoureux : des idées pour prendre le temps",
+      "seoTitle": "Barcelone en amoureux : idées de sorties",
+      "description": "Des idées pour un rendez-vous ou un anniversaire à Barcelone : le quartier gothique, la Ciutadella et une sortie privée en bateau avec skipper.",
+      "category": "Du temps à deux",
+      "imageAlt": "Table dressée à bord de JimBoats avec le littoral de Barcelone en arrière-plan",
+      "lead": "Une journée en amoureux à Barcelone peut commencer par une promenade et se terminer face à la ville depuis la mer. Choisissez un rythme qui vous plaît à tous les deux. Voici des idées pour un rendez-vous, un anniversaire ou simplement un après-midi ensemble.",
+      "sections": [
+        {
+          "id": "gotic",
+          "title": "Se promener dans le Gòtic sans parcours imposé",
+          "paragraphs": [
+            "Les rues et places du Barri Gòtic invitent à découvrir le centre historique à pied. Le secteur de la cathédrale peut servir de point de départ ; décidez ensuite où vous arrêter plutôt que de vouloir tout visiter.",
+            "C’est un bon choix si vous aimez flâner ensemble. Pour une visite intérieure, consultez séparément billets et horaires. Remplir chaque minute laisse peu de place à la conversation : un point de départ et une idée de la fin de promenade suffisent souvent."
+          ],
+          "sourceIds": [
+            "gotic"
+          ]
+        },
+        {
+          "id": "ciutadella",
+          "title": "La Ciutadella : faire une pause",
+          "paragraphs": [
+            "Le parc de la Ciutadella réunit allées, végétation, lac et cascade monumentale. Il offre une pause avant de continuer vers la mer, notamment si vous préférez ne pas réserver une activité à heure fixe.",
+            "Vérifiez l’accès pour le jour choisi et ne comptez pas sur la disponibilité permanente d’une activité sur le lac. Pour un anniversaire, du temps sans précipitation peut être plus agréable qu’une visite supplémentaire."
+          ],
+          "sourceIds": [
+            "ciutadella"
+          ]
+        },
+        {
+          "id": "bord-de-mer",
+          "title": "Marcher près de la mer et choisir une halte",
+          "paragraphs": [
+            "Le front de mer permet de discuter, regarder le paysage et s’arrêter pour manger ou boire quelque chose. Choisissez le tronçon qui relie le mieux votre hébergement ou votre prochaine activité ; inutile de parcourir tout le littoral.",
+            "Si vous dînez après une sortie en bateau, laissez une marge confortable après le retour. Restaurant et navigation sont deux réservations distinctes. La soirée sera plus facile à apprécier si elle ne dépend pas d’une arrivée à la minute près."
+          ]
+        },
+        {
+          "id": "bateau-prive",
+          "title": "Un bateau pour votre groupe, avec skipper",
+          "paragraphs": [
+            "L’expérience romantique JimBoats est une sortie privée depuis Port Olímpic, de 1 à 4 heures. Le skipper se charge de naviguer ; le prix concerne le bateau pour votre groupe, pas deux places dans une excursion partagée.",
+            "Skipper, carburant, assurance, décoration des photos et une boisson sont inclus dès la première heure ; les snacks sont inclus à partir de deux heures. Le bateau accueille jusqu’à six personnes. Pour privilégier la dernière lumière, vous pouvez aussi choisir l’expérience coucher de soleil.",
+            "L’expérience romantique comprend la décoration visible sur les photos. Nous proposons plusieurs décorations ; si vous souhaitez quelque chose de particulier, parlez-nous de votre idée pour convenir des détails avant de réserver."
+          ]
+        },
+        {
+          "id": "budget",
+          "title": "Choisir selon votre temps et votre budget",
+          "paragraphs": [
+            "Pour un rendez-vous flexible, choisissez une promenade et une halte qui vous plaisent. Pour une occasion centrée sur une activité, réservez-la d’abord puis construisez le reste autour. Comparez durée, prix total et suppléments avant de choisir votre sortie en bateau.",
+            "La sortie la plus longue n’est pas indispensable pour créer un beau souvenir. Réfléchissez au temps souhaité en mer et aux autres moments que vous aimeriez passer à terre. La page des tarifs JimBoats distingue clairement prix du bateau et prix par personne."
+          ]
+        },
+        {
+          "id": "surprise",
+          "title": "Préparer une surprise ou un anniversaire",
+          "paragraphs": [
+            "Coordonnez la date et l’heure avec le prestataire, même si le reste est une surprise. Expliquez vos attentes et faites confirmer les détails importants. Une photo vue ailleurs ne décrit pas les prestations de votre réservation."
+          ],
+          "bullets": [
+            "Choisissez une activité principale et espacez les rendez-vous.",
+            "Confirmez séparément les demandes spéciales et les suppléments.",
+            "Vérifiez les conditions d’annulation et la météo avant de partir."
+          ]
+        },
+        {
+          "id": "jimboats",
+          "title": "Les conseils des skippers de JimBoats",
+          "paragraphs": [
+            "L’expérience romantique comprend la décoration visible sur les photos. Nous proposons plusieurs décorations ; si vous souhaitez quelque chose de particulier, parlez-nous de votre idée pour convenir des détails avant de réserver."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "La sortie romantique est-elle réservée à deux personnes ?",
+          "Vous pouvez la réserver en couple. Le bateau est privé pour votre groupe, jusqu’à six personnes, avec un skipper."
+        ],
+        [
+          "Quelle décoration est incluse ? Peut-on demander d’autres détails ?",
+          "L’expérience romantique comprend la décoration visible sur les photos. Nous proposons plusieurs décorations ; si vous souhaitez quelque chose de particulier, parlez-nous de votre idée pour convenir des détails avant de réserver. Le dîner ou le photographe sont à organiser séparément."
+        ],
+        [
+          "Romantique et coucher de soleil désignent-ils la même sortie ?",
+          "Non. Romantique décrit l’occasion ; coucher de soleil désigne le moment de la journée. Consultez les deux fiches pour choisir selon votre projet."
+        ]
+      ],
+      "cta": {
+        "title": "Votre moment, à bord.",
+        "text": "Découvrez l’expérience romantique et ses conditions. Parlez-nous de votre idée spéciale avant de réserver."
+      },
+      "updatedAt": "2026-11-05"
+    },
+    "food": {
+      "slug": "aperitif-en-bateau-barcelone",
+      "title": "Un apéritif en bateau à Barcelone : boissons et planche à partager",
+      "seoTitle": "Apéritif en bateau à Barcelone : à bord",
+      "description": "Un verre au large de la Barceloneta ou une planche à partager entre amis. Voici comment organiser votre apéritif à bord de LENA.",
+      "category": "À bord",
+      "imageAlt": "Un groupe partage l’apéritif sous le taud de LENA",
+      "lead": "Un verre au large de la Barceloneta ou une planche à partager entre amis. Voici comment organiser votre apéritif à bord de LENA.",
+      "sections": [
+        {
+          "id": "plan",
+          "title": "Un verre pendant une balade d’une heure",
+          "paragraphs": [
+            "Pour quitter le Port Olímpic, regarder la Barceloneta depuis la mer et trinquer ensemble avant de rentrer à terre, choisissez la balade privée d’une heure en journée. La boisson est comprise dès la première heure. Si vous avez réservé une table en ville, c’est une façon de commencer le repas par un moment sur l’eau."
+          ]
+        },
+        {
+          "id": "duration",
+          "title": "Le contenu de la planche",
+          "paragraphs": [
+            "{food} On y pioche en discutant et en regardant défiler la côte. Si vous organisez votre journée autour d’un déjeuner ou d’un dîner, prévoyez la planche comme un apéritif avant le repas. Laissez assez de temps entre le retour au port et votre réservation au restaurant pour profiter tranquillement des dernières minutes à bord."
+          ]
+        },
+        {
+          "id": "group",
+          "title": "Choisir les boissons ensemble",
+          "paragraphs": [
+            "{drinks} Si deux personnes préfèrent trinquer au cava et que les autres souhaitent une boisson sans alcool, précisez-le à l’équipe en préparant la sortie. Le skipper pourra prévoir les bonnes quantités pour votre groupe. Vous n’avez pas besoin de prendre une bouteille de chaque sorte pour que chacun trouve ce qui lui fait plaisir."
+          ]
+        },
+        {
+          "id": "on-board",
+          "title": "Faire une place à l’apéritif dans la sortie",
+          "paragraphs": [
+            "Pour partager la planche, réservez au moins deux heures. Vous pouvez sortir en journée, aux premières lueurs du matin ou à la lumière du soir. Dites au skipper si vous attendez surtout les vues sur la ville ou le plaisir de vous retrouver sur le pont. Le vent et l’état de la mer orienteront le parcours le jour venu.",
+            "Demandez à vos invités leurs préférences avant de partir. Si quelqu’un a une allergie ou une question sur un ingrédient, contactez JimBoats avant de réserver pour connaître les possibilités. Fixez aussi un point de rendez-vous si vous arrivez séparément au port. Une fois ces détails réglés, vous pourrez profiter ensemble du premier verre."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "La planche est-elle comprise pour une heure ?",
+          "La balade d’une heure comprend une boisson. La planche est servie à partir de deux heures."
+        ],
+        [
+          "Peut-on choisir du cava et des boissons sans alcool ?",
+          "Oui. Précisez vos préférences et le nombre de passagers pour préparer la sélection."
+        ]
+      ],
+      "cta": {
+        "title": "Balade en bateau privé à Barcelone",
+        "text": "Laissez le bruit à terre. Une balade privée le long du littoral pour discuter, découvrir Barcelone autrement et profiter de la Méditerranée à votre rythme."
+      }
+    },
+    "birthday": {
+      "slug": "anniversaire-en-bateau-barcelone",
+      "title": "Comment fêter un anniversaire en bateau à Barcelone",
+      "seoTitle": "Comment fêter un anniversaire en bateau à Barcelone",
+      "description": "Une sortie privée pour six personnes maximum : choisir la durée, préparer le toast et organiser une surprise au départ du Port Olímpic.",
+      "category": "Célébrations",
+      "imageAlt": "Trois passagères à bord au port",
+      "lead": "Une sortie privée pour six personnes maximum : choisir la durée, préparer le toast et organiser une surprise au départ du Port Olímpic.",
+      "sections": [
+        {
+          "id": "plan",
+          "title": "Commencez par les invités",
+          "paragraphs": [
+            "LENA accueille jusqu’à six passagers. Comptez la personne qui fête son anniversaire et tous ceux qui doivent l’accompagner avant de fixer la date. Vous réservez le bateau entier avec son skipper. Le groupe peut ainsi se retrouver sans acheter de billets individuels et sans dépendre d’autres voyageurs pour que la balade ait lieu."
+          ]
+        },
+        {
+          "id": "duration",
+          "title": "Quelle durée choisir pour la fête ?",
+          "paragraphs": [
+            "Pour faire une surprise avant le déjeuner, une heure de navigation en journée laisse le temps de trinquer au large de la ville. Pour partager la planche, ouvrir les cadeaux et discuter entre amis, prévoyez au moins deux heures. Les balades au coucher du soleil commencent aussi à deux heures. Consultez le prix total pour le bateau avant de répartir les frais entre les invités."
+          ]
+        },
+        {
+          "id": "group",
+          "title": "Préparez le toast et la musique",
+          "paragraphs": [
+            "{drinks} Pour les sorties de deux heures ou plus, une planche apéritive est également comprise. Préparez quelques morceaux sur votre téléphone pour l’enceinte Bluetooth du bord. Une personne peut s’occuper de la musique et une autre du toast : cela laisse aussi profiter de la fête celui ou celle qui a organisé la sortie."
+          ]
+        },
+        {
+          "id": "on-board",
+          "title": "Garder le secret jusqu’au départ",
+          "paragraphs": [
+            "Pour un gâteau, des fleurs, une décoration ou un photographe, renseignez-vous à l’avance. Ces demandes peuvent entraîner un supplément. Vérifiez ce qui peut être organisé à la date choisie et son prix avant de promettre une surprise. Gardez un seul interlocuteur pour coordonner les détails avec le skipper sans dévoiler le projet. Si plusieurs invités apportent un cadeau, décidez ensemble qui se chargera de les emmener et à quel moment les offrir à bord.",
+            "Partagez la localisation du Moll de Xaloc avec les invités et fixez le rendez-vous environ quinze minutes avant le départ. Prévoyez du temps entre le retour au port et le restaurant ou le spectacle qui suit. Même si la destination reste une surprise, chacun saura où retrouver le groupe et à quelle heure arriver."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "Combien de personnes peuvent venir ?",
+          "Six invités maximum, y compris la personne qui fête son anniversaire."
+        ],
+        [
+          "La décoration est-elle comprise ?",
+          "La décoration est facultative et payante. Parlez-en à l’équipe avant de réserver."
+        ]
+      ],
+      "cta": {
+        "title": "Balade en bateau privé à Barcelone",
+        "text": "Laissez le bruit à terre. Une balade privée le long du littoral pour discuter, découvrir Barcelone autrement et profiter de la Méditerranée à votre rythme."
+      }
+    },
+    "hen": {
+      "slug": "evjf-barcelone-bateau-prive",
+      "title": "EVJF à Barcelone en bateau privé : un moment à six",
+      "seoTitle": "EVJF à Barcelone en bateau privé, jusqu’à 6",
+      "description": "Préparez un EVJF à Barcelone en bateau privé pour six personnes maximum : budget, durée, apéritif, boissons et photos réelles à bord du LENA.",
+      "category": "Célébrations",
+      "imageAlt": "La future mariée et une amie célèbrent un EVJF à bord du LENA à Barcelone",
+      "lead": "Un bateau rien que pour votre groupe, votre playlist et Barcelone vue depuis la mer. Pour un EVJF jusqu’à six personnes, le LENA propose une sortie privée avec skipper au départ du Port Olímpic. Voici comment choisir la durée, partager le budget et préparer une surprise en toute simplicité.",
+      "sections": [
+        {
+          "id": "groupe",
+          "title": "Six personnes maximum, future mariée comprise",
+          "paragraphs": [
+            "Le LENA accueille jusqu’à six passagères, en comptant la future mariée. Vous réservez le bateau entier et ne partagez pas la sortie avec un autre groupe. Commencez par confirmer la liste : au-delà de six personnes, le LENA ne peut pas vous accueillir toutes ensemble.",
+            "Ce llaüt méditerranéen mesure 7,49 mètres. On s’y installe pour discuter, partager l’apéritif et regarder la côte. C’est un cadre adapté à un petit groupe qui souhaite trinquer et prendre des photos sur l’eau."
+          ],
+          "photo": {
+            "slug": "hen-party-bride",
+            "alt": "La future mariée à la proue du LENA, avec l’hôtel W et la côte de Barcelone en arrière-plan"
+          }
+        },
+        {
+          "id": "budget",
+          "title": "Quel budget prévoir pour cet EVJF en bateau ?",
+          "paragraphs": [
+            "La balade privée en journée coûte {private1h} pour une heure, {private2h} pour deux heures et {private3h} pour trois heures. Ce sont les prix finaux du bateau entier, skipper, carburant et assurance compris. Aucun permis n’est nécessaire.",
+            "À six, une sortie de deux heures revient à {perGuest2h} par personne si vous partagez les frais. La réservation reste de {private2h} pour le bateau : il ne s’agit pas de billets individuels. Le prix du bateau ne baisse pas si vous êtes moins nombreuses. La sortie au coucher du soleil commence à {sunset2h} pour deux heures. Les extras sont facturés séparément.",
+            "Une heure peut convenir pour une courte surprise entre deux activités. Deux heures laissent davantage de temps pour l’apéritif et les échanges. Trois heures permettent de prolonger le moment ; une pause baignade dépend des conditions de mer et de la décision du skipper."
+          ]
+        },
+        {
+          "id": "aperitif",
+          "title": "Boissons, apéritif et playlist",
+          "paragraphs": [
+            "{drinks}",
+            "{food} La sortie d’une heure comprend une boisson, mais pas la planche à partager.",
+            "Indiquez quelques préférences, par exemple du cava pour trinquer et des boissons sans alcool pour certaines participantes. Les quantités sont adaptées au groupe : ce n’est pas un open bar et toutes les boissons proposées ne sont pas servies systématiquement. Signalez toute allergie ou demande alimentaire avant de réserver.",
+            "Une enceinte Bluetooth est comprise dans chaque expérience. Préparez la playlist de la future mariée sur votre téléphone, avec la chanson prévue pour le toast."
+          ],
+          "photo": {
+            "slug": "hen-party-toast",
+            "alt": "Un détail de l’EVJF à bord, avec la mer de Barcelone en arrière-plan"
+          }
+        },
+        {
+          "id": "programme",
+          "title": "Organiser deux heures depuis le Port Olímpic",
+          "paragraphs": [
+            "Retrouvez-vous au point de rendez-vous du Moll de Xaloc environ quinze minutes avant le départ. Partagez la page de contact avec tout le groupe pour que chacune ait la localisation. Après l’embarquement, le skipper vous explique le déroulement puis vous emmène le long du littoral de Barcelone.",
+            "Gardez un moment pour les photos et un autre pour l’apéritif. Si vous souhaitez vous baigner, parlez-en au skipper ; la pause n’est pas garantie. Le paddle est un extra à 20 € par réservation, à sélectionner séparément selon sa disponibilité.",
+            "Prévoyez une marge entre le retour au port et votre restaurant ou activité suivante. Pour une sortie en fin de journée, consultez l’heure du coucher du soleil à la date choisie avant de fixer le reste du programme."
+          ],
+          "photo": {
+            "slug": "hen-party-paddle",
+            "alt": "Une invitée profite du paddle à côté du LENA, proposé en supplément"
+          }
+        },
+        {
+          "id": "surprise",
+          "title": "Préparer la surprise à plusieurs",
+          "paragraphs": [
+            "Désignez une personne de contact avec JimBoats et une autre pour rassembler les participantes. Envoyez-nous sur WhatsApp la date, le nombre de personnes et précisez si la future mariée connaît le programme. Ces quelques détails facilitent l’organisation le jour venu.",
+            "Des fleurs, une décoration, un gâteau ou un photographe demandent une coordination préalable et peuvent entraîner un supplément. Consultez-nous avant vos achats. Les photos montrent un EVJF à bord du LENA ; les accessoires et décorations des invitées ne sont pas automatiquement compris dans la réservation."
+          ],
+          "photo": {
+            "slug": "hen-party-preparations",
+            "alt": "La future mariée et une amie ajustent son voile pendant la fête à bord"
+          }
+        },
+        {
+          "id": "reservation",
+          "title": "Passer du projet à la réservation",
+          "paragraphs": [
+            "Ouvrez la page de la balade privée, choisissez la durée et consultez le calendrier. Sélectionnez ensuite les extras disponibles et complétez les informations de réservation. Pour organiser une surprise ou poser une question, écrivez-nous sur WhatsApp avant de payer.",
+            "L’annulation est gratuite jusqu’à 48 heures avant le départ. Avec un délai plus court, contactez l’équipe sur WhatsApp. Si JimBoats annule pour mauvaises conditions, le montant est remboursé et le capitaine vous contacte."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "Peut-on être sept en comptant la future mariée ?",
+          "Non. La capacité maximale est de six invitées au total, future mariée comprise."
+        ],
+        [
+          "Les boissons et l’apéritif sont-ils inclus ?",
+          "La boisson est incluse dès une heure. La planche à partager est comprise à partir de deux heures, en quantité adaptée au groupe. Ce n’est pas un open bar."
+        ],
+        [
+          "Le bateau est-il partagé avec un autre EVJF ?",
+          "Non. Le LENA est réservé à votre groupe, avec skipper inclus."
+        ],
+        [
+          "La décoration est-elle comprise ?",
+          "Elle n’est pas comprise dans le prix de la balade. Consultez les possibilités et le supplément avant de réserver."
+        ]
+      ],
+      "cta": {
+        "title": "Choisissez votre balade privée à Barcelone",
+        "text": "Consultez les durées et disponibilités du LENA pour votre groupe de six personnes maximum. Nous vous aidons à préparer la surprise sur WhatsApp."
+      },
+      "updatedAt": "2026-11-05"
+    }
+  }
+}

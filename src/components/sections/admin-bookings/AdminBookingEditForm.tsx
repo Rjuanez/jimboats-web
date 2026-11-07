@@ -1,4 +1,5 @@
 "use client";
+import { adminEs } from "@/i18n/admin/es";
 
 import { Save } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -11,14 +12,12 @@ import {
   TextAreaField,
   TextField,
 } from "@/components/forms/AdminFormControls";
-import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Surface } from "@/components/ui/Surface";
 
 import type {
   AdminBooking,
   AdminBookingActions,
-  AdminBookingExperienceOption,
   AdminBookingsState,
   AdminBookingUpdateInput,
 } from "./AdminBookingTypes";
@@ -55,19 +54,24 @@ export function AdminBookingEditForm({
   return (
     <form className="space-y-5" onSubmit={submit}>
       <Surface
-        description="Move the selected slot or adjust guest count. The calendar block is updated with the same save."
-        title="Reservation"
+        description={
+          adminEs[
+            "Move the selected slot or adjust guest count. The calendar block is updated with the same save."
+          ]
+        }
+        title={adminEs["Reservation"]}
       >
         <div className="space-y-4">
           <FieldGrid>
             <TextField
               disabled
-              label="Experience"
-              value={selectedExperience?.name ?? booking.experienceName}
+              label={adminEs["Experience"]}
+              value={booking.experienceName}
             />
             <NumberField
               disabled={booking.status !== "confirmed"}
-              label="Guests"
+              label={adminEs["Guests"]}
+              max={selectedExperience?.capacity}
               min={1}
               onChange={(event) =>
                 setForm((current) => ({
@@ -79,14 +83,10 @@ export function AdminBookingEditForm({
             />
           </FieldGrid>
 
-          {selectedExperience ? (
-            <ExperienceHint experience={selectedExperience} />
-          ) : null}
-
           <FieldGrid columns={4}>
             <TextField
               disabled={booking.status !== "confirmed"}
-              label="Date"
+              label={adminEs["Date"]}
               onChange={(event) =>
                 setForm((current) => ({
                   ...current,
@@ -99,9 +99,10 @@ export function AdminBookingEditForm({
             />
             <SelectField
               disabled={
-                booking.status !== "confirmed" || !selectedExperience?.slots.length
+                booking.status !== "confirmed" ||
+                !selectedExperience?.slots.length
               }
-              label="Slot"
+              label={adminEs["Slot"]}
               onChange={(event) => {
                 const slot = selectedExperience?.slots.find((candidate) => {
                   return candidate.id === event.target.value;
@@ -123,12 +124,12 @@ export function AdminBookingEditForm({
                   </option>
                 ))
               ) : (
-                <option value="">Manual time</option>
+                <option value="">{adminEs["Manual time"]}</option>
               )}
             </SelectField>
             <TextField
               disabled={booking.status !== "confirmed"}
-              label="Start time"
+              label={adminEs["Start time"]}
               onChange={(event) =>
                 setForm((current) => ({
                   ...current,
@@ -141,7 +142,7 @@ export function AdminBookingEditForm({
             />
             <TextField
               disabled={booking.status !== "confirmed"}
-              label="End time"
+              label={adminEs["End time"]}
               onChange={(event) =>
                 setForm((current) => ({
                   ...current,
@@ -156,12 +157,15 @@ export function AdminBookingEditForm({
         </div>
       </Surface>
 
-      <Surface ariaLabel="Editable customer details" title="Customer">
+      <Surface
+        ariaLabel={adminEs["Editable customer details"]}
+        title={adminEs["Customer"]}
+      >
         <div className="space-y-4">
           <FieldGrid>
             <TextField
               disabled={booking.status !== "confirmed"}
-              label="Full name"
+              label={adminEs["Full name"]}
               onChange={(event) =>
                 setForm((current) => ({
                   ...current,
@@ -172,7 +176,7 @@ export function AdminBookingEditForm({
             />
             <TextField
               disabled={booking.status !== "confirmed"}
-              label="Email"
+              label={adminEs["Email"]}
               onChange={(event) =>
                 setForm((current) => ({
                   ...current,
@@ -183,7 +187,7 @@ export function AdminBookingEditForm({
             />
             <TextField
               disabled={booking.status !== "confirmed"}
-              label="Phone"
+              label={adminEs["Phone"]}
               onChange={(event) =>
                 setForm((current) => ({
                   ...current,
@@ -193,9 +197,17 @@ export function AdminBookingEditForm({
               value={form.customerPhone}
             />
           </FieldGrid>
+          {booking.whatsappEnabled &&
+          booking.whatsappPhone !== booking.customerPhone ? (
+            <TextField
+              disabled
+              label={adminEs["WhatsApp pass"]}
+              value={booking.whatsappPhone}
+            />
+          ) : null}
           <TextAreaField
             disabled={booking.status !== "confirmed"}
-            label="Customer notes"
+            label={adminEs["Customer notes"]}
             onChange={(event) =>
               setForm((current) => ({
                 ...current,
@@ -208,16 +220,22 @@ export function AdminBookingEditForm({
       </Surface>
 
       <Surface
-        description="Changing extras refreshes the booking price snapshot and keeps the deposit/cash breakdown visible."
-        title="Extras"
+        description={
+          adminEs[
+            "Changing extras refreshes the booking price snapshot and keeps the deposit/cash breakdown visible."
+          ]
+        }
+        title={adminEs["Extras"]}
       >
         {state.extraOptions.length === 0 ? (
-          <p className="text-sm text-slate-600">No active extras available.</p>
+          <p className="text-sm text-slate-600">
+            {adminEs["No active extras available."]}
+          </p>
         ) : (
           <div className="grid gap-3 md:grid-cols-2">
             {state.extraOptions.map((extra) => (
               <NumberField
-                description={`EUR ${extra.price}`}
+                description={adminEs.euros(extra.price)}
                 disabled={booking.status !== "confirmed"}
                 key={extra.id}
                 label={extra.name}
@@ -243,10 +261,13 @@ export function AdminBookingEditForm({
         )}
       </Surface>
 
-      <Surface ariaLabel="Editable internal notes" title="Internal notes">
+      <Surface
+        ariaLabel={adminEs["Editable internal notes"]}
+        title={adminEs["Internal notes"]}
+      >
         <TextAreaField
           disabled={booking.status !== "confirmed"}
-          label="Staff notes"
+          label={adminEs["Staff notes"]}
           onChange={(event) =>
             setForm((current) => ({
               ...current,
@@ -264,25 +285,10 @@ export function AdminBookingEditForm({
           type="submit"
         >
           <Save className="size-4" aria-hidden="true" />
-          Save changes
+          {adminEs["Save changes"]}
         </Button>
       </div>
     </form>
-  );
-}
-
-function ExperienceHint({
-  experience,
-}: {
-  experience: AdminBookingExperienceOption;
-}) {
-  return (
-    <div className="flex flex-wrap gap-2">
-      <Badge tone="sky">EUR {experience.basePrice}</Badge>
-      <Badge tone="emerald">EUR {experience.depositAmount} deposit</Badge>
-      <Badge tone="neutral">{experience.capacity} max guests</Badge>
-      <Badge tone="neutral">{experience.durationMinutes / 60} hours</Badge>
-    </div>
   );
 }
 
@@ -312,7 +318,9 @@ function upsertExtraQuantity(
   extraId: string,
   quantity: number,
 ) {
-  const next = selectedExtras.filter((selected) => selected.extraId !== extraId);
+  const next = selectedExtras.filter(
+    (selected) => selected.extraId !== extraId,
+  );
 
   if (quantity > 0) {
     next.push({ extraId, quantity });

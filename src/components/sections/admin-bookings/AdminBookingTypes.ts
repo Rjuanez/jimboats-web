@@ -38,6 +38,7 @@ export type AdminBooking = {
   endTime: string;
   experienceId: string;
   experienceName: string;
+  experienceSummary: string;
   extras: AdminBookingExtraLine[];
   guestCount: number;
   id: string;
@@ -69,6 +70,7 @@ export type AdminBookingExperienceOption = {
   capacity: number;
   depositAmount: number;
   durationMinutes: number;
+  availableDurations?: number[];
   id: string;
   name: string;
   slotMode: "any_available" | "fixed_slots" | "manual_approval";

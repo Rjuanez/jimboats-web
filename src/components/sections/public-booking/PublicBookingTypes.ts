@@ -1,4 +1,5 @@
 import type { MarketingImage } from "@/components/marketing/MarketingImageFrame";
+import type { BookingUiLocale } from "@/i18n/bookingLocales";
 import type { PublicLocale } from "@/i18n/locales";
 
 export type PublicBookingStepId =
@@ -13,6 +14,11 @@ export type PublicBookingStep = {
 };
 
 export type PublicBookingExperience = {
+  hourlyRates?: readonly {
+    hours: number;
+    price: number;
+    depositAmount: number;
+  }[];
   badge?: string;
   capacity: number;
   cancellationPolicySummary?: string;
@@ -75,12 +81,13 @@ export type PublicBookingCustomer = {
 };
 
 export type PublicBookingConsents = {
-  marketing: boolean;
   ticketEmail: boolean;
   ticketWhatsapp: boolean;
 };
 
 export type PublicBookingCheckoutInput = {
+  termsLocale?: BookingUiLocale;
+  paymentChoice?: "DEPOSIT" | "FULL";
   consents: PublicBookingConsents;
   couponCode?: string | null;
   customer: PublicBookingCustomer;
@@ -127,10 +134,9 @@ export type PublicBookingActions = {
   previewCoupon(
     input: PublicBookingCouponPreviewInput,
   ): Promise<PublicBookingCheckoutActionResult<PublicBookingCouponPreview>>;
-  startCheckout(
-    input: PublicBookingCheckoutInput,
-  ): Promise<
+  startCheckout(input: PublicBookingCheckoutInput): Promise<
     PublicBookingCheckoutActionResult<{
+      reference?: string;
       checkoutClientSecret: string;
       paymentProviderSessionId: string;
     }>
@@ -143,6 +149,23 @@ export type PublicBookingExperienceAvailability = {
 };
 
 export type PublicBookingContent = {
+  privacy: {
+    title: string;
+    description: string;
+    rights: string;
+    email: string;
+    href: string;
+    label: string;
+  };
+  previewNotice?: string;
+  returnHref?: string;
+  languageLinks?: readonly { locale: string; href: string; label: string }[];
+  hourly?: {
+    hours: number;
+    rates: readonly { hours: number; price: number; depositAmount: number }[];
+    title: string;
+    durationLabel: string;
+  };
   availabilityByExperienceId: Record<
     string,
     PublicBookingExperienceAvailability
@@ -165,7 +188,7 @@ export type PublicBookingContent = {
     label: string;
   }[];
   homeHref: string;
-  locale: PublicLocale;
+  locale: BookingUiLocale;
   maxAdvanceLabel: string;
   payment: {
     depositCopy: string;
@@ -180,6 +203,7 @@ export type PublicBookingContent = {
   };
   steps: readonly PublicBookingStep[];
   support: {
+    whatsapp?: { href: string; label: string };
     email: string;
     phone: string;
   };

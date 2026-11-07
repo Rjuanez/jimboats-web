@@ -1,0 +1,423 @@
+2026-11-01 — Hourly bookings connected to the operations panel
+PASS: 437 unit/application/component tests across 86 files.
+PASS: 57 browser tests on standalone fixture server; the isolated-database E2E is intentionally skipped there.
+PASS: 1 additional PostgreSQL-backed browser E2E on the live local simulator (run separately, no skips).
+Live E2E: hourly price, hold, conflict across experiences, simulated payment, calendar + booking panel,
+reload persistence, cancellation persistence, availability released, mobile overflow + axe.
+PASS: full ESLint, TypeScript (Next build), rules:check, Next webpack build, Storybook build, git diff --check.
+Reviewed mobile booking screenshot and desktop/mobile operations screenshots.
+Two operations snapshot baselines intentionally updated: obsolete "checkout not connected" copy replaced.
+Local-only Docker PostgreSQL at 127.0.0.1:55439; 22 existing migrations applied to isolated database.
+No production changes, no real Stripe payment, no notification workers, no new runtime dependency.
+Examples only: prices, 8-person capacity, departure hours, 50 EUR deposit. Approved tariffs remain empty.
+Evidence: .local-preview/hourly-{unit,lint,build,storybook,browser-final,e2e-final}.log.
+App left running at http://127.0.0.1:3100, operations at /admin/bookings and /admin/calendar.
+
+REVISIÓN PREMIUM Y PANEL OPERATIVO — 2026-11-01
+
+Estado actual:
+- Reutilizadas las secciones originales de portada, ondas, historia, galería,
+  extras, pasos y cierre; fichas alternadas con ExperienceCard.
+- Las 45 páginas, cinco idiomas, metadatos, FAQ y selector 1–6 horas se conservan.
+- Reservas y calendario son los únicos destinos del menú del panel.
+- /admin redirige a reservas; los antiguos destinos de edición y configuración
+  redirigen a reservas. Sin borrados de datos ni cambios de base de datos.
+- 418 tests Vitest correctos; 3 tests de contenido repetidos tras corregir srcset.
+- 57/57 tests Playwright correctos CONTRA EL BUILD STANDALONE, sin actualizar
+  snapshots en esa ejecución. Incluyen SEO, navegación, móvil, accesibilidad,
+  formulario y redirecciones del panel.
+- ESLint, TypeScript, rules:check, Storybook y build Next.js correctos.
+- Capturas revisadas de portada/ficha en móvil y escritorio y panel en móvil.
+  Se actualizan por el cambio visual aprobado y la reducción del menú.
+- Las pruebas de las pantallas editoriales retiradas se sustituyen por pruebas
+  de redirección. Se mantienen los tests unitarios de sus componentes heredados.
+- Las esperas networkidle del panel observadas en el ensayo anterior no se
+  reproducen con el menú reducido y el arranque standalone correcto.
+- Los logs muestran NoFallbackError al pedir rutas inválidas/no publicadas;
+  sus respuestas 404 se verifican en los tests. No se han suprimido esos logs.
+
+Preview: http://127.0.0.1:3100/es
+Panel: http://127.0.0.1:3100/admin/bookings
+La sesión actual sirve el build standalone con datos de prueba. Para editar
+con recarga automática, detener ese proceso y ejecutar pnpm dev:seo.
+No se han probado operaciones contra reservas, pagos ni infraestructura real.
+Las tarifas y la integración transaccional por horas siguen pendientes.
+
+Evidencias: .local-preview/premium-{unit,lint,types,rules,content,visual,
+build,storybook-final,standalone-tests,standalone}.log.
+
+HISTORIAL DE LA PRIMERA MAQUETA (antes de recuperar el estilo premium)
+-----------------------------------------------------------------
+JimBoats SEO — validación local — 2026-11-01
+
+Entorno: Node 24.13.1, pnpm 10.34.1, dependencias del lockfile.
+Navegador reproducible: Chromium 148.0.7778.96 de Playwright 1.60.0.
+Sin credenciales de producción ni conexión a la base de datos real.
+
+Resultados:
+- rules:check: correcto.
+- ESLint: correcto (proyecto completo y comprobación final de tests editados).
+- TypeScript: correcto.
+- Vitest / test:ui: 84 archivos, 418 tests correctos; ambos scripts usan Vitest.
+- Storybook: compilación correcta.
+- Next.js build --webpack: correcto; 45 páginas de marketing prerenderizadas.
+- Las 45 URLs: HTTP 200, idioma, un H1, canonical, hreflang y JSON-LD verificados.
+- Formulario compilado: experiencia y horas conservadas; mensaje de consulta
+  preparado sin crear reservas, comprobar disponibilidad ni cobrar pagos.
+- Capturas nuevas: portada y ficha a 360 y 1280 px, revisadas visualmente.
+- Capturas del panel heredado: sin cambios; diferencias iniciales del Chrome
+  del sistema desaparecen al usar el Chromium fijado por Playwright.
+- Suite local completa: 104/105 correctos; se corrigió el único fallo del
+  formulario (interacción prematura antes de la hidratación). Después pasan
+  los 7 tests de marketing afectados, incluyendo el recorrido y accesibilidad
+  en 360/768/1280 px. Vitest se repitió: 418 correctos.
+
+Incidencias y límites:
+- No ejecutar build y dev simultáneamente: se observó un error transitorio
+  de manifiesto JSON durante esa combinación.
+- La prueba rápida en desarrollo también encontró interacción antes de que
+  React estuviera listo. Se corrigió deshabilitando el fieldset hasta la
+  hidratación; la prueba ahora pasa sin esperas artificiales.
+- En la prueba adicional con next start y output: standalone hubo errores
+  NoFallbackError de rutas y esperas networkidle en el panel, además de una
+  detección de contraste en notificaciones. Esa ejecución no se considera
+  validación de producción. Debe revisarse con el arranque standalone correcto
+  antes de desplegar. No se han relajado sus pruebas ni cambiado el panel.
+- Las nuevas capturas móviles se normalizaron al navegador fijado: diferencias
+  de dos píxeles de suavizado frente a la primera captura en Chrome del sistema.
+- Esta entrega sirve para revisar arquitectura y diseño en local. Precios,
+  capacidad y motor real de reservas por horas siguen pendientes.
+
+Evidencias de esta sesión en .local-preview/ (archivos locales ignorados):
+unit-final.log, lint.log, lint-hydration.log, typecheck-hydration.log,
+rules-final.log, storybook-final.log, build-final.log, hydration-fix.log,
+booking-recheck.log, admin-visual-recheck.log, seo-visual-final.log,
+local-final.log. browser-final.log conserva la ejecución adicional con los
+fallos del arranque next start descritos arriba.
+
+2026-11-02 — WhatsApp, FAQ, reseñas (estado pendiente), mapa, tiempo y precios destacados
+438 tests Vitest: PASS.
+58 tests de navegador del conjunto principal: PASS (1 caso hourly excluido y ejecutado por separado).
+1 E2E PostgreSQL local: crear, pagar simulado, confirmar, comprobar solapamientos, cancelar: PASS.
+1 E2E explícito de widgets remotos: Google Maps + meteoblue, desktop/mobile: PASS.
+Tras corregir el tamaño móvil del widget: 13 comprobaciones públicas (HTML 45 rutas, navegación, FAQ teclado, duración, responsive/axe y visuales): PASS.
+Lint, TypeScript, rules:check, Next webpack build, Storybook build y git diff --check: PASS.
+Cinco baselines de marketing actualizadas intencionalmente tras revisión; iframes remotos enmascarados para estabilidad.
+Capturas con datos remotos reales: .local-preview/location-live-desktop.png y location-live-mobile.png.
+Pendiente funcional: recibir ficha Google Maps de JimBoats e incorporar sus reseñas verificadas. No hay valoraciones inventadas ni sincronización con API de reseñas.
+
+2026-11-02 — Reseñas verificadas, carrusel y rótulo Desde
+Vitest: 86 archivos, 438 tests OK.
+ESLint: OK. TypeScript --noEmit: OK. rules:check: OK.
+Next webpack production build: OK. Storybook build: OK.
+Playwright completo en 3101: 61 OK, 2 opt-in omitidos.
+Opt-in reales en 3100: reservas por horas + widgets ubicación: 2 OK.
+Cinco baselines públicas actualizadas por diseño aprobado; admin intacto.
+Capturas revisadas: .local-preview/reviews-360.png y reviews-1280.png.
+Logs de esta ejecución: .local-preview/reviews-{unit,lint,types,build,storybook,all-browser,live,snapshots}.log.
+Code review graph actualizado incrementalmente, sin errores.
+Servidor local 3100 conserva reservas aisladas; sin despliegue.
+Pendiente editorial: opiniones originales en idiomas distintos del español; requiere poder leer el resto de la ficha Google Maps. Solicitud de inicio de sesión enviada al usuario.
+
+2026-11-02 — Reseñas de Google Maps + GetYourGuide
+Selección verificada: 11 extractos ES/EN/FR, 8 Google + 3 GetYourGuide.
+Vitest: 438 OK en 86 archivos. ESLint, TypeScript, rules:check: OK.
+Next webpack y Storybook: OK.
+Playwright completo: 61 OK, 2 opt-in omitidos; ambos opt-in ejecutados aparte: 2 OK.
+Capturas públicas actualizadas intencionadamente; carrusel revisado en móvil y escritorio.
+Enlaces por plataforma y blockquote lang verificados en 360/768/1280 px.
+Logs: .local-preview/mixed-reviews-*.log. Code review graph actualizado.
+Click&Boat pendiente de URL del anuncio, solicitada al propietario.
+Sin publicación; preview con reservas locales en puerto 3100.
+
+2026-11-02 — Editorial reviews, three platforms and localized summaries
+Scope: SeoReviews/SeoReviewsCarousel, marketing reviews/presenter + ES/EN/FR/DE/NL dictionaries, stories, tests and five public snapshots. No production deployment, migrations, dependency changes or edits to web/.
+Sources: owner-provided Click&Boat activity 33336 (seven reviews; Adam, Asante and Alina verified in the full review dialog with five stars); GetYourGuide product 1353227, same verified provider and review IDs. Existing eight Google reviews retained. Fourteen attributed excerpts; six detailed English-language reviews first. Localized editorial summaries clearly distinguished from original excerpts.
+Node: 24.13.1.
+PASS: Vitest — 86 files, 439 tests (includes component/UI suite and localized review data).
+PASS: eslint . --ignore-pattern .worker/.
+PASS: tsc --noEmit.
+PASS: node scripts/rules/check.mjs.
+PASS: Next.js production build --webpack (final version, after responsive fix).
+PASS: Storybook production build (final version; ES/EN/DE isolated review stories).
+PASS: focused marketing Playwright — 11 tests, including H2, original/summary keyboard toggle, platform attribution, carousel arrows/Home/End, axe and no overflow at 360/768/1280.
+PASS: intentional snapshot update — 5 public baselines for approved Editorial design and expanded content. Reviewed section screenshots at 360/1280; existing admin baselines unchanged in this task.
+PASS: full Playwright suite — 61 passed, 2 opt-in tests skipped on fixture server.
+PASS: both opt-in tests separately enabled on local persisted simulator — hourly booking creation/overlap protection/payment simulation/panel cancellation and real map/weather widgets (2 passed).
+Responsive issue found and corrected before final validation: offscreen screen-reader-only labels had an external absolute positioning container; positioning each figure relatively contains them within the scroll track. Final document width equals viewport width.
+Evidence: .local-preview/editorial-reviews-*.log; .local-preview/reviews-{360,768,1280}.png.
+Local preview: http://127.0.0.1:3100/es#reviews, retained with existing isolated local hourly booking database. Fixture server 3101 stopped after verification.
+
+2026-11-02 — Correction: direct review translations, no editorial summaries
+Eight selected detailed international reviews from the verified Google, Click&Boat and GetYourGuide sources. Short original excerpts paired with faithful ES/EN/FR/DE/NL translations; English preserves the actual English source text and has no redundant toggle. User-facing labels explicitly identify excerpts, not full reviews. H2 and approved Editorial design retained.
+PASS: Vitest — 86 files, 439 tests.
+PASS: lint, typecheck, rules:check, git diff --check.
+PASS: Next.js --webpack production build and Storybook build.
+PASS: focused marketing/browser checks — 12, including the new English original/no-summary/no-toggle regression; keyboard, labels, source links, H2, axe and 360/768/1280 overflow checks.
+PASS: five public visual baselines intentionally refreshed for the corrected quotes and eight-card selection; mobile/desktop section captures visually inspected.
+PASS: full Playwright fixture suite — 62 passed, 2 opt-in skipped.
+PASS: opt-in local booking simulator and live map/weather checks separately — 2 passed.
+Evidence: .local-preview/literal-reviews-*.log and .local-preview/reviews-{360,768,1280}.png.
+Local preview retained on port 3100; fixture server 3101 stopped. No production deployment, new dependency, database change or edit to web/.
+
+2026-11-02 — Combined review totals, source links and narrower cards
+Header: 48 published reviews = Google 35 + GetYourGuide 6 + Click&Boat 7; each platform count links to its verified listing. Weighted displayed rating 5/5; manual source date retained. Eight selected excerpts remain unchanged with direct translations. First row represents all three platforms.
+Cards: three at 1280px, two at 768px, one plus a preview at 360px; mobile punctuation and source-count wrapping visually checked. H2 hierarchy, keyboard navigation, original-text toggle and source attribution retained.
+Direct links: GetYourGuide Emma fragment verified in the viewport after locale redirect. Click&Boat individual fragment does not open its hidden dialog; listing retained. Google Maps offers individual review sharing, but the browser did not return the copied URL; listing retained without fabricated permalinks.
+PASS: Vitest — 86 files, 440 tests.
+PASS: lint, typecheck, rules:check, git diff --check.
+PASS: final Next.js production build and Storybook build.
+PASS: focused marketing Playwright — 12 tests, including source totals/links, responsive visible-card counts, English original text, keyboard and accessibility.
+PASS: five public visual baselines intentionally refreshed; mobile and desktop section screenshots visually inspected.
+PASS: full Playwright fixture suite — 62 passed, 2 opt-in skipped.
+PASS: opt-in local hourly booking simulator and live map/weather checks — 2 passed separately.
+Evidence: .local-preview/platform-reviews-*.log; .local-preview/reviews-{360,768,1280}.png.
+Local preview retained on port 3100; fixture server 3101 stopped after verification. No production deployment, dependency, migration or edits to web/.
+
+2026-11-02 — Production public content and photos prepared locally
+Scope: four existing experiences retained, 12 largest public production photos copied locally (four experiences, three extras, five gallery images); real production extras eFoil/paddle/photographer. Dated public ES/EN snapshot retained as reference; SEO copy and example hourly tariffs retained. Photo dimensions and srcsets come from the manifest, including originals below 1024px. No private production data imported.
+PASS: media:prepare — 27 editorial sources, including 12 imported photos; no persistent image worker required.
+PASS: Vitest — 86 files, 441 tests.
+PASS: lint, typecheck, rules:check, git diff --check.
+PASS: Next.js --webpack production build; Storybook production build.
+PASS: all 16 landing image elements decode from localhost at 360/768/1280px; no horizontal overflow. Extras and gallery screenshots visually reviewed.
+PASS: five public screenshot checks; baselines intentionally updated for production photos and real extra labels. Admin baselines retained.
+PASS: full Playwright fixture suite — 62 passed, 2 opt-in skipped.
+PASS: both opt-in checks separately enabled — local hourly booking simulator and live map/weather (2 passed).
+Evidence: .local-preview/production-content-*.log, production-landing-{360,768,1280}.png, production-extras-{360,768,1280}.png, production-gallery-{360,768,1280}.png.
+Local preview retained on 3100. Temporary fixture server 3101 stopped. No deployment, database migration, new dependencies or remote worker changes. Original web/ untouched. Landing still under user review; detail pages, reservation UX and broader SEO architecture remain later phases.
+
+2026-11-02 — Landing: minimum durations, six guests, FAQ CTA and Port Olímpic
+Scope: daytrip 1–6h, sunrise/sunset/romantic 2–6h; shared prepared duration options, matching example tariffs and server rejection of unavailable 1h. Four capacity badges, six-guest local database capacity and form maximum. Extras use localized descriptions instead of pending text. FAQ WhatsApp button removed after user clarification; clothing advice retained. Location redesigned with one-third information/two-thirds map, official transparent meteoblue widget theme and hover/focus states.
+PASS: rules:check and git diff --check.
+PASS: Vitest — 86 files, 443 tests, including server-side 1h rejection and localized capacity/durations.
+PASS: lint, typecheck, final Next.js --webpack build and Storybook build. The initial tariff-map inference error was fixed with an explicit HourlyRate map type before final build.
+PASS: focused marketing checks plus five intentional public visual baselines — 18 passed after correcting the new test locator to the accessible combobox role.
+PASS: full Playwright fixture suite — 63 passed, 2 opt-in skipped.
+PASS: opt-in hourly booking and external location widget tests separately — 2 passed. Legacy romantic hours=1 links select 2h; live quote capacity is six; overlap/payment/cancellation flow retained.
+PASS: visual review of loaded map/weather at desktop/mobile and capacity badges at 360/1280px. Existing responsive/axe checks cover 360/768/1280px and translated pages.
+Evidence: .local-preview/landing-polish-*.log; location-live-{desktop,mobile}.png; landing-polish-capacity-{360,1280}.png. Public snapshots updated for badge, copy, FAQ CTA removal and map layout; admin baselines unchanged.
+Local preview kept on port 3100. Fixture server 3101 stopped. Only isolated local catalog capacity updated (four rows); no booking records deleted, schema migration, dependency, deployment or changes to web/.
+
+2026-11-02 — Native localized Port Olímpic weather
+- Replaced meteoblue iframe; one Google Maps iframe remains in FindUs.
+- MET Norway live endpoint returned a current forecast for fixed port coordinates.
+- rules:check: passed. ESLint: passed. TypeScript: passed. Storybook: passed.
+- Vitest: 87 files, 451 tests passed (including provider cache/error/concurrency tests).
+- Playwright full suite: 69 passed; 2 opt-in tests skipped then run separately.
+- Opt-in live weather/map: 1 passed. Opt-in local hourly booking: 1 passed.
+- Weather localization, 360/768/1280 widths and axe: passed for ES/EN/FR/DE/NL.
+- Unavailable state: no fabricated data, translated message, no timestamp.
+- Five intended public visual snapshots updated and full visual suite passed.
+- Live desktop/mobile screenshots reviewed: .local-preview/location-live-*.png.
+- No added packages, schema, workers, credentials or production deployment.
+- Final Next production build: passed (57 static pages plus dynamic weather endpoint).
+- Final cold-cache smoke: five concurrent requests, ES/EN/FR/DE/NL all HTTP 200,
+  each with the translated real forecast. Local preview remains on port 3100.
+
+2026-11-02 — Landing pricing tables replacing photo gallery
+- New static SeoPricingTables + pricing copy and captured production extra amounts.
+- Experience prices reuse the hourly preview source; details links and durations agree.
+- Production public checkout checked for daytrip, sunrise, romantic and ex-sunset:
+  paddle +EUR 20 once per booking; eFoil and photographer unavailable in checkout.
+- Five locales tested at 360/768/1280: both tables, no horizontal scrolling,
+  correct row headers and detail links; axe passed. Screenshots visually reviewed.
+- Vitest: 451 passed in 87 files. Full Playwright: 74 passed, 2 opt-in skipped.
+- Both opt-in tests separately passed (hourly reservations and live weather/map).
+- Three intended home screenshots updated; other visual baselines passed unchanged.
+- rules:check, ESLint, TypeScript, Next production build, Storybook: all passed.
+- git diff --check: passed. Local preview on port 3100. No production deployment.
+
+2026-11-02 — Hero, trust indicators and price inclusions copy
+- ES/EN/FR/DE/NL: hero uses shared starting price, six guests and final-price claim.
+- Trust strip uses 100% private boats and Google 5 stars / 35 reviews from source.
+- Price table, FAQ answers and detail inclusions include skipper/fuel/insurance.
+- Extra hours subject to availability and current 6-hour maximum.
+- 451 unit tests passed; rules, ESLint, TypeScript, Next build and Storybook passed.
+- Browser suite: 74 passed, 2 opt-in skipped; mobile/desktop screenshots reviewed.
+- Five expected public snapshots updated and visual suite passed.
+- Opt-in live location/weather passed. Opt-in hourly booking BLOCKED by local DB:
+  Prisma P1001 at 127.0.0.1:55439; Docker daemon reports Desktop unable to start.
+  `docker desktop start` says Desktop already running; no restart/reset attempted.
+- Content/UI changes complete; reservation integration cannot be revalidated until
+  the Docker engine is healthy. No reservation code or production data changed.
+
+2026-11-02 — Google rating badge and WhatsApp pulse
+- Five dictionaries: compact localized 5.0/5,0 rating, Google Maps, review count.
+- Filled star, bold blue text, full mobile row, wider desktop column; no clipping
+  in ES/EN/FR/DE/NL at 360/768/1280. Screenshots badges-360/768/1280 reviewed.
+- CSS Module: 2s expanding/fading halo; hover dark green and scale 1.1.
+- Browser behavioral check confirms 2s animation and no animation under reduced motion.
+- 451 Vitest tests passed; full Playwright 75 passed, 2 opt-in skipped.
+- Live location/map opt-in passed separately. Hourly integration not rerun because
+  the Docker/database blocker documented above remains outside this UI change.
+- rules, lint, typecheck, Next build and Storybook all passed; git diff --check passed.
+- Five expected public visual snapshots updated; all visual checks passed.
+- Local preview left on 3100. No dependencies, production deployment or booking changes.
+
+2026-11-02 — Owner revision: restore consistent indicator styling
+- Supersedes the filled/bold/full-width badge above: restored outlined icon in
+  circle and the same normal text style as all indicators, keeping decimal rating.
+- Mobile stays 2 columns; Google Maps is kept together and review count separated
+  naturally below. Desktop reserves more width for reviews. No clipping in five
+  languages at 360/768/1280; final badges-refined screenshots visually reviewed.
+- WhatsApp animation and reduced-motion behavior retained.
+- 451 unit tests, rules, lint, typecheck, Next build and Storybook passed.
+- Three home snapshots intentionally updated. No new dependencies or backend changes.
+- Full browser run: 74 passing plus one expected mobile detail snapshot shift from
+  responsive spacing. Reviewed the detail screenshot, updated that baseline and
+  reran the affected visual test successfully (75 tests verified; 2 opt-in skipped).
+- Final screenshot set: 3 home views plus 1 mobile detail view. No visual regressions.
+
+2026-11-02 — Final simplified indicator wrap and backpanel review
+- Removed explicit rating line breaks and fixed compact columns. Indicators use
+  natural-width flex wrapping, moving whole items down when needed.
+- Five locales at 360/768/1280 verified without overflow; strip-simple screenshots.
+- 451 unit tests and 75 browser tests passed; 2 opt-in tests skipped (Docker block
+  documented above). Rules, lint, typecheck, production build and Storybook passed.
+- Three intentional home screenshot baselines updated; git diff --check passed.
+- Backpanel review server left on port 3102, fixture data only; list, booking detail
+  and calendar opened and screens captured in .local-preview/admin-review-*.png.
+- Preview fixture values are historical examples, not current prices/capacities.
+  Writes still need the unavailable local database; no writes attempted.
+- Panel UI unchanged. Review observations: English copy and duplicated detail
+  information are candidates to simplify next. Navigation already only 2 sections.
+- Landing remains on port 3100; no production deployment or purchase-flow changes.
+
+2026-11-02 — Restore non-editorial operations, coupons and notifications
+- Restored Dashboard, Coupons, Notifications and Devices to navigation and routing;
+  bookings/calendar remain. Only public content editors and policy editor retired.
+- Dashboard implementation restored from the original repository without sending
+  test messages. Notification rules, operational templates/logs and device setup
+  remain accessible; coupons list/new routes respond normally.
+- No cancellation terms, policy repository, historical booking snapshots or
+  refunds changed. File-based policy definition pending owner's term confirmation.
+- Rules, ESLint, TypeScript, production build, Storybook and 451 unit tests passed.
+- Browser suite: 76 passed, 2 opt-in skipped (existing Docker-dependent booking
+  integration not revalidated). Operational route regression checks passed.
+- Four expected admin navigation snapshots updated; screenshots reviewed for
+  bookings, coupons, notifications, devices. All browser visual/a11y/responsive
+  checks passed. git diff --check passed.
+- Preview on 3102 still uses demonstration data, not production accounts/records.
+  No outbound notifications, financial operations or production deploy performed.
+
+2026-11-02 — Confirmed free-cancellation window only
+- Owner confirms free cancellation up to 48 hours before departure.
+- Shared static cancellationPolicy.ts text used in a new FAQ and booking consent
+  area, ES/EN/FR/DE/NL. Version is marked incomplete pending remaining terms.
+- Authenticated production policy list was empty; no unsaved 24-hour draft adopted.
+- Five localized FAQ answers opened and inspected; screenshot cancellation-48h-faq.png.
+- 451 unit tests and 76 browser tests passed; 2 opt-in tests skipped (existing
+  Docker/local booking limitation). Rules, lint, typecheck, build, Storybook passed.
+- Five intentional public screenshots updated; full visual/a11y/responsive suite passed.
+- No new refund automation, DB policy replacement, historical reservation change
+  or production publication. Late cancellations/no-show/weather terms pending owner.
+- git diff --check passed. Previews remain on 3100 and demo admin 3102.
+
+2026-11-02 — Final owner-confirmed static cancellation policy
+- 48-hour free cancellation; less notice: unavailable, contact WhatsApp.
+- If JimBoats cancels because conditions prevent departure: all money paid refunded,
+  captain contacts customer. No inferred no-show/deposit forfeiture or automatic payment.
+- Shared ES/EN/FR/DE/NL (+ legacy CA) definition used by FAQ, hourly checkout,
+  legacy checkout presenter and preview fixtures. Removed obsolete pending-terms copy.
+- New public/manual reservations receive independent v1 policy snapshots through
+  StaticCancellationPolicyRepository; stored historical snapshots remain unchanged.
+- Three adapter tests cover snapshot independence, exactly-48-hour boundary,
+  late manual handling without NO_REFUND and rejected panel policy writes.
+- 454 unit tests in 88 files passed. Browser suite 76 passed, 2 opt-in skipped.
+- Rules, ESLint, TypeScript, Next build and Storybook passed; git diff --check passed.
+- Both FAQ answers opened in five languages; screenshots reviewed. Five intended
+  public snapshots updated and full visual/responsive/a11y browser suite passed.
+- DB-backed booking integration remains unverified: Docker info hung and was
+  cancelled, same local runtime blocker as above. No DB migration is needed.
+- No production publication, real messages, refunds, charges or historical writes.
+
+
+Panel operativo en español — 2026-11-03
+=======================================
+Scope: web-seo local. Eliminar duplicación en reservas y traducir la interfaz operativa. Sin modificar datos ni servicios de producción.
+
+RESULTADO FINAL
+- rules:check: PASS.
+- Vitest: 457 tests / 89 files PASS.
+- ESLint: PASS.
+- tsc --noEmit: PASS.
+- Next.js production build (webpack, Node 24): PASS.
+- Storybook build: PASS.
+- Playwright suite completa: 110 PASS, 2 pruebas opt-in de reservas reales omitidas intencionadamente.
+- Responsive: 360/768/1280; se amplía cobertura a cupones y notificaciones/dispositivos. Regresión específica para etiquetas completas de contadores.
+- Accesibilidad: todas las pantallas operativas retenidas; en dispositivos se espera la detección e hidratación y el final de la transición del botón antes de medir contraste. No se ignoran infracciones.
+- Visual: cuatro capturas admin actualizadas por traducción y retirada de bloques duplicados; capturas públicas conservadas y verificadas.
+- Confirmación de cancelación en español: descartarla no genera POST ni cambia la reserva. Acciones de guardado, cancelación, cupones y notificaciones comprobadas con fakes en unit tests.
+- Revisión visual manual de listado/detalle, cupones y reglas, mobile y desktop. Safari queda en /admin/bookings.
+- git diff --check: PASS.
+
+Entorno de navegador: faltaba la caché de Playwright. Se probó Chrome instalado, que produjo pequeñas diferencias de renderizado en las capturas públicas. Se descargó la versión oficial de referencia a /tmp/jimboats-playwright-browsers (sin dependencias ni configuración del proyecto nuevas) y toda la suite final pasa con PLAYWRIGHT_BROWSERS_PATH apuntando ahí. No se relajaron tolerancias ni se actualizaron capturas públicas.
+
+Logs: .local-preview/admin-es-{rules,unit,lint,typecheck,build,storybook,snapshots,browser-all}.log
+Limitaciones: datos de demostración; no se ha probado persistencia real ni envíos/cancelaciones/reembolsos de producción. La base de datos local no se ha modificado.
+
+Cumplimiento: UI en componentes; diccionario versionado y presentación localizada; lógica, IDs y estados de negocio intactos; sin dependencias, migraciones o cambios de despliegue. Edición limitada a web-seo, sin tocar web original.
+
+Fichas y reserva original — 2026-11-03
+- Next build --webpack: PASS, 61 páginas prerenderizadas, typecheck incluido. Marketing: 50 URLs (4 fichas x 5 idiomas más páginas generales).
+- Vitest completo: 90 archivos / 461 pruebas PASS. Después se añadió la prueba del simulador: PASS. Revisión final de public-booking: 4 archivos / 11 pruebas PASS, incluida la nueva (462 pruebas únicas en total).
+- rules:check: PASS. ESLint completo: PASS. ESLint del último ajuste del resumen móvil: PASS. Storybook build: PASS. git diff --check: PASS.
+- Playwright completo: 113 PASS, 2 opt-in SKIP, 1 fallo detectado en la semántica dl/dt/dd del resumen móvil heredado. Corregido sin cambiar el diseño.
+- Reejecución focal tras la corrección: 4/4 PASS (20 fichas, flujo original desktop/móvil hasta formulario/envío protegido, extras y total, duración e idioma). Comprobación adicional de CTA → reserva correcta de cada una de las cuatro experiencias: 1/1 PASS.
+- Sin desactivar reglas de accesibilidad ni aumentar tolerancias de capturas. Solo se actualizaron intencionadamente las capturas de las fichas; landing y panel pasaron sus capturas existentes.
+- Revisión visual: Safari en escritorio y capturas de ficha a 360/1280 px. Verificado el calendario original, tarjeta/resumen, precio inicial y jerarquía de títulos. El botón flotante queda por encima de la barra de reserva móvil.
+- Evidencia: .local-preview/experience-build.log, experience-unit.log, experience-payment-test.log, experience-lint.log, experience-mobile-lint.log, experience-rules.log, experience-storybook.log, experience-browser-final.log, experience-browser-recheck.log, experience-four-bookings.log.
+- Límite: servidor 3102 en modo visual sin DATABASE_URL. No se han creado reservas, enviado notificaciones ni realizado pagos reales. La prueba HOURLY_BOOKING_E2E sigue opt-in y no se ha ejecutado contra una base local. Tarifas de ejemplo, noindex y bloqueo de ventas sin tarifas aprobadas conservados.
+- Sin despliegue ni modificaciones en web/. Sin dependencias nuevas.
+
+Ajuste de fichas y horas solares — 2026-11-03
+- Vitest completo: 92 archivos, 471 pruebas PASS. Incluye cache/fecha local/errores de MET Norway y conversión Europe/Madrid en invierno/verano para los cinco idiomas.
+- Playwright completo: 121 PASS, 2 opt-in SKIP (sin base de datos local conectada), ningún fallo. Incluye accesibilidad y responsive 360/768/1280, las 20 fichas, navegación/redirects al ancla de inicio, orden de secciones, tarjeta visible junto a reviews y FAQ, horas solares traducidas y fallo de proveedor sin inventar horas, reservas originales y panel operativo.
+- Next build --webpack: PASS (56 páginas prerenderizadas, 45 URLs de marketing). Typecheck independiente: PASS. ESLint completo: PASS. rules:check: PASS. Storybook build: PASS. git diff --check: PASS.
+- Capturas intencionadas: solo seo-experience-360 y seo-experience-1280. Se han inspeccionado las capturas completas de escritorio y los detalles de reviews/FAQ móviles; landing y panel pasan sus baselines existentes sin actualizarlos.
+- API real verificada mediante /api/weather?locale=es&view=sun: fecha 2026-11-03, salida del sol 07:24, puesta del sol 17:44 (hora Barcelona). Datos de MET Norway Sunrise 3.0: https://api.met.no/weatherapi/sunrise/3.0/documentation . Cache diaria, validación de fecha, sin key/worker/dependencia nueva. La hora solar no modifica los slots de reserva.
+- Logs: .local-preview/detail-refinement-{unit,build,lint,storybook,focused,snapshots,e2e}.log. Capturas parciales: .local-preview/detail-reviews-{360,768,1280}.png y faq-experience-{360,1280}.png.
+- Grafo de código actualizado y consultado. Cambios limitados a presentación, contenido/rutas y extensión del adapter meteorológico existente; normas de capas y UI reutilizable verificadas.
+- Servidor local 3102 en modo visual, sin DATABASE_URL. No se ejecutan pagos, notificaciones ni escrituras reales. Sin despliegue ni cambios en web/.
+
+Tarjeta de conversión, incluidos y tablas solares — 2026-11-03
+- Vitest completo: 92 archivos / 472 pruebas PASS. Se verifica la distinción de incluidos de 1 h frente a 2+ h y la coherencia de FAQ en los cinco idiomas.
+- Playwright completo: 126 PASS, 2 opt-in SKIP sin base local conectada. Pruebas específicas de tarjeta, WhatsApp, tarifa inicial, incluidos, tabla mensual, accesibilidad y overflow para las cuatro experiencias a 360/768/1280. Reserva original y panel conservan su comportamiento.
+- Build Next --webpack, TypeScript, ESLint completo, rules:check, Storybook y git diff --check: PASS. ESLint/typecheck final tras añadir la nueva captura de amanecer: PASS.
+- Dos capturas de ficha privada actualizadas y dos nuevas de amanecer (360/1280); ninguna actualización de landing o panel. Revisión visual de tarjeta, tabla móvil y página completa de amanecer en escritorio.
+- Horas mensuales: consulta real a MET Norway Sunrise 3.0 para los 12 días 15 de 2026 en coordenadas 41.387, 2.201; conversión Europe/Madrid. Dataset estático en src/content/marketing/solarCalendar.json, sin fetch durante el render.
+- Logs: .local-preview/conversion-{unit,build,lint,storybook,focused,snapshots,e2e}.log. Capturas parciales conversion-card-{private,sunrise}-{360,768,1280}.png y conversion-solar-{360,768,1280}.png.
+- Sin dependencias nuevas, migraciones, workers, cambios en tarifas o disponibilidad, ni modificaciones en producción. Prueba visual local 3102; no pagos ni mensajes reales. Grafo de código consultado y actualizado; capas y componentes reutilizables respetados.
+
+Itinerarios claros y WhatsApp contextual — 2026-11-03
+- Aviso routeNote retirado en los cinco idiomas y cuatro pasos directos por experiencia. Cuatro capturas de fichas actualizadas intencionadamente; landing y panel conservan sus referencias.
+- Mensajes de WhatsApp codificados y localizados, solo nombre de experiencia sin duración/precio en las fichas, consulta genérica en páginas restantes. Verificado el número y el parámetro text sin abrir ni enviar conversaciones.
+- Vitest completo final: 92 archivos / 473 pruebas PASS. Playwright completo final: 127 PASS / 2 opt-in SKIP sin base local conectada. Incluye navegación, mensajes de tarjeta/flotante, reservas, panel, responsive, accesibilidad y capturas.
+- Next build --webpack, typecheck independiente, ESLint completo, rules:check, Storybook build y git diff --check: PASS.
+- Logs finales .local-preview/whatsapp-{build,unit,lint,storybook,e2e}.log; capturas de itinerario .local-preview/itinerary-snapshots.log.
+- Sin dependencias nuevas, cambios de negocio, mensajes enviados, despliegue ni escrituras de producción. Grafo consultado/actualizado; contenido localizado y componentes existentes mantienen las capas del proyecto.
+
+Horarios operativos, entorno conectado y menú de inicio — 2026-11-03
+- Recuperado /admin/availability en español: salidas flexibles/fijas/manuales, límites horarios, intervalos, márgenes y antelación. Reutiliza el caso de uso existente; no permite editar contenido de la web.
+- PostgreSQL local persistente, semillas idempotentes y procesos locales de notificaciones y expiración de retenciones. Panel con datos reales de esta base, sin fixtures visuales. Los datos sintéticos de las pruebas quedan en la base local; no se ha importado información personal de producción.
+- Vitest completo: 95 archivos / 483 pruebas PASS. Next build --webpack, typecheck independiente, ESLint completo, rules:check, Storybook build, node --check del lanzador y git diff --check: PASS.
+- Playwright completo final contra servidor aislado de fixtures: 128 PASS / 4 opt-in SKIP. Se revisó y actualizó la referencia de portada afectada por retirar la fecha de consulta; la reejecución completa pasa sin actualizar capturas ni relajar tolerancias.
+- Playwright conectado a PostgreSQL en 3102: 3/3 PASS. Reserva por horas persistente, protección de solapamientos entre experiencias del mismo barco, confirmación con pago local, notificación registrada, cancelación y liberación de disponibilidad; configuración de horarios persistente y aplicada al calendario; creación persistente y aplicación de cupón del 10%.
+- Comprobada accesibilidad del nuevo panel y ausencia de overflow a 360/768/1280 px. Capturas revisadas: .local-preview/horarios-desktop.png y horarios-mobile.png.
+- Menú dirigido a #experiences, #prices, #boat y #find-us del inicio en los cinco idiomas; navegación móvil desde ficha comprobada. Retirada la fecha visible de las reseñas, conservada su procedencia interna. Arquitectura vigente: 45 URLs de marketing; páginas de apoyo pendientes de revisión editorial, indexación todavía desactivada.
+- Evidencia: .local-preview/final-{build,typecheck,unit,lint,rules,storybook,e2e-recheck,local-e2e}.log. Capturas actualizadas de forma intencionada para el menú Horarios y la retirada de la fecha; referencia home-desktop revisada mediante su imagen de diferencias.
+- Límites: pago simulado, no prueba de integración Stripe; notificaciones procesadas con CONSOLE_EMAIL, sin correo/push/WhatsApp externo; Google Calendar desactivado. Tarifas y horarios iniciales de prueba. No se ha desplegado ni modificado web/ original. Sin dependencias nuevas.
+
+
+Blog multilingüe estático y keywords — 2026-11-03
+- Tres guías completas x cinco idiomas (ES/EN/FR/DE/NL), más cinco índices: 20 nuevas URLs estáticas. Sitemap: 65 URLs, sin duplicados; rutas y selector de idioma conservan la guía correspondiente.
+- Vitest completo: 96 archivos / 486 pruebas PASS. Next build --webpack: PASS, blog prerenderizado. TypeScript independiente, ESLint completo, revisión final de los tests, rules:check y Storybook build: PASS. git diff --check: PASS.
+- Playwright del blog: 10/10 PASS. Se verifican las 20 rutas, canonical/hreflang, identidad estructurada, idioma, enlaces a experiencia y rutas inválidas; las 15 guías a 360 px, jerarquía H1/H2/H3; accesibilidad y overflow a 360/768/1280 px.
+- Regresión completa final: 137 PASS / 4 opt-in SKIP; una captura de inicio detectó que Chromium omitía intermitentemente las fotos fuera de pantalla al capturar una página de más de 14.000 px. Se comprueban ahora las fotos en una captura específica de la sección Blog, sin máscaras, y el conjunto en la captura de página completa con esas mismas tres imágenes enmascaradas. Reejecución focal final de las seis capturas de inicio/fichas: 6/6 PASS, sin actualizar referencias. No se aumentaron tolerancias ni se desactivaron reglas de accesibilidad.
+- Capturas nuevas: cuatro del blog (índice/artículo a 360/1280) y dos de la sección del inicio con imágenes. Actualizadas solo las siete referencias públicas afectadas por el blog, los enlaces y el pie. Capturas del panel intactas. Revisión visual de artículo, índice, tarjetas de inicio y pie, en móvil y escritorio.
+- Playwright con PostgreSQL local 3102: 3/3 PASS. Reserva por horas persistente, solapamientos, confirmación de pago local, cancelación, configuración de horarios y cupón. Conserva el sistema operativo existente; pago simulado y notificaciones CONSOLE_EMAIL, sin integraciones externas ni escrituras en producción.
+- Corregidos dos hallazgos durante la implementación: CTA romántico prioritario y semántica del índice de navegación del artículo. La revisión visual añadió espera de imágenes diferidas antes de capturar los artículos completos.
+- Logs: .local-preview/blog-{unit,build,typecheck,lint,lint-final,tests-lint,rules,storybook,e2e,snapshots,full-e2e-final,visual-recheck,local-e2e}.log.
+- Datos y texto estáticos en src/content/blog; fotos existentes de JimBoats y fuentes primarias enlazadas. Inicio refuerza paseos/alquiler con patrón; privado, por horas; precios, comparación de tarifas y duraciones mínimas correctas. No se crea una página por variante de keyword.
+- Límites: copia local noindex; falta revisión editorial final de páginas de apoyo, tarifas definitivas y preparación del despliegue. Sin CMS, dependencias, migraciones ni cambios en web/ original. La competencia de Ads no se presenta como dificultad SEO ni se prometen rankings o citas de IA.

@@ -4,77 +4,798 @@
     {
       "slug": "hero-sunset-barcelona",
       "source": "sources/hero-sunset-barcelona.jpg",
-      "widths": [640, 960, 1024]
+      "widths": [
+        640,
+        960,
+        1024
+      ],
+      "width": 5906,
+      "height": 3898
     },
     {
       "slug": "experience-sunset-toast",
       "source": "sources/experience-sunset-toast.png",
-      "widths": [480, 720, 960, 1024]
+      "widths": [
+        480,
+        720,
+        960,
+        1024
+      ],
+      "width": 1024,
+      "height": 1024
     },
     {
       "slug": "experience-morning-breeze",
       "source": "sources/experience-morning-breeze.png",
-      "widths": [480, 720, 960, 1024]
+      "widths": [
+        480,
+        720,
+        960,
+        1024
+      ],
+      "width": 1024,
+      "height": 1024
     },
     {
       "slug": "experience-party-board",
       "source": "sources/experience-party-board.png",
-      "widths": [480, 720, 960, 1024]
+      "widths": [
+        480,
+        720,
+        960,
+        1024
+      ],
+      "width": 1024,
+      "height": 1024
     },
     {
       "slug": "experience-romantic-proposal",
       "source": "sources/experience-romantic-proposal.png",
-      "widths": [480, 720, 960, 1024]
+      "widths": [
+        480,
+        720,
+        960,
+        1024
+      ],
+      "width": 1024,
+      "height": 1024
     },
     {
       "slug": "story-barcelona-sea",
       "source": "sources/story-barcelona-sea.jpg",
-      "widths": [640, 960, 1024]
+      "widths": [
+        640,
+        960,
+        1024
+      ],
+      "width": 2340,
+      "height": 1320
     },
     {
       "slug": "upgrade-paddle-surf",
       "source": "sources/upgrade-paddle-surf.png",
-      "widths": [320, 480, 720, 1024]
+      "widths": [
+        320,
+        480,
+        720,
+        1024
+      ],
+      "width": 1024,
+      "height": 1024
     },
     {
       "slug": "upgrade-mediterranean-flavors",
       "source": "sources/upgrade-mediterranean-flavors.png",
-      "widths": [320, 480, 720, 1024]
+      "widths": [
+        320,
+        480,
+        720,
+        1024
+      ],
+      "width": 1024,
+      "height": 1024
     },
     {
       "slug": "upgrade-sunset-toast",
       "source": "sources/upgrade-sunset-toast.png",
-      "widths": [320, 480, 720, 1024]
+      "widths": [
+        320,
+        480,
+        720,
+        1024
+      ],
+      "width": 1024,
+      "height": 1024
     },
     {
       "slug": "gallery-couple-sunset",
       "source": "sources/gallery-couple-sunset.png",
-      "widths": [480, 720, 960, 1024]
+      "widths": [
+        480,
+        720,
+        960,
+        1024
+      ],
+      "width": 1024,
+      "height": 1024
     },
     {
       "slug": "gallery-sea-breeze",
       "source": "sources/gallery-sea-breeze.png",
-      "widths": [320, 480, 720, 1024]
+      "widths": [
+        320,
+        480,
+        720,
+        1024
+      ],
+      "width": 1024,
+      "height": 1024
     },
     {
       "slug": "gallery-champagne",
       "source": "sources/gallery-champagne.png",
-      "widths": [320, 480, 720, 1024]
+      "widths": [
+        320,
+        480,
+        720,
+        1024
+      ],
+      "width": 1024,
+      "height": 1024
     },
     {
       "slug": "gallery-jump-sea",
       "source": "sources/gallery-jump-sea.png",
-      "widths": [480, 720, 960, 1024]
+      "widths": [
+        480,
+        720,
+        960,
+        1024
+      ],
+      "width": 1024,
+      "height": 1024
     },
     {
       "slug": "gallery-barcelona-coast",
       "source": "sources/gallery-barcelona-coast.png",
-      "widths": [480, 720, 960, 1024]
+      "widths": [
+        480,
+        720,
+        960,
+        1024
+      ],
+      "width": 1024,
+      "height": 1024
     },
     {
       "slug": "final-cta-golden-sea",
       "source": "sources/final-cta-golden-sea.jpg",
-      "widths": [640, 960, 1024]
+      "widths": [
+        640,
+        960,
+        1024
+      ],
+      "width": 5906,
+      "height": 3898
+    },
+    {
+      "slug": "production-sunrise",
+      "source": "sources/production/asset-f8258531-cf43-4f93-8257-20166e65987d-958867c57c5715b3-6000.webp",
+      "widths": [
+        320,
+        480,
+        640,
+        960,
+        1024,
+        1280,
+        1920
+      ],
+      "width": 6000,
+      "height": 4000
+    },
+    {
+      "slug": "production-daytrip",
+      "source": "sources/production/asset-5b5d79ac-8624-4826-b392-c89abe7bf010-4c104affd21a15f2-1536.webp",
+      "widths": [
+        320,
+        480,
+        640,
+        960,
+        1024,
+        1280,
+        1536
+      ],
+      "width": 1536,
+      "height": 2048
+    },
+    {
+      "slug": "production-sunset",
+      "source": "sources/production/asset-076197b2-863f-4923-babc-3d7547277381-38cb8fb13c7f0730-1056.webp",
+      "widths": [
+        320,
+        480,
+        640,
+        960,
+        1024,
+        1056
+      ],
+      "width": 1056,
+      "height": 1600
+    },
+    {
+      "slug": "production-sunset-mobile",
+      "source": "sources/production/asset-076197b2-863f-4923-babc-3d7547277381-38cb8fb13c7f0730-1056.webp",
+      "widths": [320, 480, 640, 840, 960, 1056],
+      "width": 1056,
+      "height": 1600,
+      "quality": 74
+    },
+    {
+      "slug": "production-romantic",
+      "source": "sources/production/asset-767a8300-9e1a-445c-b36a-e859c1aa7b1d-ad037cd7565af22e-6000.webp",
+      "widths": [
+        320,
+        480,
+        640,
+        960,
+        1024,
+        1280,
+        1920
+      ],
+      "width": 6000,
+      "height": 4000
+    },
+    {
+      "slug": "production-efoil",
+      "source": "sources/production/asset-431813e2-48ad-44a8-a6df-52dd2b6cde1b-ec5d2b98b1f58cf5-1672.webp",
+      "widths": [
+        320,
+        480,
+        640,
+        960,
+        1024,
+        1280,
+        1672
+      ],
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "slug": "production-paddle",
+      "source": "sources/production/asset-0ebc3a6c-4dd9-4c55-8b98-2a73ea171a53-d6b7593839af0133-1023.webp",
+      "widths": [
+        320,
+        480,
+        640,
+        960,
+        1023
+      ],
+      "width": 1023,
+      "height": 1537
+    },
+    {
+      "slug": "production-photographer",
+      "source": "sources/production/asset-dbea5e58-a561-4924-afe1-f758f003d15a-9f2ce194494ac0a1-1448.webp",
+      "widths": [
+        320,
+        480,
+        640,
+        960,
+        1024,
+        1280,
+        1448
+      ],
+      "width": 1448,
+      "height": 1086
+    },
+    {
+      "slug": "production-gallery-1",
+      "source": "sources/production/asset-06fb3957-d42b-4453-8187-78c53e3b0847-a58d338546d59984-5120.webp",
+      "widths": [
+        320,
+        480,
+        640,
+        960,
+        1024,
+        1280,
+        1920
+      ],
+      "width": 5120,
+      "height": 3840
+    },
+    {
+      "slug": "production-gallery-2",
+      "source": "sources/production/asset-4178b9c2-76d6-499b-bd1e-dd84d839b3fa-45518cdaca3da92f-1600.webp",
+      "widths": [
+        320,
+        480,
+        640,
+        960,
+        1024,
+        1280,
+        1600
+      ],
+      "width": 1600,
+      "height": 1200
+    },
+    {
+      "slug": "production-gallery-3",
+      "source": "sources/production/asset-2fca5d38-a495-4e81-9e47-1fdf50169aa2-db8bb02e7605b8cc-902.webp",
+      "widths": [
+        320,
+        480,
+        640,
+        902
+      ],
+      "width": 902,
+      "height": 1600
+    },
+    {
+      "slug": "production-gallery-4",
+      "source": "sources/production/asset-309d485f-5aec-4141-a06d-5e4549b4b208-7a7e217aef53aead-1536.webp",
+      "widths": [
+        320,
+        480,
+        640,
+        960,
+        1024,
+        1280,
+        1536
+      ],
+      "width": 1536,
+      "height": 1024
+    },
+    {
+      "slug": "production-gallery-5",
+      "source": "sources/production/asset-ce617e90-38d5-49b0-9b5d-1cb4d5f90c93-b58ae7a3ef7b2cc0-1192.webp",
+      "widths": [
+        320,
+        480,
+        640,
+        960,
+        1024,
+        1192
+      ],
+      "width": 1192,
+      "height": 1600
+    },
+    {
+      "slug": "jimboats-crew",
+      "source": "sources/jimboats-crew.jpg",
+      "widths": [
+        640,
+        960,
+        1440
+      ],
+      "width": 3840,
+      "height": 5120
+    },
+    {
+      "slug": "crew-portrait-1",
+      "source": "sources/crew-portrait-1.jpg",
+      "widths": [
+        240,
+        480,
+        720
+      ],
+      "width": 896,
+      "height": 1195
+    },
+    {
+      "slug": "crew-portrait-2",
+      "source": "sources/crew-portrait-2.jpg",
+      "widths": [
+        240,
+        480,
+        720
+      ],
+      "width": 1086,
+      "height": 1448
+    },
+    {
+      "slug": "lena-at-sea",
+      "source": "sources/lena-at-sea.jpg",
+      "widths": [
+        480,
+        800,
+        1200,
+        1600
+      ],
+      "width": 2048,
+      "height": 1536
+    },
+    {
+      "slug": "lena-bow",
+      "source": "sources/lena-bow.jpg",
+      "widths": [
+        480,
+        800,
+        1200
+      ],
+      "width": 1600,
+      "height": 1356
+    },
+    {
+      "slug": "lena-deck",
+      "source": "sources/lena-deck.jpg",
+      "widths": [
+        480,
+        800
+      ],
+      "width": 1266,
+      "height": 1522
+    },
+    {
+      "slug": "lena-barceloneta",
+      "source": "sources/lena-barceloneta.jpg",
+      "widths": [
+        480,
+        800,
+        1200
+      ],
+      "width": 3840,
+      "height": 5120
+    },
+    {
+      "slug": "lena-golden-hour",
+      "source": "sources/lena-golden-hour.jpg",
+      "widths": [
+        480,
+        800,
+        1200
+      ],
+      "width": 5120,
+      "height": 3380
+    },
+    {
+      "slug": "hen-party-friends",
+      "source": "sources/hen-party-friends.jpg",
+      "widths": [
+        320,
+        480,
+        800,
+        1200
+      ],
+      "width": 1600,
+      "height": 1067
+    },
+    {
+      "slug": "hen-party-bride",
+      "source": "sources/hen-party-bride.jpg",
+      "widths": [
+        320,
+        480,
+        800
+      ],
+      "width": 1067,
+      "height": 1600
+    },
+    {
+      "slug": "hen-party-toast",
+      "source": "sources/hen-party-toast.jpg",
+      "widths": [
+        320,
+        480,
+        800,
+        1200
+      ],
+      "width": 1200,
+      "height": 1600
+    },
+    {
+      "slug": "hen-party-paddle",
+      "source": "sources/hen-party-paddle.jpg",
+      "widths": [
+        320,
+        480,
+        800
+      ],
+      "width": 900,
+      "height": 1600
+    },
+    {
+      "slug": "hen-party-preparations",
+      "source": "sources/hen-party-preparations.jpg",
+      "widths": [
+        320,
+        480,
+        800
+      ],
+      "width": 1067,
+      "height": 1600
+    },
+    {
+      "slug": "sunset-lena-panorama",
+      "source": "sources/sunset-lena-panorama.jpg",
+      "widths": [
+        320,
+        480,
+        800,
+        1200,
+        1600
+      ],
+      "width": 5120,
+      "height": 3380
+    },
+    {
+      "slug": "sunset-lena-portrait",
+      "source": "sources/sunset-lena-portrait.jpg",
+      "widths": [
+        320,
+        480,
+        800,
+        1200,
+        1600
+      ],
+      "width": 3380,
+      "height": 5120
+    },
+    {
+      "slug": "sunset-couple-deck",
+      "source": "sources/sunset-couple-deck.jpg",
+      "widths": [
+        320,
+        480,
+        800
+      ],
+      "width": 1186,
+      "height": 2048
+    },
+    {
+      "slug": "sunset-guests-skyline",
+      "source": "sources/sunset-guests-skyline.jpg",
+      "widths": [
+        320,
+        480,
+        800,
+        1200,
+        1600
+      ],
+      "width": 5120,
+      "height": 3414
+    },
+    {
+      "slug": "sunset-lena-golden",
+      "source": "sources/sunset-lena-golden.jpg",
+      "widths": [
+        320,
+        480,
+        800,
+        1200,
+        1600
+      ],
+      "width": 5120,
+      "height": 3380
+    },
+    {
+      "slug": "sunrise-gallery-1",
+      "source": "sources/sunrise-gallery-1.jpeg",
+      "widths": [
+        320,
+        480,
+        800,
+        1200,
+        1600
+      ],
+      "width": 3240,
+      "height": 2160
+    },
+    {
+      "slug": "sunrise-gallery-2",
+      "source": "sources/sunrise-gallery-2.jpeg",
+      "widths": [
+        320,
+        480,
+        800,
+        1200,
+        1600
+      ],
+      "width": 3240,
+      "height": 2160
+    },
+    {
+      "slug": "sunrise-gallery-3",
+      "source": "sources/sunrise-gallery-3.jpeg",
+      "widths": [
+        320,
+        480,
+        800,
+        1200,
+        1600
+      ],
+      "width": 3024,
+      "height": 4536
+    },
+    {
+      "slug": "sunrise-gallery-4",
+      "source": "sources/sunrise-gallery-4.jpeg",
+      "widths": [
+        320,
+        480,
+        800,
+        1200,
+        1600
+      ],
+      "width": 3240,
+      "height": 2160
+    },
+    {
+      "slug": "sunrise-gallery-5",
+      "source": "sources/sunrise-gallery-5.jpeg",
+      "widths": [
+        320,
+        480,
+        800,
+        1200
+      ],
+      "width": 1440,
+      "height": 960
+    },
+    {
+      "slug": "sunrise-gallery-6",
+      "source": "sources/sunrise-gallery-6.jpeg",
+      "widths": [
+        320,
+        480,
+        800,
+        1200,
+        1600
+      ],
+      "width": 3240,
+      "height": 2160
+    },
+    {
+      "slug": "sunrise-gallery-7",
+      "source": "sources/sunrise-gallery-7.jpeg",
+      "widths": [
+        320,
+        480,
+        800,
+        1200,
+        1600
+      ],
+      "width": 3242,
+      "height": 2160
+    },
+    {
+      "slug": "romantic-gallery-1",
+      "source": "sources/romantic-gallery-1.jpeg",
+      "widths": [
+        320,
+        480,
+        800,
+        1200,
+        1600
+      ],
+      "width": 1600,
+      "height": 1066
+    },
+    {
+      "slug": "romantic-gallery-2",
+      "source": "sources/romantic-gallery-2.jpeg",
+      "widths": [
+        320,
+        480,
+        800
+      ],
+      "width": 1066,
+      "height": 1600
+    },
+    {
+      "slug": "romantic-gallery-3",
+      "source": "sources/romantic-gallery-3.jpeg",
+      "widths": [
+        320,
+        480,
+        800,
+        1200,
+        1600
+      ],
+      "width": 3414,
+      "height": 5120
+    },
+    {
+      "slug": "romantic-gallery-4",
+      "source": "sources/romantic-gallery-4.jpeg",
+      "widths": [
+        320,
+        480,
+        800,
+        1200,
+        1600
+      ],
+      "width": 5120,
+      "height": 3414
+    },
+    {
+      "slug": "romantic-gallery-5",
+      "source": "sources/romantic-gallery-5.jpeg",
+      "widths": [
+        320,
+        480,
+        800,
+        1200,
+        1600
+      ],
+      "width": 5120,
+      "height": 3414
+    },
+    {
+      "slug": "romantic-gallery-6",
+      "source": "sources/romantic-gallery-6.jpeg",
+      "widths": [
+        320,
+        480,
+        800,
+        1200,
+        1600
+      ],
+      "width": 3240,
+      "height": 2160
+    },
+    {
+      "slug": "romantic-gallery-7",
+      "source": "sources/romantic-gallery-7.jpeg",
+      "widths": [
+        320,
+        480,
+        800,
+        1200,
+        1600
+      ],
+      "width": 1600,
+      "height": 1066
+    },
+    {
+      "slug": "romantic-gallery-8",
+      "source": "sources/romantic-gallery-8.jpeg",
+      "widths": [
+        320,
+        480,
+        800,
+        1200,
+        1600
+      ],
+      "width": 5120,
+      "height": 3414
+    },
+    {
+      "slug": "romantic-gallery-9",
+      "source": "sources/romantic-gallery-9.jpeg",
+      "widths": [
+        320,
+        480,
+        800,
+        1200,
+        1600
+      ],
+      "width": 5120,
+      "height": 3414
+    },
+    {
+      "slug": "romantic-gallery-10",
+      "source": "sources/romantic-gallery-10.jpeg",
+      "widths": [
+        320,
+        480,
+        800,
+        1200,
+        1600
+      ],
+      "width": 3840,
+      "height": 5120
+    },
+    {
+      "slug": "hero-lena-barcelona",
+      "source": "sources/hero-lena-barcelona.jpg",
+      "widths": [
+        640,
+        960,
+        1600,
+        2400
+      ],
+      "width": 3840,
+      "height": 5120
     }
   ]
 }

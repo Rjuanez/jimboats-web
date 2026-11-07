@@ -1,4 +1,5 @@
 "use client";
+import { adminEs } from "@/i18n/admin/es";
 
 import { MailCheck, MessageSquare, Send } from "lucide-react";
 
@@ -25,8 +26,12 @@ export function AdminNotificationLogsSection({
 }: AdminNotificationLogsSectionProps) {
   return (
     <Surface
-      description="Recent notification deliveries, manual reviews and provider failures."
-      title="Delivery logs"
+      description={
+        adminEs[
+          "Recent notification deliveries, manual reviews and provider failures."
+        ]
+      }
+      title={adminEs["Delivery logs"]}
     >
       {state.deliveries.length === 0 ? (
         <EmptyLogs />
@@ -89,8 +94,8 @@ function DeliveryRow({
             </p>
           ) : null}
           <p className="text-xs font-medium text-slate-500">
-            Created {delivery.createdAtLabel}
-            {delivery.sentAtLabel ? ` - sent ${delivery.sentAtLabel}` : ""}
+            {adminEs["Created"]} {delivery.createdAtLabel}
+            {delivery.sentAtLabel ? adminEs.sentAt(delivery.sentAtLabel) : ""}
           </p>
         </div>
         {delivery.canSend ? (
@@ -105,7 +110,7 @@ function DeliveryRow({
             variant="secondary"
           >
             <Send className="size-4" aria-hidden="true" />
-            Mark sent
+            {adminEs["Mark sent"]}
           </Button>
         ) : null}
       </div>
@@ -117,10 +122,10 @@ function EmptyLogs() {
   return (
     <div className="rounded-md border border-dashed border-slate-300 px-4 py-8 text-center">
       <p className="text-sm font-semibold text-slate-950">
-        No notification deliveries yet.
+        {adminEs["No notification deliveries yet."]}
       </p>
       <p className="mt-1 text-sm leading-6 text-slate-600">
-        Deliveries will appear when booking events are processed.
+        {adminEs["Deliveries will appear when booking events are processed."]}
       </p>
     </div>
   );

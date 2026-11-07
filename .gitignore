@@ -26,3 +26,7 @@ storybook-static/
 # misc
 .DS_Store
 *.log
+
+# Local verification artifacts
+.local-preview/
+test-results-*/

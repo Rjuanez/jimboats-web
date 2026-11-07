@@ -28,6 +28,10 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
+export const WithCapacity: Story = {
+  args: { capacityLabel: "Hasta 6 personas", eyebrow: "Atardecer · 2–6 horas" },
+};
+
 export const Reversed: Story = {
   args: homeLandingContent.experiences[1],
 };

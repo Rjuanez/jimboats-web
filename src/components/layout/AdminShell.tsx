@@ -1,3 +1,4 @@
+import { adminEs } from "@/i18n/admin/es";
 import {
   Anchor,
   Bell,
@@ -29,6 +30,7 @@ type AdminShellProps = {
 };
 
 const navIcons = {
+  availability: CalendarDays,
   bookings: ClipboardList,
   calendar: CalendarDays,
   "cancellation-policies": ShieldCheck,
@@ -53,16 +55,23 @@ export function AdminShell({
     <div className="min-h-screen bg-slate-100 text-slate-950">
       <div className="flex min-h-screen">
         <aside
-          aria-label="Admin sidebar"
+          aria-label={adminEs["Admin sidebar"]}
           className="hidden w-64 shrink-0 border-r border-slate-200 bg-white lg:flex lg:flex-col"
         >
           <AdminBrand />
-          <nav aria-label="Admin navigation" className="flex-1 px-3 py-4">
+          <nav
+            aria-label={adminEs["Admin navigation"]}
+            className="flex-1 px-3 py-4"
+          >
             <AdminNavList activeItemId={activeItemId} navItems={navItems} />
           </nav>
           <div className="border-t border-slate-200 px-4 py-4">
-            <p className="text-sm font-semibold text-slate-950">Admin User</p>
-            <p className="mt-1 text-xs text-slate-500">Admin and staff</p>
+            <p className="text-sm font-semibold text-slate-950">
+              {adminEs["Admin User"]}
+            </p>
+            <p className="mt-1 text-xs text-slate-500">
+              {adminEs["Admin and staff"]}
+            </p>
           </div>
         </aside>
 
@@ -72,7 +81,7 @@ export function AdminShell({
               <AdminBrand compact />
             </div>
             <nav
-              aria-label="Admin navigation"
+              aria-label={adminEs["Admin navigation"]}
               className="overflow-x-auto border-t border-slate-200 px-3 py-2"
             >
               <div className="flex min-w-max gap-2">
@@ -101,7 +110,7 @@ function AdminBrand({ compact = false }: { compact?: boolean }) {
         "flex items-center gap-3 text-slate-950",
         compact ? "min-h-10" : "border-b border-slate-200 px-4 py-5",
       )}
-      href="/admin/experiences"
+      href="/admin/bookings"
     >
       <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-md bg-slate-950 text-white">
         <Sparkles className="size-5" aria-hidden="true" />
@@ -111,7 +120,7 @@ function AdminBrand({ compact = false }: { compact?: boolean }) {
           JimBoats OS
         </span>
         <span className="mt-1 block text-xs font-medium text-slate-500">
-          Charter operations
+          {adminEs["Charter operations"]}
         </span>
       </span>
     </Link>

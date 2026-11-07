@@ -17,7 +17,7 @@ export const caPublicDictionary = {
       NO_REFUND: "La paga i senyal no és reemborsable.",
       PARTIAL_REFUND: "La paga i senyal es pot reemborsar parcialment.",
     },
-    depositPaid: "Paga i senyal pagada",
+    depositPaid: "Pagat en línia",
     detailsDescription:
       "Aquí tens els detalls de la reserva, el resum de pagament i la política de cancel·lació.",
     extras: "Extres",
@@ -48,10 +48,10 @@ export const caPublicDictionary = {
     bottomBar: {
       chooseDateAndTime: "Tria data i hora",
       continue: "Continuar",
-      depositDueNow: "Senyal ara",
+      depositDueNow: "A pagar ara",
       openingPayment: "Obrint pagament",
-      payDeposit: "Pagar senyal",
-      remainingOnboard: (amount) => `${amount} restants a bord en efectiu.`,
+      payDeposit: "Pagar ara",
+      remainingOnboard: (amount) => `${amount} restants a bord en efectiu, amb targeta o per Bizum.`,
       selectExperience: "Selecciona una experiència per començar",
       total: "Total",
     },
@@ -62,10 +62,12 @@ export const caPublicDictionary = {
       title: "Reserva confirmada",
     },
     errors: {
-      invalidGuests: "Tria un nombre vàlid de persones per a aquesta experiència.",
+      invalidGuests:
+        "Tria un nombre vàlid de persones per a aquesta experiència.",
       missingCustomer: "Afegeix el teu nom i email abans de confirmar.",
       missingDeliveryChannel: "Tria almenys un canal per rebre el passi.",
-      missingWhatsappPhone: "Afegeix un telèfon per rebre el passi per WhatsApp.",
+      missingWhatsappPhone:
+        "Afegeix un telèfon per rebre el passi per WhatsApp.",
       slotUnavailable:
         "Aquest horari acaba de deixar d'estar disponible. Tria una altra hora.",
     },
@@ -76,7 +78,8 @@ export const caPublicDictionary = {
       availabilityLoading: "Carregant dates disponibles...",
       dateDesktopTitle: "Tria la teva data",
       dateMobileTitle: "Tria data",
-      departureTimesUnavailable: "No hi ha horaris disponibles per a aquesta data.",
+      departureTimesUnavailable:
+        "No hi ha horaris disponibles per a aquesta data.",
       desktopTitle: "Tria experiència i data",
       emptyExperiences: "Ara mateix no hi ha experiències reservables.",
       experienceDesktopTitle: "Tria la teva experiència",
@@ -96,7 +99,8 @@ export const caPublicDictionary = {
       remove: "Treure",
       selectionTitle: "Extres disponibles",
       skip: "Saltar extres i continuar",
-      subtitle: "Afegeix alguns detalls per fer la sortida encara més especial.",
+      subtitle:
+        "Afegeix alguns detalls per fer la sortida encara més especial.",
       title: "Fes-ho a la teva manera",
     },
     footer: {
@@ -113,6 +117,14 @@ export const caPublicDictionary = {
       secure: "Segur",
     },
     labels: {
+      paymentChoice: "Com vols pagar?",
+      payDeposit: "Pagar la paga i senyal",
+      payFull: "Pagar-ho tot ara",
+      paidInFull: "Sense saldo pendent",
+      daytimeOnly:
+        "Aquest passeig acaba abans de la posta de sol. Per veure-la des del vaixell, tria l’experiència de capvespre.",
+      timeRange: "Sortida → tornada · hora de Barcelona",
+
       accepted: "acceptades",
       back: "Enrere",
       bookingSummary: "Resum de reserva",
@@ -128,7 +140,7 @@ export const caPublicDictionary = {
       couponRemove: "Treure",
       date: "Data",
       deliveryPreferences: "Preferències d'enviament",
-      depositDueNow: (amount) => `Paga i senyal ara: ${amount}`,
+      depositDueNow: (amount) => `A pagar ara: ${amount}`,
       disabled: "desactivat",
       emailAddress: "Email",
       emailPass: "Enviar-me el passi per email",
@@ -145,15 +157,12 @@ export const caPublicDictionary = {
       phone: "Telèfon",
       phoneDescription: "Necessari si vols rebre el passi per WhatsApp.",
       preparingPayment: "Preparant pagament segur",
-      promotions: "Vull rebre promocions i novetats",
-      promotionsDescription:
-        "Ofertes ocasionals i novetats de JimBoats. És opcional.",
       remainingBalance: (amount) =>
-        `Resta pendent: ${amount} a pagar a bord en efectiu.`,
+        `Resta pendent: ${amount} a pagar a bord en efectiu, amb targeta o per Bizum.`,
       securePayment: "Pagament segur",
       selectedExtras: "Extres seleccionats",
       termsAgreement:
-        "En pagar la senyal acceptes la política de cancel·lació, els Termes de servei i la Política de privacitat.",
+        "En fer el pagament, acceptes les",
       time: "Hora",
       total: "Total",
       whatsappPass: "Enviar el passi per WhatsApp",
@@ -164,16 +173,17 @@ export const caPublicDictionary = {
     maxAdvanceLabel: "Pots reservar fins amb 6 mesos d'antelació.",
     payment: {
       depositCopy:
-        "Paga una senyal fixa de 100 € ara. La resta es paga a bord en efectiu.",
+        "Tria pagar la paga i senyal o l’import total. El resum mostra què pagues ara i el saldo pendent.",
       secureCopy:
         "Stripe processa la teva senyal de manera segura sense sortir d'aquesta pantalla.",
       subtitle: "Estàs a un pas del teu dia al mar.",
       title: "Confirma la teva reserva",
     },
     policies: {
-      cancellation: "La política de cancel·lació es confirma abans del pagament.",
+      cancellation:
+        "La política de cancel·lació es confirma abans del pagament.",
       meetingPoint: "Port Olímpic, Barcelona",
-      remainingPayment: "La resta es paga a bord en efectiu.",
+      remainingPayment: "La resta es paga a bord en efectiu, amb targeta o per Bizum.",
     },
     steps: {
       confirmation: "Fet",
@@ -295,7 +305,7 @@ export const caPublicDictionary = {
       "Hem rebut la teva senyal i l'experiència en vaixell està confirmada.",
     confirmedTitle: "Reserva confirmada",
     contactSupport: "Contactar",
-    depositPaid: "Senyal pagada",
+    depositPaid: "Pagat en línia",
     experience: "Experiència",
     failedDescription:
       "El checkout no s'ha completat. La teva sortida en vaixell no ha quedat confirmada.",

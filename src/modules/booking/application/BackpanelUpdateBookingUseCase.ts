@@ -1,3 +1,4 @@
+import { Money } from "@/shared/domain/Money";
 import { ApplicationError } from "@/shared/application/ApplicationError";
 
 import type {
@@ -25,7 +26,9 @@ export class BackpanelUpdateBookingUseCase {
     private readonly bookingCalendarSync?: BookingCalendarSynchronizer,
   ) {}
 
-  async execute(command: BackpanelUpdateBookingCommand): Promise<AdminBookingDto> {
+  async execute(
+    command: BackpanelUpdateBookingCommand,
+  ): Promise<AdminBookingDto> {
     const now = this.clock.now();
     const current = await this.bookings.findById(command.bookingId);
 
@@ -62,15 +65,76 @@ export class BackpanelUpdateBookingUseCase {
     const extraOptions = await this.bookings.findExtraOptionsByIds(
       collectSelectedExtraIds(command),
     );
+    // Keep the agreed base price for the same duration and the deposit already paid.
+    // A duration change uses its current tariff, without rewriting payment history.
+    const experienceForUpdate =
+      experience.hourlyRates !== undefined
+        ? {
+            ...experience,
+            hourlyRates: [
+              ...experience.hourlyRates
+                .filter(
+                  (rate) =>
+                    rate.hours !==
+                    currentSnapshot.selectedSlot.durationMinutes / 60,
+                )
+                .map((rate) => ({
+                  ...rate,
+                  deposit: {
+                    ...experience.depositAmount,
+                    amountMinor: Math.min(
+                      experience.depositAmount.amountMinor,
+                      currentSnapshot.priceSnapshot.basePrice.amountMinor,
+                    ),
+                  },
+                })),
+              {
+                hours: currentSnapshot.selectedSlot.durationMinutes / 60,
+                total: currentSnapshot.priceSnapshot.basePrice,
+                deposit: {
+                  ...experience.depositAmount,
+                  amountMinor: Math.min(
+                    experience.depositAmount.amountMinor,
+                    currentSnapshot.priceSnapshot.basePrice.amountMinor,
+                  ),
+                },
+              },
+            ],
+          }
+        : experience;
     const plan = planBackpanelBooking({
       command,
-      experience,
+      experience: experienceForUpdate,
       extraOptions,
       now,
     });
+    const sameDuration =
+      plan.selectedSlot.durationMinutes ===
+      currentSnapshot.selectedSlot.durationMinutes;
+    const sameExtras =
+      plan.selectedExtras.length ===
+        currentSnapshot.priceSnapshot.extraLines.length &&
+      plan.selectedExtras.every((selected) =>
+        currentSnapshot.priceSnapshot.extraLines.some(
+          (line) =>
+            line.extraId === selected.extraId &&
+            line.quantity === selected.quantity,
+        ),
+      );
+    // Operational edits preserve the agreed extras, discount and payment, even if current prices changed.
+    plan.priceSnapshot =
+      sameDuration && sameExtras
+        ? current.priceSnapshot
+        : plan.priceSnapshot.withUpfrontPayment(
+            Money.create(currentSnapshot.priceSnapshot.depositAmount),
+          );
     const overlaps = await this.bookings.findActiveCalendarOverlaps(
-      plan.selectedStartAt,
-      plan.selectedEndAt,
+      experience.hourlyRates !== undefined
+        ? plan.protectedStartAt
+        : plan.selectedStartAt,
+      experience.hourlyRates !== undefined
+        ? plan.protectedEndAt
+        : plan.selectedEndAt,
       {
         excludeBlockId: currentSnapshot.calendarBlockId,
       },

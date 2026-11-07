@@ -27,8 +27,11 @@ export class StripeDepositPaymentProvider implements DepositPaymentProvider {
           price_data: {
             currency: command.amount.currency.toLowerCase(),
             product_data: {
-              description: `${command.reference} deposit for ${command.experienceName}. Remaining balance is paid onboard in cash.`,
-              name: `${command.experienceName} deposit`,
+              description:
+                command.paymentChoice === "FULL"
+                  ? `${command.reference}: full payment for ${command.experienceName}. No remaining balance.`
+                  : `${command.reference} deposit for ${command.experienceName}. Remaining balance is paid on board in cash, by card or via Bizum.`,
+              name: `${command.experienceName} ${command.paymentChoice === "FULL" ? "full payment" : "deposit"}`,
             },
             unit_amount: command.amount.amountMinor,
           },
@@ -47,7 +50,9 @@ export class StripeDepositPaymentProvider implements DepositPaymentProvider {
     });
 
     if (!session.client_secret) {
-      throw new Error("Stripe did not return an embedded Checkout client secret.");
+      throw new Error(
+        "Stripe did not return an embedded Checkout client secret.",
+      );
     }
 
     return {
@@ -133,10 +138,13 @@ function metadataFromCommand(command: DepositCheckoutSessionCommand) {
     bookingId: command.bookingId,
     paymentRecordId: command.paymentRecordId,
     reference: command.reference,
+    paymentChoice: command.paymentChoice ?? "DEPOSIT",
   };
 }
 
-function stripeLocale(locale: string): Stripe.Checkout.SessionCreateParams.Locale {
+function stripeLocale(
+  locale: string,
+): Stripe.Checkout.SessionCreateParams.Locale {
   if (locale === "ca" || locale === "es") {
     return "es";
   }

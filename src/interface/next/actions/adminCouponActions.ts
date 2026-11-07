@@ -1,6 +1,6 @@
 "use server";
 
-import { ZodError } from "zod";
+import { presentAdminError } from "../presenters/adminErrorPresenter";
 
 import { getContainer } from "@/container";
 import type {
@@ -9,8 +9,6 @@ import type {
   AdminCouponInput,
   AdminCouponsState,
 } from "@/components/sections/admin-coupons/AdminCouponTypes";
-import { ApplicationError } from "@/shared/application/ApplicationError";
-import { DomainError } from "@/shared/domain/DomainError";
 
 import { presentAdminCouponsWorkspace } from "../presenters/adminCouponsPresenter";
 import {
@@ -173,7 +171,9 @@ export async function exportAdminCouponsCsvAction(): Promise<
 }
 
 async function loadState(container: ReturnType<typeof getContainer>) {
-  return presentAdminCouponsWorkspace(await container.adminCoupons.getWorkspace());
+  return presentAdminCouponsWorkspace(
+    await container.adminCoupons.getWorkspace(),
+  );
 }
 
 function toCouponRulesCommand(input: AdminCouponInput) {
@@ -224,22 +224,8 @@ function ok<TData>(data: TData): AdminCouponActionResult<TData> {
 function failure<TData = never>(
   error: unknown,
 ): AdminCouponActionResult<TData> {
-  if (error instanceof ApplicationError || error instanceof DomainError) {
-    return {
-      message: error.message,
-      ok: false,
-    };
-  }
-
-  if (error instanceof ZodError) {
-    return {
-      message: error.issues[0]?.message ?? "Invalid admin coupon input.",
-      ok: false,
-    };
-  }
-
   return {
-    message: "Unexpected error while saving the coupon.",
+    message: presentAdminError(error),
     ok: false,
   };
 }

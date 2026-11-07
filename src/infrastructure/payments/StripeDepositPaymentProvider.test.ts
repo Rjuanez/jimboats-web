@@ -4,61 +4,75 @@ import { describe, expect, it, vi } from "vitest";
 import { StripeDepositPaymentProvider } from "./StripeDepositPaymentProvider";
 
 describe("StripeDepositPaymentProvider", () => {
-  it("creates embedded checkout sessions for booking deposits", async () => {
-    const provider = new StripeDepositPaymentProvider({
-      secretKey: "sk_test_123",
-      webhookSecret: "whsec_test_secret",
-    });
-    const createSession = vi.fn().mockResolvedValue({
-      client_secret: "cs_test_embedded_secret",
-      id: "cs_test_123",
-    });
-    const providerWithMockedStripe = provider as unknown as {
-      stripe: {
-        checkout: {
-          sessions: {
-            create: typeof createSession;
+  it.each(["DEPOSIT", "FULL"] as const)(
+    "creates embedded checkout for %s payments",
+    async (paymentChoice) => {
+      const provider = new StripeDepositPaymentProvider({
+        secretKey: "sk_test_123",
+        webhookSecret: "whsec_test_secret",
+      });
+      const createSession = vi.fn().mockResolvedValue({
+        client_secret: "cs_test_embedded_secret",
+        id: "cs_test_123",
+      });
+      const providerWithMockedStripe = provider as unknown as {
+        stripe: {
+          checkout: {
+            sessions: {
+              create: typeof createSession;
+            };
           };
         };
       };
-    };
-    providerWithMockedStripe.stripe.checkout.sessions.create = createSession;
+      providerWithMockedStripe.stripe.checkout.sessions.create = createSession;
 
-    await expect(
-      provider.createCheckoutSession({
-        amount: {
-          amountMinor: 10_000,
-          currency: "EUR",
-        },
-        bookingId: "booking-1",
-        customer: {
-          email: "sailor@example.com",
-          fullName: "Sailor Guest",
-          phone: "+34 600 000 000",
-        },
-        experienceName: "Sunset Cruise",
-        expiresAt: new Date("2026-06-01T10:30:00.000Z"),
-        locale: "en",
-        paymentRecordId: "payment-booking-1",
-        reference: "JB-2026-0001",
-        returnUrl:
-          "http://localhost:3000/en/book/success?session_id={CHECKOUT_SESSION_ID}",
-      }),
-    ).resolves.toEqual({
-      clientSecret: "cs_test_embedded_secret",
-      providerSessionId: "cs_test_123",
-    });
-    expect(createSession).toHaveBeenCalledWith(
-      expect.objectContaining({
-        mode: "payment",
-        redirect_on_completion: "if_required",
-        return_url:
-          "http://localhost:3000/en/book/success?session_id={CHECKOUT_SESSION_ID}",
-        ui_mode: "embedded_page",
-      }),
-    );
-    expect(createSession.mock.calls[0]?.[0]).not.toHaveProperty("success_url");
-  });
+      await expect(
+        provider.createCheckoutSession({
+          paymentChoice,
+          amount: {
+            amountMinor: 10_000,
+            currency: "EUR",
+          },
+          bookingId: "booking-1",
+          customer: {
+            email: "sailor@example.com",
+            fullName: "Sailor Guest",
+            phone: "+34 600 000 000",
+          },
+          experienceName: "Sunset Cruise",
+          expiresAt: new Date("2026-06-01T10:30:00.000Z"),
+          locale: "en",
+          paymentRecordId: "payment-booking-1",
+          reference: "JB-2026-0001",
+          returnUrl:
+            "http://localhost:3000/en/book/success?session_id={CHECKOUT_SESSION_ID}",
+        }),
+      ).resolves.toEqual({
+        clientSecret: "cs_test_embedded_secret",
+        providerSessionId: "cs_test_123",
+      });
+      expect(createSession).toHaveBeenCalledWith(
+        expect.objectContaining({
+          mode: "payment",
+          redirect_on_completion: "if_required",
+          return_url:
+            "http://localhost:3000/en/book/success?session_id={CHECKOUT_SESSION_ID}",
+          ui_mode: "embedded_page",
+        }),
+      );
+      expect(createSession.mock.calls[0]?.[0]).not.toHaveProperty(
+        "success_url",
+      );
+      expect(
+        createSession.mock.calls[0]?.[0].line_items[0].price_data.product_data
+          .description,
+      ).toContain(
+        paymentChoice === "FULL"
+          ? "No remaining balance"
+          : "Remaining balance is paid on board in cash, by card or via Bizum.",
+      );
+    },
+  );
 
   it("verifies and normalizes checkout session completed webhooks", async () => {
     const webhookSecret = "whsec_test_secret";

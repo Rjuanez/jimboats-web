@@ -9,18 +9,16 @@ import { AdminPushNotificationsWorkspace } from "./AdminPushNotificationsWorkspa
 
 describe("AdminPushNotificationsWorkspace", () => {
   it("renders setup guidance and connected devices", async () => {
-    render(
-      <AdminPushNotificationsWorkspace actions={actions} setup={setup} />,
-    );
+    render(<AdminPushNotificationsWorkspace actions={actions} setup={setup} />);
 
     expect(
       screen.getByRole("heading", {
-        name: "Booking push notifications",
+        name: "Avisos de reservas",
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText("1 active")).toBeInTheDocument();
+    expect(screen.getByText("1 activo")).toBeInTheDocument();
     expect(screen.getByText("iPhone Pedro")).toBeInTheDocument();
-    expect(screen.getByText("Activation code")).toBeInTheDocument();
+    expect(screen.getByText("Código de activación")).toBeInTheDocument();
   });
 
   it("sends a broadcast test from the device notifications screen", async () => {
@@ -46,13 +44,13 @@ describe("AdminPushNotificationsWorkspace", () => {
 
     await user.click(
       screen.getByRole("button", {
-        name: "Send test to all",
+        name: "Enviar prueba a todos",
       }),
     );
 
     expect(sendBroadcastTest).toHaveBeenCalledTimes(1);
     expect(
-      await screen.findByText("Tests sent: 1. Failed: 0. Total: 1."),
+      await screen.findByText("Enviadas: 1. Fallidas: 0. Total: 1."),
     ).toBeInTheDocument();
   });
 });

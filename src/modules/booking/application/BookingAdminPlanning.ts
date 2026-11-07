@@ -1,3 +1,4 @@
+import { requireHourlyRate } from "../domain/HourlyRate";
 import { ApplicationError } from "@/shared/application/ApplicationError";
 import { Money } from "@/shared/domain/Money";
 
@@ -50,7 +51,9 @@ export type BookingDiscountAdjustment = {
   totalAmountMinor: number;
 };
 
-export function collectSelectedExtraIds(command: BackpanelBookingPlanningCommand) {
+export function collectSelectedExtraIds(
+  command: BackpanelBookingPlanningCommand,
+) {
   return normalizeSelectedExtras(command.selectedExtras).map(
     (selected) => selected.extraId,
   );
@@ -114,7 +117,20 @@ export function planBackpanelBooking(input: {
     protectedStartAt,
     priceSnapshot: buildPriceSnapshot({
       discountAdjustment: input.discountAdjustment ?? null,
-      experience: input.experience,
+      experience:
+        input.experience.hourlyRates !== undefined
+          ? {
+              ...input.experience,
+              basePrice: requireHourlyRate(
+                input.experience.hourlyRates,
+                (selectedSlot.endMinutes - selectedSlot.startMinutes) / 60,
+              ).total,
+              depositAmount: requireHourlyRate(
+                input.experience.hourlyRates,
+                (selectedSlot.endMinutes - selectedSlot.startMinutes) / 60,
+              ).deposit,
+            }
+          : input.experience,
       lines,
       now: input.now,
     }),
@@ -187,7 +203,9 @@ function buildSelectedSlot(
   const startMinutes = parseClockTime(command.startTime);
   const endMinutes = parseClockTime(command.endTime);
 
-  if (endMinutes - startMinutes !== experience.durationMinutes) {
+  if (experience.hourlyRates !== undefined) {
+    requireHourlyRate(experience.hourlyRates, (endMinutes - startMinutes) / 60);
+  } else if (endMinutes - startMinutes !== experience.durationMinutes) {
     throw new ApplicationError(
       "BOOKING_SELECTED_SLOT_OUTSIDE_POLICY",
       "Selected slot duration must match the experience duration.",
@@ -243,7 +261,9 @@ function resolveSlotKey(input: {
         );
       }
 
-      return slot.startMinutes === startMinutes && slot.endMinutes >= endMinutes;
+      return (
+        slot.startMinutes === startMinutes && slot.endMinutes >= endMinutes
+      );
     });
 
     if (!matchingSlot) {
@@ -292,9 +312,13 @@ function assertAdvanceWindow(input: {
 
   const today = localDateToUtcDate(todayLocalDate(input.now, boatTimeZone));
   const maxDate = new Date(today);
-  maxDate.setUTCMonth(maxDate.getUTCMonth() + input.experience.maximumAdvanceMonths);
+  maxDate.setUTCMonth(
+    maxDate.getUTCMonth() + input.experience.maximumAdvanceMonths,
+  );
 
-  if (localDateToUtcDate(input.selectedLocalDate).getTime() > maxDate.getTime()) {
+  if (
+    localDateToUtcDate(input.selectedLocalDate).getTime() > maxDate.getTime()
+  ) {
     throw new ApplicationError(
       "BOOKING_DATE_TOO_FAR_IN_FUTURE",
       "Selected date is outside the maximum booking window.",
@@ -388,7 +412,11 @@ function assertExtraQuantity(
   quantity: number,
   rule: BookingExtraSelectionRuleReadModel,
 ) {
-  if (!Number.isInteger(quantity) || quantity <= 0 || quantity > rule.limitPerBooking) {
+  if (
+    !Number.isInteger(quantity) ||
+    quantity <= 0 ||
+    quantity > rule.limitPerBooking
+  ) {
     throw new ApplicationError(
       "BOOKING_EXTRA_QUANTITY_NOT_ALLOWED",
       "Selected extra quantity is not allowed for this experience.",

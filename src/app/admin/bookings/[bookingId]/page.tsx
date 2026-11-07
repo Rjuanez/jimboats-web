@@ -31,7 +31,7 @@ export default async function AdminBookingDetailPage({
 }: AdminBookingDetailPageProps) {
   const { bookingId } = await params;
 
-  if (process.env.JIMBOATS_ADMIN_PREVIEW_DATA !== "1") {
+  if ((process.env.JIMBOATS_ADMIN_PREVIEW_DATA !== "1" || process.env.JIMBOATS_LOCAL_BOOKINGS === "1")) {
     await getContainer().adminBookings.markSeen({ bookingId });
   }
 

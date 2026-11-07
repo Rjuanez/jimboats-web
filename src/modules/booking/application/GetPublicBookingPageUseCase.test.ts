@@ -9,21 +9,142 @@ import type {
 } from "./ports/PublicBookingCatalogReader";
 
 describe("GetPublicBookingPageUseCase", () => {
-  it("returns published experiences with availability and compatible extras", async () => {
+  it("removes long daytrips that reach sunset and keeps panel departures for sunset trips", async () => {
+    const experience = createExperience({
+      id: "daytrip",
+      hourlyRates: [{ hours: 6, total: money(57000), deposit: money(5000) }],
+      slotPolicy: {
+        mode: "ANY_AVAILABLE",
+        timeZone: "Europe/Madrid",
+        operatingWindow: { startMinutes: 480, endMinutes: 1380 },
+        granularityMinutes: 30,
+      },
+    });
     const catalog = new FakePublicBookingCatalogReader({
-        blocks: [
-          {
-            id: "manual-block",
-            protectedEndAt: new Date("2026-06-10T09:00:00.000Z"),
-            protectedStartAt: new Date("2026-06-10T08:00:00.000Z"),
-          },
-        ],
-        experiences: [createExperience()],
-      });
+      experiences: [experience],
+      blocks: [],
+    });
     const useCase = new GetPublicBookingPageUseCase(
       catalog,
       fixedClock(),
+      undefined,
+      { sunset: () => new Date("2026-06-10T18:00:00Z") },
     );
+    const result = await useCase.executeAvailability({
+      locale: "es",
+      experienceId: "daytrip",
+      hours: 6,
+      localDate: "2026-06-10",
+    });
+    const slots = result!.timeSlotsByDate["2026-06-10"];
+    expect(slots.length).toBeGreaterThan(0);
+    expect(slots.at(-1)?.startMinutes).toBe(810);
+    expect(slots.every((slot) => slot.endMinutes < 1200)).toBe(true);
+    const sunset = createExperience({
+      id: "ex-sunset",
+      durationMinutes: 120,
+      slotPolicy: {
+        mode: "FIXED_SLOTS",
+        timeZone: "Europe/Madrid",
+        fixedSlots: [
+          {
+            id: "manual-sunset",
+            label: "Evening",
+            startMinutes: 1140,
+            endMinutes: 1380,
+            enabled: true,
+          },
+        ],
+      },
+    });
+    const manual = new GetPublicBookingPageUseCase(
+      new FakePublicBookingCatalogReader({ experiences: [sunset], blocks: [] }),
+      fixedClock(),
+      undefined,
+      { sunset: () => new Date("2026-06-10T18:00:00Z") },
+    );
+    const times = await manual.executeAvailability({
+      locale: "es",
+      experienceId: "ex-sunset",
+      localDate: "2026-06-10",
+    });
+    expect(times!.timeSlotsByDate["2026-06-10"]).toMatchObject([
+      { startMinutes: 1140, endMinutes: 1260, available: true },
+    ]);
+  });
+
+  it("uses the selected hourly duration and the same protected margins as database exclusion", async () => {
+    const experience = createExperience({
+      hourlyRates: [
+        { hours: 1, total: money(9900), deposit: money(5000) },
+        { hours: 6, total: money(44900), deposit: money(5000) },
+      ],
+      slotPolicy: {
+        mode: "ANY_AVAILABLE",
+        timeZone: "Europe/Madrid",
+        operatingWindow: { startMinutes: 360, endMinutes: 1380 },
+        granularityMinutes: 30,
+      },
+    });
+    const catalog = new FakePublicBookingCatalogReader({
+      experiences: [experience],
+      blocks: [
+        {
+          id: "existing",
+          protectedStartAt: new Date("2026-06-10T07:30:00Z"),
+          protectedEndAt: new Date("2026-06-10T11:30:00Z"),
+        },
+      ],
+    });
+    const useCase = new GetPublicBookingPageUseCase(catalog, fixedClock());
+    const short = await useCase.executeAvailability({
+      experienceId: experience.id,
+      hours: 1,
+      localDate: "2026-06-10",
+      locale: "en",
+    });
+    expect(short?.days).toHaveLength(1);
+    const slots = short!.timeSlotsByDate["2026-06-10"];
+    expect(slots.find((slot) => slot.startMinutes === 810)?.available).toBe(
+      false,
+    );
+    expect(slots.find((slot) => slot.startMinutes === 840)?.available).toBe(
+      true,
+    );
+    const long = await useCase.executeAvailability({
+      experienceId: experience.id,
+      hours: 6,
+      localDate: "2026-06-10",
+      locale: "en",
+    });
+    expect(
+      long!.timeSlotsByDate["2026-06-10"].every(
+        (slot) =>
+          slot.endMinutes - slot.startMinutes === 360 &&
+          slot.endMinutes <= 1380,
+      ),
+    ).toBe(true);
+    await expect(
+      useCase.executeAvailability({
+        experienceId: experience.id,
+        hours: 2,
+        locale: "en",
+      }),
+    ).rejects.toMatchObject({ code: "BOOKING_RATE_UNAVAILABLE" });
+  });
+
+  it("returns published experiences with availability and compatible extras", async () => {
+    const catalog = new FakePublicBookingCatalogReader({
+      blocks: [
+        {
+          id: "manual-block",
+          protectedEndAt: new Date("2026-06-10T09:00:00.000Z"),
+          protectedStartAt: new Date("2026-06-10T08:00:00.000Z"),
+        },
+      ],
+      experiences: [createExperience()],
+    });
+    const useCase = new GetPublicBookingPageUseCase(catalog, fixedClock());
 
     const page = await useCase.execute({ locale: "en" });
 

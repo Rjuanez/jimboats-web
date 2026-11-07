@@ -4,7 +4,8 @@ export const enPublicDictionary = {
   access: {
     bookingPrefix: "Booking",
     buyerPrefix: "Buyer:",
-    cancellationFallback: "No cancellation policy was attached to this booking.",
+    cancellationFallback:
+      "No cancellation policy was attached to this booking.",
     cancellationPolicyTitle: "Cancellation policy",
     contactBody: (email) => `We will use ${email} for booking updates.`,
     contactSupport: "Contact support",
@@ -15,7 +16,7 @@ export const enPublicDictionary = {
       NO_REFUND: "Deposit is not refundable.",
       PARTIAL_REFUND: "Deposit can be partially refunded.",
     },
-    depositPaid: "Deposit paid",
+    depositPaid: "Paid online",
     detailsDescription:
       "Your booking details, payment summary and cancellation policy are available here.",
     extras: "Extras",
@@ -46,10 +47,10 @@ export const enPublicDictionary = {
     bottomBar: {
       chooseDateAndTime: "Choose date and time",
       continue: "Continue",
-      depositDueNow: "Deposit due now",
+      depositDueNow: "Due now",
       openingPayment: "Opening payment",
-      payDeposit: "Pay deposit",
-      remainingOnboard: (amount) => `${amount} remaining onboard in cash.`,
+      payDeposit: "Pay now",
+      remainingOnboard: (amount) => `${amount} remaining on board in cash, by card or via Bizum.`,
       selectExperience: "Select an experience to begin",
       total: "Total",
     },
@@ -62,8 +63,10 @@ export const enPublicDictionary = {
     errors: {
       invalidGuests: "Choose a valid number of guests for this experience.",
       missingCustomer: "Add your name and email before confirming.",
-      missingDeliveryChannel: "Choose at least one channel for the booking pass.",
-      missingWhatsappPhone: "Add a phone number to receive the pass by WhatsApp.",
+      missingDeliveryChannel:
+        "Choose at least one channel for the booking pass.",
+      missingWhatsappPhone:
+        "Add a phone number to receive the pass by WhatsApp.",
       slotUnavailable:
         "That departure time has just become unavailable. Please choose another time.",
     },
@@ -111,6 +114,14 @@ export const enPublicDictionary = {
       secure: "Secure",
     },
     labels: {
+      paymentChoice: "How would you like to pay?",
+      payDeposit: "Pay a deposit",
+      payFull: "Pay in full now",
+      paidInFull: "No remaining balance",
+      daytimeOnly:
+        "This trip ends before sunset. To watch it from the boat, choose the sunset experience.",
+      timeRange: "Departure → return · Barcelona time",
+
       accepted: "accepted",
       back: "Back",
       bookingSummary: "Booking Summary",
@@ -126,7 +137,7 @@ export const enPublicDictionary = {
       couponRemove: "Remove",
       date: "Date",
       deliveryPreferences: "Delivery preferences",
-      depositDueNow: (amount) => `Deposit due now: ${amount}`,
+      depositDueNow: (amount) => `Due now: ${amount}`,
       disabled: "disabled",
       emailAddress: "Email address",
       emailPass: "Email me the booking pass",
@@ -143,15 +154,12 @@ export const enPublicDictionary = {
       phone: "Phone",
       phoneDescription: "Needed if you want the pass sent by WhatsApp.",
       preparingPayment: "Preparing secure payment",
-      promotions: "I want to receive promotions and news",
-      promotionsDescription:
-        "Occasional offers and JimBoats updates. This is optional.",
       remainingBalance: (amount) =>
-        `Remaining balance: ${amount} paid onboard in cash.`,
+        `Remaining balance: ${amount} paid on board in cash, by card or via Bizum.`,
       securePayment: "Secure payment",
       selectedExtras: "Selected Extras",
       termsAgreement:
-        "By paying the deposit, you agree to the cancellation policy, Terms of Service and Privacy Policy.",
+        "By paying, you agree to the",
       time: "Time",
       total: "Total",
       whatsappPass: "Send the booking pass by WhatsApp",
@@ -162,16 +170,16 @@ export const enPublicDictionary = {
     maxAdvanceLabel: "Bookings are available up to 6 months ahead.",
     payment: {
       depositCopy:
-        "Pay a fixed €100 deposit now. The remaining balance is paid onboard in cash.",
+        "Choose a deposit or full payment. The summary shows what you pay now and any remaining balance.",
       secureCopy:
-        "Your deposit is processed securely by Stripe without leaving this page.",
+        "Your payment is processed securely by Stripe without leaving this page.",
       subtitle: "You're one step away from your day at sea.",
       title: "Confirm your booking",
     },
     policies: {
       cancellation: "Cancellation terms are confirmed before payment.",
       meetingPoint: "Port Olimpic, Barcelona",
-      remainingPayment: "Remaining balance paid onboard in cash.",
+      remainingPayment: "Remaining balance paid on board in cash, by card or via Bizum.",
     },
     steps: {
       confirmation: "Done",
@@ -293,7 +301,7 @@ export const enPublicDictionary = {
       "Your deposit has been received and your boat experience is confirmed.",
     confirmedTitle: "Booking confirmed",
     contactSupport: "Contact support",
-    depositPaid: "Deposit paid",
+    depositPaid: "Paid online",
     experience: "Experience",
     failedDescription:
       "The checkout was not completed. Your boat slot has not been confirmed.",

@@ -1,3 +1,6 @@
+import type { BookingSunTimes } from "./ports/BookingSunTimes";
+import { finishesBeforeSunset } from "../domain/DaytimeTrip";
+import { requireHourlyRate } from "../domain/HourlyRate";
 import {
   addDaysToLocalDate,
   boatCalendarTimeZone,
@@ -36,6 +39,7 @@ export class GetPublicBookingPageUseCase {
     private readonly catalog: PublicBookingCatalogReader,
     private readonly clock: BookingClock,
     private readonly expiredHolds?: ReleaseExpiredBookingHoldsUseCase,
+    private readonly sunTimes?: BookingSunTimes,
   ) {}
 
   async execute(
@@ -63,6 +67,7 @@ export class GetPublicBookingPageUseCase {
       if (includeAvailability) {
         availabilityByExperienceId[experience.id] = buildExperienceAvailability(
           {
+            sunTimes: this.sunTimes,
             blocks,
             experience,
             localDates: availabilityWindow.localDates,
@@ -88,6 +93,7 @@ export class GetPublicBookingPageUseCase {
         experiences[0]?.depositAmount ?? defaultDepositAmount,
       endLocalDate: availabilityWindow.endLocalDate,
       experiences: experiences.map((experience) => ({
+        hourlyRates: experience.hourlyRates,
         basePrice: experience.basePrice,
         capacity: experience.capacity,
         cancellationPolicySummary:
@@ -112,13 +118,17 @@ export class GetPublicBookingPageUseCase {
     const locale = LocaleCode.create(query.locale).value;
     const now = this.clock.now();
     const experiences = await this.catalog.listBookableExperiences({ locale });
-    const experience =
+    let experience =
       experiences.find((item) => item.id === query.experienceId) ?? null;
 
     if (!experience) {
       return null;
     }
 
+    if (query.hours !== undefined) {
+      requireHourlyRate(experience.hourlyRates, query.hours);
+      experience = { ...experience, durationMinutes: query.hours * 60 };
+    }
     const availabilityWindow = createAvailabilityWindow(now, experiences);
     await this.releaseExpiredHolds(now);
     const blocks = await this.catalog.listActiveCalendarBlocks(
@@ -126,9 +136,12 @@ export class GetPublicBookingPageUseCase {
     );
 
     return buildExperienceAvailability({
+      sunTimes: this.sunTimes,
       blocks,
       experience,
-      localDates: availabilityWindow.localDates,
+      localDates: query.localDate
+        ? [query.localDate]
+        : availabilityWindow.localDates,
       now,
     });
   }
@@ -187,6 +200,7 @@ function calendarBlockRangeForWindow(window: AvailabilityWindow) {
 }
 
 function buildExperienceAvailability(input: {
+  sunTimes?: BookingSunTimes;
   blocks: PublicBookingCalendarBlockReadModel[];
   experience: PublicBookingCatalogExperienceReadModel;
   localDates: string[];
@@ -195,6 +209,7 @@ function buildExperienceAvailability(input: {
   const timeSlotsByDate: Record<string, PublicBookingTimeSlotDto[]> = {};
   const days = input.localDates.map((localDate) => {
     const timeSlots = buildTimeSlotsForDate({
+      sunTimes: input.sunTimes,
       blocks: input.blocks,
       experience: input.experience,
       localDate,
@@ -216,6 +231,7 @@ function buildExperienceAvailability(input: {
 }
 
 function buildTimeSlotsForDate(input: {
+  sunTimes?: BookingSunTimes;
   blocks: PublicBookingCalendarBlockReadModel[];
   experience: PublicBookingCatalogExperienceReadModel;
   localDate: string;
@@ -223,49 +239,77 @@ function buildTimeSlotsForDate(input: {
 }) {
   const candidates = buildSlotCandidates(input.experience);
 
-  return candidates.map((candidate) => {
-    const selectedStartAt = localDateTimeToUtcDate(
-      input.localDate,
-      candidate.startMinutes,
-      candidate.timeZone,
-    );
-    const selectedEndAt = localDateTimeToUtcDate(
-      input.localDate,
-      candidate.endMinutes,
-      candidate.timeZone,
-    );
-    const withinAdvanceWindow = isInsideAdvanceWindow({
-      experience: input.experience,
-      localDate: input.localDate,
-      now: input.now,
-      selectedStartAt,
-    });
-    const blocked = input.blocks.some((block) =>
-      overlaps(
+  const sunset =
+    input.experience.id === "daytrip"
+      ? input.sunTimes?.sunset(input.localDate)
+      : undefined;
+  return candidates
+    .filter(
+      (candidate) =>
+        !sunset ||
+        finishesBeforeSunset(
+          input.experience.id,
+          localDateTimeToUtcDate(
+            input.localDate,
+            candidate.endMinutes,
+            candidate.timeZone,
+          ),
+          sunset,
+        ),
+    )
+    .map((candidate) => {
+      const selectedStartAt = localDateTimeToUtcDate(
+        input.localDate,
+        candidate.startMinutes,
+        candidate.timeZone,
+      );
+      const selectedEndAt = localDateTimeToUtcDate(
+        input.localDate,
+        candidate.endMinutes,
+        candidate.timeZone,
+      );
+      const withinAdvanceWindow = isInsideAdvanceWindow({
+        experience: input.experience,
+        localDate: input.localDate,
+        now: input.now,
         selectedStartAt,
-        selectedEndAt,
-        block.protectedStartAt,
-        block.protectedEndAt,
-      ),
-    );
-    const available = withinAdvanceWindow && !blocked;
+      });
+      const blocked = input.blocks.some((block) =>
+        overlaps(
+          input.experience.hourlyRates !== undefined
+            ? new Date(
+                selectedStartAt.getTime() -
+                  input.experience.bufferMinutes * 60000,
+              )
+            : selectedStartAt,
+          input.experience.hourlyRates !== undefined
+            ? new Date(
+                selectedEndAt.getTime() +
+                  input.experience.bufferMinutes * 60000,
+              )
+            : selectedEndAt,
+          block.protectedStartAt,
+          block.protectedEndAt,
+        ),
+      );
+      const available = withinAdvanceWindow && !blocked;
 
-    return {
-      available,
-      availableExtraIds: available
-        ? availableExtraIdsForSlot({
-            experience: input.experience,
-            now: input.now,
-            selectedStartAt,
-          })
-        : [],
-      endMinutes: candidate.endMinutes,
-      id: candidate.id,
-      label: minutesToClockTime(candidate.startMinutes),
-      slotKey: candidate.slotKey,
-      startMinutes: candidate.startMinutes,
-    };
-  });
+      return {
+        available,
+        availableExtraIds: available
+          ? availableExtraIdsForSlot({
+              experience: input.experience,
+              now: input.now,
+              selectedStartAt,
+            })
+          : [],
+        endMinutes: candidate.endMinutes,
+        id: candidate.id,
+        label: minutesToClockTime(candidate.startMinutes),
+        slotKey: candidate.slotKey,
+        startMinutes: candidate.startMinutes,
+      };
+    });
 }
 
 function buildSlotCandidates(

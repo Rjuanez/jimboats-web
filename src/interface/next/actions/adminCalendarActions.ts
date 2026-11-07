@@ -1,6 +1,6 @@
 "use server";
 
-import { ZodError } from "zod";
+import { presentAdminError } from "../presenters/adminErrorPresenter";
 
 import { getContainer } from "@/container";
 import type {
@@ -9,8 +9,6 @@ import type {
   AdminCalendarReleaseBlockInput,
   AdminCalendarState,
 } from "@/components/sections/admin-calendar/AdminCalendarTypes";
-import { ApplicationError } from "@/shared/application/ApplicationError";
-import { DomainError } from "@/shared/domain/DomainError";
 
 import {
   presentAdminCalendar,
@@ -100,22 +98,8 @@ function ok<TData>(data: TData): AdminCalendarActionResult<TData> {
 function failure<TData = never>(
   error: unknown,
 ): AdminCalendarActionResult<TData> {
-  if (error instanceof ApplicationError || error instanceof DomainError) {
-    return {
-      message: error.message,
-      ok: false,
-    };
-  }
-
-  if (error instanceof ZodError) {
-    return {
-      message: error.issues[0]?.message ?? "Invalid calendar input.",
-      ok: false,
-    };
-  }
-
   return {
-    message: "Unexpected error while saving calendar.",
+    message: presentAdminError(error),
     ok: false,
   };
 }

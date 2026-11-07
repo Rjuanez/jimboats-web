@@ -1,0 +1,208 @@
+{
+  "nav": [
+    "Experiencias",
+    "Precios",
+    "Nuestro barco",
+    "Dónde estamos",
+    "Contáctanos"
+  ],
+  "home": "Inicio",
+  "book": "Elegir experiencia",
+  "details": "Ver experiencia",
+  "reserve": "Elegir horas y fecha",
+  "from": "Desde",
+  "price": "Consultar precio",
+  "perBoat": "Precio total del barco · no por persona",
+  "duration": "Duración",
+  "hour": "hora",
+  "hours": "horas",
+  "chooseHours": "¿Cuánto tiempo quieres navegar?",
+  "hourNote": "Elige la duración disponible para esta experiencia y continúa para ver fechas, horarios y precio total.",
+  "priceNote": "Precio total por barco. Paseo diurno: 1–6 horas. Amanecer y atardecer: 2–6 horas. Experiencia romántica: 1–4 horas. Bebida incluida desde la primera hora y snacks en salidas de dos horas o más.",
+  "languageNotice": "",
+  "skip": "Ir al contenido",
+  "menu": "Menú",
+  "language": "Idioma",
+  "eyebrow": "BARCELONA, A TU RITMO",
+  "homeTitle": "Tu barco privado en Barcelona.",
+  "homeDescription": "JimBoats Charter ofrece paseos privados en barco con patrón desde Port Olímpic, Barcelona, para grupos de hasta seis personas. Elige una salida de día, al amanecer, al atardecer o una experiencia romántica. El paseo diurno empieza en {startingPrice} por una hora para todo el barco, con patrón, combustible y seguro incluidos.",
+  "heroLink": "Encuentra tu momento",
+  "heroAlt": "El LENA de JimBoats frente al litoral de Barcelona",
+  "trust": [
+    "100 % barcos privados",
+    "Con patrón",
+    "5,0★ Google Maps ({googleReviews} reseñas)",
+    "Port Olímpic, Barcelona"
+  ],
+  "experiencesTitle": "Cuatro maneras de vivir el mar.",
+  "experiencesDescription": "La experiencia pone el ambiente. Tú eliges las horas.",
+  "names": {
+    "private": "Paseo privado en barco por Barcelona",
+    "sunset": "Paseo en barco al atardecer en Barcelona",
+    "sunrise": "Paseo en barco al amanecer en Barcelona",
+    "romantic": "Paseo romántico en barco por Barcelona",
+    "prices": "Precios de paseos en barco en Barcelona",
+    "boat": "LENA, nuestra menorquina en Barcelona",
+    "contact": "Dónde embarcamos en Barcelona",
+    "about": "Conoce a Víctor y David, los patrones de JimBoats"
+  },
+  "shortNames": {
+    "private": "Barcelona de día",
+    "sunset": "La hora dorada",
+    "sunrise": "El primer sol",
+    "romantic": "Un momento para dos"
+  },
+  "descriptions": {
+    "private": "Deja el ruido en tierra. Un paseo privado por el litoral para conversar, mirar Barcelona desde otra perspectiva y disfrutar del Mediterráneo a vuestro ritmo.",
+    "sunset": "La ciudad cambia de color y el mar se vuelve dorado. Comparte la última luz del día desde una embarcación reservada solo para tu grupo.",
+    "sunrise": "Descubre la costa cuando Barcelona empieza a despertar. Una salida privada para quienes prefieren la primera luz y un comienzo de día diferente.",
+    "romantic": "Un rato lejos de todo, solo para vosotros. Elegid entre 1 y 4 horas, con la decoración de las fotos incluida. Si queréis algo especial, tenemos varias decoraciones y podéis pedirlo.",
+    "prices": "Compara el precio total del barco para hasta 6 personas: paseo diurno de 1 a 6 horas, amanecer y atardecer de 2 a 6, y romántico de 1 a 4. Patrón, combustible y seguro incluidos.",
+    "boat": "LENA es un Llaut Llevant 39 (Punta Prima) de 7,49 m de eslora y 3,03 m de manga. Navega con patrón desde Port Olímpic y recibe grupos privados de hasta seis personas.",
+    "contact": "Nos encontramos en Port Olímpic. Consulta el punto de embarque y acuerda con nosotros los detalles de llegada antes de tu salida.",
+    "about": "El nombre JimBoats nace de su apellido, Jiménez. Los dos fundaron el proyecto para enseñar la costa de Barcelona a bordo de un barco privado."
+  },
+  "experienceHeading": "Así será vuestro paseo",
+  "includeHeading": "Una salida a vuestra medida",
+  "includeItems": [
+    "Embarcación privada para tu grupo",
+    "Patrón, combustible y seguro incluidos",
+    "Salida desde Port Olímpic",
+    "Hasta 6 personas"
+  ],
+  "extrasNote": "Extras bajo petición.",
+  "routeHeading": "Barcelona desde otra perspectiva",
+  "routeText": "La salida recorre el litoral de Barcelona. El itinerario y las paradas se acuerdan con el patrón según la duración, las condiciones del mar y las posibilidades de ese día.",
+  "sunsetNote": "El horario se coordina con la puesta de sol; puede variar según la época del año y la duración elegida.",
+  "sunriseNote": "El horario se coordina con la salida del sol; puede variar según la época del año y la duración elegida.",
+  "faqTitle": "Antes de subir a bordo",
+  "faqs": [
+    [
+      "¿El barco es privado o compartiremos con otras personas?",
+      "La salida es privada: la embarcación se reserva para tu grupo y os acompaña un patrón. No se venden plazas a otros grupos en vuestra salida."
+    ],
+    [
+      "¿Necesito licencia para alquilar el barco?",
+      "No necesitas licencia ni experiencia navegando. Las experiencias de JimBoats se realizan con patrón, que se encarga de la navegación y adapta el recorrido a las condiciones del mar."
+    ],
+    [
+      "¿Cuánto cuesta y qué duración puedo elegir?",
+      "Paseo diurno: 1–6 horas. Amanecer y atardecer: 2–6 horas. Experiencia romántica: 1–4 horas. El precio es por barco y por la duración seleccionada, no por persona. Puedes ampliar la salida hasta el máximo de cada experiencia, según disponibilidad."
+    ],
+    [
+      "¿Qué incluye el paseo y qué se contrata aparte?",
+      "El precio incluye el uso privado del barco, patrón, combustible y seguro. No necesitas licencia. Los extras, como paddle surf, eFoil o fotógrafo, se contratan aparte según disponibilidad y se añaden al precio del barco."
+    ],
+    [
+      "¿Cómo reservo mi experiencia?",
+      "Entra en la experiencia, elige las horas y continúa a la reserva para consultar fecha, horario, plazas y total. Revisa las condiciones antes de confirmar. Si tienes una petición especial, habla con nosotros por WhatsApp antes de reservar."
+    ],
+    [
+      "¿Dónde se embarca y cómo llegamos?",
+      "Salimos de Port Olímpic, en Moll de Xaloc, Pantalan 5, Barcelona. Tienes el mapa y el enlace de indicaciones en esta página. Confirma con JimBoats el punto exacto de encuentro y llega con margen para embarcar con tranquilidad."
+    ],
+    [
+      "¿Cuántas personas pueden venir? ¿Pueden venir niños?",
+      "Todas las experiencias admiten hasta 6 personas, incluidos los niños. Indícanos las edades de los más pequeños y cualquier necesidad de ayuda para embarcar al preparar tu reserva."
+    ],
+    [
+      "¿Qué diferencia hay entre el paseo de día, amanecer y atardecer?",
+      "El paseo de día permite disfrutar de la costa con luz natural; el amanecer coincide con las primeras luces y el atardecer con la puesta de sol. El horario de estas dos últimas experiencias cambia según la fecha y las horas elegidas."
+    ],
+    [
+      "¿Cuál es la mejor época para salir en barco por Barcelona?",
+      "Primavera y verano ofrecen más horas de luz; en otoño e invierno el paseo tiene otro ritmo y conviene llevar una capa de abrigo. La posibilidad de salir depende de la disponibilidad y, sobre todo, de las condiciones del mar ese día."
+    ],
+    [
+      "¿Qué debemos llevar a bordo?",
+      "Trae protección solar, gafas de sol, calzado cómodo y una capa de abrigo para la brisa. Si os interesa una parada para bañaros, lleva bañador y toalla y consúltalo antes: las paradas dependen de la duración y de lo que permita el mar."
+    ],
+    [
+      "¿Podemos celebrar un cumpleaños, aniversario o pedida?",
+      "Sí, puedes plantearnos una salida privada para una ocasión especial. La experiencia romántica incluye la decoración de las fotos. Tenemos varias decoraciones; si quieres algo especial, consúltanos antes de reservar para acordar los detalles."
+    ],
+    [
+      "¿Qué pasa si hace mal tiempo o necesito cancelar?",
+      "El patrón valora si se puede navegar y si hay que adaptar la salida. Los cambios, cancelaciones y posibles devoluciones dependen de las condiciones de tu reserva: revísalas antes de confirmar y contacta con JimBoats cuanto antes si necesitas modificarla."
+    ]
+  ],
+  "findTitle": "Nos vemos en Port Olímpic.",
+  "findText": "Tu paseo empieza en Port Olímpic, junto al Mediterráneo y a pocos pasos de la ciudad.",
+  "directions": "Cómo llegar",
+  "weather": "Consultar previsión del tiempo",
+  "reviewsTitle": "El mar se disfruta. Y se cuenta.",
+  "reviewsText": "Experiencias de quienes han navegado con JimBoats, contadas en sus propias palabras.",
+  "whatsapp": "Hablar por WhatsApp",
+  "footerText": "Paseos privados en barco por Barcelona. El Mediterráneo, con los tuyos.",
+  "aboutLink": "Sobre nosotros",
+  "otherExperiences": "Encuentra otro momento",
+  "pricesHeading": "Tu experiencia. Tus horas.",
+  "tableExperience": "Experiencia",
+  "tableDuration": "Duración a elegir",
+  "tablePrice": "Precio total",
+  "boatHeading": "Por qué elegimos este llaüt",
+  "boatText": "A Víctor y David, las líneas de LENA les recuerdan a Menorca. Buscaban un barco en el que su grupo pudiera moverse por cubierta, tomar algo y compartir la salida con calma.",
+  "aboutHeading": "Habla directamente con nosotros",
+  "aboutText": "Antes de salir, resolvemos tus dudas sobre la duración, el punto de encuentro y las condiciones. Nos encontrarás por teléfono, email y WhatsApp.",
+  "preview": "Vista previa local · reservas de prueba.",
+  "bookingTitle": "Prepara tu salida",
+  "bookingIntro": "Elige una experiencia, duración y fecha. Esta prueba local no confirma disponibilidad, no crea reservas y no cobra pagos.",
+  "date": "Fecha preferida",
+  "guests": "Personas en tu grupo",
+  "summary": "Tu salida",
+  "request": "Consultar esta salida por WhatsApp",
+  "bookingNote": "La hora de salida, capacidad y precio se confirman con JimBoats. Al abrir WhatsApp podrás revisar el mensaje antes de enviarlo.",
+  "back": "Volver a la experiencia",
+  "message": "Hola, me interesa {experience} en Barcelona durante {hours} horas, el {date}, para {guests} personas. ¿Podéis confirmar disponibilidad, capacidad y precio total?",
+  "dateMissing": "Elige una fecha para consultar tu salida.",
+  "pending": "Por confirmar",
+  "bookingEnglish": "La reserva continúa en inglés.",
+  "bookingHoursLabel": "Horas de navegación",
+  "provisionalPrice": "Tarifa provisional · prueba local",
+  "faqIntro": "Duración, reservas y punto de encuentro. Resolvemos las dudas para que solo pienses en disfrutar del mar.",
+  "weatherTitle": "El tiempo en Barcelona",
+  "weatherNote": "Previsión orientativa para la zona. El patrón confirma las condiciones de la salida.",
+  "mapTitle": "Mapa del punto de encuentro de JimBoats en Port Olímpic",
+  "reviewsCountLabel": "opiniones en",
+  "reviewsExcerptLabel": "Opiniones de viajeros",
+  "reviewsCheckedLabel": "Datos consultados el",
+  "reviewsReadLabel": "Leer en",
+  "reviewsPreviousLabel": "Opinión anterior",
+  "reviewsNextLabel": "Siguiente opinión",
+  "reviewsEyebrow": "Opiniones de viajeros",
+  "reviewsOriginalLabel": "Extracto original",
+  "reviewsShowOriginalLabel": "Ver extracto original",
+  "reviewsTranslations": {
+    "emma": "Desde el momento en que subimos a bordo, Víctor hizo que toda la experiencia fuera personal, relajada y completamente a medida.",
+    "asante": "Fue amable, profesional e hizo que la experiencia resultara fácil y relajada de principio a fin.",
+    "stefania": "saltar al mar, usar la tabla de paddle surf y relajarnos al sol mientras escuchábamos nuestra propia música.",
+    "adam": "el barco estaba bien provisto de bebidas y un jamón delicioso. Incluso nos dejó usar el altavoz de a bordo.",
+    "kateryna": "Fuimos por la tarde para ver el espectáculo de drones desde el agua y fue una experiencia increíble.",
+    "alina": "¡Estábamos celebrando la despedida de soltera de mi hermana y es una idea estupenda para hacerlo!",
+    "megan": "Acabamos de hacer un paseo privado en barco de 2 horas con Víctor, un grupo de seis, ¡y nos ENCANTÓ!",
+    "francessca": "Fue un paseo privado solo para nuestro grupo y resultó realmente íntimo y personal; de verdad nos alegró el día."
+  },
+  "reviewsTranslationLabel": "Extracto traducido al español",
+  "reviewsShowTranslationLabel": "Ver traducción",
+  "reviewsAnd": "y",
+  "capacityLabel": "Hasta 6 personas",
+  "victorBio": "Víctor nació y creció en Barcelona. Es copropietario y patrón, con experiencia en navegación costera, travesías entre la península y las islas y maniobras de fondeo. Desde el agua le gusta enseñar la Barceloneta al atardecer. Entre sus titulaciones están Capitán de Yate y PPER.",
+  "davidBio": "David es cofundador y patrón. Prepara el barco, organiza las reservas y navega con los grupos. Antes de cada salida vuelve a comprobar el viento y el oleaje para escoger la ruta. Su momento favorito es salir de puerto al amanecer. Cuenta con las titulaciones de Capitán de Yate y PPER.",
+  "support": {
+    "metro": "¿Vienes en metro?",
+    "metroRoute": "Toma la L4 hasta Ciutadella | Vila Olímpica. Desde la estación, camina hacia el Port Olímpic y continúa dentro del puerto hasta Moll de Xaloc, Pantalan 5.",
+    "access": "A pie, en coche o en taxi",
+    "accessRoute": "El acceso por Moll de Mestral admite peatones y vehículos. Si necesitas evitar las escaleras, utiliza este acceso al puerto.",
+    "portGuide": "Ver los accesos del puerto",
+    "contactMessage": "Hola, JimBoats. Tengo una consulta sobre el punto de encuentro en Port Olímpic.",
+    "meeting": "Tu punto de encuentro",
+    "arrival": "Os recomendamos llegar 15 minutos antes de la salida. Si tenéis dudas al llegar al puerto, escribidnos por WhatsApp con el nombre de vuestra reserva.",
+    "specs": "LENA en cifras",
+    "length": "Eslora",
+    "beam": "Manga",
+    "model": "Modelo",
+    "conditions": "Antes de reservar",
+    "experiences": "Conoce las experiencias",
+    "optional": "Extras bajo petición"
+  }
+}

@@ -1,0 +1,208 @@
+{
+  "nav": [
+    "Experiences",
+    "Prices",
+    "Our boat",
+    "Find us",
+    "Contact us"
+  ],
+  "home": "Home",
+  "book": "Choose an experience",
+  "details": "Explore experience",
+  "reserve": "Choose hours & date",
+  "from": "From",
+  "price": "Ask for a price",
+  "perBoat": "Total price for the boat · not per person",
+  "duration": "Duration",
+  "hour": "hour",
+  "hours": "hours",
+  "chooseHours": "How long would you like to cruise?",
+  "hourNote": "Choose an available duration for this experience, then view dates, departure times and the total price.",
+  "priceNote": "Total price per boat. Day trip: 1–6 hours. Sunrise and sunset: 2–6 hours. Romantic experience: 1–4 hours. A drink is included from the first hour, with snacks on trips of two hours or more.",
+  "languageNotice": "",
+  "skip": "Skip to content",
+  "menu": "Menu",
+  "language": "Language",
+  "eyebrow": "BARCELONA, AT YOUR OWN PACE",
+  "homeTitle": "Your own boat. Your Barcelona.",
+  "homeDescription": "JimBoats Charter offers private boat trips with a skipper from Port Olímpic, Barcelona, for groups of up to six people. Choose a daytime, sunrise, sunset or romantic trip. Daytime trips start at {startingPrice} for one hour for the whole boat, including skipper, fuel and insurance.",
+  "heroLink": "Find your moment",
+  "heroAlt": "JimBoats LENA off the Barcelona coast",
+  "trust": [
+    "100% private boats",
+    "With a skipper",
+    "5.0★ Google Maps ({googleReviews} reviews)",
+    "Port Olímpic, Barcelona"
+  ],
+  "experiencesTitle": "Four ways to feel the Mediterranean.",
+  "experiencesDescription": "Choose the atmosphere. Make the time your own.",
+  "names": {
+    "private": "Private boat trip in Barcelona",
+    "sunset": "Sunset boat trip in Barcelona",
+    "sunrise": "Sunrise boat trip in Barcelona",
+    "romantic": "Romantic boat trip in Barcelona",
+    "prices": "Barcelona boat trip prices",
+    "boat": "LENA, our Menorcan-style boat in Barcelona",
+    "contact": "Where to board in Barcelona",
+    "about": "Meet Víctor and David, the JimBoats skippers"
+  },
+  "shortNames": {
+    "private": "Barcelona by day",
+    "sunset": "The golden hour",
+    "sunrise": "The first light",
+    "romantic": "Just the two of you"
+  },
+  "descriptions": {
+    "private": "Leave the noise ashore. Enjoy a private trip along the coast, see Barcelona from a new perspective and share the Mediterranean at your own pace.",
+    "sunset": "The city changes colour and the sea turns golden. Share the last light of the day on a boat reserved just for your group.",
+    "sunrise": "Discover the coast as Barcelona starts to wake. A private trip for those who love the first light and a different start to their day.",
+    "romantic": "Time away from it all, just for you. Choose between 1 and 4 hours, with the decorations shown in the photos included. We have several decoration options, so ask us if you would like something special.",
+    "prices": "Compare total boat prices for up to 6 guests: day trips from 1 to 6 hours, sunrise and sunset from 2 to 6, and romantic trips from 1 to 4. Skipper, fuel and insurance included.",
+    "boat": "LENA is a Llaut Llevant 39 (Punta Prima), 7.49 m long with a beam of 3.03 m. She sails from Port Olímpic with a skipper and up to six guests on private trips.",
+    "contact": "Meet us at Port Olímpic. Check the boarding location and arrange your arrival details with us before your trip.",
+    "about": "JimBoats takes its name from their surname, Jiménez. They started the business to share the Barcelona coastline with guests aboard a private boat."
+  },
+  "experienceHeading": "Your time on the water",
+  "includeHeading": "A trip that feels like yours",
+  "includeItems": [
+    "A private boat for your group",
+    "Skipper, fuel and insurance included",
+    "Departure from Port Olímpic",
+    "Up to 6 guests"
+  ],
+  "extrasNote": "Optional extras.",
+  "routeHeading": "A different view of Barcelona",
+  "routeText": "Your trip follows the Barcelona coast. The skipper agrees the route and any stops according to your duration, sea conditions and what is possible on the day.",
+  "sunsetNote": "Departure is arranged around sunset and varies with the season and your chosen duration.",
+  "sunriseNote": "Departure is arranged around sunrise and varies with the season and your chosen duration.",
+  "faqTitle": "Before you step aboard",
+  "faqs": [
+    [
+      "Is the boat private or will we share with other guests?",
+      "Your trip is private: the boat is reserved for your group, with a skipper on board. We do not sell places to other groups on your departure."
+    ],
+    [
+      "Do I need a boating licence?",
+      "No licence or sailing experience is needed. JimBoats experiences include a skipper who handles navigation and adjusts the route to sea conditions."
+    ],
+    [
+      "How much does it cost and how long can we sail?",
+      "Day trip: 1–6 hours. Sunrise and sunset: 2–6 hours. Romantic experience: 1–4 hours. Prices are per boat for the selected duration, not per person. You can extend your trip up to the maximum for your experience, subject to availability."
+    ],
+    [
+      "What is included and what costs extra?",
+      "The price includes private use of the boat, skipper, fuel and insurance. No licence is needed. Extras such as paddleboarding, eFoil or a photographer are booked separately, subject to availability, and added to the boat price."
+    ],
+    [
+      "How do I book?",
+      "Open an experience, choose your duration and continue to booking to check the date, departure time, group size and total. Review the conditions before confirming. For special requests, contact us on WhatsApp first."
+    ],
+    [
+      "Where do we board and how do we get there?",
+      "We depart from Port Olímpic, at Moll de Xaloc, Pantalan 5, Barcelona. Use the map and directions link on this page. Confirm the exact meeting point with JimBoats and allow time to board comfortably."
+    ],
+    [
+      "How many guests can join? Can children come?",
+      "Every experience welcomes up to 6 guests, including children. Let us know the ages of younger children and any boarding assistance you may need when arranging your booking."
+    ],
+    [
+      "How do the daytime, sunrise and sunset trips differ?",
+      "A daytime trip explores the coast in daylight; sunrise and sunset experiences are timed around the first and last light. Departure times for these two experiences vary with the date and your chosen duration."
+    ],
+    [
+      "When is the best time of year for a boat trip in Barcelona?",
+      "Spring and summer bring longer daylight hours. Autumn and winter offer a different atmosphere and an extra layer is useful. Departures depend on availability and, above all, sea conditions on the day."
+    ],
+    [
+      "What should we bring?",
+      "Bring sunscreen, sunglasses, comfortable shoes and an extra layer for the breeze. If you would like a swim stop, bring swimwear and a towel and ask us in advance: stops depend on the duration and sea conditions."
+    ],
+    [
+      "Can we celebrate a birthday, anniversary or proposal?",
+      "Yes, talk to us about a private trip for your special occasion. The romantic experience includes the decorations shown in the photos. We have several decoration options; contact us before booking to discuss any special requests."
+    ],
+    [
+      "What happens in bad weather or if I need to cancel?",
+      "The skipper assesses whether it is possible to sail or the trip needs adapting. Changes, cancellations and any refunds depend on your booking conditions. Read them before confirming and contact JimBoats promptly if your plans change."
+    ]
+  ],
+  "findTitle": "See you at Port Olímpic.",
+  "findText": "Your trip starts at Port Olímpic, beside the Mediterranean and just steps from the city.",
+  "directions": "Get directions",
+  "weather": "Check the weather forecast",
+  "reviewsTitle": "Time at sea. Stories to share.",
+  "reviewsText": "Experiences with JimBoats, shared by our guests in their own words.",
+  "whatsapp": "Chat on WhatsApp",
+  "footerText": "Private boat trips in Barcelona. The Mediterranean, with your favourite people.",
+  "aboutLink": "About us",
+  "otherExperiences": "Find another moment",
+  "pricesHeading": "Your experience. Your time.",
+  "tableExperience": "Experience",
+  "tableDuration": "Choose your duration",
+  "tablePrice": "Total price",
+  "boatHeading": "Why we chose this llaüt",
+  "boatText": "LENA’s lines remind Víctor and David of Menorca. They wanted a boat where their guests could move around on deck, have a drink and spend an unhurried afternoon together.",
+  "aboutHeading": "Talk directly to us",
+  "aboutText": "Before your trip, we answer your questions about duration, meeting point and conditions. Reach us by phone, email or WhatsApp.",
+  "preview": "Local preview · test bookings.",
+  "bookingTitle": "Plan your time at sea",
+  "bookingIntro": "Choose an experience, duration and date. This local preview does not confirm availability, create bookings or take payments.",
+  "date": "Preferred date",
+  "guests": "Guests in your group",
+  "summary": "Your trip",
+  "request": "Ask about this trip on WhatsApp",
+  "bookingNote": "JimBoats confirms the departure time, capacity and price. You can review the message in WhatsApp before sending it.",
+  "back": "Back to the experience",
+  "message": "Hello, I am interested in {experience} in Barcelona for {hours} hours, on {date}, for {guests} guests. Can you confirm availability, capacity and the total price?",
+  "dateMissing": "Choose a date to enquire about your trip.",
+  "pending": "To be confirmed",
+  "bookingEnglish": "Booking continues in English.",
+  "bookingHoursLabel": "Hours on the water",
+  "provisionalPrice": "Provisional rate · local preview",
+  "faqIntro": "Duration, booking and where to meet. Useful answers so you can focus on enjoying the sea.",
+  "weatherTitle": "Barcelona weather",
+  "weatherNote": "An indicative forecast for the area. Your skipper confirms the conditions for your trip.",
+  "mapTitle": "Map of the JimBoats meeting point at Port Olímpic",
+  "reviewsCountLabel": "reviews on",
+  "reviewsExcerptLabel": "Traveller reviews",
+  "reviewsCheckedLabel": "Checked on",
+  "reviewsReadLabel": "Read on",
+  "reviewsPreviousLabel": "Previous review",
+  "reviewsNextLabel": "Next review",
+  "reviewsEyebrow": "Guest reviews",
+  "reviewsOriginalLabel": "Original excerpt",
+  "reviewsShowOriginalLabel": "View original excerpt",
+  "reviewsTranslations": {
+    "emma": "From the moment we stepped on board, Victor made the whole experience feel personal, relaxed and completely bespoke.",
+    "asante": "He was friendly, professional, and made the experience feel easy and relaxed from start to finish.",
+    "stefania": "jumping into the ocean, using the paddleboard, and relaxing in the sun while listening to our own music.",
+    "adam": "the boat was well stocked with drinks and lovely ham. He even let us use the speaker on board.",
+    "kateryna": "We went in the evening to watch the drone show from the water, and it was an amazing experience.",
+    "alina": "We were celebrating my sister‘s bachelorette party and it’s a great idea to do so!",
+    "megan": "We just had a 2 hour private boat trip as a group of six with Victor and LOVED it.",
+    "francessca": "It was a private cruise for our group only and was really intimate and personal, it really made our day."
+  },
+  "reviewsTranslationLabel": "Translated excerpt",
+  "reviewsShowTranslationLabel": "View translation",
+  "reviewsAnd": "and",
+  "capacityLabel": "Up to 6 guests",
+  "victorBio": "Víctor grew up in Barcelona. A co-owner and skipper, he has sailed along the coast and between the mainland and the islands, and has experience anchoring in local waters. He particularly enjoys showing guests Barceloneta at sunset. His qualifications include Capitán de Yate and PPER.",
+  "davidBio": "David is a co-founder and skipper. He prepares the boat, organises bookings and takes guests out to sea. Before leaving, he checks the wind and swell again to choose the route. His favourite moment is leaving the harbour at sunrise. He holds Capitán de Yate and PPER qualifications.",
+  "support": {
+    "metro": "Coming by metro?",
+    "metroRoute": "Take line L4 to Ciutadella | Vila Olímpica. Walk from the station towards Port Olímpic, then continue through the marina to Moll de Xaloc, Pantalan 5.",
+    "access": "On foot, by car or by taxi",
+    "accessRoute": "Pedestrians and vehicles can enter at Moll de Mestral. Use this entrance if you need a step-free route into the marina.",
+    "portGuide": "View marina entrances",
+    "contactMessage": "Hi JimBoats, I have a question about the meeting point at Port Olímpic.",
+    "meeting": "Your meeting point",
+    "arrival": "We recommend arriving 15 minutes before departure. If you need a hand finding us at the port, send us the name on your booking via WhatsApp.",
+    "specs": "LENA at a glance",
+    "length": "Length",
+    "beam": "Beam",
+    "model": "Model",
+    "conditions": "Before you book",
+    "experiences": "Explore the trips",
+    "optional": "Optional extras"
+  }
+}

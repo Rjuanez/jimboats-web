@@ -1,0 +1,521 @@
+{
+  "labels": {
+    "name": "Blog",
+    "title": "Barcelona, with time to enjoy it.",
+    "seoTitle": "Barcelona guides: sunsets, sunrises and romantic plans",
+    "description": "Find your sunset spot, plan an early morning by the sea and discover romantic things to do in Barcelona, with practical guides from JimBoats.",
+    "eyebrow": "THE JIMBOATS JOURNAL",
+    "read": "Read the guide",
+    "toc": "In this guide",
+    "related": "More ideas for your stay",
+    "sources": "Sources and practical information",
+    "updated": "Updated",
+    "by": "By",
+    "faq": "Frequently asked questions",
+    "experience": "Explore the experience",
+    "prices": "Compare prices",
+    "contact": "Getting to Port Olímpic",
+    "all": "All guides",
+    "relatedExperience": "Plan your trip",
+    "photo": "Barcelona from the sea · JimBoats",
+    "source": "Place information"
+  },
+  "articles": {
+    "sunset": {
+      "slug": "where-to-watch-sunset-barcelona",
+      "title": "Where to watch the sunset in Barcelona",
+      "seoTitle": "Sunset in Barcelona: where to go and when to watch",
+      "description": "Choose between Montjuïc, a seafront walk and a private boat trip. Find a sunset setting in Barcelona with practical timing and planning advice.",
+      "category": "The last light",
+      "imageAlt": "Sea and sunset views during a JimBoats trip",
+      "lead": "The best place to watch the sunset in Barcelona depends on what you want to see: the sun dropping towards the hills, warm light on the buildings or changing colours across the Mediterranean. These are different views. Here are three ways to plan an evening around the one you prefer.",
+      "sections": [
+        {
+          "id": "direction",
+          "title": "Start with the view: the sun sets inland",
+          "paragraphs": [
+            "Barcelona’s coast faces east and south-east. In the evening, the sun goes down towards the land. From the beach you can enjoy the light on the water, but you should not expect to watch the sun disappear into the sea. On a boat, you can turn towards the city and take in the skyline as the light changes.",
+            "For the sun rising over the Mediterranean, plan a sunrise instead. Sunset works particularly well if you want city views in warm light or a relaxed walk at the end of the day."
+          ]
+        },
+        {
+          "id": "montjuic",
+          "title": "Montjuïc: an evening above the city",
+          "paragraphs": [
+            "Montjuïc offers viewpoints over Barcelona. The Mirador de l’Alcalde overlooks the city and harbour; the area around the Mirador del Migdia gives you another orientation for the last light.",
+            "Choose a specific spot and check access before setting off. Visiting the castle and walking to a viewpoint are different plans: do not assume an enclosed attraction will still be open at sunset. Work out your return journey too, especially if you stay until dark."
+          ],
+          "sourceIds": [
+            "montjuic",
+            "outdoors"
+          ]
+        },
+        {
+          "id": "seafront",
+          "title": "Barceloneta and the promenade: keep it flexible",
+          "paragraphs": [
+            "The waterfront suits an evening without a fixed booking. Walk, stop when you feel like it and continue towards Port Olímpic if that fits your plans. You can decide how long to stay once you are there.",
+            "The appeal here is the atmosphere and the colours rather than a sunset over the open water. If dinner comes next, allow time for the walk and book the restaurant separately. There is no need to make the whole evening depend on one photograph."
+          ]
+        },
+        {
+          "id": "on-the-water",
+          "title": "A private boat: put the skyline in the picture",
+          "paragraphs": [
+            "Leaving Port Olímpic gives you a view back towards the coast and time with your own group. JimBoats offers a private sunset boat trip for up to six guests, with a skipper, fuel and insurance included.",
+            "The sunset experience starts at two hours, with longer durations available to choose from. Drinks and snacks are included from two hours. Sunset time helps you choose your date; it is not your boarding time. Check the available departure when booking."
+          ]
+        },
+        {
+          "id": "timing",
+          "title": "What time is sunset in Barcelona?",
+          "paragraphs": [
+            "It changes every day and with daylight saving time. As dated examples for Port Olímpic, sunset is at 17:46 on 15 January 2026, 21:26 on 15 June and 20:00 on 15 September. These are local times for those dates, not a fixed timetable for each month.",
+            "The sunset experience page has a monthly reference table and the day’s solar time. Check your exact date before arranging transport. Clouds and visibility can change how the sky looks even though the astronomical time is unchanged."
+          ],
+          "sourceIds": [
+            "solar"
+          ]
+        },
+        {
+          "id": "choose",
+          "title": "Choose one setting and give it enough time",
+          "paragraphs": [
+            "Pick a viewpoint for height, the promenade for flexibility or a private boat for time together on the water. Trying to fit all three into one evening can take away the part you came to enjoy."
+          ],
+          "bullets": [
+            "Arrive with time to find your spot before the moment you want to watch.",
+            "Check the forecast and bring a light layer for the breeze.",
+            "For a boat trip, follow the meeting point and departure time on your booking."
+          ]
+        },
+        {
+          "id": "jimboats",
+          "title": "Advice from the JimBoats skippers",
+          "paragraphs": [
+            "Víctor likes the end of the Barceloneta promenade for the evening light on the W hotel. If you are joining a boat trip, he suggests arriving at the harbour about 15 minutes early."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "Does the sun set over the sea at Barceloneta?",
+          "Sunset is towards the land. The beach offers changing light over the water; from a boat you can look back at the city in the evening."
+        ],
+        [
+          "Is the JimBoats sunset trip private?",
+          "Yes. The boat is reserved for your group of up to six guests, accompanied by a skipper."
+        ],
+        [
+          "Is sunset time the departure time?",
+          "No. They are different. Check the available departure for your date during booking."
+        ]
+      ],
+      "cta": {
+        "title": "The last light, from your own boat.",
+        "text": "Explore the sunset experience, its durations, inclusions and available dates before booking."
+      }
+    },
+    "sunrise": {
+      "slug": "where-to-watch-sunrise-barcelona",
+      "title": "Where to watch the sunrise in Barcelona",
+      "seoTitle": "Sunrise in Barcelona: beaches, times and planning tips",
+      "description": "Choose Barceloneta, Bogatell or a private trip from Port Olímpic. Plan your Barcelona sunrise with dated time examples and practical morning advice.",
+      "category": "The first light",
+      "imageAlt": "Early morning light over the sea on the JimBoats sunrise experience",
+      "lead": "Sunrise in Barcelona is a reason to look out towards the Mediterranean. The beach lets you keep the morning flexible; a private boat adds a view of the coastline from the water. Choose according to your journey, your company and how much of the morning you want to spend by the sea.",
+      "sections": [
+        {
+          "id": "barceloneta",
+          "title": "Barceloneta: begin the day at the waterfront",
+          "paragraphs": [
+            "The promenade by Barceloneta is a useful option if you are staying near the seafront and want to arrive on foot. Find a stretch with a clear view of the water and take a moment to choose your view before reaching for the camera.",
+            "Arrive before sunrise if you want to watch the light develop. That is a suggestion for enjoying the scene, not a promise of colourful skies or clear weather. Afterwards, you can keep walking and find breakfast as cafés open."
+          ]
+        },
+        {
+          "id": "bogatell",
+          "title": "Bogatell and Nova Icària: another stretch of coast",
+          "paragraphs": [
+            "Bogatell lies between Nova Icària and Mar Bella. Nova Icària is beside Port Olímpic, so both offer alternatives to starting your morning at Barceloneta.",
+            "Choose the beach that is easiest to reach from your accommodation rather than expecting any spot to be empty. Check your route and transport for the early hour: weekday and weekend services may differ."
+          ],
+          "sourceIds": [
+            "bogatell",
+            "outdoors"
+          ]
+        },
+        {
+          "id": "on-board",
+          "title": "Watch the sunrise on a private boat",
+          "paragraphs": [
+            "The JimBoats sunrise experience leaves from Port Olímpic with your own group of up to six guests. Trips start at two hours and include a skipper, fuel, insurance, drinks and snacks.",
+            "It suits couples, friends or families who want to make time on the water the centre of their morning. Snacks are not a full breakfast. Arrange a meal afterwards if that is part of your plan and leave some flexibility after the return; the route depends on your duration and the conditions."
+          ]
+        },
+        {
+          "id": "timing",
+          "title": "What time is sunrise in Barcelona?",
+          "paragraphs": [
+            "There is no single sunrise time for the whole season. At Port Olímpic, dated examples are 08:15 on 15 January 2026, 06:17 on 15 June and 07:31 on 15 September. These are local times, including daylight saving time where applicable.",
+            "The experience page includes a monthly reference table and the day’s solar time. Check your actual date and always distinguish sunrise from departure: your booking tells you when to meet for the boat."
+          ],
+          "sourceIds": [
+            "solar"
+          ]
+        },
+        {
+          "id": "prepare",
+          "title": "Plan the morning the night before",
+          "paragraphs": [
+            "Decide where to arrive and how to get back so you are not working it out in the dark. A light layer, comfortable shoes and a charged phone are often more useful than a packed itinerary. If you plan to take photos, get your equipment ready before bed.",
+            "With children or a group, make sure an early start works for everyone. If somebody would prefer a later departure, a daytime boat trip may be a better choice than organising a sunrise they will not enjoy."
+          ],
+          "bullets": [
+            "Check cloud cover, wind and the solar time for your date.",
+            "Plan the journey to the beach or boarding point.",
+            "Arrange breakfast separately if you want more than the snacks on board."
+          ]
+        },
+        {
+          "id": "choose",
+          "title": "Beach or boat: two different mornings",
+          "paragraphs": [
+            "The beach gives you freedom to stay briefly or continue walking. A private boat needs a reservation and a meeting time, but makes the morning a shared experience at sea. Choose for the time you want to spend together, not only the photograph you have in mind."
+          ]
+        },
+        {
+          "id": "jimboats",
+          "title": "Advice from the JimBoats skippers",
+          "paragraphs": [
+            "David loves leaving port while the city is still asleep. He recommends checking the forecast the evening before, as wind and swell affect how calm the water will be."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "Does sunrise time change during the year?",
+          "Yes. It changes daily, and local times also reflect daylight saving time. Use a reference for your exact date."
+        ],
+        [
+          "Does the JimBoats trip include breakfast?",
+          "The two-hour experience includes drinks and snacks. It is not advertised as a full breakfast."
+        ],
+        [
+          "Can I book a one-hour sunrise trip?",
+          "The sunrise experience starts at two hours. See the experience page and booking options for available durations and prices."
+        ]
+      ],
+      "cta": {
+        "title": "A different start to the day.",
+        "text": "Explore the private sunrise trip, check what is included and choose a date that fits your morning."
+      }
+    },
+    "romantic": {
+      "slug": "romantic-things-to-do-barcelona",
+      "title": "Romantic things to do in Barcelona",
+      "seoTitle": "Romantic things to do in Barcelona",
+      "description": "Plan a date or anniversary in Barcelona with walks in the Gothic Quarter, a pause in Ciutadella and a private boat experience with a skipper.",
+      "category": "Time for two",
+      "imageAlt": "Table set on the JimBoats boat with Barcelona’s coastline behind it",
+      "lead": "A romantic day in Barcelona can begin with a walk and finish looking back at the city from the sea. The right plan is one that suits both of you. These ideas work for a date, an anniversary or simply an afternoon together, without turning the day into a sightseeing checklist.",
+      "sections": [
+        {
+          "id": "gothic",
+          "title": "Explore the Gothic Quarter without a rigid route",
+          "paragraphs": [
+            "The streets and squares of the Barri Gòtic invite you to explore the historic city on foot. Use the Cathedral area as a starting point and decide where to pause rather than trying to cover the whole neighbourhood in one date.",
+            "Choose this if you both enjoy wandering. For an indoor visit, check tickets and opening hours separately. Booking every minute leaves little space for a conversation; a starting point and an idea of where to finish are often enough."
+          ],
+          "sourceIds": [
+            "gotic"
+          ]
+        },
+        {
+          "id": "ciutadella",
+          "title": "Ciutadella: take a break between walks",
+          "paragraphs": [
+            "Parc de la Ciutadella has paths, greenery, a lake and a monumental cascade. It can be a pleasant pause before heading towards the waterfront, especially if you prefer a plan without a timed activity.",
+            "Check park access for your day and avoid relying on a lake activity being available whenever you arrive. For an anniversary, time together at an unhurried pace can be more appealing than adding another ticketed visit."
+          ],
+          "sourceIds": [
+            "ciutadella"
+          ]
+        },
+        {
+          "id": "waterfront",
+          "title": "Walk by the sea and choose where to stop",
+          "paragraphs": [
+            "A waterfront walk combines conversation, views and the option to stop for something to eat or drink. Pick the stretch that connects best with your accommodation or next activity; you do not need to walk the entire coast.",
+            "If dinner follows a boat trip, allow a comfortable gap after the return. The restaurant and boat are separate reservations. Your evening will be easier to enjoy if it does not rely on arriving at the exact minute."
+          ]
+        },
+        {
+          "id": "private-boat",
+          "title": "A boat for your group, with a skipper",
+          "paragraphs": [
+            "The JimBoats romantic experience is a private trip from Port Olímpic lasting 1 to 4 hours. The skipper handles the sailing; the price is for the boat for your group, not two seats on a shared excursion.",
+            "Skipper, fuel, insurance, the decorations shown in the photos and a drink are included from the first hour; snacks are included from two hours. The boat carries up to six guests. If you would rather focus on the last light of the day, you can also choose the sunset experience.",
+            "The romantic experience includes the decorations shown in the photos. We have several decoration options; if you would like something special, share your idea with us so we can agree on the details before booking."
+          ]
+        },
+        {
+          "id": "budget",
+          "title": "Choose around your time and budget",
+          "paragraphs": [
+            "For a flexible date, pick a walk and a stop you both like. For an occasion built around one activity, book that first and organise the rest around it. When choosing a boat trip, compare duration, total price and extras before deciding.",
+            "A longer booking is not the only way to make it special. Think about how much time you want on the water and whether you would like another plan on land. The JimBoats prices page helps you compare experiences while keeping the per-boat price clear."
+          ]
+        },
+        {
+          "id": "surprise",
+          "title": "Planning a surprise or anniversary",
+          "paragraphs": [
+            "Coordinate the date and time with the activity provider even if the rest is a surprise. Explain what matters to you and get those details confirmed. A photograph on another website does not tell you what is included in your booking."
+          ],
+          "bullets": [
+            "Choose one main activity and leave space between plans.",
+            "Confirm special requests and any supplements separately.",
+            "Check cancellation conditions and the forecast before going."
+          ]
+        },
+        {
+          "id": "jimboats",
+          "title": "Advice from the JimBoats skippers",
+          "paragraphs": [
+            "The romantic experience includes the decorations shown in the photos. We have several decoration options; if you would like something special, share your idea with us so we can agree on the details before booking."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "Is the romantic trip only for two people?",
+          "You can book it as a couple. The boat is private for your group and accommodates up to six guests, with a skipper."
+        ],
+        [
+          "What decorations are included? Can we request other details?",
+          "The romantic experience includes the decorations shown in the photos. We have several decoration options; if you would like something special, share your idea with us so we can agree on the details before booking. Dinner or a photographer should be arranged separately."
+        ],
+        [
+          "Are romantic and sunset trips the same?",
+          "No. Romantic describes the occasion; sunset focuses on a time of day. Read both experience pages to choose the one that fits your plans."
+        ]
+      ],
+      "cta": {
+        "title": "Your moment, on board.",
+        "text": "Explore the romantic experience and its conditions. If you have something special in mind, tell us before booking."
+      },
+      "updatedAt": "2026-11-05"
+    },
+    "food": {
+      "slug": "barcelona-boat-trip-drinks-and-tapas",
+      "title": "An aperitif at sea in Barcelona: drinks and the sharing board",
+      "seoTitle": "Barcelona boat trip: drinks and sharing board",
+      "description": "Choose a short toast or a longer trip with a board to share. Here is what to expect on a private cruise aboard LENA.",
+      "category": "On board",
+      "imageAlt": "Guests sharing an aperitif under the boat canopy",
+      "lead": "Choose a short toast or a longer trip with a board to share. Here is what to expect on a private cruise aboard LENA.",
+      "sections": [
+        {
+          "id": "plan",
+          "title": "A toast on a one-hour trip",
+          "paragraphs": [
+            "If you would like to leave Port Olímpic, see Barceloneta from the water and raise a glass together before heading back to shore, choose a one-hour daytime trip. Drinks are included from the first hour. It works particularly well before lunch in town when you want the sea to be the first part of your day together."
+          ]
+        },
+        {
+          "id": "duration",
+          "title": "What comes on the board",
+          "paragraphs": [
+            "{food} Think of it as something to pick at while talking and watching the shoreline slip past. If lunch or dinner is the centrepiece of your afternoon, plan the board as an aperitif before the meal. Leave some time between returning to the harbour and sitting down at your restaurant so the last part of the trip feels as leisurely as the first."
+          ]
+        },
+        {
+          "id": "group",
+          "title": "Choosing drinks for your party",
+          "paragraphs": [
+            "{drinks} For example, if two people would like cava and the others prefer soft drinks, let the team know when you arrange your trip. The skipper can put together the right mix for the people on board. You need only decide what you would enjoy sharing, rather than choosing a bottle from every category."
+          ]
+        },
+        {
+          "id": "on-board",
+          "title": "Making time for the aperitif",
+          "paragraphs": [
+            "Allow at least two hours if you would like to share the board. You can book a daytime cruise or head out in the early morning or evening light. Tell your skipper if the view or a quiet moment together is what you are most looking forward to. The wind and sea conditions guide the route on the day.",
+            "Check preferences with your guests before you leave home. If anyone has an allergy or needs to check an ingredient, ask JimBoats before booking what can be arranged. Agree where to meet if people are arriving separately at the harbour. Once those details are settled, all the group needs to decide together is when to raise the first glass."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "Does the one-hour trip include the board?",
+          "The board is served on trips of two hours or more. The one-hour trip includes a drink."
+        ],
+        [
+          "Can we choose cava and soft drinks?",
+          "Yes. Share your preferences and the number of guests so the team can prepare the selection."
+        ]
+      ],
+      "cta": {
+        "title": "Private boat trip in Barcelona",
+        "text": "Leave the noise ashore. Enjoy a private trip along the coast, see Barcelona from a new perspective and share the Mediterranean at your own pace."
+      }
+    },
+    "birthday": {
+      "slug": "birthday-boat-trip-barcelona",
+      "title": "Planning a private birthday boat trip in Barcelona",
+      "seoTitle": "Planning a private birthday boat trip in Barcelona",
+      "description": "A small celebration at sea for up to six guests, from choosing a time and a toast to keeping a surprise under wraps.",
+      "category": "Celebrations",
+      "imageAlt": "Three guests on board in the marina",
+      "lead": "A small celebration at sea for up to six guests, from choosing a time and a toast to keeping a surprise under wraps.",
+      "sections": [
+        {
+          "id": "plan",
+          "title": "Start with the guest list",
+          "paragraphs": [
+            "LENA welcomes up to six guests. Count the birthday guest as well as everyone you want to bring before settling on a date. You book the whole boat, and a skipper takes care of the sailing. That makes it easy to arrange a small celebration without buying individual seats or relying on other passengers to join the trip."
+          ]
+        },
+        {
+          "id": "duration",
+          "title": "Choose a length that fits the occasion",
+          "paragraphs": [
+            "For a surprise spin along the coast and a toast before lunch on land, a one-hour daytime cruise might be just right. To share the board, open presents and catch up with friends, give yourselves at least two hours. Sunset trips also start at two hours if evening light matters to you. Look up the whole-boat price for your chosen duration before you divide the cost between guests."
+          ]
+        },
+        {
+          "id": "group",
+          "title": "Bring the music and plan the toast",
+          "paragraphs": [
+            "{drinks} Trips of two hours or more also include a snack board to share. Put a short playlist on your phone for the Bluetooth speaker on board. Giving one friend the music and another the toast means the person organising the birthday can join in the celebration too."
+          ]
+        },
+        {
+          "id": "on-board",
+          "title": "Arranging a surprise",
+          "paragraphs": [
+            "Flowers, a cake, decorations or a photographer need to be discussed in advance and may cost extra. Ask what is possible on your date and how much it costs before promising a surprise. Choose one person to speak to the team and agree on how and when everyone will arrive at the boat. If several people are bringing presents, agree who will carry them and when the birthday guest should open them.",
+            "Send the group the meeting point on Moll de Xaloc and aim to arrive about fifteen minutes before departure. Leave time between the return to the harbour and any dinner or tickets booked afterwards. A clear meeting plan helps everyone keep the surprise, even when the birthday guest has no idea where you are taking them."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "How many people can join the birthday trip?",
+          "Up to six guests, including the birthday guest."
+        ],
+        [
+          "Are decorations included?",
+          "Decorations are optional and cost extra. Arrange the details with the team before booking."
+        ]
+      ],
+      "cta": {
+        "title": "Private boat trip in Barcelona",
+        "text": "Leave the noise ashore. Enjoy a private trip along the coast, see Barcelona from a new perspective and share the Mediterranean at your own pace."
+      }
+    },
+    "hen": {
+      "slug": "barcelona-hen-party-boat-trip",
+      "title": "Barcelona hen party boat trip: a private plan for up to six",
+      "seoTitle": "Barcelona hen party boat trip for up to six",
+      "description": "Plan a private Barcelona hen do or bachelorette boat trip for up to six guests: group budget, drinks, sharing snacks and real photos aboard LENA.",
+      "category": "Celebrations",
+      "imageAlt": "The bride and a friend celebrating a hen party aboard LENA in Barcelona",
+      "lead": "Your own boat, your favourite playlist and Barcelona across the water. For a hen do or bachelorette group of up to six, LENA offers a private skippered trip from Port Olímpic. Here is how to choose the length of your trip, split the budget and arrange a surprise that everyone can enjoy.",
+      "sections": [
+        {
+          "id": "group",
+          "title": "Count the bride in your group of six",
+          "paragraphs": [
+            "LENA accommodates up to six guests, including the bride. You book the whole boat, so the trip is private to your group. Confirm your guest list before choosing a date: if there are more than six of you, LENA cannot take you all together.",
+            "The boat is a 7.49-metre Mediterranean llaüt, with space to sit, share an aperitif and enjoy the coast. It suits a small group looking for time to chat, toast the bride and take photographs on the water."
+          ],
+          "photo": {
+            "slug": "hen-party-bride",
+            "alt": "The bride on LENA’s bow, with the W Hotel and Barcelona’s coast in the background"
+          }
+        },
+        {
+          "id": "budget",
+          "title": "What does a private hen party boat trip cost?",
+          "paragraphs": [
+            "The daytime private trip costs {private1h} for one hour, {private2h} for two hours or {private3h} for three hours. These are final prices for the whole boat, including the skipper, fuel and insurance. You do not need a boating licence.",
+            "For six guests sharing a two-hour trip, that works out at {perGuest2h} each. The booking is still {private2h} for the boat; individual tickets are not sold. A smaller group pays the same boat price. The sunset experience starts at {sunset2h} for two hours, with optional extras charged separately.",
+            "One hour can work as a short surprise between other activities. Choose two hours to leave more time for the sharing board and a relaxed toast. A three-hour trip gives you longer on the water; any swimming stop depends on sea conditions and the skipper’s decision."
+          ]
+        },
+        {
+          "id": "drinks",
+          "title": "Drinks, sharing snacks and the bride’s playlist",
+          "paragraphs": [
+            "{drinks}",
+            "{food} A one-hour trip includes a drink but not the sharing board.",
+            "Tell us a few preferences, such as cava for the toast and alcohol-free options for some guests. Quantities are prepared for the size of your group. This is not an open bar or a package containing every drink option. Please ask about allergies or dietary requirements before booking.",
+            "A Bluetooth speaker is included in every experience. Save the bride’s playlist on your phone and have the song for your toast ready."
+          ],
+          "photo": {
+            "slug": "hen-party-toast",
+            "alt": "A hen party detail aboard LENA, with Barcelona’s sea in the background"
+          }
+        },
+        {
+          "id": "itinerary",
+          "title": "Planning two hours from Port Olímpic",
+          "paragraphs": [
+            "Meet at the Moll de Xaloc meeting point around fifteen minutes before departure. Share the contact page with everyone so each guest has the location. Once you are aboard, the skipper explains what you need to know and takes you along Barcelona’s coastline.",
+            "Set aside a little time for photographs and the aperitif, then enjoy the sea at your own pace. Ask the skipper if you would like to swim; a swimming stop is not guaranteed. Paddleboarding is an optional €20 extra per booking, selected separately when available.",
+            "Leave a buffer between your return and any restaurant booking or next activity. If you choose the sunset experience, check the sunset time for your date before arranging the rest of your afternoon."
+          ],
+          "photo": {
+            "slug": "hen-party-paddle",
+            "alt": "A guest enjoying paddleboarding beside LENA, available as an optional extra"
+          }
+        },
+        {
+          "id": "surprise",
+          "title": "Making the surprise easy to organise",
+          "paragraphs": [
+            "Choose one contact person for JimBoats and another to gather the group. Send us your date, guest count and whether the bride knows about the plan by WhatsApp. Agreeing these details in advance avoids crossed messages on the day.",
+            "Flowers, decorations, a cake or a photographer need advance coordination and may cost extra. Check what can be arranged before buying anything. These photographs show a hen party aboard LENA; guests’ decorations and accessories are not automatically included in a booking."
+          ],
+          "photo": {
+            "slug": "hen-party-preparations",
+            "alt": "The bride and a friend adjusting her veil during their celebration aboard LENA"
+          }
+        },
+        {
+          "id": "booking",
+          "title": "From the group chat to your booking",
+          "paragraphs": [
+            "Open the private boat trip page, choose your duration and check the calendar. You can then select available extras and enter your booking details. For a surprise or questions about the group, contact us on WhatsApp before paying.",
+            "Cancellation is free up to 48 hours before departure. With less notice, contact the team on WhatsApp to discuss your situation. If JimBoats cancels because of unsuitable conditions, your money is refunded and the captain contacts you."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "Can we bring seven people if one is the bride?",
+          "No. The maximum is six guests in total, including the bride."
+        ],
+        [
+          "Are drinks and food included?",
+          "Drinks are included from one hour. A sharing board is included on trips of two hours or more, with quantities suited to the group. This is not an open bar."
+        ],
+        [
+          "Will we share the boat with another hen party?",
+          "No. LENA is booked privately for your group, with a skipper included."
+        ],
+        [
+          "Are hen party decorations included?",
+          "Decorations are not included in the trip price. Ask what can be arranged and the additional cost before booking."
+        ]
+      ],
+      "cta": {
+        "title": "Choose your private Barcelona boat trip",
+        "text": "Check LENA’s durations and availability for your group of up to six. We can help arrange your surprise on WhatsApp."
+      },
+      "updatedAt": "2026-11-05"
+    }
+  }
+}

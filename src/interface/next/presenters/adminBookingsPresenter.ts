@@ -1,3 +1,4 @@
+import { adminEs, adminSlotLabels } from "@/i18n/admin/es";
 import { adminNavItems } from "@/components/layout/AdminNavigation";
 import type {
   AdminBooking,
@@ -17,26 +18,41 @@ import type {
 } from "@/modules/booking/application/ports/BookingRepository";
 import { minutesToClockTime } from "@/modules/booking/application/BookingApplicationMappers";
 
+const experienceNamesEs: Readonly<Record<string, string | undefined>> = {
+  daytrip: "Paseo privado",
+  "ex-sunset": "Paseo al atardecer",
+  sunrise: "Paseo al amanecer",
+  romantic: "Paseo romántico",
+};
+
+function experienceSummary(name: string, minutes: number, price: number) {
+  const duration =
+    minutes % 60 === 0
+      ? `${minutes / 60} ${minutes === 60 ? "hora" : "horas"}`
+      : `${minutes} min`;
+  return `${name} · ${duration} · ${adminEs.euros(price)}`;
+}
+
 const previewState: AdminBookingsState = {
   bookings: [
     {
       auditEntries: [
         {
           action: "created",
-          actionLabel: "Created",
+          actionLabel: adminEs["Created"],
           actorLabel: "admin-user",
-          createdAtLabel: "01 Jun 2026, 12:00",
-          detail: "Booking was created.",
+          createdAtLabel: "01 jun 2026, 12:00",
+          detail: adminEs["Booking was created."],
           id: "audit-preview-created",
           reason: null,
           tone: "emerald",
         },
         {
           action: "updated",
-          actionLabel: "Updated",
+          actionLabel: adminEs["Updated"],
           actorLabel: "admin-user",
-          createdAtLabel: "02 Jun 2026, 12:00",
-          detail: "Updated guest count and internal notes.",
+          createdAtLabel: "02 jun 2026, 12:00",
+          detail: adminEs["Updated guest count and internal notes."],
           id: "audit-preview-updated",
           reason: null,
           tone: "sky",
@@ -50,7 +66,8 @@ const previewState: AdminBookingsState = {
       depositAmount: 100,
       endTime: "14:00",
       experienceId: "sunset-cruise",
-      experienceName: "Sunset Cruise",
+      experienceName: "Paseo al atardecer",
+      experienceSummary: experienceSummary("Paseo al atardecer", 240, 1200),
       extras: [
         {
           extraId: "champagne",
@@ -66,13 +83,13 @@ const previewState: AdminBookingsState = {
       localDate: "2026-06-10",
       needsAcknowledgement: true,
       operationsSeenAt: null,
-      operationsSeenLabel: "Not seen yet",
+      operationsSeenLabel: adminEs["Not seen yet"],
       reference: "JB-2026-0001",
       remainingAmount: 1190,
       slotKey: "morning",
       startTime: "10:00",
       status: "confirmed",
-      statusLabel: "Confirmed",
+      statusLabel: adminEs["Confirmed"],
       totalAmount: 1290,
       whatsappEnabled: true,
       whatsappPhone: "+34 600 000 000",
@@ -91,7 +108,7 @@ const previewState: AdminBookingsState = {
         {
           endTime: "14:00",
           id: "morning",
-          label: "Morning",
+          label: "Mañana",
           startTime: "10:00",
         },
       ],
@@ -121,7 +138,10 @@ export function getAdminBookingsPreviewPage(): AdminBookingsPageData {
 }
 
 export async function getAdminBookingsPage(): Promise<AdminBookingsPageData> {
-  if (process.env.JIMBOATS_ADMIN_PREVIEW_DATA === "1") {
+  if (
+    process.env.JIMBOATS_ADMIN_PREVIEW_DATA === "1" &&
+    process.env.JIMBOATS_LOCAL_BOOKINGS !== "1"
+  ) {
     return getAdminBookingsPreviewPage();
   }
 
@@ -147,6 +167,8 @@ export function presentAdminBookingsWorkspace(
 }
 
 function presentBooking(booking: AdminBookingDto): AdminBooking {
+  const name =
+    experienceNamesEs[booking.experienceId] ?? booking.experienceNameSnapshot;
   return {
     auditEntries: (booking.auditEntries ?? []).map(presentAuditEntry),
     calendarBlockId: booking.calendarBlockId,
@@ -157,7 +179,12 @@ function presentBooking(booking: AdminBookingDto): AdminBooking {
     depositAmount: fromMoney(booking.priceSnapshot.depositAmount),
     endTime: booking.endTime,
     experienceId: booking.experienceId,
-    experienceName: booking.experienceNameSnapshot,
+    experienceName: name,
+    experienceSummary: experienceSummary(
+      name,
+      booking.selectedSlot.durationMinutes,
+      fromMoney(booking.priceSnapshot.basePrice),
+    ),
     extras: booking.priceSnapshot.extraLines.map((line) => ({
       extraId: line.extraId,
       name: line.nameSnapshot,
@@ -174,7 +201,7 @@ function presentBooking(booking: AdminBookingDto): AdminBooking {
     operationsSeenAt: booking.operationsSeenAt,
     operationsSeenLabel: booking.operationsSeenAt
       ? formatAuditDate(new Date(booking.operationsSeenAt))
-      : "Not seen yet",
+      : adminEs["Not seen yet"],
     reference: booking.reference,
     remainingAmount: fromMoney(booking.priceSnapshot.remainingAmount),
     slotKey: booking.selectedSlot.slotKey,
@@ -200,7 +227,7 @@ function presentAuditEntry(
   return {
     action: auditAction(entry.action),
     actionLabel: auditActionLabel(entry.action),
-    actorLabel: entry.actorUserId ?? "System",
+    actorLabel: entry.actorUserId ?? adminEs["System"],
     createdAtLabel: formatAuditDate(entry.createdAt),
     detail: auditDetail(entry),
     id: entry.id,
@@ -217,9 +244,11 @@ function presentExperienceOption(
     capacity: experience.capacity,
     depositAmount: fromMoney(experience.depositAmount),
     durationMinutes: experience.durationMinutes,
+    availableDurations: experience.hourlyRates?.map((rate) => rate.hours),
     id: experience.id,
-    name: experience.internalName,
-    slotMode: experience.slotPolicy.mode.toLowerCase() as AdminBookingExperienceOption["slotMode"],
+    name: experienceNamesEs[experience.id] ?? experience.internalName,
+    slotMode:
+      experience.slotPolicy.mode.toLowerCase() as AdminBookingExperienceOption["slotMode"],
     slots:
       experience.slotPolicy.mode === "FIXED_SLOTS"
         ? experience.slotPolicy.fixedSlots
@@ -227,7 +256,7 @@ function presentExperienceOption(
             .map((slot) => ({
               endTime: minutesToClockTime(slot.endMinutes),
               id: slot.id,
-              label: slot.label,
+              label: adminSlotLabels[slot.label] ?? slot.label,
               startTime: minutesToClockTime(slot.startMinutes),
             }))
         : [],
@@ -268,18 +297,18 @@ function auditAction(
 
 function auditActionLabel(action: AdminBookingAuditEntryDto["action"]) {
   if (action === "BOOKING_CANCELLED") {
-    return "Cancelled";
+    return adminEs["Cancelled"];
   }
 
   if (action === "BOOKING_RESCHEDULED") {
-    return "Rescheduled";
+    return adminEs["Rescheduled"];
   }
 
   if (action === "BOOKING_UPDATED") {
-    return "Updated";
+    return adminEs["Updated"];
   }
 
-  return "Created";
+  return adminEs["Created"];
 }
 
 function auditTone(
@@ -302,11 +331,13 @@ function auditTone(
 
 function auditDetail(entry: AdminBookingAuditEntryDto) {
   if (entry.action === "BOOKING_CREATED") {
-    return "Booking was created.";
+    return adminEs["Booking was created."];
   }
 
   if (entry.action === "BOOKING_CANCELLED") {
-    return "Booking was cancelled and the calendar block was released.";
+    return adminEs[
+      "Booking was cancelled and the calendar block was released."
+    ];
   }
 
   if (entry.action === "BOOKING_RESCHEDULED") {
@@ -316,10 +347,10 @@ function auditDetail(entry: AdminBookingAuditEntryDto) {
   const changedFields = readChangedFields(entry.diff);
 
   if (changedFields.length === 0) {
-    return "Booking details were updated.";
+    return adminEs["Booking details were updated."];
   }
 
-  return `Updated ${formatList(changedFields)}.`;
+  return adminEs.updatedFields(formatList(changedFields));
 }
 
 function readChangedFields(diff: AdminBookingAuditEntryDto["diff"]) {
@@ -342,17 +373,19 @@ function rescheduleDetail(diff: AdminBookingAuditEntryDto["diff"]) {
   const after = selectedSlotLabel(readObject(diffObject.after));
 
   if (!before || !after) {
-    return "Booking date or time was changed.";
+    return adminEs["Booking date or time was changed."];
   }
 
-  return `Moved from ${before} to ${after}.`;
+  return adminEs.movedSlot(before, after);
 }
 
 function selectedSlotLabel(input: Record<string, unknown>) {
-  const localDate = typeof input.localDate === "string" ? input.localDate : null;
+  const localDate =
+    typeof input.localDate === "string" ? input.localDate : null;
   const startMinutes =
     typeof input.startMinutes === "number" ? input.startMinutes : null;
-  const endMinutes = typeof input.endMinutes === "number" ? input.endMinutes : null;
+  const endMinutes =
+    typeof input.endMinutes === "number" ? input.endMinutes : null;
 
   if (!localDate || startMinutes === null || endMinutes === null) {
     return null;
@@ -365,11 +398,11 @@ function selectedSlotLabel(input: Record<string, unknown>) {
 
 function formatAuditField(field: string) {
   const fieldLabels: Record<string, string> = {
-    customer: "customer",
-    guestCount: "guest count",
-    internalNotes: "internal notes",
-    price: "price snapshot",
-    selectedSlot: "date and time",
+    customer: adminEs["customer"],
+    guestCount: adminEs["guest count"],
+    internalNotes: adminEs["internal notes"],
+    price: adminEs["price snapshot"],
+    selectedSlot: adminEs["date and time"],
   };
 
   return fieldLabels[field] ?? field;
@@ -380,11 +413,11 @@ function formatList(items: string[]) {
     return items[0];
   }
 
-  return `${items.slice(0, -1).join(", ")} and ${items.at(-1)}`;
+  return `${items.slice(0, -1).join(", ")} y ${items.at(-1)}`;
 }
 
 function formatAuditDate(date: Date) {
-  return new Intl.DateTimeFormat("en", {
+  return new Intl.DateTimeFormat("es-ES", {
     day: "2-digit",
     hour: "2-digit",
     hour12: false,
@@ -405,24 +438,24 @@ function readObject(input: unknown): Record<string, unknown> {
 
 function statusLabel(status: AdminBookingDto["status"]) {
   if (status === "CONFIRMED") {
-    return "Confirmed";
+    return adminEs["Confirmed"];
   }
 
   if (status === "PENDING_PAYMENT") {
-    return "Pending payment";
+    return adminEs["Pending payment"];
   }
 
   if (status === "PAYMENT_FAILED") {
-    return "Payment failed";
+    return adminEs["Payment failed"];
   }
 
   if (status === "EXPIRED") {
-    return "Expired";
+    return adminEs["Expired"];
   }
 
   if (status === "EXITED") {
-    return "Exited checkout";
+    return adminEs["Exited checkout"];
   }
 
-  return "Cancelled";
+  return adminEs["Cancelled"];
 }

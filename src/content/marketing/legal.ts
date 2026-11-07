@@ -1,0 +1,61 @@
+import type { MarketingLocale } from "./routes";
+export const legalDescriptions: Record<MarketingLocale, string> = {
+  es: "Información legal de {legalName}, NIF {taxId}. Consulta el domicilio fiscal en Barcelona, los datos de contacto y el punto de embarque.",
+  en: "Legal information for {legalName}, Spanish tax ID {taxId}. Find the registered office in Barcelona, contact details and boarding point.",
+  fr: "Informations légales de {legalName}, NIF {taxId}. Consultez le siège social à Barcelone, les coordonnées et le point d’embarquement.",
+  de: "Anbieterinformationen zu {legalName}, NIF {taxId}. Hier findet ihr den Firmensitz in Barcelona, Kontaktdaten und den Treffpunkt zum Einsteigen.",
+  nl: "Juridische informatie over {legalName}, NIF {taxId}. Bekijk het bedrijfsadres in Barcelona, de contactgegevens en de opstapplaats.",
+};
+
+export const legalCopy: Record<MarketingLocale, readonly string[]> = {
+  es: [
+    "Información legal",
+    "Titular de la web",
+    "Razón social",
+    "NIF",
+    "Domicilio social",
+    "Contacto",
+    "Punto de embarque",
+    "El domicilio social no es el punto de encuentro para las salidas. Las experiencias salen del Port Olímpic.",
+  ],
+  en: [
+    "Legal information",
+    "Website owner",
+    "Company name",
+    "Tax ID (NIF)",
+    "Registered address",
+    "Contact",
+    "Boarding point",
+    "The registered address is not the meeting point for boat trips. Experiences depart from Port Olímpic.",
+  ],
+  fr: [
+    "Informations légales",
+    "Éditeur du site",
+    "Raison sociale",
+    "Identifiant fiscal (NIF)",
+    "Siège social",
+    "Contact",
+    "Lieu d’embarquement",
+    "Le siège social n’est pas le point de rendez-vous pour les sorties. Les expériences partent du Port Olímpic.",
+  ],
+  de: [
+    "Anbieterinformationen",
+    "Websitebetreiber",
+    "Firmenname",
+    "Steuernummer (NIF)",
+    "Firmensitz",
+    "Kontakt",
+    "Abfahrtsort",
+    "Der Firmensitz ist nicht der Treffpunkt für die Bootstouren. Die Fahrten starten am Port Olímpic.",
+  ],
+  nl: [
+    "Juridische informatie",
+    "Website-eigenaar",
+    "Bedrijfsnaam",
+    "Fiscaal nummer (NIF)",
+    "Vestigingsadres",
+    "Contact",
+    "Opstapplaats",
+    "Het vestigingsadres is niet het ontmoetingspunt voor de boottochten. De tochten vertrekken vanuit Port Olímpic.",
+  ],
+};

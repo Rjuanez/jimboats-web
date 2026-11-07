@@ -1,6 +1,13 @@
 "use client";
+import { adminEs } from "@/i18n/admin/es";
 
-import { AlertCircle, Bell, FileText, ListChecks, MailCheck } from "lucide-react";
+import {
+  AlertCircle,
+  Bell,
+  FileText,
+  ListChecks,
+  MailCheck,
+} from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -55,7 +62,7 @@ export function AdminNotificationsWorkspace({
 
     if (result.ok) {
       setState(result.data.state);
-      setMessage("Notification rule saved.");
+      setMessage(adminEs["Notification rule saved."]);
     } else {
       setError(result.message);
     }
@@ -73,7 +80,7 @@ export function AdminNotificationsWorkspace({
 
     if (result.ok) {
       setState(result.data.state);
-      setMessage("Notification template saved.");
+      setMessage(adminEs["Notification template saved."]);
     } else {
       setError(result.message);
     }
@@ -91,7 +98,7 @@ export function AdminNotificationsWorkspace({
 
     if (result.ok) {
       setPreview(result.data);
-      setMessage("Preview rendered.");
+      setMessage(adminEs["Preview rendered."]);
     } else {
       setError(result.message);
     }
@@ -109,7 +116,7 @@ export function AdminNotificationsWorkspace({
 
     if (result.ok) {
       setState(result.data.state);
-      setMessage("Notification marked as sent.");
+      setMessage(adminEs["Notification marked as sent."]);
     } else {
       setError(result.message);
     }
@@ -214,27 +221,36 @@ function NotificationsHeader({ state }: { state: AdminNotificationsState }) {
     <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
       <div>
         <p className="text-sm font-semibold uppercase tracking-[0.12em] text-slate-600">
-          Communications
+          {adminEs["Communications"]}
         </p>
         <h1 className="mt-2 text-2xl font-semibold text-slate-950">
-          Notifications
+          {adminEs["Notifications"]}
         </h1>
         <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-          Booking messages, consent-aware channels and editable multilingual
-          templates.
+          {
+            adminEs[
+              "Booking messages, consent-aware channels and editable multilingual templates."
+            ]
+          }
         </p>
       </div>
       <div className="grid gap-3 sm:grid-cols-2 lg:min-w-[36rem] xl:grid-cols-4">
-        <MetricTile label="Active rules" value={state.summary.activeRules} />
         <MetricTile
-          label="Manual review"
+          label={adminEs["Active rules"]}
+          value={state.summary.activeRules}
+        />
+        <MetricTile
+          label={adminEs["Manual review"]}
           value={state.summary.manualReviewDeliveries}
         />
         <MetricTile
-          label="Template warnings"
+          label={adminEs["Template warnings"]}
           value={state.summary.templateWarnings}
         />
-        <MetricTile label="Failed sends" value={state.summary.failedDeliveries} />
+        <MetricTile
+          label={adminEs["Failed sends"]}
+          value={state.summary.failedDeliveries}
+        />
       </div>
     </div>
   );
@@ -250,25 +266,25 @@ function NotificationViewTabs({
       href: "/admin/notifications/rules",
       icon: ListChecks,
       id: "rules",
-      label: "Rules",
+      label: adminEs["Rules"],
     },
     {
       href: "/admin/notifications/templates",
       icon: FileText,
       id: "templates",
-      label: "Templates",
+      label: adminEs["Templates"],
     },
     {
       href: "/admin/notifications/logs",
       icon: MailCheck,
       id: "logs",
-      label: "Logs",
+      label: adminEs["Logs"],
     },
   ] as const;
 
   return (
     <nav
-      aria-label="Notification views"
+      aria-label={adminEs["Notification views"]}
       className="overflow-x-auto border-b border-slate-200"
     >
       <div className="flex min-w-max gap-2">
@@ -313,17 +329,21 @@ function MetricTile({ label, value }: { label: string; value: number }) {
 
 function MissingTemplate() {
   return (
-    <Surface title="Template not found">
+    <Surface title={adminEs["Template not found"]}>
       <div className="flex flex-col items-start gap-4">
         <div className="flex items-center gap-3 text-slate-700">
           <AlertCircle className="size-5 text-amber-600" aria-hidden="true" />
           <p className="text-sm leading-6">
-            This template does not exist or was changed from another session.
+            {
+              adminEs[
+                "This template does not exist or was changed from another session."
+              ]
+            }
           </p>
         </div>
         <Button href="/admin/notifications/templates" variant="secondary">
           <Bell className="size-4" aria-hidden="true" />
-          Back to templates
+          {adminEs["Back to templates"]}
         </Button>
       </div>
     </Surface>
@@ -348,7 +368,7 @@ function SaveStatus({
       className="mb-4 rounded-md border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm"
       role={error || message ? "alert" : "status"}
     >
-      {error ?? message ?? "Saving notifications..."}
+      {error ?? message ?? adminEs["Saving notifications..."]}
     </div>
   );
 }

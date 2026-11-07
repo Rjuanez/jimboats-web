@@ -1,11 +1,6 @@
-import type { FormEvent } from "react";
+import type { FormEvent, ReactNode } from "react";
 
-import {
-  ArrowLeft,
-  ChevronDown,
-  LockKeyhole,
-  ShieldCheck,
-} from "lucide-react";
+import { ArrowLeft, ChevronDown, LockKeyhole, ShieldCheck } from "lucide-react";
 
 import {
   PublicCheckboxField,
@@ -13,6 +8,7 @@ import {
 } from "@/components/forms/PublicBookingFormControls";
 import { Button } from "@/components/ui/Button";
 import { getPublicDictionary } from "@/i18n/public";
+import { termsPages, termsPath } from "@/content/booking/termsRoutes";
 
 import type {
   PublicBookingConsents,
@@ -20,8 +16,14 @@ import type {
   PublicBookingCustomer,
 } from "./PublicBookingTypes";
 import { PublicBookingEmbeddedCheckout } from "./PublicBookingEmbeddedCheckout";
+import { BookingPrivacyNotice } from "./BookingPrivacyNotice";
 
 type PublicBookingPaymentStepProps = {
+  paymentChoice: "DEPOSIT" | "FULL";
+  onChangePaymentChoice: (choice: "DEPOSIT" | "FULL") => void;
+  baselineDepositAmount: number;
+  totalAmount: number;
+  localPayment?: ReactNode;
   checkoutClientSecret: string | null;
   checkoutSessionId: string | null;
   cancellationPolicySummary: string;
@@ -51,6 +53,11 @@ type PublicBookingPaymentStepProps = {
 };
 
 export function PublicBookingPaymentStep({
+  paymentChoice,
+  onChangePaymentChoice,
+  baselineDepositAmount,
+  totalAmount,
+  localPayment,
   checkoutClientSecret,
   checkoutSessionId,
   cancellationPolicySummary,
@@ -79,6 +86,15 @@ export function PublicBookingPaymentStep({
   submitting,
 }: PublicBookingPaymentStepProps) {
   const labels = getPublicDictionary(content.locale).booking.labels;
+  const termsLocale = content.locale === "ca" ? "es" : content.locale;
+  const termsAgreement = (
+    <p className="mt-4 text-center text-xs leading-5 text-text-muted">
+      {labels.termsAgreement}{" "}
+      <a className="font-semibold underline underline-offset-4" href={termsPath(content.locale)} target="_blank" rel="noreferrer">
+        {termsPages[termsLocale].label}
+      </a>.
+    </p>
+  );
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (checkoutClientSecret) {
@@ -112,14 +128,18 @@ export function PublicBookingPaymentStep({
         </header>
 
         <div className={cardClassName} id={formId}>
-          <PublicBookingEmbeddedCheckout
-            checkoutClientSecret={checkoutClientSecret}
-            checkoutSessionId={checkoutSessionId}
-            returnPath={`${content.bookHref}/success`}
-            securePaymentLabel={labels.securePayment}
-            stripePublishableKey={stripePublishableKey}
-          />
+          {termsAgreement}
+          {localPayment ?? (
+            <PublicBookingEmbeddedCheckout
+              checkoutClientSecret={checkoutClientSecret}
+              checkoutSessionId={checkoutSessionId}
+              returnPath={`${content.bookHref}/success`}
+              securePaymentLabel={labels.securePayment}
+              stripePublishableKey={stripePublishableKey}
+            />
+          )}
         </div>
+        <BookingPrivacyNotice notice={content.privacy} />
       </div>
     );
   }
@@ -135,11 +155,7 @@ export function PublicBookingPaymentStep({
         </p>
       </header>
 
-      <form
-        className={cardClassName}
-        id={formId}
-        onSubmit={handleSubmit}
-      >
+      <form className={cardClassName} id={formId} onSubmit={handleSubmit}>
         <section
           aria-labelledby="public-booking-details-title"
           className="border-b border-sand/20 px-5 py-6 lg:px-8 lg:py-8"
@@ -228,6 +244,7 @@ export function PublicBookingPaymentStep({
               </span>
             </label>
           </div>
+          <BookingPrivacyNotice notice={content.privacy} />
         </section>
 
         <section
@@ -244,10 +261,14 @@ export function PublicBookingPaymentStep({
             <PublicTextField
               autoComplete="off"
               className="rounded-2xl sm:flex-1"
-              disabled={submitting || couponLoading || Boolean(couponAppliedCode)}
+              disabled={
+                submitting || couponLoading || Boolean(couponAppliedCode)
+              }
               label={labels.coupon}
               name="couponCode"
-              onChange={(event) => onChangeCouponCode(event.currentTarget.value)}
+              onChange={(event) =>
+                onChangeCouponCode(event.currentTarget.value)
+              }
               placeholder={labels.couponPlaceholder}
               value={couponCode}
             />
@@ -265,7 +286,10 @@ export function PublicBookingPaymentStep({
             </Button>
           </div>
           {couponAppliedCode ? (
-            <p className="mt-3 text-sm font-semibold text-primary" role="status">
+            <p
+              className="mt-3 text-sm font-semibold text-primary"
+              role="status"
+            >
               {labels.couponApplied(couponAppliedCode)}
             </p>
           ) : null}
@@ -278,6 +302,49 @@ export function PublicBookingPaymentStep({
             </p>
           ) : null}
         </section>
+
+        <fieldset
+          disabled={submitting}
+          className="border-b border-sand/20 px-5 py-6 lg:px-8 lg:py-8"
+        >
+          <legend className="float-left mb-5 w-full font-display text-2xl text-text lg:text-3xl">
+            {labels.paymentChoice}
+          </legend>
+          <div className="clear-both grid gap-3 sm:grid-cols-2">
+            {(["DEPOSIT", "FULL"] as const).map((choice) => (
+              <label
+                key={choice}
+                className="flex min-w-0 cursor-pointer items-start gap-3 rounded-2xl border border-sand/60 bg-background p-4 has-[:checked]:border-primary has-[:checked]:bg-primary/5"
+              >
+                <input
+                  type="radio"
+                  name="paymentChoice"
+                  value={choice}
+                  checked={paymentChoice === choice}
+                  onChange={() => onChangePaymentChoice(choice)}
+                  className="mt-1 size-5 shrink-0 accent-primary focus-visible:outline-2 focus-visible:outline-offset-2"
+                />
+                <span className="min-w-0 text-sm leading-6">
+                  <span className="block font-semibold">
+                    {choice === "FULL" ? labels.payFull : labels.payDeposit}
+                  </span>
+                  <span className="block text-xl font-semibold">
+                    {formatPrice(
+                      choice === "FULL" ? totalAmount : baselineDepositAmount,
+                    )}
+                  </span>
+                  <span className="block text-text-muted">
+                    {choice === "FULL"
+                      ? labels.paidInFull
+                      : labels.remainingBalance(
+                          formatPrice(totalAmount - baselineDepositAmount),
+                        )}
+                  </span>
+                </span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
 
         <section
           aria-labelledby="public-booking-consents-title"
@@ -318,20 +385,6 @@ export function PublicBookingPaymentStep({
                 })
               }
             />
-            <PublicCheckboxField
-              checked={consents.marketing}
-              className="rounded-2xl"
-              description={labels.promotionsDescription}
-              disabled={submitting}
-              label={labels.promotions}
-              name="marketing"
-              onChange={(event) =>
-                onChangeConsents({
-                  ...consents,
-                  marketing: event.currentTarget.checked,
-                })
-              }
-            />
           </div>
         </section>
 
@@ -365,9 +418,7 @@ export function PublicBookingPaymentStep({
             </div>
           </div>
 
-          <p className="mt-4 text-center text-xs leading-5 text-text-muted">
-            {labels.termsAgreement}
-          </p>
+          {termsAgreement}
 
           <div className="mt-6 flex flex-col-reverse gap-3 lg:flex-row lg:justify-between">
             <Button

@@ -1,0 +1,1057 @@
+{
+  "es": {
+    "breadcrumb": "Experiencias",
+    "breadcrumbLabel": "Ruta de navegación",
+    "about": "Sobre este paseo",
+    "included": "Qué incluye el precio",
+    "itinerary": "Así será la salida",
+    "audience": "Para quién es",
+    "gallery": "El barco y la vida a bordo",
+    "galleryNote": "Fotografías de JimBoats y su embarcación; la luz y el recorrido cambian con cada salida.",
+    "faq": "Preguntas sobre esta experiencia",
+    "reviews": "Opiniones de quienes han navegado con nosotros",
+    "reviewsSpecific": "Selección vinculada a este tipo de paseo. La valoración y el total de opiniones corresponden a JimBoats en conjunto.",
+    "reviewsGeneral": "Opiniones sobre el barco y el equipo JimBoats; no se atribuyen a esta salida concreta. La valoración es global de JimBoats.",
+    "reserve": "Ver fechas y reservar",
+    "finalPrice": "Precio final del barco, no por persona.",
+    "duration": "Duración a elegir",
+    "people": "Grupo",
+    "location": "Puerto de salida",
+    "includedShort": "Patrón, combustible, seguro y altavoz Bluetooth",
+    "noLicence": "No necesitas licencia ni experiencia navegando.",
+    "extras": "Los extras se añaden aparte, según disponibilidad.",
+    "viewPrices": "Ver todas las tarifas",
+    "from": "desde",
+    "for": "por",
+    "hour": "hora",
+    "hours": "horas",
+    "priceQuestion": "¿Cuánto cuesta este paseo y qué incluye?",
+    "priceAnswer": "El precio empieza en {price} por {hours}. Es el precio final del barco para un grupo de hasta 6 personas e incluye patrón, combustible, seguro y altavoz Bluetooth. Los extras se contratan aparte.",
+    "durationQuestion": "¿Qué duración puedo reservar?",
+    "durationAnswer": "Puedes elegir entre {min} y {max} horas. Cada duración tiene su tarifa; podrás revisar el total antes de pasar al pago. Añadir tiempo depende de la disponibilidad del barco.",
+    "capacityQuestion": "¿El barco es privado y cuántas personas pueden venir?",
+    "capacityAnswer": "El barco se reserva solo para vuestro grupo, hasta 6 personas, incluidos los niños. El patrón os acompaña y se encarga de navegar.",
+    "meetingQuestion": "¿Desde dónde salimos y dónde termina el paseo?",
+    "meetingAnswer": "Embarcamos y regresamos en Port Olímpic, Barcelona. El punto de encuentro es Moll de Xaloc, Pantalan 5; consulta el mapa y acuerda con el equipo los detalles de llegada.",
+    "bookingQuestion": "¿Cómo se reserva y se añaden extras?",
+    "bookingAnswer": "Continúa desde esta ficha: la experiencia ya estará seleccionada. Elige duración, fecha y hora, revisa los extras disponibles y completa tus datos antes de pagar.",
+    "profiles": {
+      "private": {
+        "lead": "Navega por la costa de Barcelona en un barco privado para hasta seis personas, con salida desde Port Olímpic. Elige entre {min} y {max} horas, desde {price} por {hours} para todo el barco. Incluye patrón, combustible, seguro y bebida; desde dos horas, también aperitivo.",
+        "paragraphs": [
+          "Alquila un barco privado con patrón por horas en Barcelona y reserva la menorquina para tu grupo. El paseo de día permite elegir desde una escapada de una hora hasta seis horas a bordo, con el patrón encargado de navegar.",
+          "Con una salida corta disfrutaréis del litoral y las vistas de la ciudad. Una duración más larga deja más margen para navegar con calma y valorar una parada de baño con el capitán, si las condiciones lo permiten. No prometemos un recorrido fijo: lo adaptamos al tiempo disponible y al mar."
+        ],
+        "steps": [
+          "Subid a bordo en Port Olímpic, donde os espera vuestro patrón.",
+          "Recorred la costa de Barcelona en un barco solo para vuestro grupo.",
+          "Disfrutad de una bebida y de las vistas; desde 2 horas, también tenéis snacks.",
+          "Terminamos el paseo en Port Olímpic a la hora de vuestra reserva."
+        ],
+        "audience": "Amigos, familias o parejas que quieren un barco solo para su grupo y flexibilidad para elegir las horas.",
+        "faqs": [
+          [
+            "¿Se puede reservar solo una hora?",
+            "Sí. Puedes reservar este paseo desde 1 hora. El tiempo incluye la salida del puerto y el regreso; para disponer de más tiempo navegando, elige una duración mayor."
+          ],
+          [
+            "¿Podemos parar para bañarnos?",
+            "Consúltalo con el patrón. Una parada depende de la duración, el estado del mar y la ruta segura de ese día; una reserva de una hora puede no dejar margen suficiente."
+          ]
+        ]
+      },
+      "sunset": {
+        "lead": "Disfruta del atardecer frente a Barcelona en un barco privado para hasta seis personas. Salimos desde Port Olímpic, con una duración de {min} a {max} horas. Desde {price} por {hours} para todo el barco, con patrón, combustible, seguro, bebidas y aperitivo incluidos.",
+        "paragraphs": [
+          "Disfruta de la última luz del día desde una menorquina reservada solo para vosotros. El paseo al atardecer parte de Port Olímpic y permite mirar cómo cambia el skyline de Barcelona mientras compartís la navegación con vuestro grupo.",
+          "La duración mínima es de dos horas para tener tiempo de salir del puerto, disfrutar de la navegación y regresar. La hora de puesta de sol cambia durante el año: el horario de la salida debe encajar con la fecha y las horas contratadas. El patrón adapta el recorrido a las condiciones del mar."
+        ],
+        "steps": [
+          "Os recibimos en el barco en Port Olímpic.",
+          "Navegamos por el litoral mientras cambia la luz sobre Barcelona.",
+          "Disfrutad del atardecer desde el agua con bebidas y snacks a bordo.",
+          "Volvemos al puerto para terminar vuestra salida."
+        ],
+        "audience": "Parejas, amigos y pequeños grupos que buscan terminar el día juntos, con vistas al mar y a la ciudad.",
+        "faqs": [
+          [
+            "¿A qué hora sale el barco al atardecer?",
+            "La hora de salida depende de la fecha y de la duración elegida. Consulta los horarios disponibles al reservar."
+          ],
+          [
+            "¿Veremos siempre el sol ponerse en el mar?",
+            "No se puede garantizar una vista concreta. La orientación de la costa, las nubes y la fecha influyen en la luz; el patrón adapta la ruta y os ayuda a disfrutar del entorno con seguridad."
+          ]
+        ]
+      },
+      "sunrise": {
+        "lead": "Descubre Barcelona con las primeras luces desde un barco privado para hasta seis personas. Salimos desde Port Olímpic, con una duración de {min} a {max} horas. Desde {price} por {hours} para todo el barco, con patrón, combustible, seguro, bebidas y aperitivo incluidos.",
+        "paragraphs": [
+          "Empieza el día en el Mediterráneo con una salida privada al amanecer. La menorquina sale desde Port Olímpic para disfrutar de la primera luz sobre el litoral de Barcelona, con el barco reservado para tu grupo y el patrón a bordo.",
+          "Podéis elegir de dos a seis horas. El amanecer no ocurre a la misma hora todo el año, así que el horario debe coordinarse con la fecha elegida. El paisaje, el viento y el estado del mar son distintos cada día; no garantizamos agua en calma ni un cielo despejado."
+        ],
+        "steps": [
+          "Encontrad a vuestro patrón y embarcad en Port Olímpic.",
+          "Dejamos el puerto para recorrer la costa con las primeras luces.",
+          "Contemplad el amanecer y disfrutad de bebidas y snacks en cubierta.",
+          "Regresamos a Port Olímpic al finalizar el paseo."
+        ],
+        "audience": "Madrugadores, parejas y viajeros que prefieren descubrir Barcelona con las primeras luces del día.",
+        "faqs": [
+          [
+            "¿A qué hora sale el barco al amanecer?",
+            "La hora de salida depende de la fecha y de la duración elegida. Consulta los horarios disponibles al reservar."
+          ],
+          [
+            "¿Hay desayuno incluido?",
+            "Las salidas al amanecer incluyen bebidas y snacks, al durar al menos 2 horas. No se incluye un desayuno completo; si quieres algo especial, consúltanos antes de reservar."
+          ]
+        ]
+      },
+      "romantic": {
+        "lead": "Comparte una salida romántica en barco privado desde Port Olímpic, Barcelona, con la decoración que aparece en las fotografías incluida. Elige entre {min} y {max} horas, desde {price} por {hours} para todo el barco, hasta seis personas. Incluye patrón, combustible, seguro y bebida; desde dos horas, también aperitivo.",
+        "paragraphs": [
+          "Un barco privado para compartir un momento a solas y ver Barcelona desde el agua. La experiencia romántica permite elegir entre una y cuatro horas a bordo de nuestra menorquina, con patrón, salida y regreso en Port Olímpic.",
+          "La experiencia romántica incluye la decoración que ves en las fotos. Tenemos varias decoraciones; si quieres algo especial, cuéntanos tu idea para acordar los detalles antes de reservar."
+        ],
+        "steps": [
+          "Os damos la bienvenida a bordo en Port Olímpic, con el barco decorado como en las fotos.",
+          "Navegad junto a la costa con el barco reservado solo para vosotros.",
+          "Compartid las vistas y una bebida; a partir de 2 horas, también tenéis snacks.",
+          "La experiencia termina de vuelta en Port Olímpic."
+        ],
+        "audience": "Parejas y quienes quieren celebrar una ocasión especial en privado, con tiempo para disfrutar del mar.",
+        "faqs": [
+          [
+            "¿La decoración está incluida? ¿Podemos pedir algo especial?",
+            "La experiencia romántica incluye la decoración que ves en las fotos. Tenemos varias decoraciones; si quieres algo especial, cuéntanos tu idea para acordar los detalles antes de reservar."
+          ],
+          [
+            "¿La experiencia es solo para dos personas?",
+            "Está pensada para un momento en pareja, pero el barco admite un grupo privado de hasta 6 personas. El precio es del barco completo y no se multiplica por pasajero."
+          ]
+        ]
+      }
+    },
+    "galleryAlts": [
+      "Invitados a bordo de la embarcación de JimBoats frente a Barcelona",
+      "Pasajeros sentados en el barco de JimBoats en el puerto",
+      "Baño desde el barco de JimBoats frente a la costa",
+      "Invitados con bebidas a bordo frente a Barcelona"
+    ],
+    "sunTimes": {
+      "sunrise": "Salida del sol",
+      "sunset": "Puesta de sol",
+      "today": "hoy",
+      "unavailable": "Hora no disponible"
+    },
+    "bookingCard": {
+      "bestPrice": "Mejor precio online",
+      "bookNow": "Reservar ahora",
+      "whatsappBooking": "Reservar por WhatsApp",
+      "includedLabel": "Incluye",
+      "durationLabel": "Duración",
+      "weatherAssurance": "Si cancelamos por mal tiempo, te devolvemos el importe abonado.",
+      "oneHourPrice": "Precio final · bebida incluida",
+      "longerPrice": "Precio final · bebidas y snacks incluidos",
+      "essentials": [
+        "Patrón",
+        "Combustible",
+        "Seguro",
+        "Altavoz Bluetooth"
+      ],
+      "drink": "Bebida incluida",
+      "drinks": "Bebidas incluidas",
+      "snacks": "Snacks incluidos",
+      "snacksFrom": "Snacks desde 2 horas",
+      "refreshments": "La salida de 1 hora incluye bebida, sin snacks. A partir de 2 horas, todas las experiencias incluyen bebidas y snacks.",
+      "breakfast": "Las salidas al amanecer incluyen bebidas y snacks, al durar al menos 2 horas. No se incluye un desayuno completo; si quieres algo especial, consúltanos antes de reservar.",
+      "monthly": {
+        "sunrise": "Amanecer en Barcelona: horarios por mes",
+        "sunset": "Atardecer en Barcelona: horarios por mes",
+        "intro": "Una referencia para planear tu paseo. Estas son las horas aproximadas del sol a mediados de cada mes en Barcelona.",
+        "month": "Mes",
+        "time": "Hora aproximada",
+        "note": "Referencia: día 15 de cada mes de 2026, hora local de Barcelona. La hora varía cada día; en marzo y octubre también influye el cambio de hora. Consulta el horario de tu salida al reservar.",
+        "source": "Fuente"
+      },
+      "decoration": "Decoración de las fotos incluida"
+    },
+    "whatsappMessages": {
+      "experience": "Hola, me interesa reservar: {experience}. ¿Qué disponibilidad tenéis?",
+      "general": "Hola, me gustaría reservar un paseo privado con JimBoats. ¿Me ayudáis a elegir experiencia y fecha?"
+    },
+    "sunsetGalleryAlts": [
+      "El LENA frente al Hotel W de Barcelona bajo el cielo dorado del atardecer",
+      "El LENA y el Hotel W al ponerse el sol en Barcelona",
+      "Una pareja descansando en la cubierta del LENA al atardecer",
+      "Pasajeras fotografiando el litoral de Barcelona desde el LENA al atardecer",
+      "El LENA navegando frente al Hotel W con la luz dorada del atardecer"
+    ],
+    "sunriseGalleryAlts": [
+      "Lena en silueta ante el sol naciente",
+      "Vista lateral del Lena con luz de amanecer",
+      "Lena de frente sobre el mar al amanecer",
+      "Lena con la costa de Barcelona al fondo",
+      "Sol naciente junto a la baliza del puerto",
+      "Pasajera junto a una mesa en cubierta al amanecer",
+      "Pareja junto a una mesa en cubierta al amanecer"
+    ],
+    "romanticGalleryAlts": [
+      "Pareja en silueta al atardecer en cubierta",
+      "Pareja mostrando un anillo a bordo",
+      "Flores y mesa en proa con el hotel W al fondo",
+      "Mesa en cubierta con flores y vistas de Barcelona",
+      "Proa decorada con rosas rojas y vistas de la costa",
+      "Mesa roja con flores frente al hotel W",
+      "Cubierta decorada con globos, rosas y farolillos",
+      "Mesa con copas, fruta y una cubitera en cubierta",
+      "Dos pasajeras en la cubierta decorada en el puerto",
+      "Tres músicos con instrumentos a bordo"
+    ]
+  },
+  "en": {
+    "breadcrumb": "Experiences",
+    "breadcrumbLabel": "Breadcrumb",
+    "about": "About this boat trip",
+    "included": "What the price includes",
+    "itinerary": "Your time on the water",
+    "audience": "Who this trip is for",
+    "gallery": "The boat and life on board",
+    "galleryNote": "Photos of JimBoats and its boat; the light and route vary with each departure.",
+    "faq": "Questions about this experience",
+    "reviews": "From guests who have sailed with us",
+    "reviewsSpecific": "A selection associated with this type of trip. The rating and review total are for JimBoats as a whole.",
+    "reviewsGeneral": "Reviews of the JimBoats boat and team, not attributed to this particular trip. The rating is for JimBoats overall.",
+    "reserve": "See dates and book",
+    "finalPrice": "Final price for the whole boat, not per person.",
+    "duration": "Choose your duration",
+    "people": "Group",
+    "location": "Departure port",
+    "includedShort": "Skipper, fuel, insurance and a Bluetooth speaker",
+    "noLicence": "No boating licence or sailing experience needed.",
+    "extras": "Extras are charged separately, subject to availability.",
+    "viewPrices": "See all prices",
+    "from": "from",
+    "for": "for",
+    "hour": "hour",
+    "hours": "hours",
+    "priceQuestion": "How much does this trip cost and what is included?",
+    "priceAnswer": "Prices start at {price} for {hours}. This is the final price for the whole boat for up to 6 guests, including skipper, fuel, insurance and a Bluetooth speaker. Extras cost additional.",
+    "durationQuestion": "How long can we book for?",
+    "durationAnswer": "Choose between {min} and {max} hours. Each duration has its own price, which you can check before payment. Extra time depends on boat availability.",
+    "capacityQuestion": "Is the boat private and how many guests can join?",
+    "capacityAnswer": "The boat is reserved only for your group, up to 6 guests including children. Your skipper comes with you and handles the navigation.",
+    "meetingQuestion": "Where do we depart and return?",
+    "meetingAnswer": "We depart from and return to Port Olímpic, Barcelona. The meeting point is Moll de Xaloc, Pantalan 5; check the map and arrange arrival details with the team.",
+    "bookingQuestion": "How do we book and add extras?",
+    "bookingAnswer": "Continue from this page with your experience already selected. Choose duration, date and time, review available extras and enter your details before payment.",
+    "profiles": {
+      "private": {
+        "lead": "Cruise along the Barcelona coast on a private boat for up to six people, departing from Port Olímpic. Choose from {min} to {max} hours, starting at {price} for {hours} for the whole boat. Includes skipper, fuel, insurance and a drink; trips of two hours or more also include snacks.",
+        "paragraphs": [
+          "Book a private boat in Barcelona by the hour, with a skipper and the menorquina reserved for your group. The daytime trip lets you choose from a one-hour escape to six hours on board, with your skipper taking care of the navigation.",
+          "A shorter trip gives you time to enjoy the coastline and city views. Longer bookings leave more time for relaxed sailing and discussing a swimming stop with the captain, if conditions allow. There is no fixed route: it depends on your time and the sea."
+        ],
+        "steps": [
+          "Meet your skipper and step aboard at Port Olímpic.",
+          "Cruise along Barcelona’s coast with the boat reserved for your group.",
+          "Enjoy a drink and the city views; trips of 2 hours or more also include snacks.",
+          "Finish your trip back at Port Olímpic at the end of your booked time."
+        ],
+        "audience": "Friends, families and couples looking for a private boat and a choice of durations.",
+        "faqs": [
+          [
+            "Can we book just one hour?",
+            "Yes. You can book this trip from 1 hour. Leaving and returning to the marina are included in that time; book longer for more time on the water."
+          ],
+          [
+            "Can we stop for a swim?",
+            "Ask the skipper. A stop depends on duration, sea conditions and the safe route that day; a one-hour booking may not leave enough time."
+          ]
+        ]
+      },
+      "sunset": {
+        "lead": "Enjoy the sunset off Barcelona on a private boat for up to six people. Trips depart from Port Olímpic and last from {min} to {max} hours. Prices start at {price} for {hours} for the whole boat, including skipper, fuel, insurance, drinks and snacks.",
+        "paragraphs": [
+          "Enjoy the last light of the day aboard a menorquina reserved just for you. This private sunset trip departs from Port Olímpic, giving your group time to watch the Barcelona skyline change colour from the water.",
+          "The minimum booking is two hours, allowing time to leave the marina, sail and return. Sunset times change throughout the year, so your departure should fit your date and chosen duration. The skipper adapts the route to sea conditions."
+        ],
+        "steps": [
+          "Come aboard at Port Olímpic and meet your skipper.",
+          "Cruise along the coast as the light changes over Barcelona.",
+          "Enjoy the sunset from the water with drinks and snacks on board.",
+          "Sail back into the harbour to finish your trip."
+        ],
+        "audience": "Couples, friends and small groups who want to end the day together with sea and city views.",
+        "faqs": [
+          [
+            "What time does the sunset trip depart?",
+            "Departure depends on the date and your chosen duration. Check the available times when booking."
+          ],
+          [
+            "Will we always see the sun set into the sea?",
+            "A particular view cannot be guaranteed. The coastline, cloud cover and date affect the light; your skipper adapts the route for a safe and enjoyable trip."
+          ]
+        ]
+      },
+      "sunrise": {
+        "lead": "Discover Barcelona at first light on a private boat for up to six people. Trips depart from Port Olímpic and last from {min} to {max} hours. Prices start at {price} for {hours} for the whole boat, including skipper, fuel, insurance, drinks and snacks.",
+        "paragraphs": [
+          "Start the day on the Mediterranean with a private sunrise trip. Depart from Port Olímpic aboard our menorquina to see the first light along the Barcelona coastline, with the boat reserved for your group and a skipper on board.",
+          "Choose from two to six hours. Sunrise changes with the season, so departure needs to be coordinated with your date. The scenery, wind and sea are different each day; calm water and clear skies cannot be guaranteed."
+        ],
+        "steps": [
+          "Meet your skipper and board the boat at Port Olímpic.",
+          "Leave the harbour and explore the coast in the first light of day.",
+          "Watch the sunrise and enjoy drinks and snacks on deck.",
+          "Return to Port Olímpic at the end of your cruise."
+        ],
+        "audience": "Early risers, couples and travellers who want to discover Barcelona in the first light of day.",
+        "faqs": [
+          [
+            "What time does the sunrise boat leave?",
+            "Departure depends on the date and your chosen duration. Check the available times when booking."
+          ],
+          [
+            "Is breakfast included?",
+            "Sunrise trips include drinks and snacks, as they last at least 2 hours. A full breakfast is not included; contact us before booking for any special requests."
+          ]
+        ]
+      },
+      "romantic": {
+        "lead": "Share a romantic private boat trip from Port Olímpic, Barcelona, with the decorations shown in the photos included. Choose from {min} to {max} hours, starting at {price} for {hours} for the whole boat, for up to six people. Includes skipper, fuel, insurance and a drink; trips of two hours or more also include snacks.",
+        "paragraphs": [
+          "A private boat for sharing a quiet moment together and seeing Barcelona from the water. The romantic experience offers between one and four hours aboard our traditional boat, with a skipper and departure and return at Port Olímpic.",
+          "The romantic experience includes the decorations shown in the photos. We have several decoration options; if you would like something special, share your idea with us so we can agree on the details before booking."
+        ],
+        "steps": [
+          "We welcome you aboard at Port Olímpic, with the boat decorated as shown in the photos.",
+          "Cruise beside the coast with the boat reserved just for you.",
+          "Enjoy the views and a drink together; snacks are also included from 2 hours.",
+          "End your experience back at Port Olímpic."
+        ],
+        "audience": "Couples and guests celebrating a special occasion privately, with time to enjoy the sea.",
+        "faqs": [
+          [
+            "Are decorations included? Can we request something special?",
+            "The romantic experience includes the decorations shown in the photos. We have several decoration options; if you would like something special, share your idea with us so we can agree on the details before booking."
+          ],
+          [
+            "Is the experience only for two people?",
+            "It is designed for time as a couple, but the private boat can accommodate up to 6 guests. The price is for the whole boat, not multiplied by passenger."
+          ]
+        ]
+      }
+    },
+    "galleryAlts": [
+      "Guests aboard the JimBoats boat off Barcelona",
+      "Passengers seated aboard the JimBoats boat in the marina",
+      "Swimming from the JimBoats boat off the coast",
+      "Guests with drinks aboard off Barcelona"
+    ],
+    "sunTimes": {
+      "sunrise": "Sunrise",
+      "sunset": "Sunset",
+      "today": "today",
+      "unavailable": "Time unavailable"
+    },
+    "bookingCard": {
+      "bestPrice": "Best online price",
+      "bookNow": "Book now",
+      "whatsappBooking": "Book on WhatsApp",
+      "includedLabel": "Includes",
+      "durationLabel": "Duration",
+      "weatherAssurance": "If we cancel due to bad weather, we refund the amount you paid.",
+      "oneHourPrice": "Final price · drink included",
+      "longerPrice": "Final price · drinks and snacks included",
+      "essentials": [
+        "Skipper",
+        "Fuel",
+        "Insurance",
+        "Bluetooth speaker"
+      ],
+      "drink": "Drink included",
+      "drinks": "Drinks included",
+      "snacks": "Snacks included",
+      "snacksFrom": "Snacks from 2 hours",
+      "refreshments": "The 1-hour trip includes a drink, without snacks. All experiences of 2 hours or more include drinks and snacks.",
+      "breakfast": "Sunrise trips include drinks and snacks, as they last at least 2 hours. A full breakfast is not included; contact us before booking for any special requests.",
+      "monthly": {
+        "sunrise": "Sunrise in Barcelona: times by month",
+        "sunset": "Sunset in Barcelona: times by month",
+        "intro": "A guide to planning your boat trip. These are approximate solar times around the middle of each month in Barcelona.",
+        "month": "Month",
+        "time": "Approximate time",
+        "note": "Reference: the 15th of each month in 2026, Barcelona local time. Times change daily; clock changes also affect March and October. Check your departure time when booking.",
+        "source": "Source"
+      },
+      "decoration": "Decorations shown in the photos included"
+    },
+    "whatsappMessages": {
+      "experience": "Hello, I would like to book: {experience}. What dates are available?",
+      "general": "Hello, I would like to book a private boat trip with JimBoats. Could you help me choose an experience and a date?"
+    },
+    "sunsetGalleryAlts": [
+      "LENA in front of Barcelona’s W Hotel beneath a golden sunset sky",
+      "LENA and the W Hotel at sunset in Barcelona",
+      "A couple relaxing on LENA’s deck at sunset",
+      "Guests photographing Barcelona’s waterfront from LENA at sunset",
+      "LENA sailing past the W Hotel in the golden evening light"
+    ],
+    "sunriseGalleryAlts": [
+      "Lena silhouetted against the rising sun",
+      "Side view of Lena in dawn light",
+      "Front view of Lena on the sea at dawn",
+      "Lena with the Barcelona coast behind",
+      "Rising sun beside the harbour beacon",
+      "Guest beside a table on deck at sunrise",
+      "Couple beside a table on deck at sunrise"
+    ],
+    "romanticGalleryAlts": [
+      "Couple silhouetted on deck at sunset",
+      "Couple showing a ring on board",
+      "Flowers and bow table with the W hotel behind",
+      "Deck table with flowers and views of Barcelona",
+      "Bow decorated with red roses overlooking the coast",
+      "Red table with flowers facing the W hotel",
+      "Deck decorated with balloons, roses and lanterns",
+      "Deck table with glasses, fruit and an ice bucket",
+      "Two guests on the decorated deck in the harbour",
+      "Three musicians with instruments on board"
+    ]
+  },
+  "fr": {
+    "breadcrumb": "Expériences",
+    "breadcrumbLabel": "Fil d’Ariane",
+    "about": "À propos de cette sortie",
+    "included": "Ce que le prix comprend",
+    "itinerary": "Le déroulement de la sortie",
+    "audience": "Pour qui ?",
+    "gallery": "Le bateau et la vie à bord",
+    "galleryNote": "Photos de JimBoats et de son bateau ; la lumière et le parcours varient selon la sortie.",
+    "faq": "Questions sur cette expérience",
+    "reviews": "Les avis de nos voyageurs",
+    "reviewsSpecific": "Sélection liée à ce type de sortie. La note et le nombre d’avis concernent JimBoats dans son ensemble.",
+    "reviewsGeneral": "Avis sur le bateau et l’équipe JimBoats, sans les attribuer à cette sortie précise. La note est celle de JimBoats.",
+    "reserve": "Voir les dates et réserver",
+    "finalPrice": "Prix final du bateau entier, pas par personne.",
+    "duration": "Durée au choix",
+    "people": "Groupe",
+    "location": "Port de départ",
+    "includedShort": "Skipper, carburant, assurance et enceinte Bluetooth",
+    "noLicence": "Aucun permis ni expérience de navigation nécessaire.",
+    "extras": "Les extras sont facturés séparément, selon disponibilité.",
+    "viewPrices": "Voir tous les tarifs",
+    "from": "à partir de",
+    "for": "pour",
+    "hour": "heure",
+    "hours": "heures",
+    "priceQuestion": "Combien coûte la sortie et que comprend-elle ?",
+    "priceAnswer": "À partir de {price} pour {hours}. Prix final du bateau pour 6 personnes maximum, avec skipper, carburant, assurance et enceinte Bluetooth. Les extras sont en supplément.",
+    "durationQuestion": "Quelle durée peut-on réserver ?",
+    "durationAnswer": "Choisissez de {min} à {max} heures. Chaque durée a son tarif, à consulter avant le paiement. Toute prolongation dépend de la disponibilité du bateau.",
+    "capacityQuestion": "Le bateau est-il privé et combien de personnes peuvent venir ?",
+    "capacityAnswer": "Le bateau est réservé à votre groupe, avec 6 personnes maximum, enfants compris. Le skipper vous accompagne et assure la navigation.",
+    "meetingQuestion": "D’où part-on et où revient-on ?",
+    "meetingAnswer": "Départ et retour au Port Olímpic, Barcelone. Rendez-vous au Moll de Xaloc, Pantalan 5 ; consultez le plan et convenez de votre arrivée avec l’équipe.",
+    "bookingQuestion": "Comment réserver et ajouter des extras ?",
+    "bookingAnswer": "Continuez depuis cette page : l’expérience sera déjà sélectionnée. Choisissez durée, date et horaire, consultez les extras disponibles et saisissez vos coordonnées avant le paiement.",
+    "profiles": {
+      "private": {
+        "lead": "Longez la côte de Barcelone à bord d’un bateau privé pour six personnes maximum, au départ de Port Olímpic. Choisissez une durée de {min} à {max} heures, à partir de {price} pour {hours} pour le bateau entier. Skipper, carburant, assurance et une boisson sont inclus ; dès deux heures, un apéritif à partager est également inclus.",
+        "paragraphs": [
+          "Louez un bateau privé à l’heure à Barcelone, avec skipper et la menorquina réservée à votre groupe. La sortie de jour se réserve de une à six heures, avec un skipper qui s’occupe de la navigation.",
+          "Une sortie courte permet d’admirer le littoral et la ville. Une durée plus longue laisse davantage de temps pour naviguer tranquillement et envisager une baignade avec le capitaine, si les conditions le permettent. Le parcours dépend de la durée et de la mer."
+        ],
+        "steps": [
+          "Retrouvez votre skipper et montez à bord à Port Olímpic.",
+          "Longez la côte de Barcelone avec le bateau réservé à votre groupe.",
+          "Profitez d’une boisson et de la vue ; dès 2 heures, des snacks sont aussi inclus.",
+          "La balade se termine à Port Olímpic à la fin du créneau réservé."
+        ],
+        "audience": "Amis, familles et couples qui souhaitent un bateau privé et une durée flexible.",
+        "faqs": [
+          [
+            "Peut-on réserver une seule heure ?",
+            "Oui. Cette sortie est disponible dès 1 heure, sorties et entrées au port comprises. Réservez plus longtemps pour profiter davantage de la navigation."
+          ],
+          [
+            "Peut-on s’arrêter pour se baigner ?",
+            "Parlez-en au skipper. Cela dépend de la durée, de la mer et du parcours du jour ; une heure peut ne pas suffire."
+          ]
+        ]
+      },
+      "sunset": {
+        "lead": "Admirez le coucher du soleil face à Barcelone à bord d’un bateau privé pour six personnes maximum. Les sorties partent de Port Olímpic et durent de {min} à {max} heures. À partir de {price} pour {hours} pour le bateau entier, skipper, carburant, assurance, boissons et apéritif à partager inclus.",
+        "paragraphs": [
+          "Profitez de la dernière lumière à bord d’une menorquina réservée à votre groupe. La sortie au coucher du soleil part du Port Olímpic et permet d’observer Barcelone changer de couleur depuis la mer.",
+          "La durée minimale de deux heures laisse le temps de sortir du port, de naviguer et de rentrer. L’heure du coucher du soleil varie selon la saison ; le départ doit correspondre à votre date et à votre durée. Le skipper adapte le parcours à la mer."
+        ],
+        "steps": [
+          "Nous vous accueillons à bord à Port Olímpic.",
+          "Naviguez le long du littoral tandis que la lumière change sur Barcelone.",
+          "Admirez le coucher du soleil depuis la mer, avec boissons et snacks à bord.",
+          "Nous regagnons le port pour terminer votre sortie."
+        ],
+        "audience": "Couples, amis et petits groupes souhaitant terminer la journée ensemble face à la mer.",
+        "faqs": [
+          [
+            "À quelle heure part le bateau au coucher du soleil ?",
+            "Le départ dépend de la date et de la durée choisie. Consultez les horaires disponibles lors de la réservation."
+          ],
+          [
+            "Verra-t-on forcément le soleil se coucher dans la mer ?",
+            "Une vue précise ne peut être garantie. L’orientation de la côte, les nuages et la date influencent la lumière ; le skipper adapte le parcours en sécurité."
+          ]
+        ]
+      },
+      "sunrise": {
+        "lead": "Découvrez Barcelone aux premières lueurs du jour à bord d’un bateau privé pour six personnes maximum. Les sorties partent de Port Olímpic et durent de {min} à {max} heures. À partir de {price} pour {hours} pour le bateau entier, skipper, carburant, assurance, boissons et apéritif à partager inclus.",
+        "paragraphs": [
+          "Commencez la journée sur la Méditerranée avec une sortie privée au lever du soleil. Notre menorquina part du Port Olímpic pour découvrir la première lumière sur le littoral de Barcelone, avec skipper et bateau réservé à votre groupe.",
+          "Choisissez de deux à six heures. Le lever du soleil change avec la saison : l’horaire doit être coordonné avec votre date. Le vent, la mer et le paysage varient chaque jour ; mer calme et ciel dégagé ne sont pas garantis."
+        ],
+        "steps": [
+          "Retrouvez votre skipper et embarquez à Port Olímpic.",
+          "Quittez le port pour découvrir la côte aux premières lueurs du jour.",
+          "Admirez le lever du soleil avec boissons et snacks sur le pont.",
+          "Nous revenons à Port Olímpic à la fin de la balade."
+        ],
+        "audience": "Lève-tôt, couples et voyageurs souhaitant découvrir Barcelone aux premières lueurs.",
+        "faqs": [
+          [
+            "À quelle heure part le bateau ?",
+            "Le départ dépend de la date et de la durée choisie. Consultez les horaires disponibles lors de la réservation."
+          ],
+          [
+            "Le petit-déjeuner est-il inclus ?",
+            "Les sorties au lever du soleil comprennent des boissons et des snacks, car elles durent au moins 2 heures. Un petit-déjeuner complet n’est pas inclus ; contactez-nous avant de réserver pour une demande particulière."
+          ]
+        ]
+      },
+      "romantic": {
+        "lead": "Partagez une escapade romantique en bateau privé au départ de Port Olímpic, à Barcelone, avec la décoration présentée sur les photos incluse. Choisissez une durée de {min} à {max} heures, à partir de {price} pour {hours} pour le bateau entier, pour six personnes maximum. Skipper, carburant, assurance et une boisson sont inclus ; dès deux heures, un apéritif à partager est également inclus.",
+        "paragraphs": [
+          "Un bateau privé pour partager un moment à deux et découvrir Barcelone depuis la mer. L’expérience romantique permet de choisir entre une et quatre heures à bord de notre bateau traditionnel, avec skipper, départ et retour à Port Olímpic.",
+          "L’expérience romantique comprend la décoration visible sur les photos. Nous proposons plusieurs décorations ; si vous souhaitez quelque chose de particulier, parlez-nous de votre idée pour convenir des détails avant de réserver."
+        ],
+        "steps": [
+          "Nous vous accueillons à Port Olímpic, à bord du bateau décoré comme sur les photos.",
+          "Naviguez le long de la côte sur un bateau réservé rien que pour vous.",
+          "Profitez des vues et d’une boisson ensemble ; les snacks sont aussi inclus à partir de 2 heures.",
+          "Votre expérience se termine de retour à Port Olímpic."
+        ],
+        "audience": "Couples et voyageurs souhaitant célébrer une occasion spéciale en privé.",
+        "faqs": [
+          [
+            "La décoration est-elle incluse ? Peut-on demander quelque chose de particulier ?",
+            "L’expérience romantique comprend la décoration visible sur les photos. Nous proposons plusieurs décorations ; si vous souhaitez quelque chose de particulier, parlez-nous de votre idée pour convenir des détails avant de réserver."
+          ],
+          [
+            "Est-ce uniquement pour deux personnes ?",
+            "L’expérience privilégie un moment en couple, mais le bateau privé accueille jusqu’à 6 personnes. Le prix est celui du bateau entier, pas par passager."
+          ]
+        ]
+      }
+    },
+    "galleryAlts": [
+      "Passagers à bord du bateau JimBoats au large de Barcelone",
+      "Passagers assis sur le bateau JimBoats au port",
+      "Baignade depuis le bateau JimBoats près de la côte",
+      "Passagers avec des boissons à bord au large de Barcelone"
+    ],
+    "sunTimes": {
+      "sunrise": "Lever du soleil",
+      "sunset": "Coucher du soleil",
+      "today": "aujourd’hui",
+      "unavailable": "Horaire indisponible"
+    },
+    "bookingCard": {
+      "bestPrice": "Meilleur prix en ligne",
+      "bookNow": "Réserver maintenant",
+      "whatsappBooking": "Réserver sur WhatsApp",
+      "includedLabel": "Inclus",
+      "durationLabel": "Durée",
+      "weatherAssurance": "Si nous annulons pour cause de mauvais temps, nous remboursons le montant versé.",
+      "oneHourPrice": "Prix final · boisson incluse",
+      "longerPrice": "Prix final · boissons et snacks inclus",
+      "essentials": [
+        "Skipper",
+        "Carburant",
+        "Assurance",
+        "Enceinte Bluetooth"
+      ],
+      "drink": "Boisson incluse",
+      "drinks": "Boissons incluses",
+      "snacks": "Snacks inclus",
+      "snacksFrom": "Snacks dès 2 heures",
+      "refreshments": "La sortie de 1 heure comprend une boisson, sans snacks. Toutes les expériences de 2 heures ou plus comprennent des boissons et des snacks.",
+      "breakfast": "Les sorties au lever du soleil comprennent des boissons et des snacks, car elles durent au moins 2 heures. Un petit-déjeuner complet n’est pas inclus ; contactez-nous avant de réserver pour une demande particulière.",
+      "monthly": {
+        "sunrise": "Lever du soleil à Barcelone : horaires par mois",
+        "sunset": "Coucher du soleil à Barcelone : horaires par mois",
+        "intro": "Un repère pour préparer votre sortie. Voici les heures approximatives du soleil vers le milieu de chaque mois à Barcelone.",
+        "month": "Mois",
+        "time": "Heure approximative",
+        "note": "Référence : le 15 de chaque mois de 2026, heure locale de Barcelone. Les horaires varient chaque jour ; les changements d’heure influent aussi sur mars et octobre. Consultez votre horaire de départ lors de la réservation.",
+        "source": "Source"
+      },
+      "decoration": "Décoration des photos incluse"
+    },
+    "whatsappMessages": {
+      "experience": "Bonjour, je souhaite réserver : {experience}. Quelles sont vos disponibilités ?",
+      "general": "Bonjour, je souhaite réserver une balade privée en bateau avec JimBoats. Pourriez-vous m’aider à choisir une expérience et une date ?"
+    },
+    "sunsetGalleryAlts": [
+      "Le LENA devant l’hôtel W de Barcelone sous le ciel doré du coucher de soleil",
+      "Le LENA et l’hôtel W au coucher du soleil à Barcelone",
+      "Un couple se détend sur le pont du LENA au coucher du soleil",
+      "Des passagères photographient le littoral de Barcelone depuis le LENA au coucher du soleil",
+      "Le LENA navigue devant l’hôtel W dans la lumière dorée du soir"
+    ],
+    "sunriseGalleryAlts": [
+      "Silhouette du Lena devant le soleil levant",
+      "Vue latérale du Lena dans la lumière de l’aube",
+      "Lena vu de face en mer à l’aube",
+      "Lena avec la côte de Barcelone en arrière-plan",
+      "Soleil levant près de la balise du port",
+      "Passagère près d’une table sur le pont à l’aube",
+      "Couple près d’une table sur le pont à l’aube"
+    ],
+    "romanticGalleryAlts": [
+      "Silhouettes d’un couple sur le pont au coucher du soleil",
+      "Couple montrant une bague à bord",
+      "Fleurs et table à la proue avec l’hôtel W au loin",
+      "Table sur le pont avec des fleurs et vue sur Barcelone",
+      "Proue décorée de roses rouges face à la côte",
+      "Table rouge fleurie face à l’hôtel W",
+      "Pont décoré de ballons, de roses et de lanternes",
+      "Table avec verres, fruits et seau à glace sur le pont",
+      "Deux passagères sur le pont décoré dans le port",
+      "Trois musiciens avec leurs instruments à bord"
+    ]
+  },
+  "de": {
+    "breadcrumb": "Erlebnisse",
+    "breadcrumbLabel": "Brotkrumennavigation",
+    "about": "Über diese Bootsfahrt",
+    "included": "Im Preis enthalten",
+    "itinerary": "So verläuft die Ausfahrt",
+    "audience": "Für wen ist die Tour?",
+    "gallery": "Das Boot und das Leben an Bord",
+    "galleryNote": "Fotos von JimBoats und seinem Boot; Licht und Route ändern sich bei jeder Ausfahrt.",
+    "faq": "Fragen zu diesem Erlebnis",
+    "reviews": "Das sagen unsere Gäste",
+    "reviewsSpecific": "Auswahl zu dieser Art von Bootsfahrt. Bewertung und Gesamtzahl der Rezensionen beziehen sich auf JimBoats insgesamt.",
+    "reviewsGeneral": "Bewertungen des Bootes und des JimBoats-Teams, die nicht dieser konkreten Tour zugeordnet werden. Die Bewertung gilt für JimBoats insgesamt.",
+    "reserve": "Termine ansehen und buchen",
+    "finalPrice": "Endpreis für das ganze Boot, nicht pro Person.",
+    "duration": "Dauer nach Wahl",
+    "people": "Gruppe",
+    "location": "Abfahrtshafen",
+    "includedShort": "Skipper, Treibstoff, Versicherung und Bluetooth-Lautsprecher",
+    "noLicence": "Kein Bootsführerschein und keine Segelerfahrung erforderlich.",
+    "extras": "Extras werden je nach Verfügbarkeit separat berechnet.",
+    "viewPrices": "Alle Preise ansehen",
+    "from": "ab",
+    "for": "für",
+    "hour": "Stunde",
+    "hours": "Stunden",
+    "priceQuestion": "Was kostet die Bootsfahrt und was ist enthalten?",
+    "priceAnswer": "Ab {price} für {hours}. Endpreis für das gesamte Boot mit bis zu 6 Gästen, einschließlich Skipper, Treibstoff, Versicherung und Bluetooth-Lautsprecher. Extras kosten zusätzlich.",
+    "durationQuestion": "Welche Dauer kann ich buchen?",
+    "durationAnswer": "Wählen Sie zwischen {min} und {max} Stunden. Jede Dauer hat einen eigenen Preis, den Sie vor der Zahlung prüfen können. Verlängerungen hängen von der Verfügbarkeit ab.",
+    "capacityQuestion": "Ist das Boot privat und wie viele Gäste können mitfahren?",
+    "capacityAnswer": "Das Boot ist nur für Ihre Gruppe reserviert, bis zu 6 Gäste einschließlich Kindern. Der Skipper begleitet Sie und übernimmt die Navigation.",
+    "meetingQuestion": "Wo starten und enden wir?",
+    "meetingAnswer": "Abfahrt und Rückkehr sind im Port Olímpic in Barcelona. Treffpunkt ist Moll de Xaloc, Pantalan 5; sehen Sie sich die Karte an und besprechen Sie Ihre Ankunft mit dem Team.",
+    "bookingQuestion": "Wie buche ich und wähle Extras aus?",
+    "bookingAnswer": "Gehen Sie von dieser Seite zur Buchung: Ihr Erlebnis ist bereits ausgewählt. Wählen Sie Dauer, Datum und Uhrzeit, prüfen Sie Extras und geben Sie vor der Zahlung Ihre Daten ein.",
+    "profiles": {
+      "private": {
+        "lead": "Entdeckt Barcelonas Küste auf einem privaten Boot für bis zu sechs Personen, mit Abfahrt ab Port Olímpic. Wählt eine Dauer von {min} bis {max} Stunden, ab {price} für {hours} für das gesamte Boot. Skipper, Treibstoff, Versicherung und ein Getränk sind inklusive; ab zwei Stunden gibt es auch Snacks.",
+        "paragraphs": [
+          "Mietet ein privates Boot in Barcelona stundenweise, mit Skipper und der Menorquina nur für eure Gruppe. Sie teilen das Boot nicht mit anderen Reisenden und können die Tagestour von einer bis sechs Stunden buchen. Ihr Skipper kümmert sich um die Navigation.",
+          "Eine kurze Fahrt bietet Küsten- und Stadtblicke. Längere Buchungen lassen mehr Zeit zum entspannten Fahren und für einen möglichen Badestopp nach Absprache mit dem Kapitän. Eine feste Route wird nicht versprochen: Zeit und Seebedingungen entscheiden."
+        ],
+        "steps": [
+          "Trefft euren Skipper und kommt im Port Olímpic an Bord.",
+          "Entdeckt Barcelonas Küste auf einem Boot nur für eure Gruppe.",
+          "Genießt ein Getränk und den Blick auf die Stadt; ab 2 Stunden sind auch Snacks dabei.",
+          "Zum Ende eurer gebuchten Zeit seid ihr wieder im Port Olímpic."
+        ],
+        "audience": "Freunde, Familien und Paare, die ein privates Boot und flexible Zeit wünschen.",
+        "faqs": [
+          [
+            "Kann man nur eine Stunde buchen?",
+            "Ja. Diese Fahrt ist ab 1 Stunde buchbar. Aus- und Einfahrt in den Hafen zählen dazu; bucht länger für mehr Zeit auf dem Wasser."
+          ],
+          [
+            "Können wir zum Schwimmen anhalten?",
+            "Fragen Sie den Skipper. Dauer, Seebedingungen und die sichere Route entscheiden. Eine Stunde kann dafür zu kurz sein."
+          ]
+        ]
+      },
+      "sunset": {
+        "lead": "Genießt den Sonnenuntergang vor Barcelona auf einem privaten Boot für bis zu sechs Personen. Die Ausflüge starten am Port Olímpic und dauern {min} bis {max} Stunden. Ab {price} für {hours} für das gesamte Boot, inklusive Skipper, Treibstoff, Versicherung, Getränken und Snacks.",
+        "paragraphs": [
+          "Genießen Sie das letzte Tageslicht auf einer nur für Ihre Gruppe reservierten Menorquina. Die Sonnenuntergangsfahrt beginnt im Port Olímpic und bietet einen Blick auf Barcelonas Skyline im wechselnden Abendlicht.",
+          "Die Mindestdauer beträgt zwei Stunden, damit Zeit zum Ausfahren, Navigieren und Zurückkehren bleibt. Der Sonnenuntergang ändert sich im Jahresverlauf: Die Abfahrt muss zu Datum und Dauer passen. Der Skipper richtet die Route nach den Seebedingungen."
+        ],
+        "steps": [
+          "Wir begrüßen euch an Bord im Port Olímpic.",
+          "Fahrt entlang der Küste, während sich das Licht über Barcelona verändert.",
+          "Genießt den Sonnenuntergang vom Wasser aus mit Getränken und Snacks an Bord.",
+          "Zum Abschluss der Fahrt geht es zurück in den Hafen."
+        ],
+        "audience": "Paare, Freunde und kleine Gruppen, die den Tag zusammen am Meer ausklingen lassen möchten.",
+        "faqs": [
+          [
+            "Wann startet die Bootstour zum Sonnenuntergang?",
+            "Die Abfahrt hängt vom Datum und der gewählten Dauer ab. Prüft die verfügbaren Zeiten bei der Buchung."
+          ],
+          [
+            "Sehen wir die Sonne immer im Meer untergehen?",
+            "Eine bestimmte Aussicht lässt sich nicht garantieren. Küstenverlauf, Wolken und Datum beeinflussen das Licht; der Skipper passt die sichere Route an."
+          ]
+        ]
+      },
+      "sunrise": {
+        "lead": "Entdeckt Barcelona im ersten Morgenlicht auf einem privaten Boot für bis zu sechs Personen. Die Ausflüge starten am Port Olímpic und dauern {min} bis {max} Stunden. Ab {price} für {hours} für das gesamte Boot, inklusive Skipper, Treibstoff, Versicherung, Getränken und Snacks.",
+        "paragraphs": [
+          "Beginnen Sie den Tag am Mittelmeer mit einer privaten Sonnenaufgangsfahrt. Unsere Menorquina startet im Port Olímpic, um das erste Licht an Barcelonas Küste zu erleben, mit Skipper und einem Boot nur für Ihre Gruppe.",
+          "Wählen Sie zwei bis sechs Stunden. Die Sonnenaufgangszeit ändert sich mit der Jahreszeit; Ihre Abfahrt wird passend zum Datum abgestimmt. Wind, Meer und Aussicht sind jeden Tag anders. Ruhiges Wasser und wolkenloser Himmel können nicht garantiert werden."
+        ],
+        "steps": [
+          "Trefft euren Skipper und steigt im Port Olímpic ein.",
+          "Verlasst den Hafen und entdeckt die Küste im ersten Tageslicht.",
+          "Erlebt den Sonnenaufgang mit Getränken und Snacks an Deck.",
+          "Nach der Bootsfahrt kehrt ihr zum Port Olímpic zurück."
+        ],
+        "audience": "Frühaufsteher, Paare und Reisende, die Barcelona im ersten Tageslicht entdecken möchten.",
+        "faqs": [
+          [
+            "Wann legt das Boot zum Sonnenaufgang ab?",
+            "Die Abfahrt hängt vom Datum und der gewählten Dauer ab. Prüft die verfügbaren Zeiten bei der Buchung."
+          ],
+          [
+            "Ist Frühstück enthalten?",
+            "Fahrten zum Sonnenaufgang dauern mindestens 2 Stunden und beinhalten Getränke und Snacks. Ein vollständiges Frühstück ist nicht enthalten. Besondere Wünsche besprecht ihr vor der Buchung mit uns."
+          ]
+        ]
+      },
+      "romantic": {
+        "lead": "Genießt einen romantischen Ausflug auf einem privaten Boot ab Port Olímpic in Barcelona, inklusive der Dekoration auf den Fotos. Wählt eine Dauer von {min} bis {max} Stunden, ab {price} für {hours} für das gesamte Boot, für bis zu sechs Personen. Skipper, Treibstoff, Versicherung und ein Getränk sind inklusive; ab zwei Stunden gibt es auch Snacks.",
+        "paragraphs": [
+          "Ein privates Boot, um gemeinsam eine besondere Zeit zu verbringen und Barcelona vom Wasser aus zu sehen. Für die romantische Fahrt könnt ihr zwischen einer und vier Stunden an Bord unseres traditionellen Bootes wählen, mit Skipper sowie Abfahrt und Rückkehr in Port Olímpic.",
+          "Die romantische Fahrt beinhaltet die Dekoration, die auf den Fotos zu sehen ist. Wir haben verschiedene Dekorationen. Wenn ihr euch etwas Besonderes wünscht, teilt uns eure Idee mit, damit wir die Details vor der Buchung abstimmen können."
+        ],
+        "steps": [
+          "Wir begrüßen euch in Port Olímpic an Bord, mit der Dekoration wie auf den Fotos.",
+          "Fahrt entlang der Küste auf einem Boot, das nur euch zur Verfügung steht.",
+          "Genießt gemeinsam die Aussicht und ein Getränk; ab 2 Stunden sind auch Snacks dabei.",
+          "Euer Erlebnis endet wieder im Port Olímpic."
+        ],
+        "audience": "Paare und Gäste, die einen besonderen Anlass privat auf dem Meer feiern möchten.",
+        "faqs": [
+          [
+            "Ist die Dekoration inklusive? Können wir besondere Wünsche äußern?",
+            "Die romantische Fahrt beinhaltet die Dekoration, die auf den Fotos zu sehen ist. Wir haben verschiedene Dekorationen. Wenn ihr euch etwas Besonderes wünscht, teilt uns eure Idee mit, damit wir die Details vor der Buchung abstimmen können."
+          ],
+          [
+            "Ist die Fahrt nur für zwei Personen?",
+            "Sie ist auf gemeinsame Zeit als Paar ausgelegt, das Privatboot bietet aber Platz für bis zu 6 Gäste. Der Preis gilt für das ganze Boot, nicht pro Passagier."
+          ]
+        ]
+      }
+    },
+    "galleryAlts": [
+      "Gäste an Bord des JimBoats-Bootes vor Barcelona",
+      "Gäste auf dem JimBoats-Boot im Hafen",
+      "Baden vom JimBoats-Boot vor der Küste",
+      "Gäste mit Getränken an Bord vor Barcelona"
+    ],
+    "sunTimes": {
+      "sunrise": "Sonnenaufgang",
+      "sunset": "Sonnenuntergang",
+      "today": "heute",
+      "unavailable": "Zeit nicht verfügbar"
+    },
+    "bookingCard": {
+      "bestPrice": "Bester Onlinepreis",
+      "bookNow": "Jetzt buchen",
+      "whatsappBooking": "Über WhatsApp buchen",
+      "includedLabel": "Inklusive",
+      "durationLabel": "Dauer",
+      "weatherAssurance": "Wenn wir wegen schlechten Wetters absagen, erstatten wir den gezahlten Betrag.",
+      "oneHourPrice": "Endpreis · Getränk inklusive",
+      "longerPrice": "Endpreis · Getränke und Snacks inklusive",
+      "essentials": [
+        "Skipper",
+        "Treibstoff",
+        "Versicherung",
+        "Bluetooth-Lautsprecher"
+      ],
+      "drink": "Getränk inklusive",
+      "drinks": "Getränke inklusive",
+      "snacks": "Snacks inklusive",
+      "snacksFrom": "Snacks ab 2 Stunden",
+      "refreshments": "Die einstündige Fahrt beinhaltet ein Getränk, aber keine Snacks. Bei allen Erlebnissen ab 2 Stunden sind Getränke und Snacks inklusive.",
+      "breakfast": "Fahrten zum Sonnenaufgang dauern mindestens 2 Stunden und beinhalten Getränke und Snacks. Ein vollständiges Frühstück ist nicht enthalten. Besondere Wünsche besprecht ihr vor der Buchung mit uns.",
+      "monthly": {
+        "sunrise": "Sonnenaufgang in Barcelona: Uhrzeiten nach Monat",
+        "sunset": "Sonnenuntergang in Barcelona: Uhrzeiten nach Monat",
+        "intro": "Eine Orientierung für eure Bootsfahrt: ungefähre Sonnenzeiten zur Mitte jedes Monats in Barcelona.",
+        "month": "Monat",
+        "time": "Ungefähre Uhrzeit",
+        "note": "Referenz: jeweils der 15. des Monats im Jahr 2026, Ortszeit Barcelona. Die Zeiten ändern sich täglich; im März und Oktober wirkt sich zusätzlich die Zeitumstellung aus. Prüft eure Abfahrtszeit bei der Buchung.",
+        "source": "Quelle"
+      },
+      "decoration": "Dekoration wie auf den Fotos inklusive"
+    },
+    "whatsappMessages": {
+      "experience": "Hallo, ich möchte folgendes Erlebnis buchen: {experience}. Welche Termine sind verfügbar?",
+      "general": "Hallo, ich möchte eine private Bootsfahrt mit JimBoats buchen. Könnt ihr mir helfen, ein Erlebnis und einen Termin auszuwählen?"
+    },
+    "sunsetGalleryAlts": [
+      "Die LENA vor Barcelonas Hotel W unter dem goldenen Abendhimmel",
+      "Die LENA und das Hotel W bei Sonnenuntergang in Barcelona",
+      "Ein Paar entspannt sich bei Sonnenuntergang auf dem Deck der LENA",
+      "Gäste fotografieren Barcelonas Küste bei Sonnenuntergang von der LENA aus",
+      "Die LENA fährt im goldenen Abendlicht am Hotel W vorbei"
+    ],
+    "sunriseGalleryAlts": [
+      "Silhouette der Lena vor der aufgehenden Sonne",
+      "Seitenansicht der Lena im Morgenlicht",
+      "Lena von vorne auf dem Meer bei Sonnenaufgang",
+      "Lena mit Barcelonas Küste im Hintergrund",
+      "Aufgehende Sonne neben dem Hafenfeuer",
+      "Passagierin neben einem Tisch an Deck bei Sonnenaufgang",
+      "Paar neben einem Tisch an Deck bei Sonnenaufgang"
+    ],
+    "romanticGalleryAlts": [
+      "Silhouetten eines Paares an Deck bei Sonnenuntergang",
+      "Paar zeigt einen Ring an Bord",
+      "Blumen und Tisch am Bug mit dem Hotel W im Hintergrund",
+      "Tisch an Deck mit Blumen und Blick auf Barcelona",
+      "Mit roten Rosen geschmückter Bug mit Küstenblick",
+      "Roter Tisch mit Blumen vor dem Hotel W",
+      "Mit Ballons, Rosen und Laternen geschmücktes Deck",
+      "Tisch mit Gläsern, Obst und Eiskübel an Deck",
+      "Zwei Passagierinnen auf dem geschmückten Deck im Hafen",
+      "Drei Musiker mit Instrumenten an Bord"
+    ]
+  },
+  "nl": {
+    "breadcrumb": "Ervaringen",
+    "breadcrumbLabel": "Broodkruimelnavigatie",
+    "about": "Over deze boottocht",
+    "included": "Wat de prijs omvat",
+    "itinerary": "Zo verloopt de tocht",
+    "audience": "Voor wie is deze tocht?",
+    "gallery": "De boot en het leven aan boord",
+    "galleryNote": "Foto’s van JimBoats en de boot; licht en route verschillen per vertrek.",
+    "faq": "Vragen over deze ervaring",
+    "reviews": "Ervaringen van onze gasten",
+    "reviewsSpecific": "Selectie die bij dit soort tocht hoort. De beoordeling en het totale aantal recensies gelden voor JimBoats als geheel.",
+    "reviewsGeneral": "Recensies over de boot en het JimBoats-team, niet specifiek over deze tocht. De beoordeling geldt voor JimBoats als geheel.",
+    "reserve": "Bekijk data en boek",
+    "finalPrice": "Eindprijs voor de hele boot, niet per persoon.",
+    "duration": "Kies je duur",
+    "people": "Groep",
+    "location": "Vertrekhaven",
+    "includedShort": "Schipper, brandstof, verzekering en een Bluetooth-speaker",
+    "noLicence": "Geen vaarbewijs of vaarervaring nodig.",
+    "extras": "Extra’s kosten aanvullend en zijn afhankelijk van beschikbaarheid.",
+    "viewPrices": "Bekijk alle prijzen",
+    "from": "vanaf",
+    "for": "voor",
+    "hour": "uur",
+    "hours": "uur",
+    "priceQuestion": "Wat kost deze tocht en wat is inbegrepen?",
+    "priceAnswer": "Vanaf {price} voor {hours}. Eindprijs voor de hele boot voor maximaal 6 gasten, inclusief schipper, brandstof, verzekering en een Bluetooth-speaker. Extra’s kosten aanvullend.",
+    "durationQuestion": "Hoe lang kunnen we boeken?",
+    "durationAnswer": "Kies tussen {min} en {max} uur. Elke duur heeft een eigen tarief dat je vóór betaling kunt bekijken. Extra tijd is afhankelijk van de beschikbaarheid.",
+    "capacityQuestion": "Is de boot privé en hoeveel gasten kunnen mee?",
+    "capacityAnswer": "De boot is alleen voor jullie groep gereserveerd, maximaal 6 gasten inclusief kinderen. De schipper gaat mee en verzorgt de navigatie.",
+    "meetingQuestion": "Waar vertrekken we en waar komen we terug?",
+    "meetingAnswer": "We vertrekken en keren terug bij Port Olímpic in Barcelona. Het ontmoetingspunt is Moll de Xaloc, Pantalan 5; bekijk de kaart en stem je aankomst af met het team.",
+    "bookingQuestion": "Hoe boeken we en kiezen we extra’s?",
+    "bookingAnswer": "Ga verder vanaf deze pagina: de ervaring is al geselecteerd. Kies duur, datum en tijd, bekijk beschikbare extra’s en vul vóór betaling je gegevens in.",
+    "profiles": {
+      "private": {
+        "lead": "Vaar langs de kust van Barcelona op een privéboot voor maximaal zes personen, met vertrek vanuit Port Olímpic. Kies een duur van {min} tot {max} uur, vanaf {price} voor {hours} voor de hele boot. Schipper, brandstof, verzekering en een drankje zijn inbegrepen; vanaf twee uur zijn ook hapjes inbegrepen.",
+        "paragraphs": [
+          "Huur per uur een privéboot in Barcelona, met schipper en de menorquina gereserveerd voor jullie groep. De dagtocht is te boeken van één tot zes uur; jullie schipper verzorgt de navigatie.",
+          "Een korte tocht biedt uitzicht op de kust en de stad. Met een langere boeking is er meer tijd om rustig te varen en een zwemstop met de kapitein te bespreken, als de omstandigheden dat toelaten. Er is geen vaste route: tijd en zee bepalen het verloop."
+        ],
+        "steps": [
+          "Ontmoet je schipper en stap aan boord in Port Olímpic.",
+          "Vaar langs de kust van Barcelona met de boot alleen voor jullie groep.",
+          "Geniet van een drankje en het uitzicht; vanaf 2 uur zijn ook snacks inbegrepen.",
+          "Je tocht eindigt in Port Olímpic aan het einde van de geboekte tijd."
+        ],
+        "audience": "Vrienden, gezinnen en stellen die een privéboot en een flexibele duur zoeken.",
+        "faqs": [
+          [
+            "Kunnen we maar één uur boeken?",
+            "Ja. Deze tocht is beschikbaar vanaf 1 uur, inclusief het uit- en binnenvaren van de haven. Boek langer voor meer tijd op het water."
+          ],
+          [
+            "Kunnen we stoppen om te zwemmen?",
+            "Vraag het de schipper. Een stop hangt af van de duur, de zee en de veilige route van die dag. Eén uur kan te kort zijn."
+          ]
+        ]
+      },
+      "sunset": {
+        "lead": "Geniet van de zonsondergang voor de kust van Barcelona op een privéboot voor maximaal zes personen. De tochten vertrekken vanuit Port Olímpic en duren {min} tot {max} uur. Vanaf {price} voor {hours} voor de hele boot, inclusief schipper, brandstof, verzekering, drankjes en hapjes.",
+        "paragraphs": [
+          "Geniet van het laatste daglicht op een menorquina die alleen voor jullie groep is gereserveerd. Deze zonsondergangtocht vertrekt vanaf Port Olímpic en laat jullie de skyline van Barcelona vanaf het water van kleur zien veranderen.",
+          "De minimale duur is twee uur, zodat er tijd is voor vertrek uit de haven, varen en terugkeer. Zonsondergang verandert door het jaar heen: het vertrek moet passen bij de datum en geboekte duur. De schipper past de route aan de zee aan."
+        ],
+        "steps": [
+          "We verwelkomen jullie aan boord in Port Olímpic.",
+          "Vaar langs de kust terwijl het licht boven Barcelona verandert.",
+          "Geniet van de zonsondergang vanaf het water, met drankjes en snacks aan boord.",
+          "We varen terug de haven in om jullie tocht af te sluiten."
+        ],
+        "audience": "Stellen, vrienden en kleine groepen die samen de dag willen afsluiten met uitzicht op zee.",
+        "faqs": [
+          [
+            "Hoe laat vertrekt de boot bij zonsondergang?",
+            "Het vertrek hangt af van de datum en de gekozen duur. Bekijk de beschikbare tijden bij het boeken."
+          ],
+          [
+            "Zien we de zon altijd in zee zakken?",
+            "Een bepaald uitzicht is niet te garanderen. De kustlijn, bewolking en datum beïnvloeden het licht; de schipper kiest een passende, veilige route."
+          ]
+        ]
+      },
+      "sunrise": {
+        "lead": "Ontdek Barcelona bij het eerste ochtendlicht op een privéboot voor maximaal zes personen. De tochten vertrekken vanuit Port Olímpic en duren {min} tot {max} uur. Vanaf {price} voor {hours} voor de hele boot, inclusief schipper, brandstof, verzekering, drankjes en hapjes.",
+        "paragraphs": [
+          "Begin de dag op de Middellandse Zee met een privétocht bij zonsopgang. Onze menorquina vertrekt vanaf Port Olímpic voor het eerste licht langs de kust van Barcelona, met schipper en een boot voor jullie groep alleen.",
+          "Kies van twee tot zes uur. Zonsopgang verandert met de seizoenen, dus de vertrektijd wordt op jullie datum afgestemd. Wind, zee en uitzicht zijn elke dag anders; kalm water en een heldere lucht kunnen niet worden gegarandeerd."
+        ],
+        "steps": [
+          "Ontmoet je schipper en ga aan boord in Port Olímpic.",
+          "Verlaat de haven en ontdek de kust bij het eerste daglicht.",
+          "Bekijk de zonsopgang en geniet van drankjes en snacks op het dek.",
+          "Na de tocht keren we terug naar Port Olímpic."
+        ],
+        "audience": "Vroege vogels, stellen en reizigers die Barcelona bij het eerste daglicht willen ontdekken.",
+        "faqs": [
+          [
+            "Hoe laat vertrekt de boot bij zonsopgang?",
+            "Het vertrek hangt af van de datum en de gekozen duur. Bekijk de beschikbare tijden bij het boeken."
+          ],
+          [
+            "Is ontbijt inbegrepen?",
+            "Tochten bij zonsopgang duren minimaal 2 uur en zijn inclusief drankjes en snacks. Een volledig ontbijt is niet inbegrepen; neem voor speciale wensen vóór het boeken contact op."
+          ]
+        ]
+      },
+      "romantic": {
+        "lead": "Beleef samen een romantische tocht op een privéboot vanuit Port Olímpic in Barcelona, inclusief de versiering op de foto’s. Kies een duur van {min} tot {max} uur, vanaf {price} voor {hours} voor de hele boot, voor maximaal zes personen. Schipper, brandstof, verzekering en een drankje zijn inbegrepen; vanaf twee uur zijn ook hapjes inbegrepen.",
+        "paragraphs": [
+          "Een privéboot om samen een bijzonder moment te beleven en Barcelona vanaf het water te zien. Voor de romantische ervaring kies je tussen één en vier uur aan boord van onze traditionele boot, met schipper en vertrek en terugkeer in Port Olímpic.",
+          "De romantische ervaring is inclusief de decoratie die je op de foto’s ziet. We hebben verschillende decoraties. Willen jullie iets bijzonders, vertel ons dan jullie idee zodat we de details vóór het boeken kunnen afstemmen."
+        ],
+        "steps": [
+          "We verwelkomen jullie in Port Olímpic aan boord van de boot, versierd zoals op de foto’s.",
+          "Vaar langs de kust op een boot die helemaal voor jullie is gereserveerd.",
+          "Geniet samen van het uitzicht en een drankje; vanaf 2 uur zijn ook snacks inbegrepen.",
+          "Jullie ervaring eindigt weer in Port Olímpic."
+        ],
+        "audience": "Stellen en gasten die een bijzondere gelegenheid privé op zee willen vieren.",
+        "faqs": [
+          [
+            "Is de decoratie inbegrepen? Kunnen we iets bijzonders aanvragen?",
+            "De romantische ervaring is inclusief de decoratie die je op de foto’s ziet. We hebben verschillende decoraties. Willen jullie iets bijzonders, vertel ons dan jullie idee zodat we de details vóór het boeken kunnen afstemmen."
+          ],
+          [
+            "Is de ervaring alleen voor twee personen?",
+            "De tocht is gericht op tijd als stel, maar de privéboot biedt plaats aan maximaal 6 gasten. De prijs is voor de hele boot, niet per passagier."
+          ]
+        ]
+      }
+    },
+    "galleryAlts": [
+      "Gasten aan boord van de JimBoats-boot voor Barcelona",
+      "Passagiers op de JimBoats-boot in de haven",
+      "Zwemmen vanaf de JimBoats-boot voor de kust",
+      "Gasten met drankjes aan boord voor Barcelona"
+    ],
+    "sunTimes": {
+      "sunrise": "Zonsopgang",
+      "sunset": "Zonsondergang",
+      "today": "vandaag",
+      "unavailable": "Tijd niet beschikbaar"
+    },
+    "bookingCard": {
+      "bestPrice": "Beste online prijs",
+      "bookNow": "Nu boeken",
+      "whatsappBooking": "Boeken via WhatsApp",
+      "includedLabel": "Inclusief",
+      "durationLabel": "Duur",
+      "weatherAssurance": "Als wij annuleren vanwege slecht weer, betalen we het betaalde bedrag terug.",
+      "oneHourPrice": "Eindprijs · drankje inbegrepen",
+      "longerPrice": "Eindprijs · drankjes en snacks inbegrepen",
+      "essentials": [
+        "Schipper",
+        "Brandstof",
+        "Verzekering",
+        "Bluetooth-speaker"
+      ],
+      "drink": "Drankje inbegrepen",
+      "drinks": "Drankjes inbegrepen",
+      "snacks": "Snacks inbegrepen",
+      "snacksFrom": "Snacks vanaf 2 uur",
+      "refreshments": "De tocht van 1 uur is inclusief een drankje, zonder snacks. Alle ervaringen vanaf 2 uur zijn inclusief drankjes en snacks.",
+      "breakfast": "Tochten bij zonsopgang duren minimaal 2 uur en zijn inclusief drankjes en snacks. Een volledig ontbijt is niet inbegrepen; neem voor speciale wensen vóór het boeken contact op.",
+      "monthly": {
+        "sunrise": "Zonsopgang in Barcelona: tijden per maand",
+        "sunset": "Zonsondergang in Barcelona: tijden per maand",
+        "intro": "Een overzicht om je boottocht te plannen: de geschatte tijden van de zon rond het midden van elke maand in Barcelona.",
+        "month": "Maand",
+        "time": "Geschatte tijd",
+        "note": "Referentie: de 15e van elke maand in 2026, lokale tijd in Barcelona. Tijden veranderen dagelijks; in maart en oktober speelt ook de klokverzetting een rol. Bekijk je vertrektijd bij het boeken.",
+        "source": "Bron"
+      },
+      "decoration": "Decoratie zoals op de foto’s inbegrepen"
+    },
+    "whatsappMessages": {
+      "experience": "Hallo, ik wil graag boeken: {experience}. Welke data zijn beschikbaar?",
+      "general": "Hallo, ik wil graag een privéboottocht met JimBoats boeken. Kunnen jullie me helpen een ervaring en een datum te kiezen?"
+    },
+    "sunsetGalleryAlts": [
+      "De LENA voor het W Hotel in Barcelona onder een gouden avondlucht",
+      "De LENA en het W Hotel bij zonsondergang in Barcelona",
+      "Een stel ontspant op het dek van de LENA bij zonsondergang",
+      "Gasten fotograferen de kust van Barcelona vanaf de LENA bij zonsondergang",
+      "De LENA vaart langs het W Hotel in het gouden avondlicht"
+    ],
+    "sunriseGalleryAlts": [
+      "Silhouet van de Lena voor de opkomende zon",
+      "Zijaanzicht van de Lena in het ochtendlicht",
+      "Vooraanzicht van de Lena op zee bij zonsopgang",
+      "Lena met de kust van Barcelona op de achtergrond",
+      "Opkomende zon naast het havenbaken",
+      "Passagier naast een tafel aan dek bij zonsopgang",
+      "Stel naast een tafel aan dek bij zonsopgang"
+    ],
+    "romanticGalleryAlts": [
+      "Silhouetten van een stel aan dek bij zonsondergang",
+      "Stel toont een ring aan boord",
+      "Bloemen en tafel op de boeg met hotel W op de achtergrond",
+      "Tafel aan dek met bloemen en uitzicht op Barcelona",
+      "Boeg versierd met rode rozen met uitzicht op de kust",
+      "Rode tafel met bloemen tegenover hotel W",
+      "Dek versierd met ballonnen, rozen en lantaarns",
+      "Tafel met glazen, fruit en een ijsemmer aan dek",
+      "Twee passagiers op het versierde dek in de haven",
+      "Drie muzikanten met instrumenten aan boord"
+    ]
+  }
+}

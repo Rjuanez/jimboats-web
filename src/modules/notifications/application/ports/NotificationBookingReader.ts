@@ -23,6 +23,7 @@ export type NotificationBookingReadModel = {
   };
   reference: string;
   templatePayload: NotificationPayload;
+  termsDocument?: string;
 };
 
 export type NotificationBookingReader = {

@@ -1,0 +1,208 @@
+{
+  "nav": [
+    "Ervaringen",
+    "Prijzen",
+    "Onze boot",
+    "Waar je ons vindt",
+    "Neem contact op"
+  ],
+  "home": "Home",
+  "book": "Kies een ervaring",
+  "details": "Bekijk de ervaring",
+  "reserve": "Kies je uren en datum",
+  "from": "Vanaf",
+  "price": "Vraag een prijs aan",
+  "perBoat": "Totaalprijs voor de boot · niet per persoon",
+  "duration": "Duur",
+  "hour": "uur",
+  "hours": "uur",
+  "chooseHours": "Hoelang wil je het water op?",
+  "hourNote": "Kies een beschikbare duur voor deze ervaring en bekijk daarna de data, vertrektijden en totaalprijs.",
+  "priceNote": "Totaalprijs per boot. Dagtocht: 1–6 uur. Zonsopkomst en zonsondergang: 2–6 uur. Romantische ervaring: 1–4 uur. Een drankje is vanaf het eerste uur inbegrepen, met snacks bij tochten van twee uur of langer.",
+  "languageNotice": "",
+  "skip": "Naar de inhoud",
+  "menu": "Menu",
+  "language": "Taal",
+  "eyebrow": "BARCELONA, OP JOUW TEMPO",
+  "homeTitle": "Jouw privéboot in Barcelona.",
+  "homeDescription": "JimBoats Charter biedt privéboottochten met schipper vanuit Port Olímpic in Barcelona voor groepen van maximaal zes personen. Kies een tocht overdag, bij zonsopgang, bij zonsondergang of een romantische vaartocht. Een tocht overdag kost vanaf {startingPrice} voor één uur voor de hele boot, inclusief schipper, brandstof en verzekering.",
+  "heroLink": "Vind jouw moment",
+  "heroAlt": "De LENA van JimBoats voor de kust van Barcelona",
+  "trust": [
+    "100% privéboten",
+    "Met schipper",
+    "5,0★ Google Maps ({googleReviews} beoordelingen)",
+    "Port Olímpic, Barcelona"
+  ],
+  "experiencesTitle": "Vier manieren om de zee te beleven.",
+  "experiencesDescription": "Kies de sfeer. Bepaal zelf de duur.",
+  "names": {
+    "private": "Privéboottocht in Barcelona",
+    "sunset": "Boottocht bij zonsondergang in Barcelona",
+    "sunrise": "Boottocht bij zonsopgang in Barcelona",
+    "romantic": "Romantische boottocht in Barcelona",
+    "prices": "Prijzen van boottochten in Barcelona",
+    "boat": "LENA, onze boot in Menorcaanse stijl in Barcelona",
+    "contact": "Waar je aan boord gaat in Barcelona",
+    "about": "Maak kennis met Víctor en David, de schippers van JimBoats"
+  },
+  "shortNames": {
+    "private": "Barcelona overdag",
+    "sunset": "Het gouden uur",
+    "sunrise": "Het eerste licht",
+    "romantic": "Een moment met z’n tweeën"
+  },
+  "descriptions": {
+    "private": "Laat de drukte aan wal. Geniet van een privétocht langs de kust, bekijk Barcelona vanuit een ander perspectief en beleef de Middellandse Zee op jullie tempo.",
+    "sunset": "De stad verandert van kleur en de zee wordt goud. Deel het laatste daglicht op een boot die alleen voor jullie gezelschap is gereserveerd.",
+    "sunrise": "Ontdek de kust terwijl Barcelona ontwaakt. Een privétocht voor wie houdt van het eerste licht en een bijzonder begin van de dag.",
+    "romantic": "Even helemaal weg, alleen voor jullie. Kies tussen 1 en 4 uur, inclusief de decoratie op de foto’s. We hebben verschillende decoraties; vraag ons gerust naar bijzondere wensen.",
+    "prices": "Vergelijk de totaalprijs voor maximaal 6 gasten: dagtocht van 1 tot 6 uur, zonsopkomst en zonsondergang van 2 tot 6 en romantisch van 1 tot 4. Schipper, brandstof en verzekering inbegrepen.",
+    "boat": "LENA is een Llaut Llevant 39 (Punta Prima), 7,49 m lang en 3,03 m breed. Vanuit Port Olímpic vaart de schipper uit met maximaal zes gasten per privétocht.",
+    "contact": "We ontmoeten elkaar in Port Olímpic. Bekijk de opstapplaats en stem de aankomstgegevens vóór jullie tocht met ons af.",
+    "about": "De naam JimBoats verwijst naar hun achternaam, Jiménez. Samen begonnen ze het bedrijf om gasten vanaf een privéboot de kust van Barcelona te laten zien."
+  },
+  "experienceHeading": "Jullie tijd op het water",
+  "includeHeading": "Een tocht die bij jullie past",
+  "includeItems": [
+    "Een privéboot voor jullie gezelschap",
+    "Schipper, brandstof en verzekering inbegrepen",
+    "Vertrek vanuit Port Olímpic",
+    "Tot 6 personen"
+  ],
+  "extrasNote": "Extra’s op aanvraag.",
+  "routeHeading": "Barcelona vanuit een ander perspectief",
+  "routeText": "De tocht volgt de kust van Barcelona. De schipper stemt de route en eventuele stops af op de duur, de omstandigheden op zee en de mogelijkheden van die dag.",
+  "sunsetNote": "De vertrektijd wordt afgestemd op de zonsondergang en varieert met het seizoen en de gekozen duur.",
+  "sunriseNote": "De vertrektijd wordt afgestemd op de zonsopgang en varieert met het seizoen en de gekozen duur.",
+  "faqTitle": "Voor je aan boord gaat",
+  "faqs": [
+    [
+      "Is de boot privé of delen we die met andere gasten?",
+      "Jullie tocht is privé: de boot is gereserveerd voor jullie groep, met een schipper aan boord. We verkopen voor jullie vertrek geen plaatsen aan andere groepen."
+    ],
+    [
+      "Heb ik een vaarbewijs nodig?",
+      "Je hebt geen vaarbewijs of vaarervaring nodig. Bij JimBoats gaat een schipper mee die de navigatie verzorgt en de route aanpast aan de omstandigheden op zee."
+    ],
+    [
+      "Wat kost de tocht en hoeveel uur kunnen we kiezen?",
+      "Dagtocht: 1–6 uur. Zonsopkomst en zonsondergang: 2–6 uur. Romantische ervaring: 1–4 uur. De prijs geldt per boot voor de gekozen duur, niet per persoon. Je kunt de tocht verlengen tot de maximale duur van je ervaring, afhankelijk van beschikbaarheid."
+    ],
+    [
+      "Wat is inbegrepen en wat kost extra?",
+      "De prijs is inclusief privégebruik van de boot, schipper, brandstof en verzekering. Je hebt geen vaarbewijs nodig. Extra’s zoals paddleboarden, eFoil of een fotograaf boek je apart, afhankelijk van beschikbaarheid, boven op de bootprijs."
+    ],
+    [
+      "Hoe reserveer ik?",
+      "Open een ervaring, kies de duur en ga verder naar de reservering om datum, vertrektijd, groepsgrootte en totaal te bekijken. Lees de voorwaarden voordat je bevestigt. Neem voor speciale wensen eerst contact op via WhatsApp."
+    ],
+    [
+      "Waar stappen we op en hoe komen we daar?",
+      "We vertrekken vanuit Port Olímpic, Moll de Xaloc, Pantalan 5, Barcelona. Op deze pagina staan een kaart en een link naar de routebeschrijving. Bevestig het exacte ontmoetingspunt met JimBoats en kom ruim op tijd om rustig aan boord te gaan."
+    ],
+    [
+      "Hoeveel mensen kunnen mee? Ook kinderen?",
+      "Alle ervaringen zijn geschikt voor maximaal 6 personen, inclusief kinderen. Geef bij het boeken de leeftijden van jonge kinderen door en laat weten of iemand hulp nodig heeft bij het instappen."
+    ],
+    [
+      "Wat is het verschil tussen overdag, zonsopkomst en zonsondergang?",
+      "Overdag ontdek je de kust bij daglicht. De andere twee tochten sluiten aan op het eerste of laatste licht van de dag. Hun vertrektijden hangen af van de datum en de gekozen duur."
+    ],
+    [
+      "Wat is het beste seizoen voor een boottocht in Barcelona?",
+      "De lente en zomer bieden meer daglicht; in de herfst en winter is de kust rustiger. Vertrek hangt af van beschikbaarheid en de omstandigheden op zee."
+    ],
+    [
+      "Wat moeten we meenemen?",
+      "Neem zonnebrandcrème, een zonnebril, comfortabele schoenen en een extra laag tegen de zeebries mee. Willen jullie zwemmen, neem dan zwemkleding en een handdoek mee en overleg dit vooraf: zwemstops hangen af van de duur en de omstandigheden op zee."
+    ],
+    [
+      "Kunnen we een verjaardag, jubileum of huwelijksaanzoek organiseren?",
+      "Ja, bespreek jullie bijzondere gelegenheid met ons. De romantische ervaring is inclusief de decoratie op de foto’s. We hebben verschillende decoraties; neem vóór het boeken contact op om speciale wensen af te stemmen."
+    ],
+    [
+      "Wat gebeurt er bij slecht weer of als ik moet annuleren?",
+      "De schipper beoordeelt of varen mogelijk is of de tocht aangepast moet worden. Wijzigingen, annuleringen en eventuele terugbetalingen hangen af van je boekingsvoorwaarden. Lees die vóór het bevestigen en neem tijdig contact op met JimBoats als je plannen veranderen."
+    ]
+  ],
+  "findTitle": "Tot in Port Olímpic.",
+  "findText": "Jullie tocht begint in Port Olímpic, aan de Middellandse Zee en op een steenworp van de stad.",
+  "directions": "Route bekijken",
+  "weather": "Bekijk de weersverwachting",
+  "reviewsTitle": "Tijd op zee. Verhalen om te delen.",
+  "reviewsText": "Ervaringen met JimBoats, verteld door onze gasten in hun eigen woorden.",
+  "whatsapp": "Chat via WhatsApp",
+  "footerText": "Privéboottochten in Barcelona. De Middellandse Zee, met je eigen gezelschap.",
+  "aboutLink": "Over ons",
+  "otherExperiences": "Vind een ander moment",
+  "pricesHeading": "Jouw ervaring. Jouw tijd.",
+  "tableExperience": "Ervaring",
+  "tableDuration": "Kies je duur",
+  "tablePrice": "Totaalprijs",
+  "boatHeading": "Waarom we voor deze llaüt kozen",
+  "boatText": "De lijnen van LENA doen Víctor en David denken aan Menorca. Ze zochten een boot waarop hun gasten over het dek kunnen lopen en rustig samen iets kunnen drinken.",
+  "aboutHeading": "Neem rechtstreeks contact op",
+  "aboutText": "Vóór vertrek beantwoorden we je vragen over de duur, ontmoetingsplek en voorwaarden. Je bereikt ons telefonisch, per e-mail en via WhatsApp.",
+  "preview": "Lokale preview · testboekingen.",
+  "bookingTitle": "Plan je tocht",
+  "bookingIntro": "Kies een ervaring, duur en datum. Deze lokale preview bevestigt geen beschikbaarheid, maakt geen boekingen en verwerkt geen betalingen.",
+  "date": "Gewenste datum",
+  "guests": "Personen in jullie groep",
+  "summary": "Jouw tocht",
+  "request": "Vraag deze tocht aan via WhatsApp",
+  "bookingNote": "JimBoats bevestigt de vertrektijd, capaciteit en prijs. Je kunt het bericht in WhatsApp controleren voordat je het verstuurt.",
+  "back": "Terug naar de ervaring",
+  "message": "Hallo, ik ben geïnteresseerd in {experience} in Barcelona voor {hours} uur, op {date}, voor {guests} personen. Kunnen jullie de beschikbaarheid, capaciteit en totaalprijs bevestigen?",
+  "dateMissing": "Kies een datum om je tocht aan te vragen.",
+  "pending": "Nog te bevestigen",
+  "bookingEnglish": "Het boeken gaat verder in het Engels.",
+  "bookingHoursLabel": "Uren op het water",
+  "provisionalPrice": "Voorlopig tarief · lokale preview",
+  "faqIntro": "Duur, boeken en de ontmoetingsplek. Handige antwoorden zodat jullie van de zee kunnen genieten.",
+  "weatherTitle": "Het weer in Barcelona",
+  "weatherNote": "Een indicatieve verwachting voor de omgeving. De schipper bevestigt de omstandigheden voor jullie tocht.",
+  "mapTitle": "Kaart van het ontmoetingspunt van JimBoats in Port Olímpic",
+  "reviewsCountLabel": "beoordelingen op",
+  "reviewsExcerptLabel": "Ervaringen van gasten",
+  "reviewsCheckedLabel": "Geraadpleegd op",
+  "reviewsReadLabel": "Lees op",
+  "reviewsPreviousLabel": "Vorige review",
+  "reviewsNextLabel": "Volgende review",
+  "reviewsEyebrow": "Ervaringen van gasten",
+  "reviewsOriginalLabel": "Origineel fragment",
+  "reviewsShowOriginalLabel": "Origineel fragment bekijken",
+  "reviewsTranslations": {
+    "emma": "Vanaf het moment dat we aan boord stapten, liet Víctor de hele ervaring persoonlijk, ontspannen en volledig op maat voelen.",
+    "asante": "Hij was vriendelijk en professioneel en zorgde ervoor dat de ervaring van begin tot eind gemakkelijk en ontspannen aanvoelde.",
+    "stefania": "in zee springen, het paddleboard gebruiken en ontspannen in de zon terwijl we naar onze eigen muziek luisterden.",
+    "adam": "de boot was goed voorzien van drankjes en heerlijke ham. We mochten zelfs de luidspreker aan boord gebruiken.",
+    "kateryna": "We gingen ’s avonds om de droneshow vanaf het water te bekijken, en het was een geweldige ervaring.",
+    "alina": "We vierden het vrijgezellenfeest van mijn zus, en het is een geweldig idee om dat zo te doen!",
+    "megan": "We hebben net met zes personen een privéboottocht van 2 uur met Víctor gemaakt en vonden het GEWELDIG!",
+    "francessca": "Het was een privétocht alleen voor onze groep en voelde heel intiem en persoonlijk; het maakte onze dag echt bijzonder."
+  },
+  "reviewsTranslationLabel": "Vertaald fragment",
+  "reviewsShowTranslationLabel": "Vertaling bekijken",
+  "reviewsAnd": "en",
+  "capacityLabel": "Tot 6 personen",
+  "victorBio": "Víctor groeide op in Barcelona. Als mede-eigenaar en schipper heeft hij ervaring met kustvaart, oversteken tussen het vasteland en de eilanden en ankermanoeuvres. Hij laat zijn gasten graag de Barceloneta bij zonsondergang zien. Hij heeft onder meer de Spaanse vaarbevoegdheden Capitán de Yate en PPER.",
+  "davidBio": "David is medeoprichter en schipper. Hij maakt de boot klaar, organiseert de boekingen en vaart met de gasten mee. Vlak voor vertrek controleert hij de wind en de deining om de route te kiezen. Het liefst verlaat hij bij zonsopgang de haven. Hij heeft de Spaanse vaarbevoegdheden Capitán de Yate en PPER.",
+  "support": {
+    "metro": "Met de metro",
+    "metroRoute": "Neem lijn L4 naar Ciutadella | Vila Olímpica. Loop vanaf het station naar Port Olímpic en ga in de haven verder naar Moll de Xaloc, Pantalan 5.",
+    "access": "Te voet, met de auto of de taxi",
+    "accessRoute": "Voetgangers en voertuigen kunnen de haven in via Moll de Mestral. Neem deze ingang als je de trappen wilt vermijden.",
+    "portGuide": "Bekijk de ingangen van de haven",
+    "contactMessage": "Hallo JimBoats, ik heb een vraag over het ontmoetingspunt in Port Olímpic.",
+    "meeting": "Jullie ontmoetingspunt",
+    "arrival": "Kom bij voorkeur 15 minuten voor vertrek. Kun je ons in de haven niet vinden? Stuur dan via WhatsApp de naam van de boeking.",
+    "specs": "LENA in cijfers",
+    "length": "Lengte",
+    "beam": "Breedte",
+    "model": "Model",
+    "conditions": "Voor het boeken",
+    "experiences": "Ontdek de tochten",
+    "optional": "Extra’s op aanvraag"
+  }
+}

@@ -16,6 +16,10 @@ RUN pnpm install --frozen-lockfile
 
 FROM base AS builder
 
+# Marketing metadata is generated at build time. Local builds remain noindex.
+ARG JIMBOATS_INDEXING=1
+ENV JIMBOATS_INDEXING=$JIMBOATS_INDEXING
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
@@ -35,6 +39,7 @@ ENV HOSTNAME=0.0.0.0
 ENV HOME=/home/nextjs
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
+ENV JIMBOATS_INDEXING=1
 ENV PORT=3000
 
 WORKDIR /app

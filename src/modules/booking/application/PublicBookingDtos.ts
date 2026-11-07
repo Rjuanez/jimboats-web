@@ -14,6 +14,7 @@ export type PublicBookingMediaDto = {
 };
 
 export type PublicBookingExperienceDto = {
+  hourlyRates?: readonly import("../domain/HourlyRate").HourlyRate[];
   basePrice: MoneySnapshot;
   capacity: number;
   cancellationPolicySummary: string;
@@ -68,6 +69,8 @@ export type PublicBookingPageDto = {
 };
 
 export type GetPublicBookingAvailabilityQuery = {
+  hours?: number;
+  localDate?: string;
   experienceId: string;
   locale: string;
 };

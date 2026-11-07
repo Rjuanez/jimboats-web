@@ -1,5 +1,8 @@
 .git
 .code-review-graph
+.local-preview
+.local
+artifacts
 .next
 .worker
 coverage

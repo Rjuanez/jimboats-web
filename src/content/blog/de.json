@@ -1,0 +1,521 @@
+{
+  "labels": {
+    "name": "Blog",
+    "title": "Barcelona. Zeit zum Genießen.",
+    "seoTitle": "Barcelona: Sonnenuntergang und Zeit zu zweit",
+    "description": "Tipps für Sonnenuntergang und Sonnenaufgang in Barcelona, romantische Unternehmungen und private Bootsausflüge: die Reiseführer von JimBoats.",
+    "eyebrow": "DAS JIMBOATS JOURNAL",
+    "read": "Reiseführer lesen",
+    "toc": "In diesem Reiseführer",
+    "related": "Weitere Ideen für euren Aufenthalt",
+    "sources": "Quellen und praktische Informationen",
+    "updated": "Aktualisiert am",
+    "by": "Von",
+    "faq": "Häufige Fragen",
+    "experience": "Erlebnis ansehen",
+    "prices": "Preise vergleichen",
+    "contact": "Anreise zum Port Olímpic",
+    "all": "Alle Reiseführer",
+    "relatedExperience": "Plant euren Ausflug",
+    "photo": "Barcelona vom Meer aus · JimBoats",
+    "source": "Informationen zum Ort"
+  },
+  "articles": {
+    "sunset": {
+      "slug": "sonnenuntergang-barcelona-aussichtspunkte",
+      "title": "Sonnenuntergang in Barcelona: wo ihr ihn erleben könnt",
+      "seoTitle": "Sonnenuntergang Barcelona: Orte und Zeiten",
+      "description": "Montjuïc, Strandpromenade oder privates Boot: Findet euren Platz für den Sonnenuntergang in Barcelona und plant einen entspannten Abend.",
+      "category": "Das letzte Licht",
+      "imageAlt": "Meer und Abendlicht während einer JimBoats-Bootsfahrt",
+      "lead": "Wo ihr den Sonnenuntergang in Barcelona am besten erlebt, hängt vom gewünschten Blick ab: die Sonne über den Hügeln, warmes Licht auf der Stadt oder die Farben über dem Mittelmeer. Das sind unterschiedliche Perspektiven. Diese drei Möglichkeiten helfen euch bei der Auswahl.",
+      "sections": [
+        {
+          "id": "richtung",
+          "title": "Die Sonne geht Richtung Land unter",
+          "paragraphs": [
+            "Barcelonas Küste ist nach Osten und Südosten ausgerichtet. Abends sinkt die Sonne Richtung Landesinneres. Am Strand könnt ihr das Licht auf dem Wasser genießen, solltet aber keinen Sonnenuntergang am Meereshorizont erwarten. Vom Boot aus könnt ihr zur Stadt und ihrer Silhouette blicken.",
+            "Wer die Sonne über dem Mittelmeer aufgehen sehen möchte, wählt den Morgen. Der Abend eignet sich für Stadtansichten im warmen Licht oder einen Spaziergang zum Tagesausklang."
+          ]
+        },
+        {
+          "id": "montjuic",
+          "title": "Montjuïc: Barcelona von oben",
+          "paragraphs": [
+            "Auf dem Montjuïc gibt es Aussichtspunkte über Barcelona. Der Mirador de l’Alcalde bietet einen Blick auf Stadt und Hafen; rund um den Mirador del Migdia ergibt sich eine andere Ausrichtung für das Abendlicht.",
+            "Sucht euch einen konkreten Ort aus und prüft den Zugang vorab. Ein Besuch der Burg ist etwas anderes als ein Spaziergang zum Aussichtspunkt: Ein umzäuntes Gelände ist nicht unbedingt bis zum Sonnenuntergang geöffnet. Plant auch den Rückweg, falls ihr bis nach Einbruch der Dunkelheit bleibt."
+          ],
+          "sourceIds": [
+            "montjuic",
+            "outdoors"
+          ]
+        },
+        {
+          "id": "promenade",
+          "title": "Barceloneta und Uferpromenade: flexibel bleiben",
+          "paragraphs": [
+            "Die Uferpromenade passt zu einem Abend ohne feste Buchung. Ihr könnt laufen, spontan anhalten und Richtung Port Olímpic weitergehen, wenn es zu eurem Plan passt. Wie lange ihr bleibt, entscheidet ihr vor Ort.",
+            "Hier stehen Atmosphäre und Farben im Vordergrund, nicht eine im Meer versinkende Sonne. Wenn ihr anschließend essen möchtet, lasst Zeit für den Weg und reserviert das Restaurant separat. Der ganze Abend muss nicht von einem einzigen Foto abhängen."
+          ]
+        },
+        {
+          "id": "vom-meer",
+          "title": "Ein privates Boot mit Blick auf die Skyline",
+          "paragraphs": [
+            "Eine Abfahrt vom Port Olímpic eröffnet den Blick zurück auf die Küste. JimBoats bietet eine private Bootsfahrt zum Sonnenuntergang für bis zu sechs Gäste an. Skipper, Kraftstoff und Versicherung sind enthalten.",
+            "Die Sonnenuntergangsfahrt beginnt bei zwei Stunden; längere verfügbare Zeiten könnt ihr ebenfalls wählen. Ab zwei Stunden sind Getränke und Snacks inklusive. Die Sonnenuntergangszeit ist eine Planungshilfe, nicht eure Einstiegszeit. Die verfügbare Abfahrt seht ihr bei der Buchung."
+          ]
+        },
+        {
+          "id": "uhrzeit",
+          "title": "Wann ist Sonnenuntergang in Barcelona?",
+          "paragraphs": [
+            "Die Uhrzeit ändert sich täglich und mit der Sommerzeit. Datierte Beispiele für Port Olímpic: Am 15. Januar 2026 geht die Sonne um 17:46 Uhr unter, am 15. Juni um 21:26 Uhr und am 15. September um 20:00 Uhr. Das sind Ortszeiten für diese Tage, keine festen Monatszeiten.",
+            "Auf der Erlebnis-Seite findet ihr eine monatliche Orientierungstabelle und die Sonnenzeit des Tages. Prüft euer genaues Datum, bevor ihr die Anreise plant. Wolken und Sichtverhältnisse beeinflussen den Himmel, auch wenn die astronomische Uhrzeit feststeht."
+          ],
+          "sourceIds": [
+            "solar"
+          ]
+        },
+        {
+          "id": "auswahl",
+          "title": "Wählt einen Ort und nehmt euch Zeit",
+          "paragraphs": [
+            "Ein Aussichtspunkt bietet Höhe, die Promenade Flexibilität und ein privates Boot gemeinsame Zeit auf dem Wasser. Alle drei Varianten an einem Abend unterzubringen, ist nicht nötig."
+          ],
+          "bullets": [
+            "Kommt rechtzeitig, um euren Platz in Ruhe zu finden.",
+            "Prüft die Wettervorhersage und nehmt eine leichte Jacke mit.",
+            "Für die Bootsfahrt gelten Treffpunkt und Abfahrtszeit eurer Buchung."
+          ]
+        },
+        {
+          "id": "jimboats",
+          "title": "Tipps der Skipper von JimBoats",
+          "paragraphs": [
+            "Víctor empfiehlt das Ende der Promenade von Barceloneta, wo das Abendlicht auf das Hotel W fällt. Für die Bootsfahrt rät er, etwa 15 Minuten vor der Abfahrt im Hafen zu sein."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "Geht die Sonne an der Barceloneta im Meer unter?",
+          "Sie geht Richtung Land unter. Am Strand seht ihr das wechselnde Licht auf dem Wasser; vom Boot könnt ihr die Stadt im Abendlicht betrachten."
+        ],
+        [
+          "Ist die Sonnenuntergangsfahrt von JimBoats privat?",
+          "Ja. Das Boot ist für eure Gruppe mit bis zu sechs Gästen reserviert. Ein Skipper begleitet euch."
+        ],
+        [
+          "Ist die Sonnenuntergangszeit auch die Abfahrtszeit?",
+          "Nein. Prüft bei der Buchung die verfügbare Abfahrt für euer Datum."
+        ]
+      ],
+      "cta": {
+        "title": "Das letzte Licht. Euer eigenes Boot.",
+        "text": "Seht euch die Sonnenuntergangsfahrt, ihre Dauer, enthaltenen Leistungen und verfügbaren Termine an."
+      }
+    },
+    "sunrise": {
+      "slug": "sonnenaufgang-barcelona-straende",
+      "title": "Sonnenaufgang in Barcelona: Strände und Planung",
+      "seoTitle": "Sonnenaufgang Barcelona: Strände, Uhrzeiten und Tipps",
+      "description": "Barceloneta, Bogatell oder eine private Fahrt ab Port Olímpic: Plant euren Sonnenaufgang in Barcelona mit Zeitbeispielen und praktischen Tipps.",
+      "category": "Das erste Licht",
+      "imageAlt": "Morgenlicht über dem Meer bei der JimBoats-Sonnenaufgangsfahrt",
+      "lead": "Zum Sonnenaufgang in Barcelona richtet sich der Blick aufs Mittelmeer. Am Strand bleibt ihr flexibel; ein privates Boot zeigt euch zusätzlich die Küste vom Wasser aus. Entscheidet nach Anreise, Begleitung und der Zeit, die ihr dem frühen Morgen widmen möchtet.",
+      "sections": [
+        {
+          "id": "barceloneta",
+          "title": "Barceloneta: den Tag am Wasser beginnen",
+          "paragraphs": [
+            "Die Promenade an der Barceloneta bietet sich an, wenn ihr in der Nähe der Küste wohnt und zu Fuß kommen möchtet. Sucht einen freien Blick aufs Wasser und schaut euch erst in Ruhe um, bevor ihr fotografiert.",
+            "Wer vor Sonnenaufgang ankommt, kann beobachten, wie sich das Licht verändert. Das ist eine Empfehlung für das Erlebnis, keine Garantie für klare Sicht oder bestimmte Farben. Anschließend könnt ihr weiterlaufen und nach dem Öffnen der Cafés frühstücken."
+          ]
+        },
+        {
+          "id": "bogatell",
+          "title": "Bogatell und Nova Icària: andere Küstenabschnitte",
+          "paragraphs": [
+            "Bogatell liegt zwischen Nova Icària und Mar Bella. Nova Icària befindet sich neben Port Olímpic. Beide Strände sind Alternativen, wenn ihr den Morgen nicht an der Barceloneta beginnen möchtet.",
+            "Wählt vor allem nach der Erreichbarkeit von eurer Unterkunft aus, ohne einen menschenleeren Strand zu erwarten. Prüft den Weg und die Verkehrsmittel für die frühe Uhrzeit; werktags und am Wochenende können andere Fahrpläne gelten."
+          ],
+          "sourceIds": [
+            "bogatell",
+            "outdoors"
+          ]
+        },
+        {
+          "id": "an-bord",
+          "title": "Den Sonnenaufgang vom privaten Boot erleben",
+          "paragraphs": [
+            "Die JimBoats-Sonnenaufgangsfahrt startet am Port Olímpic mit eurer Gruppe von bis zu sechs Gästen. Sie dauert mindestens zwei Stunden und umfasst Skipper, Kraftstoff, Versicherung, Getränke und Snacks.",
+            "Das passt zu Paaren, Freunden oder Familien, die den Vormittag auf dem Meer verbringen möchten. Snacks sind kein vollständiges Frühstück. Plant eine Mahlzeit danach separat und lasst etwas Zeit nach der Rückkehr. Die Route richtet sich nach Dauer und Bedingungen."
+          ]
+        },
+        {
+          "id": "uhrzeit",
+          "title": "Wann geht in Barcelona die Sonne auf?",
+          "paragraphs": [
+            "Es gibt keine einheitliche Sonnenaufgangszeit für die ganze Saison. Datierte Beispiele am Port Olímpic sind 08:15 Uhr am 15. Januar 2026, 06:17 Uhr am 15. Juni und 07:31 Uhr am 15. September. Die Angaben gelten in Ortszeit, gegebenenfalls mit Sommerzeit.",
+            "Die Erlebnis-Seite enthält eine monatliche Orientierungstabelle und die Sonnenzeit des Tages. Prüft euer genaues Datum. Sonnenaufgang und Bootsabfahrt sind unterschiedliche Angaben; für den Treffpunkt zählt eure Buchung."
+          ],
+          "sourceIds": [
+            "solar"
+          ]
+        },
+        {
+          "id": "vorbereitung",
+          "title": "Den Morgen schon am Vorabend planen",
+          "paragraphs": [
+            "Legt Ankunftsort und Rückweg fest, damit ihr nicht im Dunkeln improvisieren müsst. Eine leichte Jacke, bequeme Schuhe und ein geladenes Telefon helfen oft mehr als ein voller Tagesplan. Bereitet die Kamera ebenfalls am Vorabend vor.",
+            "Mit Kindern oder einer Gruppe sollte der frühe Start für alle passen. Wenn jemand lieber später losfährt, ist ein Ausflug am Tag möglicherweise die bessere Wahl als ein Sonnenaufgang, den nicht alle genießen."
+          ],
+          "bullets": [
+            "Prüft Wolken, Wind und Sonnenzeit für euer Datum.",
+            "Plant den Weg zum Strand oder zum Einstiegspunkt.",
+            "Organisiert ein Frühstück separat, wenn ihr mehr als die Snacks an Bord möchtet."
+          ]
+        },
+        {
+          "id": "auswahl",
+          "title": "Strand oder Boot: zwei verschiedene Morgen",
+          "paragraphs": [
+            "Am Strand könnt ihr kurz bleiben oder weitergehen. Ein privates Boot erfordert eine Reservierung und einen Treffpunkt, macht den Morgen aber zu einer gemeinsamen Zeit auf See. Entscheidet nach eurem gewünschten Ablauf, nicht allein nach einem Fotomotiv."
+          ]
+        },
+        {
+          "id": "jimboats",
+          "title": "Tipps der Skipper von JimBoats",
+          "paragraphs": [
+            "David legt gern ab, wenn die Stadt noch schläft. Er empfiehlt, am Vorabend die Wettervorhersage zu prüfen, denn wie ruhig das Meer am Morgen ist, hängt von Wind und Seegang ab."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "Ändert sich die Sonnenaufgangszeit im Jahresverlauf?",
+          "Ja, sie ändert sich täglich. Die Ortszeit berücksichtigt außerdem die Sommerzeit. Nutzt die Angabe für euer genaues Datum."
+        ],
+        [
+          "Ist bei JimBoats ein Frühstück inklusive?",
+          "Bei der zweistündigen Fahrt sind Getränke und Snacks inklusive. Ein vollständiges Frühstück wird nicht zugesagt."
+        ],
+        [
+          "Kann ich eine Stunde zum Sonnenaufgang buchen?",
+          "Die Sonnenaufgangsfahrt beginnt bei zwei Stunden. Verfügbare Dauer und Preise findet ihr auf der Erlebnis-Seite und bei der Buchung."
+        ]
+      ],
+      "cta": {
+        "title": "Ein anderer Start in den Tag.",
+        "text": "Entdeckt die private Sonnenaufgangsfahrt, ihre Leistungen und den passenden Termin für euren Morgen."
+      }
+    },
+    "romantic": {
+      "slug": "romantische-unternehmungen-barcelona",
+      "title": "Romantische Unternehmungen in Barcelona",
+      "seoTitle": "Barcelona zu zweit: romantische Ausflüge",
+      "description": "Ideen für ein Date oder einen Jahrestag in Barcelona: das Gotische Viertel, eine Pause im Ciutadella-Park und eine private Bootsfahrt mit Skipper.",
+      "category": "Zeit zu zweit",
+      "imageAlt": "Gedeckter Tisch auf dem JimBoats-Boot mit Barcelonas Küste im Hintergrund",
+      "lead": "Ein romantischer Tag in Barcelona kann mit einem Spaziergang beginnen und mit dem Blick vom Meer auf die Stadt enden. Wählt einen Rhythmus, der euch beiden gefällt. Diese Ideen passen zu einem Date, einem Jahrestag oder einem gemeinsamen Nachmittag ohne Besichtigungsmarathon.",
+      "sections": [
+        {
+          "id": "gotic",
+          "title": "Durch das Gotische Viertel ohne festen Rundgang",
+          "paragraphs": [
+            "Die Gassen und Plätze des Barri Gòtic laden dazu ein, die historische Stadt zu Fuß zu entdecken. Rund um die Kathedrale könnt ihr starten und dann spontan entscheiden, wo ihr anhaltet, statt das ganze Viertel auf einmal abhaken zu wollen.",
+            "Das passt, wenn ihr gern gemeinsam durch die Stadt streift. Für Innenbesichtigungen prüft Tickets und Öffnungszeiten separat. Wer jede Minute verplant, lässt wenig Platz für Gespräche; oft reichen ein Ausgangspunkt und eine Idee für den Abschluss."
+          ],
+          "sourceIds": [
+            "gotic"
+          ]
+        },
+        {
+          "id": "ciutadella",
+          "title": "Ciutadella: eine Pause zwischen Spaziergängen",
+          "paragraphs": [
+            "Der Ciutadella-Park bietet Wege, Grünflächen, einen See und eine monumentale Kaskade. Er kann eine angenehme Pause sein, bevor ihr Richtung Meer weitergeht, besonders wenn ihr keine Aktivität mit fester Uhrzeit buchen möchtet.",
+            "Prüft den Zugang für euren Tag und setzt nicht voraus, dass eine Aktivität am See jederzeit verfügbar ist. Gerade zum Jahrestag kann gemeinsame Zeit ohne Eile schöner sein als eine zusätzliche Besichtigung."
+          ],
+          "sourceIds": [
+            "ciutadella"
+          ]
+        },
+        {
+          "id": "meer",
+          "title": "Am Meer entlang und spontan einkehren",
+          "paragraphs": [
+            "An der Uferpromenade könnt ihr Gespräche, Aussicht und eine Pause zum Essen oder Trinken verbinden. Wählt den Abschnitt, der am besten zu eurer Unterkunft oder nächsten Aktivität passt. Ihr müsst nicht die gesamte Küste ablaufen.",
+            "Wenn ihr nach einer Bootsfahrt essen gehen möchtet, plant einen bequemen Abstand nach der Rückkehr. Restaurant und Boot sind getrennte Reservierungen. Der Abend lässt sich leichter genießen, wenn nicht alles minutengenau klappen muss."
+          ]
+        },
+        {
+          "id": "privates-boot",
+          "title": "Ein Boot für eure Gruppe, mit Skipper",
+          "paragraphs": [
+            "Die romantische Fahrt von JimBoats ist eine private Tour ab Port Olímpic für 1 bis 4 Stunden. Der Skipper übernimmt die Navigation; der Preis gilt für das Boot für eure Gruppe, nicht für zwei Plätze auf einer gemeinsamen Tour.",
+            "Skipper, Kraftstoff, Versicherung, die Dekoration auf den Fotos und ein Getränk sind ab der ersten Stunde inklusive; ab zwei Stunden gibt es auch Snacks. Das Boot bietet Platz für bis zu sechs Gäste. Wenn ihr besonders das letzte Tageslicht genießen möchtet, könnt ihr auch die Sonnenuntergangstour wählen.",
+            "Die romantische Fahrt beinhaltet die Dekoration, die auf den Fotos zu sehen ist. Wir haben verschiedene Dekorationen. Wenn ihr euch etwas Besonderes wünscht, teilt uns eure Idee mit, damit wir die Details vor der Buchung abstimmen können."
+          ]
+        },
+        {
+          "id": "budget",
+          "title": "Nach Zeit und Budget auswählen",
+          "paragraphs": [
+            "Für ein flexibles Date reichen ein Spaziergang und eine schöne Pause. Steht eine Aktivität im Mittelpunkt, bucht zuerst diese und plant den Rest darum herum. Vergleicht beim Boot Dauer, Gesamtpreis und Extras, bevor ihr entscheidet.",
+            "Die längste Fahrt ist nicht automatisch die passendste. Überlegt, wie viel Zeit ihr auf See verbringen und was ihr anschließend an Land unternehmen möchtet. Auf der JimBoats-Preisseite könnt ihr die Erlebnisse vergleichen; der Preis pro Boot bleibt klar erkennbar."
+          ]
+        },
+        {
+          "id": "ueberraschung",
+          "title": "Eine Überraschung oder einen Jahrestag vorbereiten",
+          "paragraphs": [
+            "Stimmt Datum und Uhrzeit mit dem Anbieter ab, auch wenn der Rest eine Überraschung bleibt. Erklärt eure Wünsche und lasst wichtige Details bestätigen. Ein Foto auf einer anderen Website sagt nichts darüber aus, was eure Buchung enthält."
+          ],
+          "bullets": [
+            "Plant eine Hauptaktivität und etwas Abstand zwischen Terminen.",
+            "Bestätigt Sonderwünsche und mögliche Aufpreise separat.",
+            "Prüft Stornobedingungen und Wetter vor dem Ausflug."
+          ]
+        },
+        {
+          "id": "jimboats",
+          "title": "Tipps der Skipper von JimBoats",
+          "paragraphs": [
+            "Die romantische Fahrt beinhaltet die Dekoration, die auf den Fotos zu sehen ist. Wir haben verschiedene Dekorationen. Wenn ihr euch etwas Besonderes wünscht, teilt uns eure Idee mit, damit wir die Details vor der Buchung abstimmen können."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "Ist die romantische Fahrt nur für zwei Personen?",
+          "Ihr könnt sie als Paar buchen. Das Boot ist privat für eure Gruppe reserviert und bietet bis zu sechs Gästen Platz. Ein Skipper begleitet euch."
+        ],
+        [
+          "Welche Dekoration ist inklusive? Sind weitere Wünsche möglich?",
+          "Die romantische Fahrt beinhaltet die Dekoration, die auf den Fotos zu sehen ist. Wir haben verschiedene Dekorationen. Wenn ihr euch etwas Besonderes wünscht, teilt uns eure Idee mit, damit wir die Details vor der Buchung abstimmen können. Ein Abendessen oder Fotograf wird separat vereinbart."
+        ],
+        [
+          "Sind romantische Fahrt und Sonnenuntergangsfahrt dasselbe?",
+          "Nein. Romantisch beschreibt den Anlass, Sonnenuntergang die Tageszeit. Seht euch beide Erlebnisse an und wählt passend zu eurem Plan."
+        ]
+      ],
+      "cta": {
+        "title": "Euer Moment an Bord.",
+        "text": "Entdeckt die romantische Fahrt und ihre Bedingungen. Besprecht besondere Ideen mit uns vor der Buchung."
+      },
+      "updatedAt": "2026-11-05"
+    },
+    "food": {
+      "slug": "aperitif-bootstour-barcelona",
+      "title": "Aperitif an Bord in Barcelona: Getränke und eine Platte zum Teilen",
+      "seoTitle": "Aperitif an Bord in Barcelona: Essen und Getränke",
+      "description": "Eine kurze Fahrt zum Anstoßen oder ein gemeinsamer Aperitif an Deck: So plant ihr euren Ausflug mit LENA.",
+      "category": "An Bord",
+      "imageAlt": "Gäste beim Aperitif unter dem Sonnendach von LENA",
+      "lead": "Eine kurze Fahrt zum Anstoßen oder ein gemeinsamer Aperitif an Deck: So plant ihr euren Ausflug mit LENA.",
+      "sections": [
+        {
+          "id": "plan",
+          "title": "Ein Glas bei einer Stunde auf dem Wasser",
+          "paragraphs": [
+            "Ihr möchtet aus dem Port Olímpic auslaufen, die Barceloneta von der Wasserseite sehen und zusammen anstoßen? Dafür eignet sich die einstündige private Tagesfahrt. Ein Getränk ist schon ab der ersten Stunde dabei. Wenn ihr danach in Barcelona einen Tisch zum Mittagessen reserviert habt, beginnt euer gemeinsamer Tag so bereits draußen auf dem Meer."
+          ]
+        },
+        {
+          "id": "duration",
+          "title": "Was auf die Platte kommt",
+          "paragraphs": [
+            "{food} Die Platte steht zum gemeinsamen Zugreifen bereit, während ihr euch unterhaltet und die Küste an euch vorbeizieht. Wenn ihr euren Tag um ein Mittagessen oder Abendessen herum plant, denkt an die Platte als Aperitif vor dem Essen. Lasst zwischen der Rückkehr in den Hafen und der Tischreservierung etwas Zeit, damit ihr auch die letzten Minuten an Bord genießen könnt."
+          ]
+        },
+        {
+          "id": "group",
+          "title": "Welche Getränke passen zur Gruppe?",
+          "paragraphs": [
+            "{drinks} Möchten zwei von euch mit Cava anstoßen und die anderen lieber etwas Alkoholfreies trinken, sagt dem Team bei der Planung Bescheid. So kann der Skipper die passenden Getränke für eure Runde zusammenstellen. Ihr braucht nicht von jeder Sorte eine Flasche zu bestellen, damit für jeden Gast etwas Passendes dabei ist."
+          ]
+        },
+        {
+          "id": "on-board",
+          "title": "Zeit für den Aperitif einplanen",
+          "paragraphs": [
+            "Wenn ihr die Platte teilen möchtet, wählt eine Fahrt von mindestens zwei Stunden. Möglich sind eine Tagesfahrt, eine Fahrt am frühen Morgen oder eine Tour im Abendlicht. Erzählt dem Skipper, ob euch vor allem der Blick auf Barcelona oder die gemeinsame Zeit an Deck wichtig ist. Wind und Seegang bestimmen am Tag des Ausflugs die Route mit.",
+            "Fragt vor der Buchung in der Gruppe nach Vorlieben. Hat jemand eine Allergie oder eine Frage zu einer Zutat, klärt direkt mit JimBoats, was sich vorbereiten lässt. Vereinbart außerdem einen Treffpunkt, wenn ihr einzeln zum Hafen kommt. Dann müsst ihr am Steg nicht mehr nach den anderen suchen und könnt euch schon auf den ersten gemeinsamen Toast freuen."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "Ist die Platte bei einer Stunde inbegriffen?",
+          "Bei einer Stunde ist ein Getränk dabei. Die Platte gibt es bei Fahrten ab zwei Stunden."
+        ],
+        [
+          "Können wir Cava und alkoholfreie Getränke wählen?",
+          "Ja. Nennt dem Team eure Vorlieben und die Anzahl der Gäste, damit es die Auswahl vorbereiten kann."
+        ]
+      ],
+      "cta": {
+        "title": "Private Bootstour in Barcelona",
+        "text": "Lass den Trubel an Land. Genieße eine private Tour entlang der Küste, entdecke Barcelona aus einer anderen Perspektive und erlebe das Mittelmeer in eurem Tempo."
+      }
+    },
+    "birthday": {
+      "slug": "geburtstag-auf-dem-boot-barcelona",
+      "title": "Geburtstag auf einem privaten Boot in Barcelona feiern",
+      "seoTitle": "Geburtstag auf einem privaten Boot in Barcelona",
+      "description": "Eine Feier für bis zu sechs Gäste. So plant ihr die Dauer, die Getränke und eine Überraschung ab dem Port Olímpic.",
+      "category": "Feiern",
+      "imageAlt": "Drei Gäste an Bord im Hafen",
+      "lead": "Eine Feier für bis zu sechs Gäste. So plant ihr die Dauer, die Getränke und eine Überraschung ab dem Port Olímpic.",
+      "sections": [
+        {
+          "id": "plan",
+          "title": "Wer kommt mit an Bord?",
+          "paragraphs": [
+            "Auf LENA ist Platz für bis zu sechs Gäste. Zählt das Geburtstagskind und alle Freunde oder Angehörigen mit, die ihr einladen möchtet, bevor ihr euch auf einen Termin festlegt. Ihr bucht das ganze Boot, der Skipper übernimmt die Fahrt. So bleibt die Runde unter sich und niemand muss einzelne Plätze für einen bestimmten Termin zusammensuchen."
+          ]
+        },
+        {
+          "id": "duration",
+          "title": "Wie viel Zeit braucht ihr?",
+          "paragraphs": [
+            "Für eine kleine Überraschung mit einem Toast vor dem Mittagessen an Land kann eine Stunde auf der Tagesfahrt ausreichen. Möchtet ihr zusammen essen, Geschenke auspacken und in Ruhe über die Stadt und das Meer schauen, plant mindestens zwei Stunden ein. Auch die Fahrt zum Sonnenuntergang beginnt bei zwei Stunden. Seht euch zuerst den Gesamtpreis für eure Dauer an, bevor ihr die Kosten unter den Gästen aufteilt."
+          ]
+        },
+        {
+          "id": "group",
+          "title": "Getränke und Musik für die Feier",
+          "paragraphs": [
+            "{drinks} Bei Fahrten ab zwei Stunden gehört auch die Platte zum Teilen dazu. Stellt auf einem Handy eine kurze Liste mit den Lieblingsliedern des Geburtstagskinds für den Bluetooth-Lautsprecher zusammen. Wenn eine Person die Musik und eine andere den Toast übernimmt, hat auch der Gastgeber Zeit, sich zu den anderen zu setzen."
+          ]
+        },
+        {
+          "id": "on-board",
+          "title": "Die Überraschung vorbereiten",
+          "paragraphs": [
+            "Eine Torte, Blumen, Dekoration oder ein Fotograf müssen im Voraus abgesprochen werden und können extra kosten. Fragt zuerst, was an eurem Termin möglich ist und welchen Preis ihr einplanen müsst. Am einfachsten stimmt eine Person die Einzelheiten mit dem Team ab und sagt den anderen Bescheid, ohne dem Geburtstagskind den Plan zu verraten. Sprecht auch ab, wer die Geschenke an Bord bringt.",
+            "Schickt den Gästen den Treffpunkt am Moll de Xaloc und verabredet euch etwa fünfzehn Minuten vor der Abfahrt. Plant nach der Rückkehr genug Zeit für den Weg zum Restaurant oder zur nächsten Verabredung ein. Selbst bei einer Überraschungsfahrt sollten die Begleitpersonen wissen, wo sie sich treffen, wer bereits am Hafen wartet und wann es Zeit ist, gemeinsam an Bord zu gehen."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "Wie viele Gäste können mitfeiern?",
+          "Bis zu sechs Gäste einschließlich Geburtstagskind."
+        ],
+        [
+          "Ist die Dekoration im Preis inbegriffen?",
+          "Dekoration ist optional und kostet extra. Klärt die Einzelheiten vor der Buchung mit dem Team."
+        ]
+      ],
+      "cta": {
+        "title": "Private Bootstour in Barcelona",
+        "text": "Lass den Trubel an Land. Genieße eine private Tour entlang der Küste, entdecke Barcelona aus einer anderen Perspektive und erlebe das Mittelmeer in eurem Tempo."
+      }
+    },
+    "hen": {
+      "slug": "junggesellinnenabschied-barcelona-boot",
+      "title": "Junggesellinnenabschied in Barcelona: privat aufs Boot",
+      "seoTitle": "JGA Barcelona: private Bootstour für bis zu 6",
+      "description": "Plant euren Junggesellinnenabschied in Barcelona auf einem privaten Boot für bis zu sechs Gäste: Budget, Getränke, Aperitif und echte Fotos an Bord.",
+      "category": "Feiern",
+      "imageAlt": "Die Braut und eine Freundin feiern ihren Junggesellinnenabschied an Bord der LENA in Barcelona",
+      "lead": "Ein Boot nur für euch, eure Musik und Barcelona vom Wasser aus. Für einen Junggesellinnenabschied mit bis zu sechs Gästen bietet die LENA eine private Tour mit Skipper ab Port Olímpic. Hier findet ihr praktische Tipps zu Dauer, Kostenaufteilung und einer gelungenen Überraschung.",
+      "sections": [
+        {
+          "id": "gruppe",
+          "title": "Die Braut zählt zu den sechs Gästen",
+          "paragraphs": [
+            "An Bord der LENA können bis zu sechs Gäste mitfahren, einschließlich der Braut. Ihr bucht das ganze Boot und teilt die Tour nicht mit anderen Gruppen. Klärt daher zuerst die Gästeliste: Seid ihr mehr als sechs, kann die LENA euch nicht alle zusammen mitnehmen.",
+            "Die LENA ist ein 7,49 Meter langer mediterraner Llaüt. Hier könnt ihr sitzen, einen Aperitif teilen und die Küste betrachten. Das passt zu einer kleinen Gruppe, die miteinander reden, anstoßen und Fotos auf dem Wasser machen möchte."
+          ],
+          "photo": {
+            "slug": "hen-party-bride",
+            "alt": "Die Braut am Bug der LENA, mit dem Hotel W und Barcelonas Küste im Hintergrund"
+          }
+        },
+        {
+          "id": "budget",
+          "title": "Was kostet eine private Bootstour zum JGA?",
+          "paragraphs": [
+            "Die private Tagestour kostet {private1h} für eine Stunde, {private2h} für zwei Stunden oder {private3h} für drei Stunden. Das sind Endpreise für das gesamte Boot, einschließlich Skipper, Treibstoff und Versicherung. Ihr braucht keinen Bootsführerschein.",
+            "Bei sechs Gästen entsprechen zwei Stunden {perGuest2h} pro Person, wenn ihr die Kosten teilt. Gebucht wird weiterhin das ganze Boot für {private2h}; einzelne Plätze werden nicht verkauft. Bei weniger Gästen bleibt der Bootspreis gleich. Die Sonnenuntergangstour beginnt bei {sunset2h} für zwei Stunden. Optionale Extras werden separat berechnet.",
+            "Eine Stunde eignet sich für eine kurze Überraschung zwischen anderen Programmpunkten. Zwei Stunden lassen mehr Zeit für den Aperitif und Gespräche. Bei drei Stunden könnt ihr länger auf dem Wasser bleiben; ob eine Badepause möglich ist, hängt von den Bedingungen und der Entscheidung des Skippers ab."
+          ]
+        },
+        {
+          "id": "aperitif",
+          "title": "Getränke, Aperitif und eure Playlist",
+          "paragraphs": [
+            "{drinks}",
+            "{food} Bei einer einstündigen Tour ist ein Getränk enthalten, die Aperitifplatte jedoch nicht.",
+            "Nennt uns einige Wünsche, etwa Cava zum Anstoßen und alkoholfreie Getränke für einzelne Gäste. Die Mengen richten sich nach der Gruppengröße. Es gibt keine Getränkeflatrate und nicht automatisch alle angebotenen Getränke. Allergien und besondere Ernährungswünsche besprecht bitte vor der Buchung.",
+            "Ein Bluetooth-Lautsprecher ist bei jeder Tour dabei. Bereitet die Lieblingsmusik der Braut auf eurem Handy vor, einschließlich des Lieds zum gemeinsamen Anstoßen."
+          ],
+          "photo": {
+            "slug": "hen-party-toast",
+            "alt": "Ein Detail der Feier an Bord, mit dem Meer vor Barcelona im Hintergrund"
+          }
+        },
+        {
+          "id": "ablauf",
+          "title": "Zwei Stunden ab Port Olímpic planen",
+          "paragraphs": [
+            "Trefft euch etwa fünfzehn Minuten vor der Abfahrt am Treffpunkt am Moll de Xaloc. Teilt die Kontaktseite mit der ganzen Gruppe, damit alle den Standort kennen. Nach dem Einsteigen erklärt euch der Skipper den Ablauf und fährt mit euch entlang der Küste Barcelonas.",
+            "Plant etwas Zeit für Fotos und den Aperitif ein. Wenn ihr schwimmen möchtet, sprecht den Skipper darauf an; ein Badestopp ist nicht garantiert. Paddleboarding ist ein optionales Extra für 20 € pro Buchung und muss bei Verfügbarkeit separat ausgewählt werden.",
+            "Lasst zwischen der Rückkehr und einem Restaurantbesuch oder anderen Termin etwas Puffer. Bei einer Sonnenuntergangstour hilft die Sonnenuntergangszeit eures Datums bei der Planung des restlichen Nachmittags."
+          ],
+          "photo": {
+            "slug": "hen-party-paddle",
+            "alt": "Ein Gast beim Paddleboarding neben der LENA; das Angebot ist ein optionales Extra"
+          }
+        },
+        {
+          "id": "ueberraschung",
+          "title": "Die Überraschung gemeinsam vorbereiten",
+          "paragraphs": [
+            "Bestimmt eine Ansprechpartnerin für JimBoats und eine weitere Person, die die Gruppe zusammenbringt. Schreibt uns auf WhatsApp das Datum, eure Personenzahl und ob die Braut den Plan kennt. Das verhindert widersprüchliche Absprachen am Ausflugstag.",
+            "Blumen, Dekoration, eine Torte oder ein Fotograf müssen vorher abgesprochen werden und können zusätzlich kosten. Fragt vor dem Kauf nach, was möglich ist. Die Fotos zeigen eine Feier auf der LENA; die Dekoration und Accessoires der Gäste sind nicht automatisch Bestandteil eurer Buchung."
+          ],
+          "photo": {
+            "slug": "hen-party-preparations",
+            "alt": "Die Braut und eine Freundin richten während der Feier an Bord den Schleier"
+          }
+        },
+        {
+          "id": "buchung",
+          "title": "So bucht ihr euren Ausflug",
+          "paragraphs": [
+            "Öffnet die Seite der privaten Bootstour, wählt die Dauer und prüft den Kalender. Danach könnt ihr verfügbare Extras auswählen und eure Buchungsdaten eingeben. Bei Fragen oder für eine Überraschung schreibt uns vor der Zahlung auf WhatsApp.",
+            "Bis 48 Stunden vor der Abfahrt ist die Stornierung kostenlos. Bei kürzerer Frist kontaktiert das Team über WhatsApp. Sagt JimBoats wegen ungeeigneter Bedingungen ab, wird das Geld erstattet und der Kapitän meldet sich bei euch."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "Dürfen wir mit der Braut zu siebt sein?",
+          "Nein. Es können insgesamt höchstens sechs Gäste mitfahren, einschließlich der Braut."
+        ],
+        [
+          "Sind Getränke und Snacks enthalten?",
+          "Getränke sind ab einer Stunde enthalten. Die Aperitifplatte gibt es ab zwei Stunden, mit Mengen passend zur Gruppe. Es gibt keine Getränkeflatrate."
+        ],
+        [
+          "Teilen wir das Boot mit einem anderen JGA?",
+          "Nein. Ihr bucht die LENA privat für eure Gruppe, einschließlich Skipper."
+        ],
+        [
+          "Ist die Dekoration inklusive?",
+          "Die Dekoration ist nicht im Tourpreis enthalten. Fragt vor der Buchung nach den Möglichkeiten und den zusätzlichen Kosten."
+        ]
+      ],
+      "cta": {
+        "title": "Wählt eure private Bootstour in Barcelona",
+        "text": "Prüft Dauer und Verfügbarkeit der LENA für bis zu sechs Gäste. Bei der Planung eurer Überraschung helfen wir euch auf WhatsApp."
+      },
+      "updatedAt": "2026-11-05"
+    }
+  }
+}

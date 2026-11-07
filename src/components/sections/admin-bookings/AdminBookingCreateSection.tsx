@@ -1,4 +1,5 @@
 "use client";
+import { adminEs } from "@/i18n/admin/es";
 
 import { CalendarPlus } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -73,29 +74,37 @@ export function AdminBookingCreateSection({
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.12em] text-slate-600">
-            Bookings
+            {adminEs["Bookings"]}
           </p>
           <h1 className="mt-2 text-2xl font-semibold text-slate-950">
-            Create booking
+            {adminEs["Create booking"]}
           </h1>
           <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-            Manual bookings are confirmed with the deposit marked as paid and block the boat calendar.
+            {
+              adminEs[
+                "Manual bookings are confirmed with the deposit marked as paid and block the boat calendar."
+              ]
+            }
           </p>
         </div>
         <Button href="/admin/bookings" variant="secondary">
-          Back to bookings
+          {adminEs["Back to bookings"]}
         </Button>
       </div>
 
       <form className="space-y-5" onSubmit={submit}>
         <Surface
-          description="Choose the experience and the concrete local departure slot."
-          title="Experience and slot"
+          description={
+            adminEs[
+              "Choose the experience and the concrete local departure slot."
+            ]
+          }
+          title={adminEs["Experience and slot"]}
         >
           <div className="space-y-4">
             <FieldGrid>
               <SelectField
-                label="Experience"
+                label={adminEs["Experience"]}
                 onChange={(event) => updateExperience(event.target.value)}
                 value={form.experienceId}
               >
@@ -106,7 +115,7 @@ export function AdminBookingCreateSection({
                 ))}
               </SelectField>
               <NumberField
-                label="Guests"
+                label={adminEs["Guests"]}
                 min={1}
                 onChange={(event) =>
                   setForm((current) => ({
@@ -124,7 +133,7 @@ export function AdminBookingCreateSection({
 
             <FieldGrid columns={4}>
               <TextField
-                label="Date"
+                label={adminEs["Date"]}
                 onChange={(event) =>
                   setForm((current) => ({
                     ...current,
@@ -137,7 +146,7 @@ export function AdminBookingCreateSection({
               />
               <SelectField
                 disabled={!selectedExperience?.slots.length}
-                label="Slot"
+                label={adminEs["Slot"]}
                 onChange={(event) => {
                   const slot = selectedExperience?.slots.find((candidate) => {
                     return candidate.id === event.target.value;
@@ -159,11 +168,11 @@ export function AdminBookingCreateSection({
                     </option>
                   ))
                 ) : (
-                  <option value="">Manual time</option>
+                  <option value="">{adminEs["Manual time"]}</option>
                 )}
               </SelectField>
               <TextField
-                label="Start time"
+                label={adminEs["Start time"]}
                 onChange={(event) =>
                   setForm((current) => ({
                     ...current,
@@ -175,7 +184,7 @@ export function AdminBookingCreateSection({
                 value={form.startTime}
               />
               <TextField
-                label="End time"
+                label={adminEs["End time"]}
                 onChange={(event) =>
                   setForm((current) => ({
                     ...current,
@@ -190,11 +199,11 @@ export function AdminBookingCreateSection({
           </div>
         </Surface>
 
-        <Surface title="Customer">
+        <Surface title={adminEs["Customer"]}>
           <div className="space-y-4">
             <FieldGrid>
               <TextField
-                label="Full name"
+                label={adminEs["Full name"]}
                 onChange={(event) =>
                   setForm((current) => ({
                     ...current,
@@ -204,7 +213,7 @@ export function AdminBookingCreateSection({
                 value={form.customerName}
               />
               <TextField
-                label="Email"
+                label={adminEs["Email"]}
                 onChange={(event) =>
                   setForm((current) => ({
                     ...current,
@@ -214,7 +223,7 @@ export function AdminBookingCreateSection({
                 value={form.customerEmail}
               />
               <TextField
-                label="Phone"
+                label={adminEs["Phone"]}
                 onChange={(event) =>
                   setForm((current) => ({
                     ...current,
@@ -225,7 +234,7 @@ export function AdminBookingCreateSection({
               />
             </FieldGrid>
             <TextAreaField
-              label="Customer notes"
+              label={adminEs["Customer notes"]}
               onChange={(event) =>
                 setForm((current) => ({
                   ...current,
@@ -238,16 +247,22 @@ export function AdminBookingCreateSection({
         </Surface>
 
         <Surface
-          description="Only extras configured as active and selectable can be accepted by the server."
-          title="Extras"
+          description={
+            adminEs[
+              "Only extras configured as active and selectable can be accepted by the server."
+            ]
+          }
+          title={adminEs["Extras"]}
         >
           {state.extraOptions.length === 0 ? (
-            <p className="text-sm text-slate-600">No active extras available.</p>
+            <p className="text-sm text-slate-600">
+              {adminEs["No active extras available."]}
+            </p>
           ) : (
             <div className="grid gap-3 md:grid-cols-2">
               {state.extraOptions.map((extra) => (
                 <NumberField
-                  description={`EUR ${extra.price}`}
+                  description={adminEs.euros(extra.price)}
                   key={extra.id}
                   label={extra.name}
                   min={0}
@@ -272,9 +287,9 @@ export function AdminBookingCreateSection({
           )}
         </Surface>
 
-        <Surface title="Internal notes">
+        <Surface title={adminEs["Internal notes"]}>
           <TextAreaField
-            label="Staff notes"
+            label={adminEs["Staff notes"]}
             onChange={(event) =>
               setForm((current) => ({
                 ...current,
@@ -288,10 +303,10 @@ export function AdminBookingCreateSection({
         <div className="flex flex-wrap gap-3">
           <Button disabled={isSaving} loading={isSaving} type="submit">
             <CalendarPlus className="size-4" aria-hidden="true" />
-            Create booking
+            {adminEs["Create booking"]}
           </Button>
           <Button href="/admin/bookings" variant="secondary">
-            Cancel
+            {adminEs["Cancel"]}
           </Button>
         </div>
       </form>
@@ -306,10 +321,19 @@ function ExperienceHint({
 }) {
   return (
     <div className="flex flex-wrap gap-2">
-      <Badge tone="sky">EUR {experience.basePrice}</Badge>
-      <Badge tone="emerald">EUR {experience.depositAmount} deposit</Badge>
-      <Badge tone="neutral">{experience.capacity} max guests</Badge>
-      <Badge tone="neutral">{experience.durationMinutes / 60} hours</Badge>
+      <Badge tone="sky">{adminEs.euros(experience.basePrice)}</Badge>
+      <Badge tone="emerald">
+        {adminEs.euros(experience.depositAmount)} {adminEs["deposit"]}
+      </Badge>
+      <Badge tone="neutral">
+        {experience.capacity} {adminEs["max guests"]}
+      </Badge>
+      <Badge tone="neutral">
+        {experience.availableDurations
+          ? experience.availableDurations.join(" / ")
+          : experience.durationMinutes / 60}{" "}
+        {adminEs["hours"]}
+      </Badge>
     </div>
   );
 }
@@ -339,7 +363,9 @@ function upsertExtraQuantity(
   extraId: string,
   quantity: number,
 ) {
-  const next = selectedExtras.filter((selected) => selected.extraId !== extraId);
+  const next = selectedExtras.filter(
+    (selected) => selected.extraId !== extraId,
+  );
 
   if (quantity > 0) {
     next.push({ extraId, quantity });

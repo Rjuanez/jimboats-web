@@ -42,3 +42,29 @@ export const Mobile: Story = {
     },
   },
 };
+
+export const SelectedExperienceByHours: Story = {
+  args: {
+    initialExperienceId: "sunset-cruise",
+    content: {
+      ...getPublicBookingMockPage("es"),
+      hourly: {
+        hours: 2,
+        title: "Elige duración y fecha",
+        durationLabel: "Duración",
+        rates: [
+          { hours: 2, price: 199, depositAmount: 50 },
+          { hours: 3, price: 279, depositAmount: 50 },
+        ],
+      },
+      experiences: [
+        {
+          ...getPublicBookingMockPage("es").experiences[0],
+          price: 199,
+          depositAmount: 50,
+          durationLabel: "2 h",
+        },
+      ],
+    },
+  },
+};

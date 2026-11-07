@@ -1,3 +1,4 @@
+import { adminEs } from "@/i18n/admin/es";
 import { adminNavItems } from "@/components/layout/AdminNavigation";
 import type {
   AdminCalendarBlock,
@@ -28,12 +29,12 @@ const previewState: AdminCalendarState = {
       localDate: "2026-06-05",
       protectedEndAt: "2026-06-05T10:00:00.000Z",
       protectedStartAt: "2026-06-05T08:00:00.000Z",
-      reason: "Maintenance window",
+      reason: adminEs["Maintenance window"],
       source: "manual_block",
-      sourceLabel: "Manual block",
+      sourceLabel: adminEs["Manual block"],
       startTime: "10:00",
       status: "active",
-      statusLabel: "Active",
+      statusLabel: adminEs["Active"],
       updatedAt: "2026-06-01T09:00:00.000Z",
     },
     {
@@ -48,12 +49,12 @@ const previewState: AdminCalendarState = {
       localDate: "2026-06-08",
       protectedEndAt: "2026-06-08T16:00:00.000Z",
       protectedStartAt: "2026-06-08T14:00:00.000Z",
-      reason: "Private owner hold",
+      reason: adminEs["Private owner hold"],
       source: "manual_block",
-      sourceLabel: "Manual block",
+      sourceLabel: adminEs["Manual block"],
       startTime: "16:00",
       status: "active",
-      statusLabel: "Active",
+      statusLabel: adminEs["Active"],
       updatedAt: "2026-06-01T11:00:00.000Z",
     },
     {
@@ -68,12 +69,12 @@ const previewState: AdminCalendarState = {
       localDate: "2026-06-04",
       protectedEndAt: "2026-06-04T13:00:00.000Z",
       protectedStartAt: "2026-06-04T11:00:00.000Z",
-      reason: "Released cleaning hold",
+      reason: adminEs["Released cleaning hold"],
       source: "manual_block",
-      sourceLabel: "Manual block",
+      sourceLabel: adminEs["Manual block"],
       startTime: "13:00",
       status: "released",
-      statusLabel: "Released",
+      statusLabel: adminEs["Released"],
       updatedAt: "2026-06-01T08:00:00.000Z",
     },
   ],
@@ -103,7 +104,10 @@ export function getAdminCalendarPreviewPage(): AdminCalendarPageData {
 export async function getAdminCalendarPage(
   range: AdminCalendarPageRange = {},
 ): Promise<AdminCalendarPageData> {
-  if (process.env.JIMBOATS_ADMIN_PREVIEW_DATA === "1") {
+  if (
+    process.env.JIMBOATS_ADMIN_PREVIEW_DATA === "1" &&
+    process.env.JIMBOATS_LOCAL_BOOKINGS !== "1"
+  ) {
     return getAdminCalendarPreviewPage();
   }
 
@@ -162,12 +166,15 @@ function presentCalendarBlock(
     sourceLabel: presentCalendarBlockSourceLabel(block.source),
     startTime: block.startTime,
     status: block.status === "ACTIVE" ? "active" : "released",
-    statusLabel: block.status === "ACTIVE" ? "Active" : "Released",
+    statusLabel:
+      block.status === "ACTIVE" ? adminEs["Active"] : adminEs["Released"],
     updatedAt: block.updatedAt,
   };
 }
 
-function presentCalendarBlockSource(blockSource: AdminCalendarBlockDto["source"]) {
+function presentCalendarBlockSource(
+  blockSource: AdminCalendarBlockDto["source"],
+) {
   if (blockSource === "BOOKING_CONFIRMED") {
     return "booking_confirmed";
   }
@@ -183,12 +190,12 @@ function presentCalendarBlockSourceLabel(
   blockSource: AdminCalendarBlockDto["source"],
 ) {
   if (blockSource === "BOOKING_CONFIRMED") {
-    return "Confirmed booking";
+    return adminEs["Confirmed booking"];
   }
 
   if (blockSource === "BOOKING_HOLD") {
-    return "Checkout hold";
+    return adminEs["Checkout hold"];
   }
 
-  return "Manual block";
+  return adminEs["Manual block"];
 }

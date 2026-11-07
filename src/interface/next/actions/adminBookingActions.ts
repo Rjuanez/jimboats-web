@@ -1,6 +1,6 @@
 "use server";
 
-import { ZodError } from "zod";
+import { presentAdminError } from "../presenters/adminErrorPresenter";
 
 import { getContainer } from "@/container";
 import type {
@@ -12,8 +12,6 @@ import type {
   AdminBookingUpdateInput,
   AdminBookingsState,
 } from "@/components/sections/admin-bookings/AdminBookingTypes";
-import { ApplicationError } from "@/shared/application/ApplicationError";
-import { DomainError } from "@/shared/domain/DomainError";
 
 import { presentAdminBookingsWorkspace } from "../presenters/adminBookingsPresenter";
 import {
@@ -186,23 +184,11 @@ function ok<TData>(data: TData): AdminBookingActionResult<TData> {
   };
 }
 
-function failure<TData = never>(error: unknown): AdminBookingActionResult<TData> {
-  if (error instanceof ApplicationError || error instanceof DomainError) {
-    return {
-      message: error.message,
-      ok: false,
-    };
-  }
-
-  if (error instanceof ZodError) {
-    return {
-      message: error.issues[0]?.message ?? "Invalid admin booking input.",
-      ok: false,
-    };
-  }
-
+function failure<TData = never>(
+  error: unknown,
+): AdminBookingActionResult<TData> {
   return {
-    message: "Unexpected error while saving the booking.",
+    message: presentAdminError(error),
     ok: false,
   };
 }

@@ -1,4 +1,5 @@
 "use client";
+import { adminEs } from "@/i18n/admin/es";
 
 import { CalendarDays, Clock3, Lock, Unlock } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -56,7 +57,7 @@ export function AdminCalendarWorkspace({
         ...current,
         reason: "",
       }));
-      setMessage("Manual block created.");
+      setMessage(adminEs["Manual block created."]);
     } else {
       setError(result.message);
     }
@@ -77,7 +78,7 @@ export function AdminCalendarWorkspace({
 
     if (result.ok) {
       setState(result.data.state);
-      setMessage("Manual block released.");
+      setMessage(adminEs["Manual block released."]);
     } else {
       setError(result.message);
     }
@@ -112,20 +113,36 @@ function CalendarHeader({ state }: { state: AdminCalendarState }) {
     <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
       <div>
         <p className="text-sm font-semibold uppercase tracking-[0.12em] text-slate-600">
-          Operations
+          {adminEs["Operations"]}
         </p>
         <h1 className="mt-2 text-2xl font-semibold text-slate-950">
-          Boat calendar
+          {adminEs["Boat calendar"]}
         </h1>
         <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-          Active blocks protect the only boat from overlapping availability.
+          {
+            adminEs[
+              "Active blocks protect the only boat from overlapping availability."
+            ]
+          }
         </p>
       </div>
       <div className="grid gap-3 sm:grid-cols-2 lg:min-w-[36rem] xl:grid-cols-4">
-        <MetricTile label="Active blocks" value={state.summary.activeBlocks} />
-        <MetricTile label="Bookings" value={state.summary.bookingBlocks} />
-        <MetricTile label="Manual blocks" value={state.summary.manualBlocks} />
-        <MetricTile label="Released" value={state.summary.releasedBlocks} />
+        <MetricTile
+          label={adminEs["Active blocks"]}
+          value={state.summary.activeBlocks}
+        />
+        <MetricTile
+          label={adminEs["Bookings"]}
+          value={state.summary.bookingBlocks}
+        />
+        <MetricTile
+          label={adminEs["Manual blocks"]}
+          value={state.summary.manualBlocks}
+        />
+        <MetricTile
+          label={adminEs["Released"]}
+          value={state.summary.releasedBlocks}
+        />
       </div>
     </div>
   );
@@ -134,23 +151,25 @@ function CalendarHeader({ state }: { state: AdminCalendarState }) {
 function CalendarRangePanel({ state }: { state: AdminCalendarState }) {
   return (
     <Surface
-      description={`Showing ${formatDateLabel(state.fromLocalDate)} to ${formatDateLabel(
-        state.toLocalDate,
-      )} in ${state.timeZone}.`}
-      title="Calendar range"
+      description={adminEs.calendarRange(
+        formatDateLabel(state.fromLocalDate),
+        formatDateLabel(state.toLocalDate),
+        state.timeZone,
+      )}
+      title={adminEs["Calendar range"]}
     >
       <form action="/admin/calendar" className="space-y-4" method="get">
         <FieldGrid>
           <TextField
             defaultValue={state.fromLocalDate}
-            label="From date"
+            label={adminEs["From date"]}
             name="from"
             pattern="\d{4}-\d{2}-\d{2}"
             placeholder="2026-06-05"
           />
           <TextField
             defaultValue={state.toLocalDate}
-            label="To date"
+            label={adminEs["To date"]}
             name="to"
             pattern="\d{4}-\d{2}-\d{2}"
             placeholder="2026-06-14"
@@ -158,7 +177,7 @@ function CalendarRangePanel({ state }: { state: AdminCalendarState }) {
         </FieldGrid>
         <Button type="submit" variant="secondary">
           <CalendarDays className="size-4" aria-hidden="true" />
-          Apply range
+          {adminEs["Apply range"]}
         </Button>
       </form>
     </Surface>
@@ -182,13 +201,17 @@ function ManualBlockPanel({
 }) {
   return (
     <Surface
-      description="Create an operational hold that blocks the boat for a concrete local time range."
-      title="Create manual block"
+      description={
+        adminEs[
+          "Create an operational hold that blocks the boat for a concrete local time range."
+        ]
+      }
+      title={adminEs["Create manual block"]}
     >
       <form className="space-y-4" onSubmit={onSubmit}>
         <FieldGrid columns={3}>
           <TextField
-            label="Date"
+            label={adminEs["Date"]}
             onChange={(event) =>
               setForm((current) => ({
                 ...current,
@@ -200,7 +223,7 @@ function ManualBlockPanel({
             value={form.localDate}
           />
           <TextField
-            label="Start time"
+            label={adminEs["Start time"]}
             onChange={(event) =>
               setForm((current) => ({
                 ...current,
@@ -212,7 +235,7 @@ function ManualBlockPanel({
             value={form.startTime}
           />
           <TextField
-            label="End time"
+            label={adminEs["End time"]}
             onChange={(event) =>
               setForm((current) => ({
                 ...current,
@@ -225,19 +248,21 @@ function ManualBlockPanel({
           />
         </FieldGrid>
         <TextAreaField
-          label="Reason"
+          label={adminEs["Reason"]}
           onChange={(event) =>
             setForm((current) => ({
               ...current,
               reason: event.target.value,
             }))
           }
-          placeholder="Maintenance, private owner hold, weather review..."
+          placeholder={
+            adminEs["Maintenance, private owner hold, weather review..."]
+          }
           value={form.reason}
         />
         <Button disabled={isSaving} loading={isSaving} type="submit">
           <Lock className="size-4" aria-hidden="true" />
-          Create block
+          {adminEs["Create block"]}
         </Button>
       </form>
     </Surface>
@@ -255,16 +280,24 @@ function CalendarBlocksPanel({
 }) {
   return (
     <Surface
-      description="The agenda below is the operational availability lock for the single boat."
-      title="Operational blocks"
+      description={
+        adminEs[
+          "The agenda below is the operational availability lock for the single boat."
+        ]
+      }
+      title={adminEs["Operational blocks"]}
     >
       {groupedBlocks.length === 0 ? (
         <div className="rounded-md border border-dashed border-slate-300 px-4 py-8 text-center">
           <p className="text-sm font-semibold text-slate-950">
-            No blocks in this range.
+            {adminEs["No blocks in this range."]}
           </p>
           <p className="mt-1 text-sm leading-6 text-slate-600">
-            Create a manual block to reserve the boat for internal operations.
+            {
+              adminEs[
+                "Create a manual block to reserve the boat for internal operations."
+              ]
+            }
           </p>
         </div>
       ) : (
@@ -323,7 +356,7 @@ function CalendarBlockRow({
             </p>
           </div>
           <p className="text-xs font-medium text-slate-500">
-            Created by {block.createdByUserId}
+            {adminEs["Created by"]} {block.createdByUserId}
           </p>
         </div>
         {block.canRelease ? (
@@ -334,7 +367,7 @@ function CalendarBlockRow({
             variant="secondary"
           >
             <Unlock className="size-4" aria-hidden="true" />
-            Release
+            {adminEs["Release"]}
           </Button>
         ) : null}
       </div>
@@ -360,7 +393,7 @@ function SaveStatus({
       className="mb-4 rounded-md border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm"
       role={error ? "alert" : "status"}
     >
-      {error ?? message ?? "Saving calendar..."}
+      {error ?? message ?? adminEs["Saving calendar..."]}
     </div>
   );
 }
@@ -409,7 +442,7 @@ function groupBlocksByDate(blocks: AdminCalendarBlock[]) {
 }
 
 function formatDateLabel(localDate: string) {
-  return new Intl.DateTimeFormat("en", {
+  return new Intl.DateTimeFormat("es-ES", {
     day: "numeric",
     month: "short",
     timeZone: "UTC",
