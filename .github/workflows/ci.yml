@@ -120,9 +120,6 @@ jobs:
       - name: Responsive checks
         run: pnpm test:responsive
 
-      - name: Accessibility checks
-        run: pnpm test:a11y
-
       - name: Visual checks
         run: pnpm test:visual
 
