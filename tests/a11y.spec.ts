@@ -32,7 +32,22 @@ for (const testedPage of pages) {
     await page.addInitScript(() => {
       window.localStorage.clear();
     });
-    await page.goto(testedPage.path);
+    if (testedPage.name === "public booking") {
+      // This scan covers date selection, before any embedded payment UI exists.
+      // Stripe auto-loads on import; its external script must not hold up this scan.
+      await page.route("https://js.stripe.com/**", (route) => route.abort());
+    }
+    await test.step("Load the page to audit", async () => {
+      await page.goto(testedPage.path);
+      if (testedPage.name === "public booking") {
+        await expect(
+          page.getByRole("heading", {
+            level: 1,
+            name: /Choose your duration and date/,
+          }),
+        ).toBeVisible();
+      }
+    });
     if (testedPage.name === "admin devices") {
       const activate = page.getByRole("button", {
         name: "Activar avisos",
@@ -47,8 +62,9 @@ for (const testedPage of pages) {
       });
     }
 
-    const results = await new AxeBuilder({ page }).analyze();
-
-    expect(results.violations).toEqual([]);
+    await test.step("Scan the page with axe", async () => {
+      const results = await new AxeBuilder({ page }).analyze();
+      expect(results.violations).toEqual([]);
+    });
   });
 }
