@@ -21,7 +21,8 @@ for (const document of pages) {
       await expect(page.getByRole("heading", { level: 1 })).toHaveText(
         document.title,
       );
-      await expect(page.locator("[lang=es]")).toContainText(document.title);
+      await expect(page.locator("html")).toHaveAttribute("lang", "es");
+      await expect(page.getByRole("main")).toContainText(document.title);
       await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
         "href",
         `https://jimboatscharter.com${document.path}`,

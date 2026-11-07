@@ -115,11 +115,16 @@ export function PublicBookingMobileSummary({
             </div>
 
             <div className="mb-4 border-t border-sand/20 pt-3 text-sm">
-              <SummaryLine
-                label={labels.experience}
-                value={formatPrice(experience.price)}
-              />
-              <SummaryLine label={labels.extras} value={formatPrice(extrasAmount)} />
+              <dl>
+                <SummaryLine
+                  label={labels.experience}
+                  value={formatPrice(experience.price)}
+                />
+                <SummaryLine
+                  label={labels.extras}
+                  value={formatPrice(extrasAmount)}
+                />
+              </dl>
               <div className="mt-3 flex items-center justify-between border-t-2 border-sand/50 pt-3">
                 <span className="text-xs font-semibold uppercase tracking-widest text-text-muted">
                   {labels.total}

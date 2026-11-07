@@ -1,3 +1,5 @@
+import type { BookingSunTimes } from "./ports/BookingSunTimes";
+import { finishesBeforeSunset } from "../domain/DaytimeTrip";
 import { ApplicationError } from "@/shared/application/ApplicationError";
 
 import {
@@ -33,6 +35,7 @@ export class CreatePublicBookingCheckoutUseCase {
     private readonly cancellationPolicies?: CancellationPolicyRepository,
     private readonly coupons?: ReserveCouponRedemptionUseCase,
     private readonly expiredHolds?: ReleaseExpiredBookingHoldsUseCase,
+    private readonly sunTimes?: BookingSunTimes,
   ) {}
 
   async execute(
@@ -59,13 +62,31 @@ export class CreatePublicBookingCheckoutUseCase {
       extraOptions,
       now,
     });
+    if (
+      experience.id === "daytrip" &&
+      this.sunTimes &&
+      !finishesBeforeSunset(
+        experience.id,
+        plan.selectedEndAt,
+        this.sunTimes.sunset(command.localDate),
+      )
+    ) {
+      throw new ApplicationError(
+        "BOOKING_SELECTED_SLOT_OUTSIDE_POLICY",
+        "El paseo privado debe terminar antes de la puesta de sol. Para verla, elige la experiencia de atardecer.",
+      );
+    }
     await this.expiredHolds?.execute({
       limit: 100,
       now,
     });
     const overlaps = await this.bookings.findActiveCalendarOverlaps(
-      plan.selectedStartAt,
-      plan.selectedEndAt,
+      experience.hourlyRates !== undefined
+        ? plan.protectedStartAt
+        : plan.selectedStartAt,
+      experience.hourlyRates !== undefined
+        ? plan.protectedEndAt
+        : plan.selectedEndAt,
     );
 
     if (overlaps.length > 0) {
@@ -85,7 +106,9 @@ export class CreatePublicBookingCheckoutUseCase {
           currency: plan.priceSnapshot.toSnapshot().totalAmount.currency,
           customerEmail: command.customer.email,
           depositAmountMinor:
-            plan.priceSnapshot.toSnapshot().depositAmount.amountMinor,
+            command.paymentChoice === "FULL"
+              ? plan.priceSnapshot.totalAmount.amountMinor
+              : plan.priceSnapshot.depositAmount.amountMinor,
           experienceId: experience.id,
           now,
           paymentRecordId,
@@ -109,10 +132,16 @@ export class CreatePublicBookingCheckoutUseCase {
           now,
         })
       : plan;
+    if (command.paymentChoice === "FULL") {
+      finalPlan.priceSnapshot = finalPlan.priceSnapshot.withUpfrontPayment(
+        finalPlan.priceSnapshot.totalAmount,
+      );
+    }
     const cancellationPolicySnapshot =
-      await this.cancellationPolicies?.findActiveBookingSnapshotForExperience(
+      (await this.cancellationPolicies?.findActiveBookingSnapshotForExperience(
         experience.id,
-      ) ?? null;
+        command.termsLocale ?? command.customer.preferredLocale,
+      )) ?? null;
     const holdExpiresAt = new Date(
       now.getTime() + checkoutHoldMinutes * 60_000,
     );
@@ -153,6 +182,7 @@ export class CreatePublicBookingCheckoutUseCase {
         phone: command.customer.phone,
       },
       experienceName: experience.internalName,
+      paymentChoice: command.paymentChoice ?? "DEPOSIT",
       expiresAt: holdExpiresAt,
       locale: command.customer.preferredLocale,
       paymentRecordId,
@@ -251,6 +281,5 @@ function consentNotesFromCommand(command: CreatePublicBookingCheckoutCommand) {
     `Ticket WhatsApp: ${
       command.consents.ticketWhatsapp ? "granted" : "not asked"
     }.`,
-    `Marketing: ${command.consents.marketing ? "granted" : "not asked"}.`,
   ].join(" ");
 }

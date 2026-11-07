@@ -1,3 +1,4 @@
+import { adminEs, adminStatusLabels } from "@/i18n/admin/es";
 import { adminNavItems } from "@/components/layout/AdminNavigation";
 import type {
   AdminCoupon,
@@ -45,7 +46,7 @@ export function getAdminCouponsPreviewPage(): AdminCouponsPageData {
       campaignName: "Initial coupon test",
       code: "TEST10",
       confirmedRedemptions: 3,
-      createdAt: "Jan 1, 2026, 10:00 AM",
+      createdAt: "1 ene 2026, 10:00",
       displayCode: "TEST10",
       events: [
         {
@@ -54,8 +55,8 @@ export function getAdminCouponsPreviewPage(): AdminCouponsPageData {
           bookingId: null,
           couponVersionId: "coupon-test10-v1",
           id: "event-test10-created",
-          label: "Coupon created",
-          occurredAt: "Jan 1, 2026, 10:00 AM",
+          label: adminEs["Coupon created"],
+          occurredAt: "1 ene 2026, 10:00",
           redemptionId: null,
           type: "COUPON_CREATED" as const,
         },
@@ -65,7 +66,7 @@ export function getAdminCouponsPreviewPage(): AdminCouponsPageData {
       redemptions: [
         {
           bookingId: "booking-preview-1",
-          confirmedAt: "Jun 14, 2026, 10:00 AM",
+          confirmedAt: "14 jun 2026, 10:00",
           customerEmailNormalized: "sailor@example.com",
           discountAmount: 38,
           finalCashRemainingAmount: 242,
@@ -76,7 +77,7 @@ export function getAdminCouponsPreviewPage(): AdminCouponsPageData {
           originalDepositAmount: 100,
           originalTotalAmount: 380,
           releasedAt: "",
-          reservedAt: "Jun 14, 2026, 10:00 AM",
+          reservedAt: "14 jun 2026, 10:00",
           reservedDateKey: "2026-06-14",
           status: "CONFIRMED" as const,
         },
@@ -84,7 +85,7 @@ export function getAdminCouponsPreviewPage(): AdminCouponsPageData {
       reservedRedemptions: 1,
       status: "ACTIVE" as const,
       totalRedemptions: 4,
-      updatedAt: "Jun 14, 2026, 10:00 AM",
+      updatedAt: "14 jun 2026, 10:00",
       versions: [
         {
           discountType: "PERCENTAGE" as const,
@@ -171,7 +172,9 @@ function presentCoupon(coupon: AdminCouponDto): AdminCoupon {
       ),
       originalDepositAmount: fromMinor(redemption.originalDepositAmountMinor),
       originalTotalAmount: fromMinor(redemption.originalTotalAmountMinor),
-      releasedAt: redemption.releasedAt ? formatDateTime(redemption.releasedAt) : "",
+      releasedAt: redemption.releasedAt
+        ? formatDateTime(redemption.releasedAt)
+        : "",
       reservedAt: formatDateTime(redemption.reservedAt),
       reservedDateKey: formatDate(redemption.reservedAt),
       status: redemption.status,
@@ -184,7 +187,9 @@ function presentCoupon(coupon: AdminCouponDto): AdminCoupon {
   };
 }
 
-function presentVersion(version: AdminCouponDto["versions"][number]): AdminCouponVersion {
+function presentVersion(
+  version: AdminCouponDto["versions"][number],
+): AdminCouponVersion {
   return {
     discountType: version.discountType,
     discountValue:
@@ -201,7 +206,9 @@ function presentVersion(version: AdminCouponDto["versions"][number]): AdminCoupo
   };
 }
 
-function presentEvent(event: AdminCouponDto["events"][number]): AdminCouponEvent {
+function presentEvent(
+  event: AdminCouponDto["events"][number],
+): AdminCouponEvent {
   return {
     actorId: event.actorId,
     actorType: event.actorType,
@@ -220,30 +227,33 @@ function eventLabel(event: AdminCouponDto["events"][number]) {
     typeof event.metadata.action === "string" ? event.metadata.action : "";
 
   if (action === "coupon-rules-updated") {
-    return "Rules updated";
+    return adminEs["Rules updated"];
   }
 
   if (action === "coupon-status-changed") {
-    return `Status changed to ${String(event.metadata.status ?? "")}`;
+    return adminEs.statusChanged(
+      adminStatusLabels[String(event.metadata.status)] ??
+        String(event.metadata.status ?? ""),
+    );
   }
 
   if (event.type === "COUPON_VERSION_CREATED") {
-    return "Version created";
+    return adminEs["Version created"];
   }
 
   if (event.type === "COUPON_RESERVED") {
-    return "Redemption reserved";
+    return adminEs["Redemption reserved"];
   }
 
   if (event.type === "COUPON_CONFIRMED") {
-    return "Redemption confirmed";
+    return adminEs["Redemption confirmed"];
   }
 
   if (event.type === "COUPON_RELEASED") {
-    return "Redemption released";
+    return adminEs["Redemption released"];
   }
 
-  return "Coupon created";
+  return adminEs["Coupon created"];
 }
 
 function fromMinor(amountMinor: number) {
@@ -261,15 +271,19 @@ function couponMetrics(coupons: AdminCoupon[]): AdminCouponMetrics {
   );
 
   return {
-    activeCoupons: coupons.filter((coupon) => coupon.status === "ACTIVE").length,
-    averageDiscount: confirmed.length > 0 ? discountAmount / confirmed.length : 0,
+    activeCoupons: coupons.filter((coupon) => coupon.status === "ACTIVE")
+      .length,
+    averageDiscount:
+      confirmed.length > 0 ? discountAmount / confirmed.length : 0,
     confirmedRevenueAfterDiscount: confirmed.reduce(
       (sum, redemption) => sum + redemption.finalTotalAmount,
       0,
     ),
     confirmedRedemptions: confirmed.length,
     conversionRate:
-      redemptions.length > 0 ? Math.round((confirmed.length / redemptions.length) * 100) : 0,
+      redemptions.length > 0
+        ? Math.round((confirmed.length / redemptions.length) * 100)
+        : 0,
     discountAmount,
     releasedRedemptions: redemptions.filter(
       (redemption) => redemption.status === "RELEASED",
@@ -303,24 +317,26 @@ function couponRanking(coupons: AdminCoupon[]): AdminCouponRankingItem[] {
         ),
       };
     })
-    .sort((left, right) => right.confirmedRedemptions - left.confirmedRedemptions)
+    .sort(
+      (left, right) => right.confirmedRedemptions - left.confirmedRedemptions,
+    )
     .slice(0, 5);
 }
 
-function campaignSummaries(coupons: AdminCoupon[]): AdminCouponCampaignSummary[] {
+function campaignSummaries(
+  coupons: AdminCoupon[],
+): AdminCouponCampaignSummary[] {
   const summaries = new Map<string, AdminCouponCampaignSummary>();
 
   for (const coupon of coupons) {
-    const campaignName = coupon.campaignName || "Unassigned campaign";
-    const current =
-      summaries.get(campaignName) ??
-      {
-        campaignName,
-        confirmedRedemptions: 0,
-        couponCount: 0,
-        discountAmount: 0,
-        totalRedemptions: 0,
-      };
+    const campaignName = coupon.campaignName || adminEs["Unassigned campaign"];
+    const current = summaries.get(campaignName) ?? {
+      campaignName,
+      confirmedRedemptions: 0,
+      couponCount: 0,
+      discountAmount: 0,
+      totalRedemptions: 0,
+    };
     const confirmed = coupon.redemptions.filter(
       (redemption) => redemption.status === "CONFIRMED",
     );
@@ -345,15 +361,13 @@ function usagePoints(coupons: AdminCoupon[]): AdminCouponUsagePoint[] {
 
   for (const redemption of coupons.flatMap((coupon) => coupon.redemptions)) {
     const date = redemption.reservedAt.split(",")[0] ?? redemption.reservedAt;
-    const current =
-      points.get(redemption.reservedDateKey) ??
-      {
-        confirmed: 0,
-        date,
-        discountAmount: 0,
-        released: 0,
-        reserved: 0,
-      };
+    const current = points.get(redemption.reservedDateKey) ?? {
+      confirmed: 0,
+      date,
+      discountAmount: 0,
+      released: 0,
+      reserved: 0,
+    };
 
     if (redemption.status === "CONFIRMED") {
       current.confirmed += 1;
@@ -378,7 +392,7 @@ function formatDate(value: string) {
 }
 
 function formatDateTime(value: string) {
-  return new Intl.DateTimeFormat("en", {
+  return new Intl.DateTimeFormat("es-ES", {
     dateStyle: "medium",
     timeStyle: "short",
   }).format(new Date(value));

@@ -8,12 +8,14 @@ import type {
 } from "./PublicBookingTypes";
 
 type PublicBookingStepIndicatorProps = {
+  label?: string;
   currentStepId: PublicBookingStepId;
   steps: readonly PublicBookingStep[];
   variant?: "compact" | "default";
 };
 
 export function PublicBookingStepIndicator({
+  label = "Booking progress",
   currentStepId,
   steps,
   variant = "default",
@@ -32,7 +34,7 @@ export function PublicBookingStepIndicator({
         );
 
   return (
-    <nav aria-label="Booking progress">
+    <nav aria-label={label}>
       <ol
         className={cn(
           "relative flex items-start justify-between",
@@ -72,8 +74,11 @@ export function PublicBookingStepIndicator({
                     "inline-flex items-center justify-center rounded-full border text-xs font-semibold transition",
                     variant === "compact" ? "size-7" : "size-12",
                     completed && "border-primary bg-primary text-white",
-                    current && "border-primary bg-primary text-white shadow-floating",
-                    !completed && !current && "border-sand bg-sand text-text-muted",
+                    current &&
+                      "border-primary bg-primary text-white shadow-floating",
+                    !completed &&
+                      !current &&
+                      "border-sand bg-sand text-text-muted",
                   )}
                 >
                   {completed ? (

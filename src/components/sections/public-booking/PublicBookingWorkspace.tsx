@@ -1,5 +1,11 @@
 "use client";
 
+import {
+  LocalBookingPayment,
+  type LocalBookingPaymentActions,
+} from "./LocalBookingPayment";
+import { hourlyLabels } from "@/content/booking/labels";
+import { bookingTransactionLocale } from "@/i18n/bookingLocales";
 import { LifeBuoy } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
@@ -36,6 +42,8 @@ type PublicBookingWorkspaceProps = {
   content: PublicBookingContent;
   initialExperienceId?: string;
   stripePublishableKey: string;
+  localPaymentActions?: LocalBookingPaymentActions;
+  onChangeHours?: (hours: number) => void;
 };
 
 const initialCustomer = {
@@ -45,7 +53,6 @@ const initialCustomer = {
 } satisfies PublicBookingCustomer;
 
 const initialConsents = {
-  marketing: false,
   ticketEmail: true,
   ticketWhatsapp: false,
 } satisfies PublicBookingConsents;
@@ -60,6 +67,8 @@ export function PublicBookingWorkspace({
   content,
   initialExperienceId,
   stripePublishableKey,
+  onChangeHours,
+  localPaymentActions,
 }: PublicBookingWorkspaceProps) {
   const resolvedInitialExperienceId =
     content.experiences.find(
@@ -88,6 +97,9 @@ export function PublicBookingWorkspace({
     useState<string | null>(null);
   const [selectedExtraIds, setSelectedExtraIds] = useState<string[]>([]);
   const [guestCount, setGuestCount] = useState(1);
+  const [paymentChoice, setPaymentChoice] = useState<"DEPOSIT" | "FULL">(
+    "DEPOSIT",
+  );
   const [customer, setCustomer] =
     useState<PublicBookingCustomer>(initialCustomer);
   const [consents, setConsents] =
@@ -104,6 +116,7 @@ export function PublicBookingWorkspace({
   const [checkoutSessionId, setCheckoutSessionId] = useState<string | null>(
     null,
   );
+  const [bookingReference, setBookingReference] = useState("");
   const [isSubmittingPayment, setIsSubmittingPayment] = useState(false);
   const didMountRef = useRef(false);
   const trackedStepRef = useRef<PublicBookingStepId | null>(null);
@@ -166,8 +179,12 @@ export function PublicBookingWorkspace({
   const selectedDepositAmount =
     selectedExperience?.depositAmount ?? content.depositAmount;
   const finalTotalAmount = couponPreview?.totalAmount ?? totalAmount;
+  const baselineDepositAmount = Math.min(
+    couponPreview?.depositAmount ?? selectedDepositAmount,
+    finalTotalAmount,
+  );
   const finalDepositAmount =
-    couponPreview?.depositAmount ?? selectedDepositAmount;
+    paymentChoice === "FULL" ? finalTotalAmount : baselineDepositAmount;
   const finalDiscountAmount = couponPreview?.discountAmount ?? 0;
   const maxGuestCount = Math.max(selectedExperience?.capacity ?? 1, 1);
   const canContinueExperience = Boolean(
@@ -274,7 +291,7 @@ export function PublicBookingWorkspace({
     const controller = new AbortController();
     const availabilityUrl = `/api/public-booking/availability?locale=${encodeURIComponent(
       content.locale,
-    )}&experienceId=${encodeURIComponent(selectedExperienceId)}`;
+    )}&experienceId=${encodeURIComponent(selectedExperienceId)}${content.hourly ? `&hours=${content.hourly.hours}` : ""}`;
 
     fetch(availabilityUrl, { signal: controller.signal })
       .then(async (response) => {
@@ -330,6 +347,7 @@ export function PublicBookingWorkspace({
   }, [
     availabilityByExperienceId,
     content.locale,
+    content.hourly,
     selectedExperienceId,
     trackBookingEvent,
   ]);
@@ -350,8 +368,11 @@ export function PublicBookingWorkspace({
   };
 
   const resetBooking = () => {
+    setPaymentChoice("DEPOSIT");
     setActiveStep("experience");
-    setSelectedExperienceId(null);
+    setSelectedExperienceId(
+      content.hourly ? resolvedInitialExperienceId : null,
+    );
     setSelectedDateId(null);
     setSelectedTimeSlotId(null);
     setSelectedExtraIds([]);
@@ -377,7 +398,7 @@ export function PublicBookingWorkspace({
   const refreshAvailability = async (experienceId: string) => {
     const availabilityUrl = `/api/public-booking/availability?locale=${encodeURIComponent(
       content.locale,
-    )}&experienceId=${encodeURIComponent(experienceId)}`;
+    )}&experienceId=${encodeURIComponent(experienceId)}${content.hourly ? `&hours=${content.hourly.hours}` : ""}`;
     const response = await fetch(availabilityUrl, {
       cache: "no-store",
     });
@@ -482,7 +503,11 @@ export function PublicBookingWorkspace({
       return;
     }
 
-    setCouponError(result.message);
+    setCouponError(
+      result.code === "VISUAL_PREVIEW"
+        ? (content.previewNotice ?? result.message)
+        : result.message,
+    );
     setCouponLoading(false);
     trackBookingEvent("booking_coupon_failed", {
       coupon_status: "failed",
@@ -558,7 +583,6 @@ export function PublicBookingWorkspace({
       experience_id: selectedExperience.id,
       extras_count: selectedExtras.length,
       guest_count: guestCount,
-      marketing_consent_enabled: consents.marketing,
     });
 
     try {
@@ -586,6 +610,7 @@ export function PublicBookingWorkspace({
     }
 
     const result = await actions.startCheckout({
+      paymentChoice,
       consents,
       couponCode: couponPreview?.code ?? null,
       customer: {
@@ -597,7 +622,8 @@ export function PublicBookingWorkspace({
       experienceId: selectedExperience.id,
       guestCount,
       localDate: selectedDate.id,
-      locale: content.locale,
+      locale: bookingTransactionLocale(content.locale),
+      termsLocale: content.locale,
       selectedExtras: selectedExtras.map((extra) => ({
         extraId: extra.id,
         quantity: 1,
@@ -607,6 +633,7 @@ export function PublicBookingWorkspace({
     });
 
     if (result.ok) {
+      setBookingReference(result.data.reference ?? "");
       setCheckoutClientSecret(result.data.checkoutClientSecret);
       setCheckoutSessionId(result.data.paymentProviderSessionId);
       setIsSubmittingPayment(false);
@@ -638,7 +665,11 @@ export function PublicBookingWorkspace({
       return;
     }
 
-    setFormError(result.message);
+    setFormError(
+      result.code === "VISUAL_PREVIEW"
+        ? (content.previewNotice ?? result.message)
+        : result.message,
+    );
     setIsSubmittingPayment(false);
     trackBookingEvent("booking_checkout_failed", {
       experience_id: selectedExperience.id,
@@ -649,10 +680,28 @@ export function PublicBookingWorkspace({
   return (
     <div className="min-h-screen bg-background text-text">
       <PublicBookingHeader content={content} currentStepId={activeStep} />
-      <main className="pb-36 pt-36 md:pt-40 lg:pb-20">
+      <main
+        className={
+          activeStep === "experience" && content.support.whatsapp
+            ? "pb-52 pt-36 md:pt-40 lg:pb-20"
+            : "pb-36 pt-36 md:pt-40 lg:pb-20"
+        }
+      >
         <Container className="max-w-7xl">
+          {content.previewNotice && (
+            <p
+              role="status"
+              className="mb-6 rounded-2xl border border-sand bg-white px-5 py-3 text-sm leading-6 text-text-muted"
+            >
+              {content.previewNotice}
+            </p>
+          )}
           <div className="hidden lg:block">
             <PublicBookingStepIndicator
+              label={
+                getPublicDictionary(content.locale).booking.labels
+                  .bookingSummary
+              }
               currentStepId={activeStep}
               steps={content.steps}
             />
@@ -667,6 +716,7 @@ export function PublicBookingWorkspace({
             <div className="min-w-0">
               {activeStep === "experience" ? (
                 <PublicBookingExperienceStep
+                  onChangeHours={onChangeHours}
                   calendar={activeCalendar}
                   availabilityError={availabilityError}
                   availabilityLoading={availabilityLoading}
@@ -771,6 +821,28 @@ export function PublicBookingWorkspace({
                     />
                   ) : null}
                   <PublicBookingPaymentStep
+                    paymentChoice={paymentChoice}
+                    onChangePaymentChoice={setPaymentChoice}
+                    baselineDepositAmount={baselineDepositAmount}
+                    totalAmount={finalTotalAmount}
+                    localPayment={
+                      localPaymentActions &&
+                      checkoutSessionId &&
+                      content.locale !== "ca" ? (
+                        <LocalBookingPayment
+                          locale={content.locale}
+                          sessionId={checkoutSessionId}
+                          actions={localPaymentActions}
+                          onConfirmed={() => setActiveStep("confirmation")}
+                          onAbandoned={() => {
+                            setCheckoutClientSecret(null);
+                            setCheckoutSessionId(null);
+                            setSelectedTimeSlotId(null);
+                            setActiveStep("experience");
+                          }}
+                        />
+                      ) : undefined
+                    }
                     cancellationPolicySummary={
                       selectedExperience?.cancellationPolicySummary ??
                       content.policies.cancellation
@@ -821,7 +893,20 @@ export function PublicBookingWorkspace({
               selectedTimeSlot ? (
                 <PublicBookingConfirmationStep
                   consents={consents}
-                  content={content}
+                  content={
+                    localPaymentActions && content.locale !== "ca"
+                      ? {
+                          ...content,
+                          confirmation: {
+                            bookingReference,
+                            title: hourlyLabels[content.locale].confirmed,
+                            subtitle:
+                              content.previewNotice ??
+                              hourlyLabels[content.locale].demo,
+                          },
+                        }
+                      : content
+                  }
                   customer={customer}
                   depositAmount={finalDepositAmount}
                   experience={selectedExperience}
@@ -837,6 +922,11 @@ export function PublicBookingWorkspace({
 
             {showSummary ? (
               <PublicBookingSummary
+                help={
+                  activeStep === "experience"
+                    ? content.support.whatsapp
+                    : undefined
+                }
                 action={summaryAction}
                 className="hidden h-fit lg:sticky lg:top-32 lg:block"
                 consents={activeStep === "payment" ? consents : undefined}

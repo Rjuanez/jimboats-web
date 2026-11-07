@@ -1,5 +1,6 @@
 "use server";
 
+import { hourlyVisualPreview } from "../presenters/hourlyPublicBookingPresenter";
 import { ZodError } from "zod";
 
 import { getContainer } from "@/container";
@@ -20,6 +21,13 @@ import {
 export async function previewPublicBookingCouponAction(
   input: PublicBookingCouponPreviewInput,
 ): Promise<PublicBookingCheckoutActionResult<PublicBookingCouponPreview>> {
+  if (hourlyVisualPreview())
+    return {
+      ok: false,
+      code: "VISUAL_PREVIEW",
+      message:
+        "Prueba visual: los cupones necesitan el servicio de reservas local conectado.",
+    };
   try {
     const command = parsePublicBookingCouponPreview(input);
     const preview = await getContainer().publicBooking.previewCoupon(command);
@@ -43,15 +51,26 @@ export async function startPublicBookingCheckoutAction(
   input: PublicBookingCheckoutInput,
 ): Promise<
   PublicBookingCheckoutActionResult<{
+    reference?: string;
     checkoutClientSecret: string;
     paymentProviderSessionId: string;
   }>
 > {
+  if (hourlyVisualPreview())
+    return {
+      ok: false,
+      code: "VISUAL_PREVIEW",
+      message:
+        input.locale === "es"
+          ? "Prueba visual: no se ha creado ninguna reserva ni realizado ningún cobro. Falta conectar la base de datos local."
+          : "Visual preview: no booking or payment has been created. The local booking database is not connected.",
+    };
   try {
     const commandInput = parsePublicBookingCheckout(input);
     const baseUrl = publicSiteUrlFromEnv();
     const checkout = await getContainer().publicBooking.createCheckout({
       consents: commandInput.consents,
+      paymentChoice: commandInput.paymentChoice,
       couponCode: commandInput.couponCode ?? null,
       customer: {
         email: commandInput.customer.email,
@@ -67,10 +86,12 @@ export async function startPublicBookingCheckoutAction(
       slotKey: commandInput.slotKey,
       startTime: commandInput.startTime,
       returnUrl: `${baseUrl}/${commandInput.locale}/book/success?session_id={CHECKOUT_SESSION_ID}`,
+      termsLocale: commandInput.termsLocale,
     });
 
     return {
       data: {
+        reference: checkout.reference,
         checkoutClientSecret: checkout.checkoutClientSecret,
         paymentProviderSessionId: checkout.paymentProviderSessionId,
       },

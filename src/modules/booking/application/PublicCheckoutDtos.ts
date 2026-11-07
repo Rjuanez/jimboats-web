@@ -4,13 +4,13 @@ export type PublicSelectedBookingExtraCommand = {
 };
 
 export type PublicBookingNotificationConsentCommand = {
-  marketing: boolean;
   ticketEmail: boolean;
   ticketWhatsapp: boolean;
 };
 
 export type CreatePublicBookingCheckoutCommand = {
   consents: PublicBookingNotificationConsentCommand;
+  paymentChoice?: "DEPOSIT" | "FULL";
   couponCode?: string | null;
   customer: {
     email: string;
@@ -26,6 +26,7 @@ export type CreatePublicBookingCheckoutCommand = {
   slotKey: string | null;
   startTime: string;
   returnUrl: string;
+  termsLocale?: string;
 };
 
 export type PreviewPublicBookingCouponCommand = {

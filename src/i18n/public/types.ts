@@ -105,6 +105,13 @@ export type PublicDictionary = {
       secure: string;
     };
     labels: {
+      paymentChoice: string;
+      payDeposit: string;
+      payFull: string;
+      paidInFull: string;
+      daytimeOnly: string;
+      timeRange: string;
+
       accepted: string;
       back: string;
       bookingSummary: string;
@@ -136,8 +143,6 @@ export type PublicDictionary = {
       phone: string;
       phoneDescription: string;
       preparingPayment: string;
-      promotions: string;
-      promotionsDescription: string;
       remainingBalance: (amount: string) => string;
       securePayment: string;
       selectedExtras: string;

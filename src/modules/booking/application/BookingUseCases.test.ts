@@ -1,3 +1,4 @@
+import { ReserveCouponRedemptionUseCase } from "@/modules/coupons/application/ReserveCouponRedemptionUseCase";
 import { describe, expect, it } from "vitest";
 
 import { ApplicationError } from "@/shared/application/ApplicationError";
@@ -39,6 +40,253 @@ import type { Booking } from "../domain/Booking";
 import type { PaymentRecord } from "../domain/PaymentRecord";
 
 describe("Booking use cases", () => {
+  it("applies the coupon to full payment and records zero cash balance in the redemption", async () => {
+    const deps = createDependencies();
+    const coupons = new ReserveCouponRedemptionUseCase({
+      countActiveRedemptions: async () => 0,
+      findActiveVersionByCode: async () => ({
+        campaignName: "Test",
+        code: "TEST10",
+        couponId: "coupon-1",
+        couponStatus: "ACTIVE",
+        couponVersionId: "v1",
+        currency: "EUR",
+        discountAmountMinor: null,
+        discountPercentageBps: 1000,
+        discountType: "PERCENTAGE",
+        experienceIds: [],
+        maxTotalRedemptions: null,
+        validFrom: new Date("2026-01-01T00:00:00Z"),
+        validUntil: null,
+        versionStatus: "ACTIVE",
+      }),
+      confirmRedemptionForBooking: async () => {},
+      releaseRedemptionForBooking: async () => {},
+      saveReservedRedemption: async () => {},
+    });
+    await new CreatePublicBookingCheckoutUseCase(
+      deps.bookings,
+      deps.ids,
+      deps.clock,
+      deps.paymentProvider,
+      undefined,
+      coupons,
+    ).execute(
+      createPublicCheckoutCommand({
+        paymentChoice: "FULL",
+        couponCode: "TEST10",
+      }),
+    );
+    const saved = deps.bookings.publicPending!;
+    const price = saved.booking.toSnapshot().priceSnapshot;
+    expect(price.discountAmount.amountMinor).toBeGreaterThan(0);
+    expect(price.depositAmount.amountMinor).toBe(price.totalAmount.amountMinor);
+    expect(saved.paymentRecord.toSnapshot().amount.amountMinor).toBe(
+      price.totalAmount.amountMinor,
+    );
+    expect(saved.couponRedemption?.finalDepositAmount.amountMinor).toBe(
+      price.totalAmount.amountMinor,
+    );
+    expect(saved.couponRedemption?.finalCashRemainingAmount.amountMinor).toBe(
+      0,
+    );
+    deps.paymentProvider.nextEvent = stripeCompletedEvent({
+      amountTotalMinor: price.totalAmount.amountMinor,
+    });
+    await new HandleDepositPaymentWebhookUseCase(
+      deps.bookings,
+      deps.clock,
+      deps.paymentProvider,
+    ).execute({ rawBody: "paid", signature: "stripe-signature" });
+    const updated = await new BackpanelUpdateBookingUseCase(
+      deps.bookings,
+      deps.ids,
+      deps.clock,
+    ).execute(createUpdateCommand({ internalNotes: "Coupon retained" }));
+    expect(updated.priceSnapshot).toEqual(price);
+  });
+
+  it("charges the full total including extras and keeps it paid after an operational edit", async () => {
+    const deps = createDependencies({
+      experiences: [
+        createBookingExperienceOption({
+          hourlyRates: [
+            { hours: 4, total: moneyDto(40000), deposit: moneyDto(5000) },
+          ],
+        }),
+      ],
+    });
+    await new CreatePublicBookingCheckoutUseCase(
+      deps.bookings,
+      deps.ids,
+      deps.clock,
+      deps.paymentProvider,
+    ).execute(createPublicCheckoutCommand({ paymentChoice: "FULL" }));
+    const pending = deps.bookings.publicPending!;
+    const total =
+      pending.booking.toSnapshot().priceSnapshot.totalAmount.amountMinor;
+    expect(total).toBeGreaterThan(40000);
+    expect(pending.paymentRecord.toSnapshot().amount.amountMinor).toBe(total);
+    expect(
+      pending.booking.toSnapshot().priceSnapshot.remainingAmount.amountMinor,
+    ).toBe(0);
+    deps.paymentProvider.nextEvent = stripeCompletedEvent({
+      amountTotalMinor: total,
+    });
+    await new HandleDepositPaymentWebhookUseCase(
+      deps.bookings,
+      deps.clock,
+      deps.paymentProvider,
+    ).execute({ rawBody: "paid", signature: "stripe-signature" });
+    const updated = await new BackpanelUpdateBookingUseCase(
+      deps.bookings,
+      deps.ids,
+      deps.clock,
+    ).execute(
+      createUpdateCommand({
+        internalNotes: "Full payment, arrival instructions updated",
+      }),
+    );
+    expect(updated.priceSnapshot.depositAmount.amountMinor).toBe(total);
+    expect(updated.priceSnapshot.remainingAmount.amountMinor).toBe(0);
+  });
+
+  it("rejects a submitted daytrip finishing at sunset before creating a payment hold", async () => {
+    const deps = createDependencies({
+      experiences: [createBookingExperienceOption({ id: "daytrip" })],
+    });
+    const useCase = new CreatePublicBookingCheckoutUseCase(
+      deps.bookings,
+      deps.ids,
+      deps.clock,
+      deps.paymentProvider,
+      undefined,
+      undefined,
+      undefined,
+      { sunset: () => new Date("2026-06-10T12:00:00Z") },
+    );
+    await expect(
+      useCase.execute(createPublicCheckoutCommand({ experienceId: "daytrip" })),
+    ).rejects.toMatchObject({ code: "BOOKING_SELECTED_SLOT_OUTSIDE_POLICY" });
+    expect(deps.bookings.publicPending).toBeNull();
+  });
+
+  it.each([1, 2, 3, 4, 5, 6])(
+    "prices and persists a %i-hour checkout using the selected tariff",
+    async (hours) => {
+      const dependencies = createDependencies({
+        experiences: [
+          createBookingExperienceOption({
+            hourlyRates: Array.from({ length: 6 }, (_, index) => ({
+              hours: index + 1,
+              total: moneyDto((index + 1) * 10000),
+              deposit: moneyDto(5000),
+            })),
+            slotPolicy: {
+              mode: "ANY_AVAILABLE",
+              timeZone: "Europe/Madrid",
+              operatingWindow: { startMinutes: 360, endMinutes: 1380 },
+              granularityMinutes: 30,
+            },
+          }),
+        ],
+      });
+      await new CreatePublicBookingCheckoutUseCase(
+        dependencies.bookings,
+        dependencies.ids,
+        dependencies.clock,
+        dependencies.paymentProvider,
+      ).execute(
+        createPublicCheckoutCommand({
+          startTime: "10:00",
+          endTime: `${10 + hours}:00`,
+          slotKey: null,
+          selectedExtras: [],
+        }),
+      );
+      const saved = await dependencies.bookings.findById("booking-1");
+      expect(saved?.toSnapshot().selectedSlot.durationMinutes).toBe(hours * 60);
+      expect(saved?.toSnapshot().priceSnapshot.totalAmount.amountMinor).toBe(
+        hours * 10000,
+      );
+      expect(saved?.toSnapshot().priceSnapshot.depositAmount.amountMinor).toBe(
+        5000,
+      );
+      expect(saved?.status).toBe("PENDING_PAYMENT");
+    },
+  );
+
+  it("rejects an hourly checkout without a tariff before creating a payment or hold", async () => {
+    const dependencies = createDependencies({
+      experiences: [createBookingExperienceOption({ hourlyRates: [] })],
+    });
+    await expect(
+      new CreatePublicBookingCheckoutUseCase(
+        dependencies.bookings,
+        dependencies.ids,
+        dependencies.clock,
+        dependencies.paymentProvider,
+      ).execute(createPublicCheckoutCommand()),
+    ).rejects.toMatchObject({ code: "BOOKING_RATE_UNAVAILABLE" });
+    expect(await dependencies.bookings.list()).toEqual([]);
+  });
+
+  it("keeps the agreed hourly price and paid deposit when editing an existing booking", async () => {
+    const experience = createBookingExperienceOption({
+      hourlyRates: [
+        { hours: 4, total: moneyDto(40000), deposit: moneyDto(5000) },
+      ],
+    });
+    const deps = createDependencies({ experiences: [experience] });
+    await new BackpanelCreateBookingUseCase(
+      deps.bookings,
+      deps.ids,
+      deps.clock,
+    ).execute(createCommand({ selectedExtras: [] }));
+    experience.hourlyRates = [
+      { hours: 4, total: moneyDto(90000), deposit: moneyDto(9000) },
+    ];
+    const updated = await new BackpanelUpdateBookingUseCase(
+      deps.bookings,
+      deps.ids,
+      deps.clock,
+    ).execute(
+      createUpdateCommand({
+        selectedExtras: [],
+        internalNotes: "Customer asked for water",
+      }),
+    );
+    expect(updated.priceSnapshot.totalAmount.amountMinor).toBe(40000);
+    expect(updated.priceSnapshot.depositAmount.amountMinor).toBe(5000);
+  });
+
+  it("rejects hourly departures whose protected buffer overlaps the previous booking", async () => {
+    const deps = createDependencies({
+      experiences: [
+        createBookingExperienceOption({
+          hourlyRates: [
+            { hours: 4, total: moneyDto(40000), deposit: moneyDto(5000) },
+          ],
+        }),
+      ],
+      overlaps: [
+        {
+          id: "earlier-booking",
+          protectedStartAt: new Date("2026-06-10T06:00:00Z"),
+          protectedEndAt: new Date("2026-06-10T08:00:00Z"),
+        },
+      ],
+    });
+    await expect(
+      new CreatePublicBookingCheckoutUseCase(
+        deps.bookings,
+        deps.ids,
+        deps.clock,
+        deps.paymentProvider,
+      ).execute(createPublicCheckoutCommand()),
+    ).rejects.toMatchObject({ code: "CALENDAR_BLOCK_OVERLAP" });
+  });
+
   it("creates a confirmed backpanel booking with payment and calendar block", async () => {
     const dependencies = createDependencies();
     const calendarSync = new FakeBookingCalendarSynchronizer();
@@ -436,14 +684,14 @@ describe("Booking use cases", () => {
       paymentProviderSessionId: "cs_test_123",
       reference: "JB-2026-0001",
     });
-    expect(dependencies.bookings.publicPending?.booking.toSnapshot()).toMatchObject({
+    expect(
+      dependencies.bookings.publicPending?.booking.toSnapshot(),
+    ).toMatchObject({
       holdExpiresAt: "2026-06-01T10:30:00.000Z",
       source: "PUBLIC_CHECKOUT",
       status: "PENDING_PAYMENT",
     });
-    expect(
-      dependencies.bookings.publicPending?.calendarBlock,
-    ).toMatchObject({
+    expect(dependencies.bookings.publicPending?.calendarBlock).toMatchObject({
       expiresAt: new Date("2026-06-01T10:30:00.000Z"),
       source: "BOOKING_HOLD",
       status: "ACTIVE",
@@ -461,6 +709,10 @@ describe("Booking use cases", () => {
         destination: "+34 600 000 000",
       },
     });
+    expect(
+      dependencies.bookings.publicPending?.notificationPreferences.toSnapshot()
+        .consentNotes,
+    ).not.toContain("Marketing:");
   });
 
   it("creates a public checkout hold from a fixed slot that covers the experience duration", async () => {
@@ -501,9 +753,7 @@ describe("Booking use cases", () => {
       bookingId: "booking-1",
       checkoutClientSecret: "cs_test_embedded_secret",
     });
-    expect(
-      dependencies.bookings.publicPending?.calendarBlock,
-    ).toMatchObject({
+    expect(dependencies.bookings.publicPending?.calendarBlock).toMatchObject({
       visibleEndMinutes: 13 * 60,
       visibleStartMinutes: 10 * 60,
     });
@@ -568,7 +818,9 @@ describe("Booking use cases", () => {
     ).execute(createPublicCheckoutCommand());
 
     expect(result.bookingId).toBe("booking-1");
-    expect(dependencies.bookings.releasedHolds[0]?.booking.toSnapshot()).toMatchObject({
+    expect(
+      dependencies.bookings.releasedHolds[0]?.booking.toSnapshot(),
+    ).toMatchObject({
       status: "EXPIRED",
     });
   });
@@ -604,7 +856,9 @@ describe("Booking use cases", () => {
     ).execute(createPublicCheckoutCommand());
 
     expect(result.bookingId).toBe("booking-1");
-    expect(dependencies.bookings.releasedHolds[0]?.booking.toSnapshot()).toMatchObject({
+    expect(
+      dependencies.bookings.releasedHolds[0]?.booking.toSnapshot(),
+    ).toMatchObject({
       status: "EXPIRED",
     });
   });
@@ -630,7 +884,9 @@ describe("Booking use cases", () => {
       action: "RECORDED",
       bookingId: "booking-1",
     });
-    expect(dependencies.bookings.heartbeats[0]?.booking.toSnapshot()).toMatchObject({
+    expect(
+      dependencies.bookings.heartbeats[0]?.booking.toSnapshot(),
+    ).toMatchObject({
       checkoutLastSeenAt: "2026-06-01T10:01:00.000Z",
       status: "PENDING_PAYMENT",
     });
@@ -656,7 +912,9 @@ describe("Booking use cases", () => {
       action: "EXITED",
       bookingId: "booking-1",
     });
-    expect(dependencies.bookings.releasedHolds[0]?.booking.toSnapshot()).toMatchObject({
+    expect(
+      dependencies.bookings.releasedHolds[0]?.booking.toSnapshot(),
+    ).toMatchObject({
       status: "EXITED",
     });
     expect(
@@ -691,7 +949,9 @@ describe("Booking use cases", () => {
       bookingId: "booking-1",
       eventType: "checkout.session.completed",
     });
-    expect(dependencies.bookings.depositSucceeded?.booking.toSnapshot()).toMatchObject({
+    expect(
+      dependencies.bookings.depositSucceeded?.booking.toSnapshot(),
+    ).toMatchObject({
       confirmedAt: "2026-06-01T10:02:00.000Z",
       status: "CONFIRMED",
     });
@@ -737,7 +997,9 @@ describe("Booking use cases", () => {
       action: "PROCESSED",
       bookingId: "booking-1",
     });
-    expect(dependencies.bookings.depositFailed?.booking.toSnapshot()).toMatchObject({
+    expect(
+      dependencies.bookings.depositFailed?.booking.toSnapshot(),
+    ).toMatchObject({
       status: "PAYMENT_FAILED",
     });
     expect(
@@ -750,10 +1012,12 @@ describe("Booking use cases", () => {
   });
 });
 
-function createDependencies(input: {
-  experiences?: BookingExperienceOptionReadModel[];
-  overlaps?: BookingCalendarOverlapReadModel[];
-} = {}) {
+function createDependencies(
+  input: {
+    experiences?: BookingExperienceOptionReadModel[];
+    overlaps?: BookingCalendarOverlapReadModel[];
+  } = {},
+) {
   const bookings = new InMemoryBookingRepository(
     input.overlaps ?? [],
     input.experiences,
@@ -824,11 +1088,12 @@ function createUpdateCommand(
 }
 
 function createPublicCheckoutCommand(
-  patch: Partial<Parameters<CreatePublicBookingCheckoutUseCase["execute"]>[0]> = {},
+  patch: Partial<
+    Parameters<CreatePublicBookingCheckoutUseCase["execute"]>[0]
+  > = {},
 ) {
   return {
     consents: {
-      marketing: true,
       ticketEmail: true,
       ticketWhatsapp: true,
     },
@@ -845,7 +1110,8 @@ function createPublicCheckoutCommand(
     selectedExtras: [{ extraId: "champagne", quantity: 1 }],
     slotKey: "morning",
     startTime: "10:00",
-    returnUrl: "http://localhost:3000/en/book/success?session_id={CHECKOUT_SESSION_ID}",
+    returnUrl:
+      "http://localhost:3000/en/book/success?session_id={CHECKOUT_SESSION_ID}",
     ...patch,
   };
 }
@@ -902,7 +1168,10 @@ function createBookingExperienceOption(
 class InMemoryBookingRepository implements BookingRepository {
   private readonly auditEntries: BookingAuditEntryReadModel[] = [];
   private readonly bookings = new Map<string, Booking>();
-  private readonly calendarSyncStates = new Map<string, BookingCalendarSyncState>();
+  private readonly calendarSyncStates = new Map<
+    string,
+    BookingCalendarSyncState
+  >();
   private now = new Date("2026-06-01T10:00:00.000Z");
   private readonly paymentRecords = new Map<string, PaymentRecord>();
   private readonly processedProviderEventIds = new Set<string>();
@@ -941,7 +1210,8 @@ class InMemoryBookingRepository implements BookingRepository {
       (block) =>
         block.id !== input.excludeBlockId &&
         !this.releasedHolds.some(
-          (hold) => hold.calendarBlockId === block.id && hold.releasedAt <= this.now,
+          (hold) =>
+            hold.calendarBlockId === block.id && hold.releasedAt <= this.now,
         ) &&
         block.protectedEndAt > startAt &&
         block.protectedStartAt < endAt,
@@ -1018,7 +1288,9 @@ class InMemoryBookingRepository implements BookingRepository {
   }
 
   async findExperienceOptionById(id: string) {
-    return this.experiences().find((experience) => experience.id === id) ?? null;
+    return (
+      this.experiences().find((experience) => experience.id === id) ?? null
+    );
   }
 
   async findExtraOptionsByIds(ids: string[]) {
@@ -1034,19 +1306,20 @@ class InMemoryBookingRepository implements BookingRepository {
   async listAuditEntriesForBookings(bookingIds: string[]) {
     const requestedIds = new Set(bookingIds);
 
-    return this.auditEntries.filter((entry) => requestedIds.has(entry.resourceId));
+    return this.auditEntries.filter((entry) =>
+      requestedIds.has(entry.resourceId),
+    );
   }
 
   async listNotificationPreferencesForBookings(bookingIds: string[]) {
     const requestedIds = new Set(bookingIds);
 
-    return this.publicPending &&
-      requestedIds.has(this.publicPending.booking.id)
+    return this.publicPending && requestedIds.has(this.publicPending.booking.id)
       ? [
           {
             bookingId: this.publicPending.booking.id,
-            whatsapp: this.publicPending.notificationPreferences.toSnapshot()
-              .whatsapp,
+            whatsapp:
+              this.publicPending.notificationPreferences.toSnapshot().whatsapp,
           },
         ]
       : [];
@@ -1089,10 +1362,10 @@ class InMemoryBookingRepository implements BookingRepository {
     this.paymentRecords.set(input.paymentRecord.id, input.paymentRecord);
   }
 
-  async saveDepositPaymentSucceeded(
-    input: DepositPaymentSucceededPersistence,
-  ) {
-    if (this.processedProviderEventIds.has(input.providerEvent.providerEventId)) {
+  async saveDepositPaymentSucceeded(input: DepositPaymentSucceededPersistence) {
+    if (
+      this.processedProviderEventIds.has(input.providerEvent.providerEventId)
+    ) {
       return "DUPLICATE" as const;
     }
 
@@ -1107,7 +1380,9 @@ class InMemoryBookingRepository implements BookingRepository {
   }
 
   async saveDepositPaymentFailed(input: DepositPaymentFailedPersistence) {
-    if (this.processedProviderEventIds.has(input.providerEvent.providerEventId)) {
+    if (
+      this.processedProviderEventIds.has(input.providerEvent.providerEventId)
+    ) {
       return "DUPLICATE" as const;
     }
 
@@ -1176,7 +1451,8 @@ class InMemoryBookingRepository implements BookingRepository {
     syncError: string;
   }) {
     const current =
-      this.calendarSyncStates.get(input.bookingId) ?? defaultCalendarSyncState();
+      this.calendarSyncStates.get(input.bookingId) ??
+      defaultCalendarSyncState();
 
     this.calendarSyncStates.set(input.bookingId, {
       ...current,

@@ -1,3 +1,4 @@
+import { adminEs } from "@/i18n/admin/es";
 import { History, UserRound } from "lucide-react";
 
 import { Badge } from "@/components/ui/Badge";
@@ -14,8 +15,8 @@ export function AdminBookingAuditTimeline({
 }: AdminBookingAuditTimelineProps) {
   return (
     <Surface
-      description="Operational changes recorded by the backpanel."
-      title="Activity"
+      description={adminEs["Operational changes recorded by the backpanel."]}
+      title={adminEs["Activity"]}
     >
       {entries.length === 0 ? <EmptyAuditTimeline /> : null}
       {entries.length > 0 ? (
@@ -32,11 +33,16 @@ export function AdminBookingAuditTimeline({
 function EmptyAuditTimeline() {
   return (
     <div className="flex items-start gap-3 rounded-md border border-dashed border-slate-200 bg-slate-50 px-3 py-3">
-      <History className="mt-0.5 size-4 shrink-0 text-slate-500" aria-hidden="true" />
+      <History
+        className="mt-0.5 size-4 shrink-0 text-slate-500"
+        aria-hidden="true"
+      />
       <div className="min-w-0">
-        <p className="text-sm font-semibold text-slate-800">No activity yet</p>
+        <p className="text-sm font-semibold text-slate-800">
+          {adminEs["No activity yet"]}
+        </p>
         <p className="mt-1 text-sm leading-6 text-slate-600">
-          New changes to this booking will appear here.
+          {adminEs["New changes to this booking will appear here."]}
         </p>
       </div>
     </div>

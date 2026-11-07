@@ -21,12 +21,12 @@ describe("AdminBookingsWorkspace", () => {
     );
 
     expect(
-      screen.getByRole("heading", { level: 1, name: "Bookings" }),
+      screen.getByRole("heading", { level: 1, name: "Reservas" }),
     ).toBeVisible();
-    expect(screen.getAllByText("JB-2026-0001")[0]).toBeVisible();
+    expect(screen.getAllByText("JB-2026-0001")).toHaveLength(1);
     expect(screen.getAllByText("Sailor Guest")[0]).toBeVisible();
     expect(
-      screen.getByRole("heading", { name: "Bookings to acknowledge" }),
+      screen.getByRole("button", { name: "Marcar como vista" }),
     ).toBeVisible();
   });
 
@@ -44,7 +44,9 @@ describe("AdminBookingsWorkspace", () => {
       />,
     );
 
-    await user.click(screen.getByRole("button", { name: /mark as seen/i }));
+    await user.click(
+      screen.getByRole("button", { name: /Marcar como vista/i }),
+    );
 
     expect(actions.markSeen).toHaveBeenCalledWith({
       bookingId: "booking-preview-1",
@@ -65,9 +67,12 @@ describe("AdminBookingsWorkspace", () => {
       />,
     );
 
-    await user.type(screen.getByLabelText("Full name"), "Browser Guest");
-    await user.type(screen.getByLabelText("Email"), "browser@example.com");
-    await user.click(screen.getByRole("button", { name: /create booking/i }));
+    await user.type(screen.getByLabelText("Nombre completo"), "Browser Guest");
+    await user.type(
+      screen.getByLabelText("Correo electrónico"),
+      "browser@example.com",
+    );
+    await user.click(screen.getByRole("button", { name: /Crear reserva/i }));
 
     expect(actions.createBooking).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -90,13 +95,20 @@ describe("AdminBookingsWorkspace", () => {
       />,
     );
 
+    expect(screen.getByRole("heading", { name: "JB-2026-0001" })).toBeVisible();
+    expect(screen.getByText("Pagos")).toBeVisible();
+    expect(screen.getAllByRole("heading", { name: "Cliente" })).toHaveLength(1);
     expect(
-      screen.getByRole("heading", { name: "JB-2026-0001" }),
-    ).toBeVisible();
-    expect(screen.getByText("Payment snapshot")).toBeVisible();
-    expect(screen.getByText("Activity")).toBeVisible();
-    expect(screen.getByText("Booking was created.")).toBeVisible();
-    expect(screen.getByRole("link", { name: /open whatsapp/i })).toHaveAttribute(
+      screen.getAllByRole("heading", { name: "Notas internas" }),
+    ).toHaveLength(1);
+    expect(
+      screen.queryByRole("heading", { name: "Resumen de la reserva" }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByText("Historial")).toBeVisible();
+    expect(screen.getByText("Reserva creada.")).toBeVisible();
+    expect(
+      screen.getByRole("link", { name: /Abrir WhatsApp/i }),
+    ).toHaveAttribute(
       "href",
       expect.stringContaining("https://wa.me/34600000000"),
     );
@@ -117,9 +129,9 @@ describe("AdminBookingsWorkspace", () => {
       />,
     );
 
-    await user.clear(screen.getByLabelText("Full name"));
-    await user.type(screen.getByLabelText("Full name"), "Updated Guest");
-    await user.click(screen.getByRole("button", { name: /save changes/i }));
+    await user.clear(screen.getByLabelText("Nombre completo"));
+    await user.type(screen.getByLabelText("Nombre completo"), "Updated Guest");
+    await user.click(screen.getByRole("button", { name: /Guardar cambios/i }));
 
     expect(actions.updateBooking).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -145,7 +157,7 @@ describe("AdminBookingsWorkspace", () => {
       />,
     );
 
-    await user.click(screen.getByRole("button", { name: /cancel booking/i }));
+    await user.click(screen.getByRole("button", { name: /Cancelar reserva/i }));
 
     expect(confirm).toHaveBeenCalled();
     expect(actions.cancelBooking).toHaveBeenCalledWith({
@@ -171,13 +183,15 @@ describe("AdminBookingsWorkspace", () => {
     );
 
     await user.click(
-      screen.getByRole("button", { name: /generate access link/i }),
+      screen.getByRole("button", { name: /Generar enlace de acceso/i }),
     );
 
     expect(actions.issueAccessLink).toHaveBeenCalledWith({
       bookingId: "booking-preview-1",
     });
-    expect(await screen.findByText("https://jimboats.test/access")).toBeVisible();
+    expect(
+      await screen.findByText("https://jimboats.test/access"),
+    ).toBeVisible();
   });
 });
 

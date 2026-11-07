@@ -220,7 +220,8 @@ function CalendarDayButton({
 }) {
   return (
     <button
-      aria-label={`Select ${day.ariaLabel}`}
+      aria-label={day.ariaLabel}
+      aria-hidden={day.outsideMonth || undefined}
       aria-pressed={selected}
       className={cn(
         "mx-auto flex size-9 items-center justify-center rounded-full text-xs font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text lg:size-11 lg:text-sm",

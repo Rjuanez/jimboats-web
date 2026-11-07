@@ -209,6 +209,7 @@ export type PrismaBookingNotificationPreferenceRecord = {
 };
 
 export type PrismaNotificationBookingRecord = {
+  cancellationPolicySnapshot?: unknown;
   cashRemainingAmountMinor: number;
   cashRemainingCurrency: string;
   customerEmail: string;
@@ -470,6 +471,14 @@ export function notificationBookingReadModelFromPrismaRecord(
   const preferredLocale = localeFromPrisma(
     preference?.preferredLocale ?? record.customerLocale,
   );
+  const snapshot = record.cancellationPolicySnapshot;
+  const termsDocument =
+    snapshot &&
+    typeof snapshot === "object" &&
+    "termsDocument" in snapshot &&
+    typeof snapshot.termsDocument === "string"
+      ? snapshot.termsDocument
+      : undefined;
 
   return {
     customerName: record.customerName,
@@ -504,6 +513,7 @@ export function notificationBookingReadModelFromPrismaRecord(
           },
     },
     reference: record.reference,
+    termsDocument,
     templatePayload: {
       booking: {
         guestCount: record.guestCount,

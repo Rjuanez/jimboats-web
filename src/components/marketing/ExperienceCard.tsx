@@ -1,4 +1,4 @@
-import { ArrowRight, Star } from "lucide-react";
+import { ArrowRight, Star, Users } from "lucide-react";
 
 import { cn } from "@/design/variants";
 
@@ -15,6 +15,10 @@ export type ExperienceCardProps = {
   id: string;
   image: MarketingImage;
   price: string;
+  priceLabel?: string;
+  headingAs?: "h2" | "h3";
+  eyebrow?: string;
+  capacityLabel?: string;
   reverse?: boolean;
   title: string;
 };
@@ -27,6 +31,10 @@ export function ExperienceCard({
   id,
   image,
   price,
+  priceLabel = "Starting from",
+  headingAs: Heading = "h2",
+  eyebrow,
+  capacityLabel,
   reverse = false,
   title,
 }: ExperienceCardProps) {
@@ -46,6 +54,12 @@ export function ExperienceCard({
           image={image}
           imgClassName="transition-transform duration-700 hover:scale-105"
         />
+        {capacityLabel && (
+          <p className="absolute bottom-4 left-4 flex items-center gap-2 rounded-full border border-white/70 bg-white/95 px-4 py-2.5 text-sm font-semibold text-text shadow-soft backdrop-blur-sm sm:bottom-6 sm:left-6">
+            <Users aria-hidden="true" className="h-4 w-4" />
+            {capacityLabel}
+          </p>
+        )}
       </div>
 
       <div
@@ -61,17 +75,22 @@ export function ExperienceCard({
           </p>
         ) : null}
 
-        <h2 className="font-display text-4xl leading-tight text-text sm:text-5xl lg:text-6xl">
+        {eyebrow && (
+          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-text-muted">
+            {eyebrow}
+          </p>
+        )}
+        <Heading className="font-display text-4xl leading-tight text-text sm:text-5xl lg:text-6xl">
           {title}
-        </h2>
+        </Heading>
         <p className="mt-5 text-sm leading-7 text-text-muted sm:text-base lg:mt-8 lg:text-lg">
           {description}
         </p>
 
-        <div className="mt-6 flex items-center justify-between gap-4 border-t border-sand/50 pt-5 lg:mt-10 lg:border-t-0 lg:border-b lg:pb-6 lg:pt-0">
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-sand/50 pt-5 lg:mt-10 lg:border-t-0 lg:border-b lg:pb-6 lg:pt-0">
           <div>
             <span className="block text-xs font-medium uppercase text-text-muted">
-              Starting from
+              {priceLabel}
             </span>
             <p className="font-display text-3xl text-text sm:text-4xl">
               {price}
@@ -79,7 +98,7 @@ export function ExperienceCard({
           </div>
           <a
             aria-label={`${ctaLabel}: ${title}`}
-            className="group inline-flex min-h-12 flex-shrink-0 items-center justify-center gap-3 rounded-full border border-text/70 bg-transparent px-5 text-xs font-semibold uppercase tracking-[0.22em] text-text transition-[background-color,border-color,color,transform] duration-300 ease-out hover:-translate-y-px hover:border-text hover:bg-text hover:text-white focus-visible:-translate-y-px focus-visible:border-text focus-visible:bg-text focus-visible:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-text sm:px-6"
+            className="group inline-flex min-h-12 max-w-full items-center justify-center gap-3 rounded-full border border-text/70 bg-transparent px-5 text-xs font-semibold uppercase tracking-[0.12em] text-text transition-[background-color,border-color,color,transform] duration-300 ease-out hover:-translate-y-px hover:border-text hover:bg-text hover:text-white focus-visible:-translate-y-px focus-visible:border-text focus-visible:bg-text focus-visible:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-text sm:px-6"
             data-analytics-cta-location="experience_card"
             data-analytics-event="booking_cta_clicked"
             data-analytics-experience-id={id}

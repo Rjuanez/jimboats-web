@@ -1,6 +1,6 @@
 "use server";
 
-import { ZodError } from "zod";
+import { presentAdminError } from "../presenters/adminErrorPresenter";
 
 import { getContainer } from "@/container";
 import type {
@@ -12,8 +12,6 @@ import type {
   AdminNotificationSendDeliveryInput,
   AdminNotificationTemplateInput,
 } from "@/components/sections/admin-notifications/AdminNotificationTypes";
-import { ApplicationError } from "@/shared/application/ApplicationError";
-import { DomainError } from "@/shared/domain/DomainError";
 
 import { presentAdminNotificationsWorkspace } from "../presenters/adminNotificationsPresenter";
 import {
@@ -133,23 +131,8 @@ function ok<TData>(data: TData): AdminNotificationActionResult<TData> {
 function failure<TData = never>(
   error: unknown,
 ): AdminNotificationActionResult<TData> {
-  if (error instanceof ApplicationError || error instanceof DomainError) {
-    return {
-      message: error.message,
-      ok: false,
-    };
-  }
-
-  if (error instanceof ZodError) {
-    return {
-      message:
-        error.issues[0]?.message ?? "Invalid admin notification input.",
-      ok: false,
-    };
-  }
-
   return {
-    message: "Unexpected error while saving the notification settings.",
+    message: presentAdminError(error),
     ok: false,
   };
 }

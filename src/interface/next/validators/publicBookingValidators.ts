@@ -13,8 +13,8 @@ const clockTimeSchema = z
   .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Use a time in HH:mm format.");
 
 export const publicBookingCheckoutSchema = z.object({
+  paymentChoice: z.enum(["DEPOSIT", "FULL"]).default("DEPOSIT"),
   consents: z.object({
-    marketing: z.boolean(),
     ticketEmail: z.boolean(),
     ticketWhatsapp: z.boolean(),
   }),
@@ -34,6 +34,7 @@ export const publicBookingCheckoutSchema = z.object({
   guestCount: z.number().int().min(1).max(99),
   localDate: localDateSchema,
   locale: localeSchema,
+  termsLocale: z.enum(["es", "en", "fr", "de", "nl", "ca"]).optional(),
   selectedExtras: z.array(
     z.object({
       extraId: z.string().trim().min(1),

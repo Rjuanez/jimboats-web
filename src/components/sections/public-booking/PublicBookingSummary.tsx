@@ -1,3 +1,4 @@
+import { BookingWhatsAppHelp } from "./BookingWhatsAppHelp";
 import { CalendarDays, Clock, MapPin, Wallet } from "lucide-react";
 
 import { MarketingImageFrame } from "@/components/marketing/MarketingImageFrame";
@@ -15,6 +16,7 @@ import type {
 } from "./PublicBookingTypes";
 
 type PublicBookingSummaryProps = {
+  help?: PublicBookingContent["support"]["whatsapp"];
   action?: {
     disabled?: boolean;
     label: string;
@@ -35,6 +37,7 @@ type PublicBookingSummaryProps = {
 
 export function PublicBookingSummary({
   action,
+  help,
   className,
   consents,
   content,
@@ -135,7 +138,10 @@ export function PublicBookingSummary({
                 value={formatPrice(experience.price)}
               />
               {extrasAmount > 0 ? (
-                <PriceRow label={labels.extras} value={formatPrice(extrasAmount)} />
+                <PriceRow
+                  label={labels.extras}
+                  value={formatPrice(extrasAmount)}
+                />
               ) : null}
               {discountAmount > 0 ? (
                 <PriceRow
@@ -161,7 +167,9 @@ export function PublicBookingSummary({
                     {labels.depositDueNow(formatPrice(depositAmount))}
                   </p>
                   <p className="font-light text-text-muted">
-                    {labels.remainingBalance(formatPrice(remainingAmount))}
+                    {remainingAmount === 0
+                      ? labels.paidInFull
+                      : labels.remainingBalance(formatPrice(remainingAmount))}
                   </p>
                 </div>
               </div>
@@ -181,10 +189,6 @@ export function PublicBookingSummary({
                     {labels.whatsappPass}:{" "}
                     {consents.ticketWhatsapp ? labels.enabled : labels.disabled}
                   </li>
-                  <li>
-                    {labels.promotions}:{" "}
-                    {consents.marketing ? labels.accepted : labels.notAccepted}
-                  </li>
                 </ul>
               </div>
             ) : null}
@@ -201,6 +205,7 @@ export function PublicBookingSummary({
                 {action.label}
               </Button>
             ) : null}
+            <BookingWhatsAppHelp link={help} />
           </>
         ) : (
           <div className="py-10 text-center">

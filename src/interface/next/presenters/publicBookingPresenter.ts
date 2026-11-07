@@ -1,3 +1,8 @@
+import type { BookingUiLocale } from "@/i18n/bookingLocales";
+import { getBookingPrivacyNotice } from "@/content/privacy/booking";
+import { privacyPath } from "@/content/privacy/routes";
+import { termsPages, termsPath } from "@/content/booking/termsRoutes";
+import { cancellationPolicy } from "@/content/booking/cancellationPolicy";
 import type { MarketingImage } from "@/components/marketing/MarketingImageFrame";
 import type {
   PublicBookingCalendar,
@@ -12,20 +17,19 @@ import type {
   PublicBookingMediaDto,
   PublicBookingPageDto,
 } from "@/modules/booking/application/PublicBookingDtos";
-import {
-  createLocalizedPath,
-  localeToIntlLocale,
-  type PublicLocale,
-} from "@/i18n/locales";
+import { createLocalizedPath } from "@/i18n/locales";
 import { getPublicDictionary } from "@/i18n/public";
 import type { SupportedLocaleCode } from "@/shared/domain/LocaleCode";
 import type { MoneySnapshot } from "@/shared/domain/Money";
 
 const weekdaysByLocale = {
+  fr: ["Lu", "Ma", "Me", "Je", "Ve", "Sa", "Di"],
+  de: ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"],
+  nl: ["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"],
   ca: ["Dl", "Dt", "Dc", "Dj", "Dv", "Ds", "Dg"],
   en: ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
   es: ["Lu", "Ma", "Mi", "Ju", "Vi", "Sa", "Do"],
-} satisfies Record<PublicLocale, readonly string[]>;
+} satisfies Record<BookingUiLocale, readonly string[]>;
 
 const generatedImagePath = (slug: string, width: number) =>
   `/images/generated/landing/${slug}-${width}.webp`;
@@ -91,10 +95,12 @@ export async function getPublicBookingPage(
   locale: SupportedLocaleCode = "en",
   options: { includeAvailability?: boolean } = {},
 ): Promise<PublicBookingContent> {
-  if (process.env.JIMBOATS_ADMIN_PREVIEW_DATA === "1") {
-    const { getPublicBookingMockPage } = await import(
-      "./publicBookingMockPresenter"
-    );
+  if (
+    process.env.JIMBOATS_ADMIN_PREVIEW_DATA === "1" &&
+    process.env.JIMBOATS_LOCAL_BOOKINGS !== "1"
+  ) {
+    const { getPublicBookingMockPage } =
+      await import("./publicBookingMockPresenter");
 
     return getPublicBookingMockPage(locale);
   }
@@ -112,17 +118,20 @@ export async function getPublicBookingAvailability(input: {
   experienceId: string;
   locale: SupportedLocaleCode;
 }): Promise<PublicBookingExperienceAvailability | null> {
-  if (process.env.JIMBOATS_ADMIN_PREVIEW_DATA === "1") {
-    const { getPublicBookingMockPage } = await import(
-      "./publicBookingMockPresenter"
-    );
+  if (
+    process.env.JIMBOATS_ADMIN_PREVIEW_DATA === "1" &&
+    process.env.JIMBOATS_LOCAL_BOOKINGS !== "1"
+  ) {
+    const { getPublicBookingMockPage } =
+      await import("./publicBookingMockPresenter");
     const mockPage = getPublicBookingMockPage(input.locale);
 
     return mockPage.availabilityByExperienceId[input.experienceId] ?? null;
   }
 
   const { getContainer } = await import("@/container");
-  const availability = await getContainer().publicBooking.getAvailability(input);
+  const availability =
+    await getContainer().publicBooking.getAvailability(input);
 
   return availability
     ? presentPublicBookingAvailability(availability, input.locale)
@@ -135,11 +144,14 @@ function presentPublicBookingPage(
 ) {
   const dictionary = getPublicDictionary(locale);
   const experiences = page.experiences.map((experience, index) => ({
+    hourlyRates: experience.hourlyRates?.map((rate) => ({
+      hours: rate.hours,
+      price: fromMoney(rate.total),
+      depositAmount: fromMoney(rate.deposit),
+    })),
     badge: index === 0 ? mostPopularLabel(locale) : undefined,
     capacity: experience.capacity,
-    cancellationPolicySummary:
-      experience.cancellationPolicySummary ||
-      dictionary.booking.policies.cancellation,
+    cancellationPolicySummary: cancellationPolicy.copy[locale].summary,
     depositAmount: fromMoney(experience.depositAmount),
     description: experience.description,
     durationLabel: formatDuration(experience.durationMinutes),
@@ -193,17 +205,16 @@ function presentPublicBookingPage(
         href: createLocalizedPath(locale),
         label: dictionary.common.backToJimBoats,
       },
-      { href: "#", label: dictionary.common.privacyPolicy },
-      { href: "#", label: dictionary.common.termsOfService },
+      { href: privacyPath(locale), label: dictionary.common.privacyPolicy },
+      { href: termsPath(locale), label: termsPages[locale === "ca" ? "es" : locale].label },
     ],
     homeHref: createLocalizedPath(locale),
+    privacy: getBookingPrivacyNotice(locale),
     locale,
     maxAdvanceLabel: dictionary.booking.maxAdvanceLabel,
     payment: dictionary.booking.payment,
     policies: {
-      cancellation:
-        page.experiences[0]?.cancellationPolicySummary ||
-        dictionary.booking.policies.cancellation,
+      cancellation: cancellationPolicy.copy[locale].summary,
       meetingPoint: dictionary.booking.policies.meetingPoint,
       remainingPayment: dictionary.booking.policies.remainingPayment,
     },
@@ -223,7 +234,7 @@ function presentPublicBookingPage(
 
 export function presentPublicBookingAvailability(
   availability: PublicBookingExperienceAvailabilityDto,
-  locale: SupportedLocaleCode,
+  locale: BookingUiLocale,
 ) {
   const dictionary = getPublicDictionary(locale);
   const months = presentCalendarMonths(availability.days, locale);
@@ -231,7 +242,8 @@ export function presentPublicBookingAvailability(
   const calendar = {
     days: firstMonth?.days ?? [],
     monthLabel:
-      firstMonth?.monthLabel ?? dictionary.booking.experienceStep.availableDates,
+      firstMonth?.monthLabel ??
+      dictionary.booking.experienceStep.availableDates,
     months,
     nextMonthLabel: dictionary.booking.experienceStep.nextMonth,
     previousMonthLabel: dictionary.booking.experienceStep.previousMonth,
@@ -254,7 +266,7 @@ export function presentPublicBookingAvailability(
 
 function presentCalendarMonths(
   days: PublicBookingExperienceAvailabilityDto["days"],
-  locale: SupportedLocaleCode,
+  locale: BookingUiLocale,
 ): PublicBookingCalendarMonth[] {
   const monthsById = new Map<string, PublicBookingCalendarMonth>();
 
@@ -307,10 +319,10 @@ function presentExtra(
 function presentCalendarDay(
   localDate: string,
   available: boolean,
-  locale: SupportedLocaleCode,
+  locale: BookingUiLocale,
 ) {
   const date = new Date(`${localDate}T00:00:00.000Z`);
-  const intlLocale = localeToIntlLocale(locale);
+  const intlLocale = locale;
 
   return {
     ariaLabel: new Intl.DateTimeFormat(intlLocale, {
@@ -339,7 +351,7 @@ function presentTimeSlot(
     availableExtraIds: slot.availableExtraIds,
     endTime: minutesToClockTime(slot.endMinutes),
     id: slot.id,
-    label: slot.label,
+    label: `${minutesToClockTime(slot.startMinutes)} → ${minutesToClockTime(slot.endMinutes)}`,
     slotKey: slot.slotKey,
     startTime: minutesToClockTime(slot.startMinutes),
   };
@@ -410,14 +422,11 @@ function minutesToClockTime(totalMinutes: number) {
   return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
 }
 
-function monthLabelFromMonthId(
-  monthId: string,
-  locale: SupportedLocaleCode,
-) {
+function monthLabelFromMonthId(monthId: string, locale: BookingUiLocale) {
   const [year, month] = monthId.split("-");
   const date = new Date(`${year}-${month}-01T00:00:00.000Z`);
 
-  return new Intl.DateTimeFormat(localeToIntlLocale(locale), {
+  return new Intl.DateTimeFormat(locale, {
     month: "long",
     timeZone: "UTC",
     year: "numeric",

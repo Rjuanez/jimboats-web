@@ -1,6 +1,7 @@
 import type { MoneySnapshot } from "@/shared/domain/Money";
 
 export type DepositCheckoutSessionCommand = {
+  paymentChoice?: "DEPOSIT" | "FULL";
   amount: MoneySnapshot;
   bookingId: string;
   customer: {

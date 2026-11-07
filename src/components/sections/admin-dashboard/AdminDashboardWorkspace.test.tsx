@@ -32,7 +32,7 @@ describe("AdminDashboardWorkspace", () => {
 
     await user.click(
       screen.getByRole("button", {
-        name: /send test to all/i,
+        name: /Enviar prueba a todos/i,
       }),
     );
 
@@ -47,7 +47,7 @@ const navItems: AdminNavItem[] = [
   {
     href: "/admin",
     id: "dashboard",
-    label: "Dashboard",
+    label: "Inicio",
   },
   {
     href: "/admin/device-notifications",

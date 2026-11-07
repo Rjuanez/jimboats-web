@@ -4,7 +4,8 @@ export const esPublicDictionary = {
   access: {
     bookingPrefix: "Reserva",
     buyerPrefix: "Cliente:",
-    cancellationFallback: "Esta reserva no tiene política de cancelación asociada.",
+    cancellationFallback:
+      "Esta reserva no tiene política de cancelación asociada.",
     cancellationPolicyTitle: "Política de cancelación",
     contactBody: (email) =>
       `Usaremos ${email} para enviarte actualizaciones de la reserva.`,
@@ -16,7 +17,7 @@ export const esPublicDictionary = {
       NO_REFUND: "La señal no es reembolsable.",
       PARTIAL_REFUND: "La señal se puede reembolsar parcialmente.",
     },
-    depositPaid: "Señal pagada",
+    depositPaid: "Pagado online",
     detailsDescription:
       "Aquí tienes los detalles de tu reserva, el resumen de pago y la política de cancelación.",
     extras: "Extras",
@@ -47,10 +48,10 @@ export const esPublicDictionary = {
     bottomBar: {
       chooseDateAndTime: "Elige fecha y hora",
       continue: "Continuar",
-      depositDueNow: "Señal ahora",
+      depositDueNow: "A pagar ahora",
       openingPayment: "Abriendo pago",
-      payDeposit: "Pagar señal",
-      remainingOnboard: (amount) => `${amount} restantes a bordo en efectivo.`,
+      payDeposit: "Pagar ahora",
+      remainingOnboard: (amount) => `${amount} restantes a bordo en efectivo, con tarjeta o por Bizum.`,
       selectExperience: "Selecciona una experiencia para empezar",
       total: "Total",
     },
@@ -61,10 +62,12 @@ export const esPublicDictionary = {
       title: "Reserva confirmada",
     },
     errors: {
-      invalidGuests: "Elige un número válido de personas para esta experiencia.",
+      invalidGuests:
+        "Elige un número válido de personas para esta experiencia.",
       missingCustomer: "Añade tu nombre y email antes de confirmar.",
       missingDeliveryChannel: "Elige al menos un canal para recibir el pase.",
-      missingWhatsappPhone: "Añade un teléfono para recibir el pase por WhatsApp.",
+      missingWhatsappPhone:
+        "Añade un teléfono para recibir el pase por WhatsApp.",
       slotUnavailable:
         "Ese horario acaba de dejar de estar disponible. Elige otra hora.",
     },
@@ -112,6 +115,14 @@ export const esPublicDictionary = {
       secure: "Seguro",
     },
     labels: {
+      paymentChoice: "Cómo quieres pagar",
+      payDeposit: "Pagar señal",
+      payFull: "Pagar todo ahora",
+      paidInFull: "Sin saldo pendiente",
+      daytimeOnly:
+        "Este paseo termina antes de la puesta de sol. Para verla desde el barco, elige la experiencia de atardecer.",
+      timeRange: "Salida → regreso · hora de Barcelona",
+
       accepted: "aceptadas",
       back: "Atrás",
       bookingSummary: "Resumen de reserva",
@@ -127,7 +138,7 @@ export const esPublicDictionary = {
       couponRemove: "Quitar",
       date: "Fecha",
       deliveryPreferences: "Preferencias de envío",
-      depositDueNow: (amount) => `Señal a pagar ahora: ${amount}`,
+      depositDueNow: (amount) => `A pagar ahora: ${amount}`,
       disabled: "desactivado",
       emailAddress: "Email",
       emailPass: "Enviarme el pase por email",
@@ -144,15 +155,12 @@ export const esPublicDictionary = {
       phone: "Teléfono",
       phoneDescription: "Necesario si quieres recibir el pase por WhatsApp.",
       preparingPayment: "Preparando pago seguro",
-      promotions: "Quiero recibir promociones y novedades",
-      promotionsDescription:
-        "Ofertas ocasionales y novedades de JimBoats. Es opcional.",
       remainingBalance: (amount) =>
-        `Resto pendiente: ${amount} a pagar a bordo en efectivo.`,
+        `Resto pendiente: ${amount} a pagar a bordo en efectivo, con tarjeta o por Bizum.`,
       securePayment: "Pago seguro",
       selectedExtras: "Extras seleccionados",
       termsAgreement:
-        "Al pagar la señal aceptas la política de cancelación, los Términos de servicio y la Política de privacidad.",
+        "Al realizar el pago, aceptas las",
       time: "Hora",
       total: "Total",
       whatsappPass: "Enviar el pase por WhatsApp",
@@ -163,16 +171,16 @@ export const esPublicDictionary = {
     maxAdvanceLabel: "Puedes reservar hasta con 6 meses de antelación.",
     payment: {
       depositCopy:
-        "Paga una señal fija de 100 € ahora. El resto se paga a bordo en efectivo.",
+        "Elige pagar la señal o el importe total. El resumen muestra lo que pagas ahora y el saldo pendiente.",
       secureCopy:
-        "Stripe procesa tu señal de forma segura sin salir de esta pantalla.",
+        "Stripe procesa tu pago de forma segura sin salir de esta pantalla.",
       subtitle: "Estás a un paso de tu día en el mar.",
       title: "Confirma tu reserva",
     },
     policies: {
       cancellation: "La política de cancelación se confirma antes del pago.",
       meetingPoint: "Port Olímpic, Barcelona",
-      remainingPayment: "El resto se paga a bordo en efectivo.",
+      remainingPayment: "El resto se paga a bordo en efectivo, con tarjeta o por Bizum.",
     },
     steps: {
       confirmation: "Listo",
@@ -232,7 +240,8 @@ export const esPublicDictionary = {
       title: "¿Listo para vivir una salida inolvidable?",
     },
     footer: {
-      copyright: "© 2026 JimBoats Charter Barcelona. Todos los derechos reservados.",
+      copyright:
+        "© 2026 JimBoats Charter Barcelona. Todos los derechos reservados.",
       description:
         "Charters privados premium en Barcelona. Creamos recuerdos mediterráneos inolvidables con un servicio excepcional.",
     },
@@ -294,7 +303,7 @@ export const esPublicDictionary = {
       "Hemos recibido tu señal y tu experiencia en barco está confirmada.",
     confirmedTitle: "Reserva confirmada",
     contactSupport: "Contactar",
-    depositPaid: "Señal pagada",
+    depositPaid: "Pagado online",
     experience: "Experiencia",
     failedDescription:
       "El checkout no se completó. Tu salida en barco no ha quedado confirmada.",

@@ -1,0 +1,208 @@
+{
+  "nav": [
+    "Expériences",
+    "Tarifs",
+    "Notre bateau",
+    "Nous trouver",
+    "Contactez-nous"
+  ],
+  "home": "Accueil",
+  "book": "Choisir une expérience",
+  "details": "Découvrir l’expérience",
+  "reserve": "Choisir la durée et la date",
+  "from": "À partir de",
+  "price": "Demander un tarif",
+  "perBoat": "Prix total du bateau · pas par personne",
+  "duration": "Durée",
+  "hour": "heure",
+  "hours": "heures",
+  "chooseHours": "Combien de temps souhaitez-vous naviguer ?",
+  "hourNote": "Choisissez une durée disponible pour cette expérience, puis consultez les dates, les horaires et le prix total.",
+  "priceNote": "Prix total pour le bateau. Sortie en journée : 1–6 heures. Lever et coucher du soleil : 2–6 heures. Expérience romantique : 1–4 heures. Une boisson est incluse dès la première heure, avec des snacks pour les sorties de deux heures ou plus.",
+  "languageNotice": "",
+  "skip": "Aller au contenu",
+  "menu": "Menu",
+  "language": "Langue",
+  "eyebrow": "BARCELONE, À VOTRE RYTHME",
+  "homeTitle": "Votre bateau privé à Barcelone.",
+  "homeDescription": "JimBoats Charter propose des sorties privées en bateau avec skipper au départ de Port Olímpic, à Barcelone, pour des groupes de six personnes maximum. Choisissez une sortie en journée, au lever ou au coucher du soleil, ou une escapade romantique. La sortie en journée commence à {startingPrice} pour une heure pour le bateau entier, skipper, carburant et assurance inclus.",
+  "heroLink": "Trouvez votre moment",
+  "heroAlt": "Le LENA de JimBoats devant le littoral de Barcelone",
+  "trust": [
+    "Bateaux 100 % privés",
+    "Avec skipper",
+    "5,0★ Google Maps ({googleReviews} avis)",
+    "Port Olímpic, Barcelone"
+  ],
+  "experiencesTitle": "Quatre façons de vivre la Méditerranée.",
+  "experiencesDescription": "Choisissez l’ambiance. Prenez le temps qui vous convient.",
+  "names": {
+    "private": "Balade en bateau privé à Barcelone",
+    "sunset": "Balade en bateau au coucher du soleil à Barcelone",
+    "sunrise": "Balade en bateau au lever du soleil à Barcelone",
+    "romantic": "Balade romantique en bateau à Barcelone",
+    "prices": "Tarifs des balades en bateau à Barcelone",
+    "boat": "LENA, notre bateau de style minorquin à Barcelone",
+    "contact": "Où embarquer à Barcelone",
+    "about": "Víctor et David, les skippers de JimBoats"
+  },
+  "shortNames": {
+    "private": "Barcelone en journée",
+    "sunset": "L’heure dorée",
+    "sunrise": "Les premières lueurs",
+    "romantic": "Un moment à deux"
+  },
+  "descriptions": {
+    "private": "Laissez le bruit à terre. Une balade privée le long du littoral pour discuter, découvrir Barcelone autrement et profiter de la Méditerranée à votre rythme.",
+    "sunset": "La ville change de couleur et la mer devient dorée. Partagez les dernières lueurs du jour à bord d’un bateau réservé à votre groupe.",
+    "sunrise": "Découvrez la côte quand Barcelone commence à s’éveiller. Une sortie privée pour les amoureux des premières lueurs et des matins différents.",
+    "romantic": "Un moment loin de tout, rien que pour vous. Choisissez entre 1 et 4 heures, avec la décoration des photos incluse. Nous proposons plusieurs décorations : contactez-nous pour toute envie particulière.",
+    "prices": "Comparez le prix total du bateau pour 6 personnes maximum : journée de 1 à 6 heures, lever et coucher du soleil de 2 à 6, et romantique de 1 à 4. Skipper, carburant et assurance inclus.",
+    "boat": "LENA est un Llaut Llevant 39 (Punta Prima) de 7,49 m de long et 3,03 m de large. Au départ du Port Olímpic, un skipper accueille jusqu’à six passagers en sortie privée.",
+    "contact": "Rendez-vous à Port Olímpic. Consultez le lieu d’embarquement et convenez avec nous des détails de votre arrivée avant la sortie.",
+    "about": "JimBoats tire son nom de leur patronyme, Jiménez. Ensemble, ils ont créé le projet pour faire découvrir le littoral de Barcelone à bord d’un bateau privé."
+  },
+  "experienceHeading": "Votre moment en mer",
+  "includeHeading": "Une sortie à votre image",
+  "includeItems": [
+    "Un bateau privé pour votre groupe",
+    "Skipper, carburant et assurance inclus",
+    "Départ de Port Olímpic",
+    "Jusqu’à 6 personnes"
+  ],
+  "extrasNote": "Suppléments sur demande.",
+  "routeHeading": "Un autre regard sur Barcelone",
+  "routeText": "La sortie longe le littoral de Barcelone. Le skipper convient avec vous de l’itinéraire et des arrêts selon la durée, les conditions de mer et les possibilités du jour.",
+  "sunsetNote": "L’horaire est adapté au coucher du soleil et varie selon la saison et la durée choisie.",
+  "sunriseNote": "L’horaire est adapté au lever du soleil et varie selon la saison et la durée choisie.",
+  "faqTitle": "Avant de monter à bord",
+  "faqs": [
+    [
+      "Le bateau est-il privé ou partagé ?",
+      "La sortie est privée : le bateau est réservé à votre groupe, accompagné d’un skipper. Aucune place n’est vendue à un autre groupe sur votre départ."
+    ],
+    [
+      "Faut-il un permis bateau ?",
+      "Vous n’avez besoin ni de permis ni d’expérience en navigation. Les sorties JimBoats se font avec un skipper, qui assure la navigation et adapte le parcours à l’état de la mer."
+    ],
+    [
+      "Quel est le prix et quelle durée choisir ?",
+      "Sortie en journée : 1–6 heures. Lever et coucher du soleil : 2–6 heures. Expérience romantique : 1–4 heures. Le prix est par bateau pour la durée choisie, et non par personne. Vous pouvez prolonger la sortie jusqu’à la durée maximale de votre expérience, selon disponibilité."
+    ],
+    [
+      "Que comprend la sortie et quels sont les suppléments ?",
+      "Le prix comprend la privatisation du bateau, le skipper, le carburant et l’assurance. Aucun permis n’est nécessaire. Les extras comme le paddle, l’eFoil ou un photographe se réservent séparément, selon disponibilité, et s’ajoutent au prix du bateau."
+    ],
+    [
+      "Comment réserver ?",
+      "Ouvrez une expérience, choisissez la durée et poursuivez vers la réservation pour consulter la date, l’horaire, le nombre de passagers et le total. Lisez les conditions avant de confirmer. Pour une demande particulière, contactez-nous d’abord sur WhatsApp."
+    ],
+    [
+      "Où embarque-t-on et comment s’y rendre ?",
+      "Nous partons du Port Olímpic, Moll de Xaloc, Pantalan 5, à Barcelone. La carte et le lien d’itinéraire figurent sur cette page. Confirmez le point de rendez-vous exact avec JimBoats et prévoyez une marge pour embarquer tranquillement."
+    ],
+    [
+      "Combien de personnes peuvent venir ? Et les enfants ?",
+      "Toutes les expériences accueillent jusqu’à 6 personnes, enfants compris. Précisez l’âge des plus petits et vos éventuels besoins d’aide à l’embarquement lors de la réservation."
+    ],
+    [
+      "Quelle différence entre la sortie de jour, au lever et au coucher du soleil ?",
+      "La sortie de jour permet de découvrir le littoral en pleine lumière. Les deux autres expériences suivent les premières ou les dernières lueurs du jour ; leur horaire varie selon la date et la durée choisie."
+    ],
+    [
+      "Quelle est la meilleure saison pour naviguer à Barcelone ?",
+      "Le printemps et l’été offrent davantage de lumière ; l’automne et l’hiver permettent de découvrir une côte plus calme. Les départs dépendent des disponibilités et de l’état de la mer."
+    ],
+    [
+      "Que faut-il emporter ?",
+      "Prévoyez de la protection solaire, des lunettes de soleil, des chaussures confortables et une couche chaude pour la brise. Si vous souhaitez faire une pause baignade, apportez un maillot et une serviette et parlez-en avant la sortie : les arrêts dépendent de la durée et de l’état de la mer."
+    ],
+    [
+      "Peut-on organiser un anniversaire ou une demande en mariage ?",
+      "Oui, parlez-nous de votre occasion spéciale. L’expérience romantique comprend la décoration des photos. Nous proposons plusieurs décorations ; contactez-nous avant de réserver pour convenir de toute demande particulière."
+    ],
+    [
+      "Que se passe-t-il en cas de mauvais temps ou d’annulation ?",
+      "Le skipper évalue si la navigation est possible ou si la sortie doit être adaptée. Les modifications, annulations et éventuels remboursements dépendent des conditions de votre réservation. Consultez-les avant de confirmer et prévenez JimBoats rapidement si vos plans changent."
+    ]
+  ],
+  "findTitle": "Rendez-vous à Port Olímpic.",
+  "findText": "Votre sortie commence au Port Olímpic, au bord de la Méditerranée et à quelques pas de la ville.",
+  "directions": "Itinéraire",
+  "weather": "Consulter la météo",
+  "reviewsTitle": "La mer se vit. Et se raconte.",
+  "reviewsText": "Les expériences des passagers de JimBoats, racontées avec leurs propres mots.",
+  "whatsapp": "Discuter sur WhatsApp",
+  "footerText": "Balades privées en bateau à Barcelone. La Méditerranée, avec vos proches.",
+  "aboutLink": "À propos",
+  "otherExperiences": "Trouvez un autre moment",
+  "pricesHeading": "Votre expérience. Votre durée.",
+  "tableExperience": "Expérience",
+  "tableDuration": "Durée au choix",
+  "tablePrice": "Prix total",
+  "boatHeading": "Pourquoi ce llaüt",
+  "boatText": "Les lignes de LENA rappellent Minorque à Víctor et David. Ils cherchaient un bateau où les passagers pourraient circuler sur le pont et prendre un verre ensemble en toute tranquillité.",
+  "aboutHeading": "Contactez-nous directement",
+  "aboutText": "Avant de partir, nous répondons à vos questions sur la durée, le rendez-vous et les conditions. Contactez-nous par téléphone, email ou WhatsApp.",
+  "preview": "Aperçu local · réservations de test.",
+  "bookingTitle": "Préparez votre sortie",
+  "bookingIntro": "Choisissez une expérience, une durée et une date. Cet aperçu local ne confirme pas de disponibilité, ne crée pas de réservation et ne prélève aucun paiement.",
+  "date": "Date souhaitée",
+  "guests": "Personnes dans votre groupe",
+  "summary": "Votre sortie",
+  "request": "Demander cette sortie sur WhatsApp",
+  "bookingNote": "JimBoats confirme l’heure, la capacité et le tarif. Vous pourrez relire le message dans WhatsApp avant de l’envoyer.",
+  "back": "Retour à l’expérience",
+  "message": "Bonjour, je souhaite réserver {experience} à Barcelone pour {hours} heures, le {date}, pour {guests} personnes. Pouvez-vous confirmer la disponibilité, la capacité et le prix total ?",
+  "dateMissing": "Choisissez une date pour demander votre sortie.",
+  "pending": "À confirmer",
+  "bookingEnglish": "La réservation se poursuit en anglais.",
+  "bookingHoursLabel": "Heures de navigation",
+  "provisionalPrice": "Tarif provisoire · aperçu local",
+  "faqIntro": "Durée, réservation et lieu de rendez-vous. Les réponses utiles pour profiter pleinement de la mer.",
+  "weatherTitle": "La météo à Barcelone",
+  "weatherNote": "Prévisions indicatives pour la zone. Le skipper confirme les conditions de sortie.",
+  "mapTitle": "Carte du point de rendez-vous JimBoats au Port Olímpic",
+  "reviewsCountLabel": "avis sur",
+  "reviewsExcerptLabel": "Avis de voyageurs",
+  "reviewsCheckedLabel": "Consulté le",
+  "reviewsReadLabel": "Lire sur",
+  "reviewsPreviousLabel": "Avis précédent",
+  "reviewsNextLabel": "Avis suivant",
+  "reviewsEyebrow": "Avis de voyageurs",
+  "reviewsOriginalLabel": "Extrait original",
+  "reviewsShowOriginalLabel": "Voir l’extrait original",
+  "reviewsTranslations": {
+    "emma": "Dès que nous sommes montés à bord, Víctor a rendu toute l’expérience personnelle, détendue et entièrement sur mesure.",
+    "asante": "Il était sympathique, professionnel et a rendu l’expérience simple et détendue du début à la fin.",
+    "stefania": "sauter dans la mer, utiliser le paddle et se détendre au soleil en écoutant notre propre musique.",
+    "adam": "le bateau était bien approvisionné en boissons et en délicieux jambon. Il nous a même laissé utiliser l’enceinte à bord.",
+    "kateryna": "Nous sommes sortis en soirée pour regarder le spectacle de drones depuis l’eau, et c’était une expérience incroyable.",
+    "alina": "Nous fêtions l’enterrement de vie de jeune fille de ma sœur, et c’est une excellente idée pour le faire !",
+    "megan": "Nous venons de faire une sortie privée en bateau de 2 heures avec Víctor, en groupe de six, et nous avons ADORÉ !",
+    "francessca": "C’était une sortie privée uniquement pour notre groupe, vraiment intime et personnelle ; cela a vraiment embelli notre journée."
+  },
+  "reviewsTranslationLabel": "Extrait traduit en français",
+  "reviewsShowTranslationLabel": "Voir la traduction",
+  "reviewsAnd": "et",
+  "capacityLabel": "Jusqu’à 6 personnes",
+  "victorBio": "Víctor a grandi à Barcelone. Copropriétaire et skipper, il a pratiqué la navigation côtière, les traversées entre le continent et les îles et les manœuvres de mouillage. Il aime montrer la Barceloneta au coucher du soleil. Il détient notamment les titres espagnols de Capitán de Yate et de PPER.",
+  "davidBio": "David est cofondateur et skipper. Il prépare le bateau, organise les réservations et accompagne les groupes en mer. Avant chaque départ, il vérifie le vent et la houle pour choisir la route. Son moment préféré est la sortie du port à l’aube. Il détient les titres de Capitán de Yate et de PPER.",
+  "support": {
+    "metro": "Vous venez en métro ?",
+    "metroRoute": "Prenez la ligne L4 jusqu’à Ciutadella | Vila Olímpica. À pied, rejoignez le Port Olímpic, puis continuez dans le port jusqu’au Moll de Xaloc, Pantalan 5.",
+    "access": "À pied, en voiture ou en taxi",
+    "accessRoute": "L’entrée du Moll de Mestral accueille les piétons et les véhicules. Empruntez cet accès pour entrer dans le port sans prendre les escaliers.",
+    "portGuide": "Voir les accès au port",
+    "contactMessage": "Bonjour JimBoats, j’ai une question sur le point de rendez-vous au Port Olímpic.",
+    "meeting": "Votre point de rendez-vous",
+    "arrival": "Nous vous conseillons d’arriver 15 minutes avant le départ. Si vous avez besoin d’aide au port, envoyez-nous le nom de votre réservation sur WhatsApp.",
+    "specs": "LENA en chiffres",
+    "length": "Longueur",
+    "beam": "Largeur",
+    "model": "Modèle",
+    "conditions": "Avant de réserver",
+    "experiences": "Découvrir les sorties",
+    "optional": "Suppléments sur demande"
+  }
+}

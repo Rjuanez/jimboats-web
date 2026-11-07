@@ -1,13 +1,10 @@
+import { adminEs } from "@/i18n/admin/es";
 import {
-  CalendarDays,
   Copy,
   ExternalLink,
   Link2,
-  Mail,
   MessageCircle,
-  Phone,
   ReceiptText,
-  UserRound,
   XCircle,
 } from "lucide-react";
 import { useState, type ReactNode } from "react";
@@ -49,11 +46,7 @@ export function AdminBookingDetailSection({
     useState<AdminBookingIssuedAccessLink | null>(null);
 
   async function cancelCurrentBooking() {
-    if (
-      window.confirm(
-        `Cancel ${booking.reference}? This releases the calendar block.`,
-      )
-    ) {
+    if (window.confirm(adminEs.cancelBookingConfirmation(booking.reference))) {
       await cancelBooking({ bookingId: booking.id });
     }
   }
@@ -79,7 +72,7 @@ export function AdminBookingDetailSection({
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.12em] text-slate-600">
-            Booking detail
+            {adminEs["Booking detail"]}
           </p>
           <div className="mt-2 flex flex-wrap items-center gap-2">
             <h1 className="text-2xl font-semibold text-slate-950">
@@ -88,7 +81,10 @@ export function AdminBookingDetailSection({
             <StatusBadge booking={booking} />
           </div>
           <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-            {booking.experienceName} · {formatDate(booking.localDate)} ·{" "}
+            {booking.experienceSummary}
+          </p>
+          <p className="text-sm leading-6 text-slate-600">
+            {formatDate(booking.localDate)} ·{" "}
             {booking.startTime}-{booking.endTime}
           </p>
         </div>
@@ -99,7 +95,7 @@ export function AdminBookingDetailSection({
             variant="secondary"
           >
             <Link2 className="size-4" aria-hidden="true" />
-            Generate access link
+            {adminEs["Generate access link"]}
           </Button>
           {booking.whatsappEnabled ? (
             <Button
@@ -109,7 +105,7 @@ export function AdminBookingDetailSection({
               variant="secondary"
             >
               <MessageCircle className="size-4" aria-hidden="true" />
-              Open WhatsApp
+              {adminEs["Open WhatsApp"]}
             </Button>
           ) : null}
           <Button
@@ -119,13 +115,13 @@ export function AdminBookingDetailSection({
             variant="secondary"
           >
             <XCircle className="size-4" aria-hidden="true" />
-            Cancel booking
+            {adminEs["Cancel booking"]}
           </Button>
           <Button href="/admin/bookings/new" variant="secondary">
-            New booking
+            {adminEs["New booking"]}
           </Button>
           <Button href="/admin/bookings" variant="secondary">
-            Back to bookings
+            {adminEs["Back to bookings"]}
           </Button>
         </div>
       </div>
@@ -141,78 +137,38 @@ export function AdminBookingDetailSection({
         </div>
 
         <div className="space-y-5">
-          <Surface title="Current snapshot">
-            <div className="space-y-3">
-              <Fact
-                icon={<CalendarDays className="size-4" aria-hidden="true" />}
-                label="Date and time"
-                value={`${formatDate(booking.localDate)} · ${booking.startTime}-${booking.endTime}`}
-              />
-              <Fact
-                icon={<UserRound className="size-4" aria-hidden="true" />}
-                label="Guests"
-                value={`${booking.guestCount}`}
-              />
-              <Fact label="Experience" value={booking.experienceName} />
-              <Fact label="Calendar block" value={booking.calendarBlockId} />
-            </div>
-          </Surface>
-
-          <Surface title="Customer">
-            <div className="space-y-3">
-              <Fact
-                icon={<UserRound className="size-4" aria-hidden="true" />}
-                label="Name"
-                value={booking.customerName}
-              />
-              <Fact
-                icon={<Mail className="size-4" aria-hidden="true" />}
-                label="Email"
-                value={booking.customerEmail}
-              />
-              <Fact
-                icon={<Phone className="size-4" aria-hidden="true" />}
-                label="Phone"
-                value={booking.customerPhone || "Not provided"}
-              />
-              <Fact
-                icon={<MessageCircle className="size-4" aria-hidden="true" />}
-                label="WhatsApp pass"
-                value={
-                  booking.whatsappEnabled
-                    ? booking.whatsappPhone
-                    : "Not requested"
-                }
-              />
-            </div>
-          </Surface>
-
-          <Surface title="Payment snapshot">
+          <Surface title={adminEs["Payment snapshot"]}>
             <div className="space-y-3">
               <Fact
                 icon={<ReceiptText className="size-4" aria-hidden="true" />}
-                label="Total"
-                value={`EUR ${booking.totalAmount}`}
+                label={adminEs["Total"]}
+                value={adminEs.euros(booking.totalAmount)}
               />
-              <Fact label="Deposit paid" value={`EUR ${booking.depositAmount}`} />
               <Fact
-                label="Cash on board"
-                value={`EUR ${booking.remainingAmount}`}
+                label={adminEs["Deposit paid"]}
+                value={adminEs.euros(booking.depositAmount)}
+              />
+              <Fact
+                label={adminEs["Cash on board"]}
+                value={adminEs.euros(booking.remainingAmount)}
               />
             </div>
           </Surface>
 
           {issuedAccessLink ? (
             <Surface
-              description="Temporary buyer link for viewing this booking."
-              title="Buyer access"
+              description={
+                adminEs["Temporary buyer link for viewing this booking."]
+              }
+              title={adminEs["Buyer access"]}
             >
               <div className="space-y-3">
                 <p className="break-all rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm leading-6 text-slate-700">
                   {issuedAccessLink.url}
                 </p>
                 <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                  Expires {formatDateTime(issuedAccessLink.expiresAt)}
+                  {adminEs["Expires"]}{" "}
+                  {formatDateTime(issuedAccessLink.expiresAt)}
                 </p>
                 <div className="flex flex-wrap gap-2">
                   <Button
@@ -221,7 +177,7 @@ export function AdminBookingDetailSection({
                     variant="secondary"
                   >
                     <Copy className="size-4" aria-hidden="true" />
-                    Copy link
+                    {adminEs["Copy link"]}
                   </Button>
                   <Button
                     href={issuedAccessLink.url}
@@ -231,25 +187,19 @@ export function AdminBookingDetailSection({
                     variant="secondary"
                   >
                     <ExternalLink className="size-4" aria-hidden="true" />
-                    Open
+                    {adminEs["Open"]}
                   </Button>
                 </div>
               </div>
             </Surface>
           ) : null}
 
-          <Surface title="Internal notes">
-            <p className="text-sm leading-6 text-slate-700">
-              {booking.internalNotes || "No internal notes."}
-            </p>
-          </Surface>
-
-          <Surface title="Operational acknowledgement">
+          <Surface title={adminEs["Operational acknowledgement"]}>
             <Fact
-              label="Seen status"
+              label={adminEs["Seen status"]}
               value={
                 booking.needsAcknowledgement
-                  ? "Not seen yet"
+                  ? adminEs["Not seen yet"]
                   : booking.operationsSeenLabel
               }
             />
@@ -297,7 +247,7 @@ function StatusBadge({ booking }: { booking: AdminBooking }) {
 }
 
 function formatDate(localDate: string) {
-  return new Intl.DateTimeFormat("en", {
+  return new Intl.DateTimeFormat("es-ES", {
     day: "2-digit",
     month: "short",
     year: "numeric",
@@ -305,7 +255,7 @@ function formatDate(localDate: string) {
 }
 
 function formatDateTime(value: string) {
-  return new Intl.DateTimeFormat("en", {
+  return new Intl.DateTimeFormat("es-ES", {
     day: "2-digit",
     hour: "2-digit",
     minute: "2-digit",

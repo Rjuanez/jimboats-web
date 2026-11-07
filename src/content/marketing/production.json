@@ -1,0 +1,385 @@
+{
+  "source": "https://jimboatscharter.com",
+  "capturedAt": "2026-11-02",
+  "note": "Public landing snapshot only. Package prices are references, not hourly tariffs. Images are largest published variants, not private camera originals.",
+  "locales": {
+    "es": {
+      "url": "https://jimboatscharter.com/es",
+      "text": [
+        "Experiencias privadas en barco en Barcelona | JimBoats",
+        "Experiencias",
+        "Extras",
+        "Galería",
+        "Cómo funciona",
+        "Reservar",
+        "El atardecer de Barcelona que no olvidarás",
+        "Momentos inolvidables en el mar, pensados para viajeros que buscan algo especial.",
+        "Reserva tu experiencia",
+        "100% privado",
+        "Valoración 5 estrellas",
+        "Port Olímpic",
+        "Soporte 24/7",
+        "Nuestras experiencias",
+        "Elige tu momento perfecto en el mar",
+        "Most Popular",
+        "Experiencia Amanecer a Bordo",
+        "Despierta con el mar en calma mientras navegas al amanecer frente al skyline de Barcelona y disfrutas de un desayuno a bordo en un entorno incomparable.",
+        "Starting from",
+        "EUR 300",
+        "Reservar",
+        "Excursiones diarias",
+        "Descubre Barcelona desde el mar con una experiencia de navegación de 2 horas que combina vistas emblemáticas del litoral, un relajante fondeo y tiempo para disfrutar del Mediterráneo a tu propio ritmo.",
+        "Starting from",
+        "EUR 225",
+        "Reservar",
+        "Experiencia al atardecer",
+        "Contempla cómo el sol se funde en medio de la ciudad de Barcelona a bordo de nuestro barco clásico. Atardecer espectacular, aguas tranquilas perfecta manera de cerrar el día.",
+        "Starting from",
+        "EUR 250",
+        "Reservar",
+        "Romántica",
+        "Disfruta de un paseo romántico privado de 2 horas por la costa de Barcelona a bordo de nuestra clásica Menorquina. Incluye bebidas y la posibilidad de decorar el barco completamente a vuestro gusto, ideal para aniversarios, celebraciones y pedidas de mano inolvidables.",
+        "Starting from",
+        "EUR 300",
+        "Reservar",
+        "El alma de Barcelona desde el mar",
+        "Donde cada ola cuenta una historia y el tiempo se detiene.",
+        "Mejoras para tu experiencia",
+        "Extras sensoriales para elevar tu tiempo en el mar.",
+        "eFoil",
+        "Añade un toque especial a bordo",
+        "Paddle Surf",
+        "Añade un toque especial a bordo",
+        "Photografer",
+        "Añade un toque especial a bordo",
+        "Momentos en el mar",
+        "Recuerdos reales, capturados en el Mediterráneo.",
+        "Reserva sin complicaciones",
+        "Elige",
+        "Elige tu momento y la fecha.",
+        "Personaliza",
+        "Añade extras para hacerlo tuyo.",
+        "Navega",
+        "Nos vemos en el puerto para disfrutar.",
+        "¿Listo para vivir una salida inolvidable?",
+        "Reserva tu experiencia",
+        "JimBoats",
+        "Charters privados premium en Barcelona. Creamos recuerdos mediterráneos inolvidables con un servicio excepcional.",
+        "Experiences",
+        "Experiencia Amanecer a Bordo",
+        "Excursiones diarias",
+        "Experiencia al atardecer",
+        "Romántica",
+        "Contact",
+        "Moll de Xaloc, Pantalan 5, Sant Martí, 08005 Barcelona",
+        "+34 669707354",
+        "info@jimboatscharter.com",
+        "© 2026 JimBoats Charter Barcelona. Todos los derechos reservados.",
+        "Política de privacidad",
+        "Términos de servicio"
+      ],
+      "images": [
+        {
+          "src": "/images/brand/jimboats-charter-wordmark.svg",
+          "alt": "JimBoats Charter",
+          "width": "922",
+          "height": "514"
+        },
+        {
+          "src": "/images/generated/landing/hero-sunset-barcelona-1024.webp",
+          "srcset": "/images/generated/landing/hero-sunset-barcelona-640.webp 640w, /images/generated/landing/hero-sunset-barcelona-960.webp 960w, /images/generated/landing/hero-sunset-barcelona-1024.webp 1024w",
+          "alt": "Traditional boat sailing at sunset in Barcelona with the city skyline behind it.",
+          "width": "1024",
+          "height": "1024"
+        },
+        {
+          "src": "/media/experiences/asset-f8258531-cf43-4f93-8257-20166e65987d-958867c57c5715b3-6000.webp",
+          "srcset": "/media/experiences/asset-f8258531-cf43-4f93-8257-20166e65987d-1d84f0197e6f9d41-640.webp 640w, /media/experiences/asset-f8258531-cf43-4f93-8257-20166e65987d-6388f2664b36614f-1280.webp 1280w, /media/experiences/asset-f8258531-cf43-4f93-8257-20166e65987d-39e3fc2790705b34-1920.webp 1920w, /media/experiences/asset-f8258531-cf43-4f93-8257-20166e65987d-958867c57c5715b3-6000.webp 6000w",
+          "alt": "Experiencia Amanecer a Bordo",
+          "width": "6000",
+          "height": "4000"
+        },
+        {
+          "src": "/media/experiences/asset-5b5d79ac-8624-4826-b392-c89abe7bf010-4c104affd21a15f2-1536.webp",
+          "srcset": "/media/experiences/asset-5b5d79ac-8624-4826-b392-c89abe7bf010-3a9f8dfb631c44dd-640.webp 640w, /media/experiences/asset-5b5d79ac-8624-4826-b392-c89abe7bf010-2d17648e66054882-1280.webp 1280w, /media/experiences/asset-5b5d79ac-8624-4826-b392-c89abe7bf010-4c104affd21a15f2-1536.webp 1536w",
+          "alt": "2 chicas con el capitan del barco dsfrutando del sol y el mar.",
+          "width": "1536",
+          "height": "2048"
+        },
+        {
+          "src": "/media/experiences/asset-076197b2-863f-4923-babc-3d7547277381-38cb8fb13c7f0730-1056.webp",
+          "srcset": "/media/experiences/asset-076197b2-863f-4923-babc-3d7547277381-de264cb3c59b41f3-640.webp 640w, /media/experiences/asset-076197b2-863f-4923-babc-3d7547277381-38cb8fb13c7f0730-1056.webp 1056w",
+          "alt": "llaut menorquin barcelona",
+          "width": "1056",
+          "height": "1600"
+        },
+        {
+          "src": "/media/experiences/asset-767a8300-9e1a-445c-b36a-e859c1aa7b1d-ad037cd7565af22e-6000.webp",
+          "srcset": "/media/experiences/asset-767a8300-9e1a-445c-b36a-e859c1aa7b1d-a51afc852479e9ba-640.webp 640w, /media/experiences/asset-767a8300-9e1a-445c-b36a-e859c1aa7b1d-36d1e005ebb9958d-1280.webp 1280w, /media/experiences/asset-767a8300-9e1a-445c-b36a-e859c1aa7b1d-0e7e6d937c1795dd-1920.webp 1920w, /media/experiences/asset-767a8300-9e1a-445c-b36a-e859c1aa7b1d-ad037cd7565af22e-6000.webp 6000w",
+          "alt": "Romántica",
+          "width": "6000",
+          "height": "4000"
+        },
+        {
+          "src": "/images/generated/landing/story-barcelona-sea-1024.webp",
+          "srcset": "/images/generated/landing/story-barcelona-sea-640.webp 640w, /images/generated/landing/story-barcelona-sea-960.webp 960w, /images/generated/landing/story-barcelona-sea-1024.webp 1024w",
+          "alt": "Two guests relaxing on a private boat with Barcelona harbor at sunset.",
+          "width": "1024",
+          "height": "1024"
+        },
+        {
+          "src": "/media/extras/asset-431813e2-48ad-44a8-a6df-52dd2b6cde1b-ec5d2b98b1f58cf5-1672.webp",
+          "srcset": "/media/extras/asset-431813e2-48ad-44a8-a6df-52dd2b6cde1b-bb76dc75174e3cec-640.webp 640w, /media/extras/asset-431813e2-48ad-44a8-a6df-52dd2b6cde1b-280a8ddafe294a15-1280.webp 1280w, /media/extras/asset-431813e2-48ad-44a8-a6df-52dd2b6cde1b-ec5d2b98b1f58cf5-1672.webp 1672w",
+          "alt": "Chico haciendo foil con el amanecer y nuestro barco llaut menorquin",
+          "width": "1672",
+          "height": "941"
+        },
+        {
+          "src": "/media/extras/asset-0ebc3a6c-4dd9-4c55-8b98-2a73ea171a53-d6b7593839af0133-1023.webp",
+          "srcset": "/media/extras/asset-0ebc3a6c-4dd9-4c55-8b98-2a73ea171a53-6ae6e5503028716e-640.webp 640w, /media/extras/asset-0ebc3a6c-4dd9-4c55-8b98-2a73ea171a53-d6b7593839af0133-1023.webp 1023w",
+          "alt": "Alguien haciendo paddlesurf en el mar con el hotel W de fondo",
+          "width": "1023",
+          "height": "1537"
+        },
+        {
+          "src": "/media/extras/asset-dbea5e58-a561-4924-afe1-f758f003d15a-9f2ce194494ac0a1-1448.webp",
+          "srcset": "/media/extras/asset-dbea5e58-a561-4924-afe1-f758f003d15a-1c72232d49231094-640.webp 640w, /media/extras/asset-dbea5e58-a561-4924-afe1-f758f003d15a-70d6374659075329-1280.webp 1280w, /media/extras/asset-dbea5e58-a561-4924-afe1-f758f003d15a-9f2ce194494ac0a1-1448.webp 1448w",
+          "alt": "Fotografo haciendo una foto a una chica",
+          "width": "1448",
+          "height": "1086"
+        },
+        {
+          "src": "/media/gallery/asset-06fb3957-d42b-4453-8187-78c53e3b0847-a58d338546d59984-5120.webp",
+          "srcset": "/media/gallery/asset-06fb3957-d42b-4453-8187-78c53e3b0847-d4c8410f07a36660-640.webp 640w, /media/gallery/asset-06fb3957-d42b-4453-8187-78c53e3b0847-ff42152e48bc3a7c-1280.webp 1280w, /media/gallery/asset-06fb3957-d42b-4453-8187-78c53e3b0847-40f94702d3b9a43d-1920.webp 1920w, /media/gallery/asset-06fb3957-d42b-4453-8187-78c53e3b0847-a58d338546d59984-5120.webp 5120w",
+          "alt": "photo gallery 9",
+          "width": "5120",
+          "height": "3840"
+        },
+        {
+          "src": "/media/gallery/asset-4178b9c2-76d6-499b-bd1e-dd84d839b3fa-45518cdaca3da92f-1600.webp",
+          "srcset": "/media/gallery/asset-4178b9c2-76d6-499b-bd1e-dd84d839b3fa-c703754165d8d7db-640.webp 640w, /media/gallery/asset-4178b9c2-76d6-499b-bd1e-dd84d839b3fa-8ed132daaaff12bc-1280.webp 1280w, /media/gallery/asset-4178b9c2-76d6-499b-bd1e-dd84d839b3fa-45518cdaca3da92f-1600.webp 1600w",
+          "alt": "gallery8",
+          "width": "1600",
+          "height": "1200"
+        },
+        {
+          "src": "/media/gallery/asset-2fca5d38-a495-4e81-9e47-1fdf50169aa2-db8bb02e7605b8cc-902.webp",
+          "srcset": "/media/gallery/asset-2fca5d38-a495-4e81-9e47-1fdf50169aa2-69dabe5f42f2c2a5-640.webp 640w, /media/gallery/asset-2fca5d38-a495-4e81-9e47-1fdf50169aa2-db8bb02e7605b8cc-902.webp 902w",
+          "alt": "photo gallery18",
+          "width": "902",
+          "height": "1600"
+        },
+        {
+          "src": "/media/gallery/asset-309d485f-5aec-4141-a06d-5e4549b4b208-7a7e217aef53aead-1536.webp",
+          "srcset": "/media/gallery/asset-309d485f-5aec-4141-a06d-5e4549b4b208-2bd7e58c5d75a9bc-640.webp 640w, /media/gallery/asset-309d485f-5aec-4141-a06d-5e4549b4b208-9399a69d43815f49-1280.webp 1280w, /media/gallery/asset-309d485f-5aec-4141-a06d-5e4549b4b208-7a7e217aef53aead-1536.webp 1536w",
+          "alt": "gallery11",
+          "width": "1536",
+          "height": "1024"
+        },
+        {
+          "src": "/media/gallery/asset-ce617e90-38d5-49b0-9b5d-1cb4d5f90c93-b58ae7a3ef7b2cc0-1192.webp",
+          "srcset": "/media/gallery/asset-ce617e90-38d5-49b0-9b5d-1cb4d5f90c93-aaf18f3e3da1a55d-640.webp 640w, /media/gallery/asset-ce617e90-38d5-49b0-9b5d-1cb4d5f90c93-b58ae7a3ef7b2cc0-1192.webp 1192w",
+          "alt": "gallery10",
+          "width": "1192",
+          "height": "1600"
+        },
+        {
+          "src": "/images/generated/landing/final-cta-golden-sea-1024.webp",
+          "srcset": "/images/generated/landing/final-cta-golden-sea-640.webp 640w, /images/generated/landing/final-cta-golden-sea-960.webp 960w, /images/generated/landing/final-cta-golden-sea-1024.webp 1024w",
+          "alt": "Traditional boat sailing past Barcelona at golden hour.",
+          "width": "1024",
+          "height": "1024"
+        }
+      ]
+    },
+    "en": {
+      "url": "https://jimboatscharter.com/en",
+      "text": [
+        "Private Boat Experiences in Barcelona | JimBoats",
+        "Experiences",
+        "Extras",
+        "Gallery",
+        "How it Works",
+        "Book now",
+        "The Barcelona sunset you'll never forget",
+        "Unforgettable moments on the sea, crafted for the discerning traveler.",
+        "Book your experience",
+        "100% Private",
+        "5-Star Rated",
+        "Port Olimpic",
+        "24/7 Support",
+        "Our Experiences",
+        "Choose your perfect moment at sea",
+        "Most Popular",
+        "Sunrise Experience",
+        "Start the day at sea with a peaceful morning cruise as you sail past the Barcelona skyline, enjoying breakfast on board in an unforgettable setting.",
+        "Starting from",
+        "EUR 300",
+        "Book now",
+        "DAYTRIP · Daily Departures",
+        "Discover Barcelona from the sea on a 2-hour sailing experience combining iconic waterfront views, a relaxing anchorage, and time to enjoy the Mediterranean at your own pace.",
+        "Starting from",
+        "EUR 225",
+        "Book now",
+        "Sunset Experience",
+        "Watch the sun melt into the Mediterranean aboard our classic boat. Golden light, calm waters and Barcelona's skyline fading into the evening — the perfect way to end the day.",
+        "Starting from",
+        "EUR 250",
+        "Book now",
+        "Romantic",
+        "Enjoy a private 2-hour romantic boat trip along the Barcelona coastline aboard our beautiful traditional Menorquina boat. Drinks are included, and you can fully personalize the decoration to create the perfect setting for anniversaries, special celebrations, or unforgettable marriage proposals.",
+        "Starting from",
+        "EUR 300",
+        "Book now",
+        "The Soul of Barcelona from the Sea",
+        "Where every wave tells a story and time stands still.",
+        "Experience Upgrades",
+        "Sensory additions to elevate your time on the water.",
+        "eFoil",
+        "Add a special touch onboard",
+        "Paddle Surf",
+        "Add a special touch onboard",
+        "Photografer",
+        "Add a special touch onboard",
+        "Moments at Sea",
+        "Real memories, captured on the Mediterranean.",
+        "Effortless Booking",
+        "Choose",
+        "Select your moment and date.",
+        "Customize",
+        "Add upgrades to make it yours.",
+        "Sail",
+        "Meet us at the port and enjoy.",
+        "Ready to set sail on an unforgettable journey?",
+        "Reserve your experience",
+        "JimBoats",
+        "Premium private boat charters in Barcelona. Creating unforgettable Mediterranean memories with exceptional service.",
+        "Experiences",
+        "Sunrise Experience",
+        "DAYTRIP · Daily Departures",
+        "Sunset Experience",
+        "Romantic",
+        "Contact",
+        "Moll de Xaloc, Pantalan 5, Sant Martí, 08005 Barcelona",
+        "+34 669707354",
+        "info@jimboatscharter.com",
+        "© 2026 JimBoats Charter Barcelona. All rights reserved.",
+        "Privacy Policy",
+        "Terms of Service"
+      ],
+      "images": [
+        {
+          "src": "/images/brand/jimboats-charter-wordmark.svg",
+          "alt": "JimBoats Charter",
+          "width": "922",
+          "height": "514"
+        },
+        {
+          "src": "/images/generated/landing/hero-sunset-barcelona-1024.webp",
+          "srcset": "/images/generated/landing/hero-sunset-barcelona-640.webp 640w, /images/generated/landing/hero-sunset-barcelona-960.webp 960w, /images/generated/landing/hero-sunset-barcelona-1024.webp 1024w",
+          "alt": "Traditional boat sailing at sunset in Barcelona with the city skyline behind it.",
+          "width": "1024",
+          "height": "1024"
+        },
+        {
+          "src": "/media/experiences/asset-f8258531-cf43-4f93-8257-20166e65987d-958867c57c5715b3-6000.webp",
+          "srcset": "/media/experiences/asset-f8258531-cf43-4f93-8257-20166e65987d-1d84f0197e6f9d41-640.webp 640w, /media/experiences/asset-f8258531-cf43-4f93-8257-20166e65987d-6388f2664b36614f-1280.webp 1280w, /media/experiences/asset-f8258531-cf43-4f93-8257-20166e65987d-39e3fc2790705b34-1920.webp 1920w, /media/experiences/asset-f8258531-cf43-4f93-8257-20166e65987d-958867c57c5715b3-6000.webp 6000w",
+          "alt": "Sunrise Experience",
+          "width": "6000",
+          "height": "4000"
+        },
+        {
+          "src": "/media/experiences/asset-5b5d79ac-8624-4826-b392-c89abe7bf010-4c104affd21a15f2-1536.webp",
+          "srcset": "/media/experiences/asset-5b5d79ac-8624-4826-b392-c89abe7bf010-3a9f8dfb631c44dd-640.webp 640w, /media/experiences/asset-5b5d79ac-8624-4826-b392-c89abe7bf010-2d17648e66054882-1280.webp 1280w, /media/experiences/asset-5b5d79ac-8624-4826-b392-c89abe7bf010-4c104affd21a15f2-1536.webp 1536w",
+          "alt": "Two girls enjoying the sun and the sea with the boat captain.",
+          "width": "1536",
+          "height": "2048"
+        },
+        {
+          "src": "/media/experiences/asset-076197b2-863f-4923-babc-3d7547277381-38cb8fb13c7f0730-1056.webp",
+          "srcset": "/media/experiences/asset-076197b2-863f-4923-babc-3d7547277381-de264cb3c59b41f3-640.webp 640w, /media/experiences/asset-076197b2-863f-4923-babc-3d7547277381-38cb8fb13c7f0730-1056.webp 1056w",
+          "alt": "llaut menorquin barcelona",
+          "width": "1056",
+          "height": "1600"
+        },
+        {
+          "src": "/media/experiences/asset-767a8300-9e1a-445c-b36a-e859c1aa7b1d-ad037cd7565af22e-6000.webp",
+          "srcset": "/media/experiences/asset-767a8300-9e1a-445c-b36a-e859c1aa7b1d-a51afc852479e9ba-640.webp 640w, /media/experiences/asset-767a8300-9e1a-445c-b36a-e859c1aa7b1d-36d1e005ebb9958d-1280.webp 1280w, /media/experiences/asset-767a8300-9e1a-445c-b36a-e859c1aa7b1d-0e7e6d937c1795dd-1920.webp 1920w, /media/experiences/asset-767a8300-9e1a-445c-b36a-e859c1aa7b1d-ad037cd7565af22e-6000.webp 6000w",
+          "alt": "Romantic",
+          "width": "6000",
+          "height": "4000"
+        },
+        {
+          "src": "/images/generated/landing/story-barcelona-sea-1024.webp",
+          "srcset": "/images/generated/landing/story-barcelona-sea-640.webp 640w, /images/generated/landing/story-barcelona-sea-960.webp 960w, /images/generated/landing/story-barcelona-sea-1024.webp 1024w",
+          "alt": "Two guests relaxing on a private boat with Barcelona harbor at sunset.",
+          "width": "1024",
+          "height": "1024"
+        },
+        {
+          "src": "/media/extras/asset-431813e2-48ad-44a8-a6df-52dd2b6cde1b-ec5d2b98b1f58cf5-1672.webp",
+          "srcset": "/media/extras/asset-431813e2-48ad-44a8-a6df-52dd2b6cde1b-bb76dc75174e3cec-640.webp 640w, /media/extras/asset-431813e2-48ad-44a8-a6df-52dd2b6cde1b-280a8ddafe294a15-1280.webp 1280w, /media/extras/asset-431813e2-48ad-44a8-a6df-52dd2b6cde1b-ec5d2b98b1f58cf5-1672.webp 1672w",
+          "alt": "Guy foiling at sunrise with our traditional Menorcan llaüt boat.",
+          "width": "1672",
+          "height": "941"
+        },
+        {
+          "src": "/media/extras/asset-0ebc3a6c-4dd9-4c55-8b98-2a73ea171a53-d6b7593839af0133-1023.webp",
+          "srcset": "/media/extras/asset-0ebc3a6c-4dd9-4c55-8b98-2a73ea171a53-6ae6e5503028716e-640.webp 640w, /media/extras/asset-0ebc3a6c-4dd9-4c55-8b98-2a73ea171a53-d6b7593839af0133-1023.webp 1023w",
+          "alt": "Someone paddleboarding in the sea with the W Hotel in the background.",
+          "width": "1023",
+          "height": "1537"
+        },
+        {
+          "src": "/media/extras/asset-dbea5e58-a561-4924-afe1-f758f003d15a-9f2ce194494ac0a1-1448.webp",
+          "srcset": "/media/extras/asset-dbea5e58-a561-4924-afe1-f758f003d15a-1c72232d49231094-640.webp 640w, /media/extras/asset-dbea5e58-a561-4924-afe1-f758f003d15a-70d6374659075329-1280.webp 1280w, /media/extras/asset-dbea5e58-a561-4924-afe1-f758f003d15a-9f2ce194494ac0a1-1448.webp 1448w",
+          "alt": "Photographer taking a picture of a Girl",
+          "width": "1448",
+          "height": "1086"
+        },
+        {
+          "src": "/media/gallery/asset-06fb3957-d42b-4453-8187-78c53e3b0847-a58d338546d59984-5120.webp",
+          "srcset": "/media/gallery/asset-06fb3957-d42b-4453-8187-78c53e3b0847-d4c8410f07a36660-640.webp 640w, /media/gallery/asset-06fb3957-d42b-4453-8187-78c53e3b0847-ff42152e48bc3a7c-1280.webp 1280w, /media/gallery/asset-06fb3957-d42b-4453-8187-78c53e3b0847-40f94702d3b9a43d-1920.webp 1920w, /media/gallery/asset-06fb3957-d42b-4453-8187-78c53e3b0847-a58d338546d59984-5120.webp 5120w",
+          "alt": "photo gallery 9",
+          "width": "5120",
+          "height": "3840"
+        },
+        {
+          "src": "/media/gallery/asset-4178b9c2-76d6-499b-bd1e-dd84d839b3fa-45518cdaca3da92f-1600.webp",
+          "srcset": "/media/gallery/asset-4178b9c2-76d6-499b-bd1e-dd84d839b3fa-c703754165d8d7db-640.webp 640w, /media/gallery/asset-4178b9c2-76d6-499b-bd1e-dd84d839b3fa-8ed132daaaff12bc-1280.webp 1280w, /media/gallery/asset-4178b9c2-76d6-499b-bd1e-dd84d839b3fa-45518cdaca3da92f-1600.webp 1600w",
+          "alt": "gallery8",
+          "width": "1600",
+          "height": "1200"
+        },
+        {
+          "src": "/media/gallery/asset-2fca5d38-a495-4e81-9e47-1fdf50169aa2-db8bb02e7605b8cc-902.webp",
+          "srcset": "/media/gallery/asset-2fca5d38-a495-4e81-9e47-1fdf50169aa2-69dabe5f42f2c2a5-640.webp 640w, /media/gallery/asset-2fca5d38-a495-4e81-9e47-1fdf50169aa2-db8bb02e7605b8cc-902.webp 902w",
+          "alt": "photo gallery18",
+          "width": "902",
+          "height": "1600"
+        },
+        {
+          "src": "/media/gallery/asset-309d485f-5aec-4141-a06d-5e4549b4b208-7a7e217aef53aead-1536.webp",
+          "srcset": "/media/gallery/asset-309d485f-5aec-4141-a06d-5e4549b4b208-2bd7e58c5d75a9bc-640.webp 640w, /media/gallery/asset-309d485f-5aec-4141-a06d-5e4549b4b208-9399a69d43815f49-1280.webp 1280w, /media/gallery/asset-309d485f-5aec-4141-a06d-5e4549b4b208-7a7e217aef53aead-1536.webp 1536w",
+          "alt": "gallery11",
+          "width": "1536",
+          "height": "1024"
+        },
+        {
+          "src": "/media/gallery/asset-ce617e90-38d5-49b0-9b5d-1cb4d5f90c93-b58ae7a3ef7b2cc0-1192.webp",
+          "srcset": "/media/gallery/asset-ce617e90-38d5-49b0-9b5d-1cb4d5f90c93-aaf18f3e3da1a55d-640.webp 640w, /media/gallery/asset-ce617e90-38d5-49b0-9b5d-1cb4d5f90c93-b58ae7a3ef7b2cc0-1192.webp 1192w",
+          "alt": "gallery10",
+          "width": "1192",
+          "height": "1600"
+        },
+        {
+          "src": "/images/generated/landing/final-cta-golden-sea-1024.webp",
+          "srcset": "/images/generated/landing/final-cta-golden-sea-640.webp 640w, /images/generated/landing/final-cta-golden-sea-960.webp 960w, /images/generated/landing/final-cta-golden-sea-1024.webp 1024w",
+          "alt": "Traditional boat sailing past Barcelona at golden hour.",
+          "width": "1024",
+          "height": "1024"
+        }
+      ]
+    }
+  }
+}

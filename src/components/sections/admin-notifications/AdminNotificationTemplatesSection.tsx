@@ -1,4 +1,5 @@
 "use client";
+import { adminEs } from "@/i18n/admin/es";
 
 import { FileText, Plus, Save, TriangleAlert } from "lucide-react";
 import { useState } from "react";
@@ -42,7 +43,9 @@ export function AdminNotificationTemplatesSection({
   }
 
   function setEvent(eventType: string) {
-    const option = state.eventOptions.find((item) => item.eventType === eventType);
+    const option = state.eventOptions.find(
+      (item) => item.eventType === eventType,
+    );
 
     setForm((current) => ({
       ...current,
@@ -54,8 +57,12 @@ export function AdminNotificationTemplatesSection({
   return (
     <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_28rem]">
       <Surface
-        description="Templates store the content used by rules. Public language fallback is never silent."
-        title="Notification templates"
+        description={
+          adminEs[
+            "Templates store the content used by rules. Public language fallback is never silent."
+          ]
+        }
+        title={adminEs["Notification templates"]}
       >
         {state.templates.length === 0 ? (
           <EmptyTemplates />
@@ -76,15 +83,19 @@ export function AdminNotificationTemplatesSection({
             variant="secondary"
           >
             <Plus className="size-4" aria-hidden="true" />
-            Reset
+            {adminEs["Reset"]}
           </Button>
         }
-        description="Create the base template, then open its detail to write translations."
-        title="Create template"
+        description={
+          adminEs[
+            "Create the base template, then open its detail to write translations."
+          ]
+        }
+        title={adminEs["Create template"]}
       >
         <form className="space-y-4" onSubmit={submit}>
           <TextField
-            label="Template id"
+            label={adminEs["Template id"]}
             onChange={(event) =>
               setForm((current) => ({
                 ...current,
@@ -96,7 +107,7 @@ export function AdminNotificationTemplatesSection({
           />
           <FieldGrid>
             <SelectField
-              label="Event"
+              label={adminEs["Event"]}
               onChange={(event) => setEvent(event.target.value)}
               value={form.eventType}
             >
@@ -107,40 +118,44 @@ export function AdminNotificationTemplatesSection({
               ))}
             </SelectField>
             <SelectField
-              label="Channel"
+              label={adminEs["Channel"]}
               onChange={(event) =>
                 setForm((current) => ({
                   ...current,
-                  channel: event
-                    .target.value as AdminNotificationTemplateInput["channel"],
+                  channel: event.target
+                    .value as AdminNotificationTemplateInput["channel"],
                 }))
               }
               value={form.channel}
             >
-              <option value="EMAIL">Email</option>
-              <option value="WHATSAPP">WhatsApp</option>
+              <option value="EMAIL">{adminEs["Email"]}</option>
+              <option value="WHATSAPP">{adminEs["WhatsApp"]}</option>
             </SelectField>
           </FieldGrid>
           <SelectField
-            label="Status"
+            label={adminEs["Status"]}
             onChange={(event) =>
               setForm((current) => ({
                 ...current,
-                status: event
-                  .target.value as AdminNotificationTemplateInput["status"],
+                status: event.target
+                  .value as AdminNotificationTemplateInput["status"],
               }))
             }
             value={form.status}
           >
-            <option value="DRAFT">Draft</option>
-            <option value="READY">Ready</option>
-            <option value="ACTIVE">Active</option>
-            <option value="ARCHIVED">Archived</option>
+            <option value="DRAFT">{adminEs["Draft"]}</option>
+            <option value="READY">{adminEs["Ready"]}</option>
+            <option value="ACTIVE">{adminEs["Active"]}</option>
+            <option value="ARCHIVED">{adminEs["Archived"]}</option>
           </SelectField>
           <TextField
-            description="Only required for automatic WhatsApp sends through Prelude."
+            description={
+              adminEs[
+                "Only required for automatic WhatsApp sends through Prelude."
+              ]
+            }
             disabled={form.channel !== "WHATSAPP"}
-            label="Provider template ID"
+            label={adminEs["Provider template ID"]}
             onChange={(event) =>
               setForm((current) => ({
                 ...current,
@@ -151,8 +166,8 @@ export function AdminNotificationTemplatesSection({
             value={form.channel === "WHATSAPP" ? form.providerTemplateId : ""}
           />
           <TextAreaField
-            description="One variable per line or comma separated."
-            label="Allowed variables"
+            description={adminEs["One variable per line or comma separated."]}
+            label={adminEs["Allowed variables"]}
             onChange={(event) =>
               setForm((current) => ({
                 ...current,
@@ -162,8 +177,12 @@ export function AdminNotificationTemplatesSection({
             value={form.allowedVariablesText}
           />
           <TextAreaField
-            description="Published translations must use every required variable."
-            label="Required variables"
+            description={
+              adminEs[
+                "Published translations must use every required variable."
+              ]
+            }
+            label={adminEs["Required variables"]}
             onChange={(event) =>
               setForm((current) => ({
                 ...current,
@@ -174,7 +193,7 @@ export function AdminNotificationTemplatesSection({
           />
           <Button disabled={isSaving} loading={isSaving} type="submit">
             <Save className="size-4" aria-hidden="true" />
-            Save template
+            {adminEs["Save template"]}
           </Button>
         </form>
       </Surface>
@@ -209,12 +228,13 @@ function TemplateRow({ template }: { template: AdminNotificationTemplate }) {
                 aria-hidden="true"
               />
               <span>
-                Missing: {template.missingPublishedLocales.join(", ")}
+                {adminEs["Missing:"]}{" "}
+                {template.missingPublishedLocales.join(", ")}
               </span>
             </p>
           ) : null}
           <p className="text-xs font-medium text-slate-500">
-            Updated {template.updatedAtLabel}
+            {adminEs["Updated"]} {template.updatedAtLabel}
           </p>
         </div>
         <Button
@@ -222,7 +242,7 @@ function TemplateRow({ template }: { template: AdminNotificationTemplate }) {
           variant="secondary"
         >
           <FileText className="size-4" aria-hidden="true" />
-          Open
+          {adminEs["Open"]}
         </Button>
       </div>
     </article>
@@ -233,10 +253,10 @@ function EmptyTemplates() {
   return (
     <div className="rounded-md border border-dashed border-slate-300 px-4 py-8 text-center">
       <p className="text-sm font-semibold text-slate-950">
-        No notification templates yet.
+        {adminEs["No notification templates yet."]}
       </p>
       <p className="mt-1 text-sm leading-6 text-slate-600">
-        Create a draft template and then add the language content.
+        {adminEs["Create a draft template and then add the language content."]}
       </p>
     </div>
   );
@@ -262,7 +282,8 @@ function createEmptyTemplateForm(
     translations: ["en", "es", "ca"].map((locale) => ({
       body: "",
       htmlBody: "",
-      locale: locale as AdminNotificationTemplateInput["translations"][number]["locale"],
+      locale:
+        locale as AdminNotificationTemplateInput["translations"][number]["locale"],
       previewText: "",
       status: "DRAFT",
       subject: "",

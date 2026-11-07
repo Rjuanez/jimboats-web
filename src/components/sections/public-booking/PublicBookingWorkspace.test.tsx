@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -39,6 +39,44 @@ vi.mock("next/navigation", () => ({
 }));
 
 describe("PublicBookingWorkspace", () => {
+  it("lets the customer choose the discounted total instead of a deposit", async () => {
+    const user = userEvent.setup();
+    stubAvailabilityRefresh();
+    const actions = createActions();
+    render(
+      <PublicBookingWorkspace
+        actions={actions}
+        content={getPublicBookingMockPage()}
+        stripePublishableKey="pk_test_component"
+      />,
+    );
+    await user.click(screen.getByRole("button", { name: /sunset cruise/i }));
+    await user.click(
+      screen.getByRole("button", { name: /monday june 15, 2026/i }),
+    );
+    await user.click(screen.getByRole("button", { name: "18:30" }));
+    await user.click(
+      screen.getByRole("button", { name: /continue to extras/i }),
+    );
+    await user.click(
+      screen.getByRole("button", { name: /continue to payment/i }),
+    );
+    await user.type(screen.getByLabelText("Full name"), "Full Payment Guest");
+    await user.type(screen.getByLabelText("Email address"), "full@test.com");
+    await user.click(screen.getByRole("radio", { name: /pay in full now/i }));
+    expect(
+      screen.getByRole("radio", { name: /pay in full now/i }),
+    ).toBeChecked();
+    await user.type(screen.getByRole("textbox", { name: /coupon/i }), "TEST10");
+    await user.click(screen.getByRole("button", { name: /apply/i }));
+    await user.click(
+      screen.getByRole("button", { name: /secure payment €261/i }),
+    );
+    expect(actions.startCheckout).toHaveBeenCalledWith(
+      expect.objectContaining({ paymentChoice: "FULL", couponCode: "TEST10" }),
+    );
+  });
+
   afterEach(() => {
     vi.unstubAllGlobals();
   });
@@ -114,7 +152,7 @@ describe("PublicBookingWorkspace", () => {
 
     expect(
       await screen.findByRole("button", {
-        name: /select monday june 15, 2026/i,
+        name: /monday june 15, 2026/i,
       }),
     ).toBeVisible();
   });
@@ -137,7 +175,7 @@ describe("PublicBookingWorkspace", () => {
 
     await user.click(screen.getByRole("button", { name: /sunset cruise/i }));
     await user.click(
-      screen.getByRole("button", { name: /select monday june 15, 2026/i }),
+      screen.getByRole("button", { name: /monday june 15, 2026/i }),
     );
     await user.click(screen.getByRole("button", { name: "18:30" }));
     await user.click(
@@ -157,6 +195,17 @@ describe("PublicBookingWorkspace", () => {
 
     await user.type(screen.getByLabelText("Full name"), "Sailor Guest");
     await user.type(screen.getByLabelText("Email address"), "sailor@test.com");
+    expect(
+      within(screen.getByRole("complementary", { name: "Your data and your booking" }))
+        .getByRole("link", { name: "Privacy policy" }),
+    ).toHaveAttribute("href", "/en/privacy");
+    expect(
+      screen.getAllByRole("link", { name: /^Booking terms$/ })
+        .find((link) => link.getAttribute("target") === "_blank"),
+    ).toHaveAttribute("href", "/en/booking-terms");
+    expect(
+      screen.queryByRole("checkbox", { name: /promotions/i }),
+    ).not.toBeInTheDocument();
     await user.type(
       screen.getByRole("textbox", { name: /^phone/i }),
       "+34 600 000 000",
@@ -172,10 +221,10 @@ describe("PublicBookingWorkspace", () => {
 
     expect(actions.startCheckout).toHaveBeenCalledWith(
       expect.objectContaining({
-        consents: expect.objectContaining({
+        consents: {
           ticketEmail: true,
           ticketWhatsapp: true,
-        }),
+        },
         customer: {
           email: "sailor@test.com",
           fullName: "Sailor Guest",
@@ -217,7 +266,7 @@ describe("PublicBookingWorkspace", () => {
 
     await user.click(screen.getByRole("button", { name: /sunset cruise/i }));
     await user.click(
-      screen.getByRole("button", { name: /select monday june 15, 2026/i }),
+      screen.getByRole("button", { name: /monday june 15, 2026/i }),
     );
     await user.click(screen.getByRole("button", { name: "18:30" }));
     await user.click(
@@ -266,6 +315,7 @@ describe("PublicBookingWorkspace", () => {
     expect(analyticsPayload).not.toContain("sailor@test.com");
     expect(analyticsPayload).not.toContain("+34 600 000 000");
     expect(analyticsPayload).not.toContain("cs_test_123");
+    expect(analyticsPayload).not.toContain("marketing_consent_enabled");
   });
 
   it("continues after selecting a date in a later calendar month", async () => {
@@ -315,7 +365,7 @@ describe("PublicBookingWorkspace", () => {
     await user.click(screen.getByRole("button", { name: /sunset cruise/i }));
     await user.click(screen.getByRole("button", { name: /next month/i }));
     await user.click(
-      screen.getByRole("button", { name: /select wednesday july 1, 2026/i }),
+      screen.getByRole("button", { name: /wednesday july 1, 2026/i }),
     );
     await user.click(screen.getByRole("button", { name: "18:30" }));
 
@@ -339,7 +389,7 @@ describe("PublicBookingWorkspace", () => {
 
     await user.click(screen.getByRole("button", { name: /sunset cruise/i }));
     await user.click(
-      screen.getByRole("button", { name: /select monday june 15, 2026/i }),
+      screen.getByRole("button", { name: /monday june 15, 2026/i }),
     );
     await user.click(screen.getByRole("button", { name: "18:30" }));
     await user.click(
@@ -382,7 +432,7 @@ describe("PublicBookingWorkspace", () => {
 
     await user.click(screen.getByRole("button", { name: /sunset cruise/i }));
     await user.click(
-      screen.getByRole("button", { name: /select monday june 15, 2026/i }),
+      screen.getByRole("button", { name: /monday june 15, 2026/i }),
     );
     await user.click(screen.getByRole("button", { name: "18:30" }));
     await user.click(

@@ -45,6 +45,29 @@ describe("External notification providers", () => {
     });
   });
 
+  it("adds a stored copy of the terms below the confirmation and as an attachment", async () => {
+    const calls: Array<[string, RequestInit]> = [];
+    const provider = new ResendEmailNotificationProvider(
+      { apiKey: "resend-key", from: "bookings@jimboatscharter.com", replyTo: null },
+      createFetchFake(calls, { id: "email_1" }),
+    );
+    const document = "Conditions de réservation\nAnnulation et remboursements";
+    await provider.send({
+      ...emailDelivery(),
+      notificationType: "BOOKING_CONFIRMED_DEPOSIT_PAID",
+      renderedHtmlBody: "<html><body><p>Original confirmation</p></body></html>",
+      payload: { bookingTermsDocument: document },
+    });
+
+    const message = JSON.parse(calls[0][1].body as string);
+    expect(message.html).toMatch(
+      /<p>Original confirmation<\/p><p style="[^"]+">A copy of the terms for your booking is attached\.<\/p><\/body>/,
+    );
+    expect(message.attachments).toHaveLength(1);
+    expect(message.attachments[0].filename).toBe("JimBoats-booking-terms.txt");
+    expect(Buffer.from(message.attachments[0].content, "base64").toString("utf8")).toBe(document);
+  });
+
   it("wraps text-only email deliveries in the shared email layout", async () => {
     const fetchCalls: Array<[string, RequestInit]> = [];
     const fetchFn = createFetchFake(fetchCalls, { id: "email_1" });

@@ -15,11 +15,11 @@ describe("AdminCalendarWorkspace", () => {
     render(<AdminCalendarWorkspace actions={actions} pageData={pageData} />);
 
     expect(
-      screen.getByRole("heading", { name: "Boat calendar" }),
+      screen.getByRole("heading", { name: "Calendario del barco" }),
     ).toBeInTheDocument();
-    expect(screen.getByText("Maintenance window")).toBeInTheDocument();
-    expect(screen.getByLabelText("From date")).toHaveValue("2026-06-01");
-    expect(screen.getByLabelText("To date")).toHaveValue("2026-06-14");
+    expect(screen.getByText("Mantenimiento")).toBeInTheDocument();
+    expect(screen.getByLabelText("Desde")).toHaveValue("2026-06-01");
+    expect(screen.getByLabelText("Hasta")).toHaveValue("2026-06-14");
   });
 
   it("submits a manual block creation", async () => {
@@ -29,8 +29,8 @@ describe("AdminCalendarWorkspace", () => {
 
     render(<AdminCalendarWorkspace actions={actions} pageData={pageData} />);
 
-    await user.type(screen.getByLabelText("Reason"), "Team training");
-    await user.click(screen.getByRole("button", { name: /create block/i }));
+    await user.type(screen.getByLabelText("Motivo"), "Team training");
+    await user.click(screen.getByRole("button", { name: /Crear bloqueo/i }));
 
     expect(actions.createManualBlock).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -51,7 +51,7 @@ describe("AdminCalendarWorkspace", () => {
 
     render(<AdminCalendarWorkspace actions={actions} pageData={pageData} />);
 
-    await user.click(screen.getAllByRole("button", { name: /release/i })[0]);
+    await user.click(screen.getAllByRole("button", { name: /Liberar/i })[0]);
 
     expect(actions.releaseManualBlock).toHaveBeenCalledWith({
       calendarBlockId: "preview-maintenance",
@@ -71,8 +71,8 @@ describe("AdminCalendarWorkspace", () => {
 
     render(<AdminCalendarWorkspace actions={actions} pageData={pageData} />);
 
-    await user.type(screen.getByLabelText("Reason"), "Overlap");
-    await user.click(screen.getByRole("button", { name: /create block/i }));
+    await user.type(screen.getByLabelText("Motivo"), "Overlap");
+    await user.click(screen.getByRole("button", { name: /Crear bloqueo/i }));
 
     expect(screen.getByRole("alert")).toHaveTextContent(
       "This calendar block overlaps an active boat block.",

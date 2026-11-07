@@ -1,4 +1,5 @@
 "use client";
+import { adminEs } from "@/i18n/admin/es";
 
 import {
   Bell,
@@ -74,7 +75,9 @@ export function AdminPushNotificationsWorkspace({
     [subscriptions],
   );
   const needsIosInstall =
-    detection.platform === "IOS" && detection.supported && !detection.isStandalone;
+    detection.platform === "IOS" &&
+    detection.supported &&
+    !detection.isStandalone;
   const canActivate =
     Boolean(setup.vapidPublicKey) &&
     detection.supported &&
@@ -83,7 +86,7 @@ export function AdminPushNotificationsWorkspace({
 
   function activateDevice() {
     if (!setup.vapidPublicKey) {
-      setMessage("Push keys are not configured on the server.");
+      setMessage(adminEs["Push keys are not configured on the server."]);
       return;
     }
 
@@ -94,7 +97,7 @@ export function AdminPushNotificationsWorkspace({
         const vapidPublicKey = setup.vapidPublicKey;
 
         if (!vapidPublicKey) {
-          setMessage("Push keys are not configured on the server.");
+          setMessage(adminEs["Push keys are not configured on the server."]);
           return;
         }
 
@@ -108,7 +111,9 @@ export function AdminPushNotificationsWorkspace({
         };
 
         if (!json.endpoint || !json.keys?.auth || !json.keys.p256dh) {
-          setMessage("The browser did not return a complete push subscription.");
+          setMessage(
+            adminEs["The browser did not return a complete push subscription."],
+          );
           return;
         }
 
@@ -137,7 +142,7 @@ export function AdminPushNotificationsWorkspace({
         setSubscriptions((current) =>
           upsertSubscription(current, result.data.subscription),
         );
-        setMessage("Device saved. Sending a test notification now.");
+        setMessage(adminEs["Device saved. Sending a test notification now."]);
 
         const testResult = await actions.sendTest({
           activationCode,
@@ -154,14 +159,16 @@ export function AdminPushNotificationsWorkspace({
         );
         setMessage(
           testResult.data.status === "SENT"
-            ? "Test notification sent."
-            : "Device saved, but the test notification failed.",
+            ? adminEs["Test notification sent."]
+            : adminEs["Device saved, but the test notification failed."],
         );
       } catch (error) {
         setMessage(
-          error instanceof Error
+          error instanceof Error &&
+            error.message ===
+              adminEs["Notification permission was not granted."]
             ? error.message
-            : "Could not activate notifications.",
+            : adminEs["Could not activate notifications."],
         );
       }
     });
@@ -169,7 +176,7 @@ export function AdminPushNotificationsWorkspace({
 
   function sendTestToCurrentDevice() {
     if (!currentEndpoint) {
-      setMessage("Activate this device before sending another test.");
+      setMessage(adminEs["Activate this device before sending another test."]);
       return;
     }
 
@@ -187,8 +194,8 @@ export function AdminPushNotificationsWorkspace({
       setSubscriptions((current) => markTestSent(current, currentEndpoint));
       setMessage(
         result.data.status === "SENT"
-          ? "Test notification sent."
-          : "Test notification failed.",
+          ? adminEs["Test notification sent."]
+          : adminEs["Test notification failed."],
       );
     });
   }
@@ -205,7 +212,11 @@ export function AdminPushNotificationsWorkspace({
       }
 
       setMessage(
-        `Tests sent: ${result.data.sent}. Failed: ${result.data.failed}. Total: ${result.data.total}.`,
+        adminEs.pushTestResults(
+          result.data.sent,
+          result.data.failed,
+          result.data.total,
+        ),
       );
     });
   }
@@ -215,25 +226,32 @@ export function AdminPushNotificationsWorkspace({
       <header className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div className="min-w-0">
           <p className="text-sm font-semibold uppercase tracking-wide text-sky-700">
-            Operational alerts
+            {adminEs["Operational alerts"]}
           </p>
           <h1 className="mt-1 text-2xl font-bold text-slate-950">
-            Booking push notifications
+            {adminEs["Booking push notifications"]}
           </h1>
           <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-            Connected devices receive a push notification whenever a booking is
-            confirmed.
+            {
+              adminEs[
+                "Connected devices receive a push notification whenever a booking is confirmed."
+              ]
+            }
           </p>
         </div>
         <Badge tone={activeCount > 0 ? "emerald" : "amber"}>
-          {activeCount} active
+          {adminEs.activeDevices(activeCount)}
         </Badge>
       </header>
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_420px]">
         <Surface
-          title="This device"
-          description="Complete the setup once on each phone that should receive booking alerts."
+          title={adminEs["This device"]}
+          description={
+            adminEs[
+              "Complete the setup once on each phone that should receive booking alerts."
+            ]
+          }
         >
           <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_280px]">
             <div className="space-y-4">
@@ -241,7 +259,7 @@ export function AdminPushNotificationsWorkspace({
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="grid gap-2 text-sm font-semibold text-slate-800">
-                  Device name
+                  {adminEs["Device name"]}
                   <input
                     className="min-h-11 rounded-md border border-slate-300 bg-white px-3 text-sm font-normal text-slate-950 outline-none transition focus:border-sky-700 focus:ring-2 focus:ring-sky-100"
                     onChange={(event) => setDeviceLabel(event.target.value)}
@@ -250,7 +268,7 @@ export function AdminPushNotificationsWorkspace({
                 </label>
 
                 <label className="grid gap-2 text-sm font-semibold text-slate-800">
-                  Activation code
+                  {adminEs["Activation code"]}
                   <input
                     className="min-h-11 rounded-md border border-slate-300 bg-white px-3 text-sm font-normal text-slate-950 outline-none transition focus:border-sky-700 focus:ring-2 focus:ring-sky-100"
                     onChange={(event) => setActivationCode(event.target.value)}
@@ -268,7 +286,7 @@ export function AdminPushNotificationsWorkspace({
                   onClick={activateDevice}
                 >
                   <Bell className="size-4" aria-hidden="true" />
-                  Activate alerts
+                  {adminEs["Activate alerts"]}
                 </Button>
                 <Button
                   className="justify-center gap-2"
@@ -277,7 +295,7 @@ export function AdminPushNotificationsWorkspace({
                   variant="secondary"
                 >
                   <Send className="size-4" aria-hidden="true" />
-                  Send test
+                  {adminEs["Send test"]}
                 </Button>
               </div>
 
@@ -309,15 +327,15 @@ export function AdminPushNotificationsWorkspace({
               variant="secondary"
             >
               <Send className="size-4" aria-hidden="true" />
-              Send test to all
+              {adminEs["Send test to all"]}
             </Button>
           }
-          title="Connected devices"
+          title={adminEs["Connected devices"]}
         >
           <div className="space-y-3">
             {subscriptions.length === 0 ? (
               <p className="text-sm leading-6 text-slate-600">
-                No device has activated push alerts yet.
+                {adminEs["No device has activated push alerts yet."]}
               </p>
             ) : (
               subscriptions.map((subscription) => (
@@ -380,22 +398,24 @@ function DeviceStatus({
 }) {
   const rows = [
     {
-      label: "Server keys",
+      label: adminEs["Server keys"],
       ok: vapidConfigured,
-      value: vapidConfigured ? "Configured" : "Missing",
+      value: vapidConfigured ? adminEs["Configured"] : adminEs["Missing"],
     },
     {
-      label: "Browser support",
+      label: adminEs["Browser support"],
       ok: detection.supported,
-      value: detection.supported ? "Supported" : "Unavailable",
+      value: detection.supported
+        ? adminEs["Supported"]
+        : adminEs["Unavailable"],
     },
     {
-      label: "Display mode",
+      label: adminEs["Display mode"],
       ok: detection.platform !== "IOS" || detection.isStandalone,
-      value: detection.displayMode ?? "Browser",
+      value: detection.isStandalone ? adminEs.appMode : adminEs["Browser"],
     },
     {
-      label: "Permission",
+      label: adminEs["Permission"],
       ok: permission === "GRANTED",
       value: permissionLabel(permission),
     },
@@ -403,10 +423,15 @@ function DeviceStatus({
 
   return (
     <div className="rounded-md border border-slate-200 bg-white p-4">
-      <h2 className="text-sm font-bold text-slate-950">Readiness</h2>
+      <h2 className="text-sm font-bold text-slate-950">
+        {adminEs["Readiness"]}
+      </h2>
       <div className="mt-3 space-y-3">
         {rows.map((row) => (
-          <div className="flex items-start justify-between gap-3" key={row.label}>
+          <div
+            className="flex items-start justify-between gap-3"
+            key={row.label}
+          >
             <span className="text-sm text-slate-600">{row.label}</span>
             <Badge tone={row.ok ? "emerald" : "amber"} size="sm">
               {row.value}
@@ -417,7 +442,9 @@ function DeviceStatus({
       {!detection.supported || !vapidConfigured ? (
         <div className="mt-4 flex gap-2 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm leading-6 text-amber-900">
           <TriangleAlert className="mt-1 size-4 shrink-0" aria-hidden="true" />
-          <p>Activation is disabled until this environment is ready.</p>
+          <p>
+            {adminEs["Activation is disabled until this environment is ready."]}
+          </p>
         </div>
       ) : null}
     </div>
@@ -443,15 +470,24 @@ function SubscriptionRow({
           </p>
         </div>
         <Badge tone={active ? "emerald" : "neutral"} size="sm">
-          {active ? "Active" : "Disabled"}
+          {active ? adminEs["Active"] : adminEs["Disabled"]}
         </Badge>
       </div>
       <dl className="mt-3 grid gap-2 text-xs text-slate-600">
-        <DeviceFact label="Last test" value={formatDate(subscription.lastTestSentAt)} />
-        <DeviceFact label="Last success" value={formatDate(subscription.lastSuccessAt)} />
         <DeviceFact
-          label="Last failure"
-          value={subscription.lastFailureReason ?? formatDate(subscription.lastFailureAt)}
+          label={adminEs["Last test"]}
+          value={formatDate(subscription.lastTestSentAt)}
+        />
+        <DeviceFact
+          label={adminEs["Last success"]}
+          value={formatDate(subscription.lastSuccessAt)}
+        />
+        <DeviceFact
+          label={adminEs["Last failure"]}
+          value={
+            subscription.lastFailureReason ??
+            formatDate(subscription.lastFailureAt)
+          }
         />
       </dl>
     </article>
@@ -479,7 +515,7 @@ function detectDevice(): DeviceDetection {
       window.matchMedia("(display-mode: standalone)").matches) ||
     Boolean(
       "standalone" in navigator &&
-        (navigator as Navigator & { standalone?: boolean }).standalone,
+      (navigator as Navigator & { standalone?: boolean }).standalone,
     );
 
   return {
@@ -533,13 +569,13 @@ function readNotificationPermission(): PushSubscriptionPermission {
 
 async function subscribeBrowser(vapidPublicKey: string) {
   if (!("Notification" in window)) {
-    throw new Error("This browser does not support notifications.");
+    throw new Error(adminEs["This browser does not support notifications."]);
   }
 
   const permission = await Notification.requestPermission();
 
   if (permission !== "granted") {
-    throw new Error("Notification permission was not granted.");
+    throw new Error(adminEs["Notification permission was not granted."]);
   }
 
   const registration = await navigator.serviceWorker.register("/sw.js");
@@ -578,37 +614,37 @@ function defaultDeviceLabel(platform: PushSubscriptionPlatform) {
     return "Android JimBoats";
   }
 
-  return "JimBoats device";
+  return adminEs["JimBoats device"];
 }
 
 function platformSteps(detection: DeviceDetection) {
   if (detection.platform === "IOS") {
     return [
-      "Open JimBoats on the iPhone.",
-      "Use Share, then Add to Home Screen.",
-      "Open JimBoats from the new Home Screen icon.",
-      "Enter the activation code and activate alerts.",
+      adminEs["Open JimBoats on the iPhone."],
+      adminEs["Use Share, then Add to Home Screen."],
+      adminEs["Open JimBoats from the new Home Screen icon."],
+      adminEs["Enter the activation code and activate alerts."],
     ];
   }
 
   if (detection.platform === "ANDROID") {
     return [
-      "Open JimBoats in Chrome or another compatible browser.",
-      "Install the app if the browser offers it.",
-      "Enter the activation code and allow notifications.",
+      adminEs["Open JimBoats in Chrome or another compatible browser."],
+      adminEs["Install the app if the browser offers it."],
+      adminEs["Enter the activation code and allow notifications."],
     ];
   }
 
   return [
-    "Use a browser that supports Web Push.",
-    "Enter the activation code.",
-    "Allow notifications and send a test.",
+    adminEs["Use a browser that supports Web Push."],
+    adminEs["Enter the activation code."],
+    adminEs["Allow notifications and send a test."],
   ];
 }
 
 function platformLabel(platform: PushSubscriptionPlatform) {
   if (platform === "IOS") {
-    return "iPhone or iPad";
+    return adminEs["iPhone or iPad"];
   }
 
   if (platform === "ANDROID") {
@@ -616,22 +652,22 @@ function platformLabel(platform: PushSubscriptionPlatform) {
   }
 
   if (platform === "DESKTOP") {
-    return "Desktop";
+    return adminEs["Desktop"];
   }
 
-  return "Unknown platform";
+  return adminEs["Unknown platform"];
 }
 
 function permissionLabel(permission: PushSubscriptionPermission) {
   if (permission === "GRANTED") {
-    return "Granted";
+    return adminEs["Granted"];
   }
 
   if (permission === "DENIED") {
-    return "Denied";
+    return adminEs["Denied"];
   }
 
-  return "Not asked";
+  return adminEs["Not asked"];
 }
 
 function upsertSubscription(
@@ -651,10 +687,7 @@ function upsertSubscription(
   );
 }
 
-function markTestSent(
-  subscriptions: PushSubscriptionDto[],
-  endpoint: string,
-) {
+function markTestSent(subscriptions: PushSubscriptionDto[], endpoint: string) {
   const now = new Date().toISOString();
 
   return subscriptions.map((item) =>
@@ -669,10 +702,10 @@ function markTestSent(
 
 function formatDate(value: string | null) {
   if (!value) {
-    return "Never";
+    return adminEs["Never"];
   }
 
-  return new Intl.DateTimeFormat("en", {
+  return new Intl.DateTimeFormat("es-ES", {
     dateStyle: "short",
     timeStyle: "short",
   }).format(new Date(value));

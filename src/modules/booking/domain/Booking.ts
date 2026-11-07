@@ -1,6 +1,9 @@
 import { domainError } from "@/shared/domain/DomainError";
 
-import type { CustomerDetails, CustomerDetailsSnapshot } from "./CustomerDetails";
+import type {
+  CustomerDetails,
+  CustomerDetailsSnapshot,
+} from "./CustomerDetails";
 import type { PaymentRecord } from "./PaymentRecord";
 import type { PriceSnapshot, PriceSnapshotSnapshot } from "./PriceSnapshot";
 import type { SelectedSlot, SelectedSlotSnapshot } from "./SelectedSlot";
@@ -74,7 +77,10 @@ const supportedStatuses = new Set<BookingStatus>([
   "PAYMENT_FAILED",
   "CANCELLED",
 ]);
-const supportedSources = new Set<BookingSource>(["BACKPANEL", "PUBLIC_CHECKOUT"]);
+const supportedSources = new Set<BookingSource>([
+  "BACKPANEL",
+  "PUBLIC_CHECKOUT",
+]);
 
 export class Booking {
   private constructor(private readonly props: BookingProps) {}
@@ -145,7 +151,10 @@ export class Booking {
       }
     }
 
-    if (input.source === "PUBLIC_CHECKOUT" && input.status === "PENDING_PAYMENT") {
+    if (
+      input.source === "PUBLIC_CHECKOUT" &&
+      input.status === "PENDING_PAYMENT"
+    ) {
       if (!calendarBlockId || !paymentRecordId) {
         throw domainError(
           "BOOKING_HOLD_MISSING",
@@ -163,7 +172,10 @@ export class Booking {
 
     assertDate(input.createdAt, "Booking creation date is invalid.");
     assertDate(input.updatedAt, "Booking update date is invalid.");
-    assertNullableDate(input.cancelledAt, "Booking cancellation date is invalid.");
+    assertNullableDate(
+      input.cancelledAt,
+      "Booking cancellation date is invalid.",
+    );
     assertNullableDate(
       input.operationsSeenAt,
       "Booking operations seen date is invalid.",
@@ -172,7 +184,10 @@ export class Booking {
       input.checkoutLastSeenAt,
       "Booking checkout heartbeat date is invalid.",
     );
-    assertNullableDate(input.holdExpiresAt, "Booking hold expiration is invalid.");
+    assertNullableDate(
+      input.holdExpiresAt,
+      "Booking hold expiration is invalid.",
+    );
 
     return new Booking({
       ...input,
@@ -389,6 +404,10 @@ export class Booking {
       operationsSeenAt: input.seenAt,
       updatedAt: input.seenAt,
     });
+  }
+
+  get priceSnapshot() {
+    return this.props.priceSnapshot;
   }
 
   toSnapshot(): BookingSnapshot {

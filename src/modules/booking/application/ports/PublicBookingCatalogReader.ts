@@ -1,3 +1,4 @@
+import type { HourlyRate } from "../../domain/HourlyRate";
 import type { MoneySnapshot } from "@/shared/domain/Money";
 import type { SupportedLocaleCode } from "@/shared/domain/LocaleCode";
 
@@ -30,6 +31,7 @@ export type PublicBookingCatalogExtraReadModel = {
 };
 
 export type PublicBookingCatalogExperienceReadModel = {
+  hourlyRates?: HourlyRate[];
   basePrice: MoneySnapshot;
   bufferMinutes: number;
   capacity: number;

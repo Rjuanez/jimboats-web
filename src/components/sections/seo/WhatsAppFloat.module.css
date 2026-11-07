@@ -1,0 +1,49 @@
+.button {
+  background: #25d366;
+  box-shadow: 0 6px 30px #25d36666;
+  transition:
+    transform 0.3s,
+    background-color 0.3s,
+    box-shadow 0.3s;
+}
+
+.button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: #25d366;
+  pointer-events: none;
+  animation: whatsapp-pulse 2s infinite;
+}
+
+.button:hover {
+  background: #128c7e;
+  transform: scale(1.1);
+  box-shadow: 0 8px 40px #25d36680;
+}
+
+@keyframes whatsapp-pulse {
+  from {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+  }
+  .button::before {
+    animation: none;
+    opacity: 0;
+  }
+  .button:hover {
+    transform: none;
+  }
+}

@@ -1,4 +1,5 @@
 "use client";
+import { adminEs } from "@/i18n/admin/es";
 
 import { CheckCircle2, Pencil, Plus, Save, TriangleAlert } from "lucide-react";
 import { useState } from "react";
@@ -41,7 +42,9 @@ export function AdminNotificationRulesSection({
   }
 
   function setEvent(eventType: string) {
-    const option = state.eventOptions.find((item) => item.eventType === eventType);
+    const option = state.eventOptions.find(
+      (item) => item.eventType === eventType,
+    );
 
     setForm((current) => ({
       ...current,
@@ -54,8 +57,12 @@ export function AdminNotificationRulesSection({
   return (
     <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_28rem]">
       <Surface
-        description="Each active rule decides which booking event sends a message and through which channel."
-        title="Notification rules"
+        description={
+          adminEs[
+            "Each active rule decides which booking event sends a message and through which channel."
+          ]
+        }
+        title={adminEs["Notification rules"]}
       >
         {state.rules.length === 0 ? (
           <EmptyRules />
@@ -81,15 +88,19 @@ export function AdminNotificationRulesSection({
             variant="secondary"
           >
             <Plus className="size-4" aria-hidden="true" />
-            New
+            {adminEs["New"]}
           </Button>
         }
-        description="Rules always target the buyer and require consent stored on the booking."
-        title={form.ruleId ? "Edit rule" : "Create rule"}
+        description={
+          adminEs[
+            "Rules always target the buyer and require consent stored on the booking."
+          ]
+        }
+        title={form.ruleId ? adminEs["Edit rule"] : adminEs["Create rule"]}
       >
         <form className="space-y-4" onSubmit={submit}>
           <SelectField
-            label="Event"
+            label={adminEs["Event"]}
             onChange={(event) => setEvent(event.target.value)}
             value={form.eventType}
           >
@@ -101,21 +112,22 @@ export function AdminNotificationRulesSection({
           </SelectField>
           <FieldGrid>
             <SelectField
-              label="Channel"
+              label={adminEs["Channel"]}
               onChange={(event) =>
                 setForm((current) => ({
                   ...current,
-                  channel: event.target.value as AdminNotificationRuleInput["channel"],
+                  channel: event.target
+                    .value as AdminNotificationRuleInput["channel"],
                   templateId: null,
                 }))
               }
               value={form.channel}
             >
-              <option value="EMAIL">Email</option>
-              <option value="WHATSAPP">WhatsApp</option>
+              <option value="EMAIL">{adminEs["Email"]}</option>
+              <option value="WHATSAPP">{adminEs["WhatsApp"]}</option>
             </SelectField>
             <SelectField
-              label="Send mode"
+              label={adminEs["Send mode"]}
               onChange={(event) =>
                 setForm((current) => ({
                   ...current,
@@ -125,12 +137,12 @@ export function AdminNotificationRulesSection({
               }
               value={form.sendMode}
             >
-              <option value="AUTOMATIC">Automatic</option>
-              <option value="MANUAL_REVIEW">Manual review</option>
+              <option value="AUTOMATIC">{adminEs["Automatic"]}</option>
+              <option value="MANUAL_REVIEW">{adminEs["Manual review"]}</option>
             </SelectField>
           </FieldGrid>
           <SelectField
-            label="Template"
+            label={adminEs["Template"]}
             onChange={(event) =>
               setForm((current) => ({
                 ...current,
@@ -139,7 +151,7 @@ export function AdminNotificationRulesSection({
             }
             value={form.templateId ?? ""}
           >
-            <option value="">No template</option>
+            <option value="">{adminEs["No template"]}</option>
             {state.templateOptions
               .filter((template) => template.channel === form.channel)
               .map((template) => (
@@ -150,7 +162,7 @@ export function AdminNotificationRulesSection({
           </SelectField>
           <FieldGrid>
             <SelectField
-              label="Status"
+              label={adminEs["Status"]}
               onChange={(event) =>
                 setForm((current) => ({
                   ...current,
@@ -160,13 +172,13 @@ export function AdminNotificationRulesSection({
               }
               value={form.status}
             >
-              <option value="ACTIVE">Active</option>
-              <option value="ARCHIVED">Archived</option>
+              <option value="ACTIVE">{adminEs["Active"]}</option>
+              <option value="ARCHIVED">{adminEs["Archived"]}</option>
             </SelectField>
             <div className="space-y-3">
               <CheckboxField
                 checked={form.enabled}
-                label="Enabled"
+                label={adminEs["Enabled"]}
                 onChange={(event) =>
                   setForm((current) => ({
                     ...current,
@@ -176,7 +188,7 @@ export function AdminNotificationRulesSection({
               />
               <CheckboxField
                 checked={form.requiresConsent}
-                label="Requires consent"
+                label={adminEs["Requires consent"]}
                 onChange={(event) =>
                   setForm((current) => ({
                     ...current,
@@ -188,7 +200,7 @@ export function AdminNotificationRulesSection({
           </FieldGrid>
           <Button disabled={isSaving} loading={isSaving} type="submit">
             <Save className="size-4" aria-hidden="true" />
-            Save rule
+            {adminEs["Save rule"]}
           </Button>
         </form>
       </Surface>
@@ -211,7 +223,7 @@ function RuleRow({
         <div className="min-w-0 space-y-3">
           <div className="flex flex-wrap items-center gap-2">
             <Badge tone={rule.enabled ? "emerald" : "neutral"}>
-              {rule.enabled ? "Enabled" : "Disabled"}
+              {rule.enabled ? adminEs["Enabled"] : adminEs["Disabled"]}
             </Badge>
             <Badge tone={rule.status === "ACTIVE" ? "sky" : "neutral"}>
               {rule.statusLabel}
@@ -245,16 +257,16 @@ function RuleRow({
           ) : (
             <p className="flex items-center gap-2 text-sm font-medium text-emerald-700">
               <CheckCircle2 className="size-4" aria-hidden="true" />
-              Ready
+              {adminEs["Ready"]}
             </p>
           )}
           <p className="text-xs font-medium text-slate-500">
-            Updated {rule.updatedAtLabel}
+            {adminEs["Updated"]} {rule.updatedAtLabel}
           </p>
         </div>
         <Button disabled={isSaving} onClick={onEdit} variant="secondary">
           <Pencil className="size-4" aria-hidden="true" />
-          Edit
+          {adminEs["Edit"]}
         </Button>
       </div>
     </article>
@@ -265,10 +277,10 @@ function EmptyRules() {
   return (
     <div className="rounded-md border border-dashed border-slate-300 px-4 py-8 text-center">
       <p className="text-sm font-semibold text-slate-950">
-        No notification rules yet.
+        {adminEs["No notification rules yet."]}
       </p>
       <p className="mt-1 text-sm leading-6 text-slate-600">
-        Create one rule for each event and channel combination.
+        {adminEs["Create one rule for each event and channel combination."]}
       </p>
     </div>
   );

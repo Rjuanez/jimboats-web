@@ -1,3 +1,4 @@
+import { resolveHourlyTariffs, type HourlyTariffSource } from "@/infrastructure/booking/HourlyTariffs";
 import type { BookingRepository } from "@/modules/booking/application/ports/BookingRepository";
 import type {
   AdminCancelledBookingPersistence,
@@ -272,7 +273,7 @@ const experienceInclude = {
 };
 
 export class PrismaBookingRepository implements BookingRepository {
-  constructor(private readonly prisma: PrismaBookingRepositoryClient) {}
+  constructor(private readonly prisma: PrismaBookingRepositoryClient, private readonly hourlyTariffs: HourlyTariffSource = {}) {}
 
   async findCalendarSyncState(bookingId: string) {
     const record = await this.prisma.booking.findUnique({
@@ -503,7 +504,7 @@ export class PrismaBookingRepository implements BookingRepository {
       },
     });
 
-    return records.map(bookingExperienceOptionFromPrismaRecord);
+    return records.map((record) => ({ ...bookingExperienceOptionFromPrismaRecord(record), hourlyRates: resolveHourlyTariffs(this.hourlyTariffs, record) }));
   }
 
   async findExperienceOptionById(id: string) {
@@ -514,7 +515,7 @@ export class PrismaBookingRepository implements BookingRepository {
       },
     });
 
-    return record ? bookingExperienceOptionFromPrismaRecord(record) : null;
+    return record ? { ...bookingExperienceOptionFromPrismaRecord(record), hourlyRates: resolveHourlyTariffs(this.hourlyTariffs, record) } : null;
   }
 
   async listExtraOptions() {
@@ -1359,12 +1360,12 @@ function isCalendarOverlapConstraintError(error: unknown) {
     return false;
   }
 
-  const record = error as { code?: unknown; message?: unknown; meta?: unknown };
+  const record = error as { code?: unknown; message?: unknown; meta?: unknown; cause?: { code?: string; originalCode?: string } };
   const message = typeof record.message === "string" ? record.message : "";
   const meta = JSON.stringify(record.meta ?? {});
 
   return (
-    (record.code === "P2004" || record.code === "P2010") &&
+    (record.code === "P2004" || record.code === "P2010" || record.cause?.originalCode === "23P01" || record.cause?.code === "23P01") &&
     (message.includes("calendar_blocks_active_protected_range_no_overlap") ||
       meta.includes("calendar_blocks_active_protected_range_no_overlap"))
   );

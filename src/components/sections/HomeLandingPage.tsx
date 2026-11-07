@@ -1,4 +1,5 @@
 import { Anchor, ArrowRight, CalendarDays, Sparkles } from "lucide-react";
+import type { ReactNode } from "react";
 
 import { LandingFooter } from "@/components/layout/LandingFooter";
 import { LandingHeader } from "@/components/layout/LandingHeader";
@@ -223,13 +224,17 @@ export function HomeLandingPage({ content }: HomeLandingPageProps) {
   );
 }
 
-function HeroSection({ content }: { content: HomeLandingContent["hero"] }) {
+export function HeroSection({
+  content,
+}: {
+  content: HomeLandingContent["hero"];
+}) {
   return (
     <section className="relative h-[100svh] min-h-[700px] overflow-hidden lg:min-h-[860px]">
       <div className="absolute inset-0">
         <MarketingImageFrame
           image={content.image}
-          imgClassName="object-cover"
+          imgClassName={content.image.src?.includes("hero-lena-barcelona") ? "object-cover object-[center_65%]" : "object-cover"}
           priority
         />
         <div className="absolute inset-0 bg-black/45" />
@@ -300,9 +305,13 @@ function ExperiencesSection({
   );
 }
 
-function StorySection({ story }: { story: HomeLandingContent["story"] }) {
+export function StorySection({
+  story,
+}: {
+  story: HomeLandingContent["story"];
+}) {
   return (
-    <section className="relative my-4 h-[420px] overflow-hidden lg:my-20 lg:h-[700px]">
+    <section id="boat" className="relative my-4 h-[420px] scroll-mt-8 overflow-hidden lg:my-20 lg:h-[700px]">
       <div className="absolute inset-0">
         <MarketingImageFrame image={story.image} />
         <div className="absolute inset-0 bg-black/55 lg:bg-black/50" />
@@ -319,7 +328,11 @@ function StorySection({ story }: { story: HomeLandingContent["story"] }) {
   );
 }
 
-function ExtrasSection({ extras }: { extras: HomeLandingContent["extras"] }) {
+export function ExtrasSection({
+  extras,
+}: {
+  extras: HomeLandingContent["extras"];
+}) {
   return (
     <section className="bg-background px-4 py-14 lg:px-0 lg:py-28" id="extras">
       <Container>
@@ -339,7 +352,7 @@ function ExtrasSection({ extras }: { extras: HomeLandingContent["extras"] }) {
   );
 }
 
-function GallerySection({
+export function GallerySection({
   gallery,
 }: {
   gallery: HomeLandingContent["gallery"];
@@ -370,7 +383,7 @@ function GallerySection({
   );
 }
 
-function BookingSection({
+export function BookingSection({
   booking,
 }: {
   booking: HomeLandingContent["booking"];
@@ -414,10 +427,12 @@ function BookingSection({
   );
 }
 
-function FinalCtaSection({
+export function FinalCtaSection({
   finalCta,
+  secondaryAction,
 }: {
   finalCta: HomeLandingContent["finalCta"];
+  secondaryAction?: ReactNode;
 }) {
   return (
     <section className="relative h-[520px] overflow-hidden lg:h-[850px]">
@@ -431,18 +446,21 @@ function FinalCtaSection({
         <h2 className="max-w-4xl font-display text-5xl leading-tight text-white drop-shadow-lg sm:text-6xl lg:text-8xl">
           {finalCta.title}
         </h2>
-        <Button
-          className="mt-9 shadow-[0_20px_40px_-10px_rgb(0_0_0_/_0.3)] lg:mt-12"
-          data-analytics-cta-location="final_cta"
-          data-analytics-event="booking_cta_clicked"
-          href={finalCta.cta.href}
-          shape="pill"
-          size="xl"
-          variant="accent"
-        >
-          {finalCta.cta.label}
-          <ArrowRight aria-hidden="true" className="h-5 w-5" />
-        </Button>
+        <div className="mt-9 flex max-w-full flex-col items-center justify-center gap-4 sm:flex-row lg:mt-12">
+          <Button
+            className="max-w-full shadow-[0_20px_40px_-10px_rgb(0_0_0_/_0.3)]"
+            data-analytics-cta-location="final_cta"
+            data-analytics-event="booking_cta_clicked"
+            href={finalCta.cta.href}
+            shape="pill"
+            size="xl"
+            variant="accent"
+          >
+            {finalCta.cta.label}
+            <ArrowRight aria-hidden="true" className="h-5 w-5 shrink-0" />
+          </Button>
+          {secondaryAction}
+        </div>
       </Container>
     </section>
   );
@@ -491,7 +509,7 @@ function GalleryImage({
   );
 }
 
-function WaveDivider({ className }: { className?: string }) {
+export function WaveDivider({ className }: { className?: string }) {
   return (
     <svg
       aria-hidden="true"

@@ -1,3 +1,4 @@
+import { BookingWhatsAppHelp } from "./BookingWhatsAppHelp";
 import { LockKeyhole } from "lucide-react";
 
 import { MarketingImageFrame } from "@/components/marketing/MarketingImageFrame";
@@ -56,7 +57,12 @@ export function PublicBookingBottomBar({
   const copy = getPublicDictionary(content.locale).booking.bottomBar;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-sand/30 bg-white px-4 py-4 shadow-[0_-8px_32px_-8px_rgba(0,0,0,0.12)] lg:hidden">
+    <aside
+      aria-label={
+        getPublicDictionary(content.locale).booking.labels.bookingSummary
+      }
+      className="fixed bottom-0 left-0 right-0 z-40 border-t border-sand/30 bg-white px-4 py-4 shadow-[0_-8px_32px_-8px_rgba(0,0,0,0.12)] lg:hidden"
+    >
       {experience ? (
         <div className="mb-3 flex items-center justify-between gap-3">
           <div className="flex min-w-0 items-center gap-3">
@@ -104,6 +110,10 @@ export function PublicBookingBottomBar({
         </button>
       ) : null}
 
+      {activeStep === "experience" && experience && (
+        <BookingWhatsAppHelp link={content.support.whatsapp} />
+      )}
+
       {activeStep === "extras" ? (
         <button
           className={cn(
@@ -143,7 +153,9 @@ export function PublicBookingBottomBar({
             {paymentSubmitting ? copy.openingPayment : copy.payDeposit}
           </button>
           <p className="mt-2 text-center text-[11px] text-text-muted">
-            {copy.remainingOnboard(formatPrice(remainingAmount))}
+            {remainingAmount === 0
+              ? getPublicDictionary(content.locale).booking.labels.paidInFull
+              : copy.remainingOnboard(formatPrice(remainingAmount))}
           </p>
         </>
       ) : null}
@@ -151,6 +163,6 @@ export function PublicBookingBottomBar({
       {activeStep === "experience" && !experience ? null : (
         <div className="h-[env(safe-area-inset-bottom)]" />
       )}
-    </div>
+    </aside>
   );
 }

@@ -1,3 +1,4 @@
+import { adminEs } from "@/i18n/admin/es";
 import {
   CalendarDays,
   CheckCircle2,
@@ -27,47 +28,35 @@ export function AdminBookingsListSection({
   markSeen,
   state,
 }: AdminBookingsListSectionProps) {
-  const unacknowledgedBookings = state.bookings.filter(
-    (booking) => booking.needsAcknowledgement,
-  );
-
   return (
     <div className="space-y-5">
       <BookingsHeader state={state} />
-      {unacknowledgedBookings.length > 0 ? (
-        <Surface
-          description="Confirmed reservations that still need someone to acknowledge they have been seen."
-          title="Bookings to acknowledge"
-        >
-          <div className="grid gap-3">
-            {unacknowledgedBookings.map((booking) => (
-              <BookingRow
-                booking={booking}
-                isSaving={isSaving}
-                key={booking.id}
-                markSeen={markSeen}
-                showQuickAcknowledge
-              />
-            ))}
-          </div>
-        </Surface>
-      ) : null}
       <Surface
         action={
           <Button href="/admin/bookings/new">
             <Plus className="size-4" aria-hidden="true" />
-            New booking
+            {adminEs["New booking"]}
           </Button>
         }
-        description="Operational reservations created from checkout or the backpanel."
-        title="Bookings"
+        description={
+          adminEs[
+            "Operational reservations created from checkout or the backpanel."
+          ]
+        }
+        title={adminEs.allBookings}
       >
         {state.bookings.length === 0 ? (
           <EmptyBookings />
         ) : (
           <div className="grid gap-3">
             {state.bookings.map((booking) => (
-              <BookingRow booking={booking} key={booking.id} />
+              <BookingRow
+                booking={booking}
+                isSaving={isSaving}
+                key={booking.id}
+                markSeen={markSeen}
+                showQuickAcknowledge={booking.needsAcknowledgement}
+              />
             ))}
           </div>
         )}
@@ -78,30 +67,43 @@ export function AdminBookingsListSection({
 
 function BookingsHeader({ state }: { state: AdminBookingsState }) {
   return (
-    <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+    <div className="flex flex-col gap-4 2xl:flex-row 2xl:items-end 2xl:justify-between">
       <div>
         <p className="text-sm font-semibold uppercase tracking-[0.12em] text-slate-600">
-          Operations
+          {adminEs["Operations"]}
         </p>
         <h1 className="mt-2 text-2xl font-semibold text-slate-950">
-          Bookings
+          {adminEs["Bookings"]}
         </h1>
         <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-          Create and inspect reservations before checkout is connected to the public site.
+          {
+            adminEs[
+              "Manage public and manual reservations, availability and cancellations."
+            ]
+          }
         </p>
       </div>
-      <div className="grid gap-3 sm:grid-cols-2 lg:min-w-[42rem] xl:grid-cols-5">
-        <MetricTile label="Total" value={state.summary.totalBookings} />
+      <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 min-w-0 w-full 2xl:max-w-3xl xl:grid-cols-5">
         <MetricTile
-          label="To accept"
+          label={adminEs["Total"]}
+          value={state.summary.totalBookings}
+        />
+        <MetricTile
+          label={adminEs["To accept"]}
           value={state.summary.unacknowledgedBookings}
         />
-        <MetricTile label="Confirmed" value={state.summary.confirmedBookings} />
         <MetricTile
-          label="Pending"
+          label={adminEs.confirmedBookings}
+          value={state.summary.confirmedBookings}
+        />
+        <MetricTile
+          label={adminEs.pendingBookings}
           value={state.summary.pendingPaymentBookings}
         />
-        <MetricTile label="Cancelled" value={state.summary.cancelledBookings} />
+        <MetricTile
+          label={adminEs.cancelledBookings}
+          value={state.summary.cancelledBookings}
+        />
       </div>
     </div>
   );
@@ -142,11 +144,11 @@ function BookingRow({
           </h2>
           <StatusBadge booking={booking} />
           {booking.needsAcknowledgement ? (
-            <Badge tone="amber">Not seen</Badge>
+            <Badge tone="amber">{adminEs["Not seen"]}</Badge>
           ) : null}
         </div>
         <p className="mt-2 text-sm leading-6 text-slate-600">
-          {booking.experienceName}
+          {booking.experienceSummary}
         </p>
         <div className="mt-3 flex flex-wrap gap-2 text-sm text-slate-600">
           <span className="inline-flex items-center gap-2">
@@ -156,20 +158,20 @@ function BookingRow({
           </span>
           <span className="inline-flex items-center gap-2">
             <UserRound className="size-4" aria-hidden="true" />
-            {booking.guestCount} guests
+            {booking.guestCount} {adminEs["guests"]}
           </span>
         </div>
       </div>
       <div className="min-w-0">
-        <p className="truncate text-sm font-semibold text-slate-950">
+        <p className="break-words text-sm font-semibold text-slate-950">
           {booking.customerName}
         </p>
-        <p className="mt-1 truncate text-sm text-slate-600">
+        <p className="mt-1 break-words text-sm text-slate-600">
           {booking.customerEmail}
         </p>
         <p className="mt-2 inline-flex items-center gap-2 text-sm font-semibold text-slate-700">
           <ReceiptText className="size-4" aria-hidden="true" />
-          EUR {booking.totalAmount}
+          {adminEs.euros(booking.totalAmount)}
         </p>
       </div>
       <div className="flex flex-wrap gap-2 lg:justify-end">
@@ -180,11 +182,11 @@ function BookingRow({
             variant="primary"
           >
             <CheckCircle2 className="size-4" aria-hidden="true" />
-            Mark as seen
+            {adminEs["Mark as seen"]}
           </Button>
         ) : null}
         <Button href={`/admin/bookings/${booking.id}`} variant="secondary">
-          View detail
+          {adminEs["View detail"]}
         </Button>
       </div>
     </article>
@@ -206,14 +208,20 @@ function StatusBadge({ booking }: { booking: AdminBooking }) {
 function EmptyBookings() {
   return (
     <div className="rounded-lg border border-dashed border-slate-300 px-4 py-10 text-center">
-      <p className="text-sm font-semibold text-slate-950">No bookings yet</p>
+      <p className="text-sm font-semibold text-slate-950">
+        {adminEs["No bookings yet"]}
+      </p>
       <p className="mx-auto mt-2 max-w-xl text-sm leading-6 text-slate-600">
-        Create the first manual booking from the backpanel to test calendar blocking.
+        {
+          adminEs[
+            "Create the first manual booking from the backpanel to test calendar blocking."
+          ]
+        }
       </p>
       <div className="mt-4">
         <Button href="/admin/bookings/new">
           <Plus className="size-4" aria-hidden="true" />
-          New booking
+          {adminEs["New booking"]}
         </Button>
       </div>
     </div>
@@ -221,7 +229,7 @@ function EmptyBookings() {
 }
 
 function formatDate(localDate: string) {
-  return new Intl.DateTimeFormat("en", {
+  return new Intl.DateTimeFormat("es-ES", {
     day: "2-digit",
     month: "short",
     year: "numeric",

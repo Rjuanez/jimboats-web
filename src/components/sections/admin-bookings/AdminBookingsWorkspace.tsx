@@ -1,4 +1,5 @@
 "use client";
+import { adminEs } from "@/i18n/admin/es";
 
 import { AlertCircle } from "lucide-react";
 import { useState } from "react";
@@ -50,7 +51,7 @@ export function AdminBookingsWorkspace({
 
     if (result.ok) {
       setState(result.data.state);
-      setMessage("Booking created.");
+      setMessage(adminEs["Booking created."]);
     } else {
       setError(result.message);
     }
@@ -68,7 +69,7 @@ export function AdminBookingsWorkspace({
 
     if (result.ok) {
       setState(result.data.state);
-      setMessage("Booking updated.");
+      setMessage(adminEs["Booking updated."]);
     } else {
       setError(result.message);
     }
@@ -86,7 +87,7 @@ export function AdminBookingsWorkspace({
 
     if (result.ok) {
       setState(result.data.state);
-      setMessage("Booking cancelled.");
+      setMessage(adminEs["Booking cancelled."]);
     } else {
       setError(result.message);
     }
@@ -103,7 +104,7 @@ export function AdminBookingsWorkspace({
     const result = await actions.issueAccessLink(input);
 
     if (result.ok) {
-      setMessage("Booking access link generated.");
+      setMessage(adminEs["Booking access link generated."]);
     } else {
       setError(result.message);
     }
@@ -121,7 +122,7 @@ export function AdminBookingsWorkspace({
 
     if (result.ok) {
       setState(result.data.state);
-      setMessage("Booking marked as seen.");
+      setMessage(adminEs["Booking marked as seen."]);
     } else {
       setError(result.message);
     }
@@ -221,18 +222,22 @@ function MissingBooking() {
   return (
     <div className="space-y-5">
       <h1 className="text-2xl font-semibold text-slate-950">
-        Booking not found
+        {adminEs["Booking not found"]}
       </h1>
-      <Surface title="Booking not found">
+      <Surface title={adminEs["Booking not found"]}>
         <div className="flex flex-col items-start gap-4">
           <div className="flex items-center gap-3 text-slate-700">
             <AlertCircle className="size-5 text-amber-600" aria-hidden="true" />
             <p className="text-sm leading-6">
-              This booking does not exist or was changed from another session.
+              {
+                adminEs[
+                  "This booking does not exist or was changed from another session."
+                ]
+              }
             </p>
           </div>
           <Button href="/admin/bookings" variant="secondary">
-            Back to bookings
+            {adminEs["Back to bookings"]}
           </Button>
         </div>
       </Surface>
@@ -257,7 +262,7 @@ function SaveStatus({
       className="mb-4 rounded-md border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm"
       role={error || message ? "alert" : "status"}
     >
-      {error ?? message ?? "Saving booking..."}
+      {error ?? message ?? adminEs["Saving booking..."]}
     </div>
   );
 }

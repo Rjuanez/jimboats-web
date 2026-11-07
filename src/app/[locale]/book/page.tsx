@@ -1,101 +1,72 @@
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-
-import { PublicBookingWorkspace } from "@/components/sections/public-booking/PublicBookingWorkspace";
 import {
-  createLanguageAlternates,
-  parsePublicLocale,
-  type PublicLocale,
-} from "@/i18n/locales";
-import { getPublicDictionary } from "@/i18n/public";
+  simulateHourlyPaymentAction,
+  abandonHourlyCheckoutAction,
+} from "@/interface/next/actions/hourlyBookingActions";
+import { notFound, redirect } from "next/navigation";
+import { HourlyPublicBookingWorkspace } from "@/components/sections/public-booking/HourlyPublicBookingWorkspace";
+import { getHourlyPublicBookingPage } from "@/interface/next/presenters/hourlyPublicBookingPresenter";
 import {
   previewPublicBookingCouponAction,
   startPublicBookingCheckoutAction,
 } from "@/interface/next/actions/publicBookingActions";
-import { PublicClientAnalyticsBoundary } from "@/interface/next/analytics/PublicClientAnalyticsBoundary";
 import { getPublicStripePublishableKey } from "@/interface/next/config/publicStripeConfig";
+import { isMarketingLocale, marketingPath } from "@/content/marketing/routes";
+import { PublicClientAnalyticsBoundary } from "@/interface/next/analytics/PublicClientAnalyticsBoundary";
 import { getPublicStatsigConfig } from "@/interface/next/config/publicStatsigConfig";
-import { getPublicBookingPage } from "@/interface/next/presenters/publicBookingPresenter";
+import LegacyBookingPage from "@/interface/next/pages/LegacyBookingPage";
 
 export const dynamic = "force-dynamic";
-
-type PublicBookingPageProps = {
-  params: Promise<{
-    locale: string;
-  }>;
-  searchParams?: Promise<{
+export const metadata = {
+  title: "JimBoats · Booking",
+  robots: { index: false, follow: false },
+};
+type Props = {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{
     experience?: string | string[];
+    hours?: string | string[];
   }>;
 };
-
-export async function generateMetadata({
-  params,
-}: PublicBookingPageProps): Promise<Metadata> {
-  const locale = await resolveLocale(params);
-  const dictionary = getPublicDictionary(locale);
-
-  return {
-    title: dictionary.metadata.booking.title,
-    description: dictionary.metadata.booking.description,
-    alternates: {
-      canonical: `/${locale}/book`,
-      languages: createLanguageAlternates("/book"),
-    },
-    robots: {
-      follow: false,
-      index: false,
-    },
-  };
-}
-
-export default async function PublicBookingPage({
-  params,
-  searchParams,
-}: PublicBookingPageProps) {
-  const locale = await resolveLocale(params);
-  const content = await getPublicBookingPage(locale, {
-    includeAvailability: false,
-  });
-  const stripePublishableKey = getPublicStripePublishableKey();
-  const queryParams = await searchParams;
-  const experienceParam = queryParams?.experience;
-  const initialExperienceId = Array.isArray(experienceParam)
-    ? experienceParam[0]
-    : experienceParam;
-  const statsigConfig = getPublicStatsigConfig();
-
+export default async function BookingPage(props: Props) {
+  const { locale } = await props.params;
+  if (locale === "ca") return <LegacyBookingPage {...props} />;
+  if (!isMarketingLocale(locale)) notFound();
+  const query = await props.searchParams;
+  const experience = Array.isArray(query.experience)
+    ? query.experience[0]
+    : query.experience;
+  if (!experience) redirect(`${marketingPath(locale)}#experiences`);
+  const hours = Number(
+    Array.isArray(query.hours) ? query.hours[0] : query.hours,
+  );
+  const content = await getHourlyPublicBookingPage(locale, experience, hours);
+  if (!content) redirect(`${marketingPath(locale)}#experiences`);
   return (
     <PublicClientAnalyticsBoundary
-      config={statsigConfig}
+      config={getPublicStatsigConfig()}
       metadata={{
-        ...(initialExperienceId
-          ? { initial_experience_id: initialExperienceId }
-          : {}),
         locale,
         path: `/${locale}/book`,
+        initial_experience_id: experience,
       }}
       viewEventName="booking_page_viewed"
     >
-      <PublicBookingWorkspace
+      <HourlyPublicBookingWorkspace
+        localPaymentActions={
+          process.env.JIMBOATS_LOCAL_BOOKINGS === "1"
+            ? {
+                simulate: simulateHourlyPaymentAction,
+                abandon: abandonHourlyCheckoutAction,
+              }
+            : undefined
+        }
+        content={content}
         actions={{
           previewCoupon: previewPublicBookingCouponAction,
           startCheckout: startPublicBookingCheckoutAction,
         }}
-        content={content}
-        initialExperienceId={initialExperienceId}
-        stripePublishableKey={stripePublishableKey}
+        stripePublishableKey={getPublicStripePublishableKey()}
       />
     </PublicClientAnalyticsBoundary>
   );
-}
-
-async function resolveLocale(params: PublicBookingPageProps["params"]) {
-  const { locale } = await params;
-  const parsedLocale = parsePublicLocale(locale);
-
-  if (!parsedLocale) {
-    notFound();
-  }
-
-  return parsedLocale satisfies PublicLocale;
 }

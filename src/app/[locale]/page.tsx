@@ -1,99 +1,33 @@
-import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-
-import { HomeLandingPage } from "@/components/sections/HomeLandingPage";
+import { getMarketingPage } from "@/content/marketing";
 import {
-  createLanguageAlternates,
-  parsePublicLocale,
-  supportedLocales,
-  type PublicLocale,
-} from "@/i18n/locales";
-import { getPublicDictionary } from "@/i18n/public";
-import { PublicClientAnalyticsBoundary } from "@/interface/next/analytics/PublicClientAnalyticsBoundary";
-import { getPublicStatsigConfig } from "@/interface/next/config/publicStatsigConfig";
+  isMarketingLocale,
+  marketingLocales,
+} from "@/content/marketing/routes";
+import { SeoMarketingPage } from "@/components/sections/seo/SeoMarketingPage";
+import { MarketingStructuredData } from "@/components/sections/seo/MarketingStructuredData";
 import {
-  createHomeLandingStructuredData,
-  getHomeLandingPage,
-  homeLandingContent,
-} from "@/interface/next/presenters/homeLandingPresenter";
+  marketingMetadata,
+  marketingStructuredData,
+} from "@/interface/next/presenters/marketingSeoPresenter";
 
-type LocalizedPageProps = {
-  params: Promise<{
-    locale: string;
-  }>;
-};
-
+type Props = { params: Promise<{ locale: string }> };
 export function generateStaticParams() {
-  return supportedLocales.map((locale) => ({ locale }));
+  return marketingLocales.map((locale) => ({ locale }));
 }
-
-export async function generateMetadata({
-  params,
-}: LocalizedPageProps): Promise<Metadata> {
-  const locale = await resolveLocale(params);
-  const dictionary = getPublicDictionary(locale);
-
-  return {
-    title: dictionary.metadata.home.title,
-    description: dictionary.metadata.home.description,
-    alternates: {
-      canonical: `/${locale}`,
-      languages: createLanguageAlternates(),
-    },
-    openGraph: {
-      title: dictionary.metadata.home.titleWithBrand,
-      description: dictionary.metadata.home.description,
-      images: [
-        {
-          url: "/images/generated/landing/hero-sunset-barcelona-1024.webp",
-          width: 1024,
-          height: 1024,
-          alt: homeLandingContent.hero.image.alt,
-        },
-      ],
-      locale: dictionary.metadata.home.ogLocale,
-      siteName: "JimBoats",
-      type: "website",
-    },
-  };
+export async function generateMetadata(props: Props) {
+  const { locale } = await props.params;
+  if (!isMarketingLocale(locale)) notFound();
+  return marketingMetadata(locale);
 }
-
-export default async function LocalizedHomePage({
-  params,
-}: LocalizedPageProps) {
-  const locale = await resolveLocale(params);
-  const content = await getHomeLandingPage(locale);
-  const statsigConfig = getPublicStatsigConfig();
-
+export default async function LocalizedHomePage(props: Props) {
+  const { locale } = await props.params;
+  if (!isMarketingLocale(locale)) notFound();
+  const page = getMarketingPage(locale);
   return (
     <>
-      <PublicClientAnalyticsBoundary
-        config={statsigConfig}
-        metadata={{
-          locale,
-          path: `/${locale}`,
-        }}
-        viewEventName="landing_viewed"
-      >
-        <HomeLandingPage content={content} />
-      </PublicClientAnalyticsBoundary>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(createHomeLandingStructuredData(content)),
-        }}
-        type="application/ld+json"
-      />
+      <SeoMarketingPage page={page} />
+      <MarketingStructuredData data={marketingStructuredData(page)} />
     </>
   );
-}
-
-async function resolveLocale(params: LocalizedPageProps["params"]) {
-  const { locale } = await params;
-  const parsedLocale = parsePublicLocale(locale);
-
-  if (!parsedLocale) {
-    notFound();
-  }
-
-  return parsedLocale satisfies PublicLocale;
 }

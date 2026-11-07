@@ -1,4 +1,5 @@
 "use client";
+import { adminEs } from "@/i18n/admin/es";
 
 import { Eye, Languages, Save } from "lucide-react";
 import { useState } from "react";
@@ -45,7 +46,8 @@ export function AdminNotificationTemplateDetailSection({
   const [form, setForm] = useState<AdminNotificationTemplateInput>(() =>
     createTemplateForm(template),
   );
-  const [activeLocale, setActiveLocale] = useState<AdminNotificationLocale>("en");
+  const [activeLocale, setActiveLocale] =
+    useState<AdminNotificationLocale>("es");
   const activeTranslation = form.translations.find(
     (translation) => translation.locale === activeLocale,
   );
@@ -91,19 +93,26 @@ export function AdminNotificationTemplateDetailSection({
           </p>
         </div>
         <Button href="/admin/notifications/templates" variant="secondary">
-          Back to templates
+          {adminEs["Back to templates"]}
         </Button>
       </div>
 
-      <form className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_24rem]" onSubmit={submit}>
+      <form
+        className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_24rem]"
+        onSubmit={submit}
+      >
         <div className="space-y-5">
           <Surface
-            description="Template metadata controls which rules can use this content."
-            title="Template settings"
+            description={
+              adminEs[
+                "Template metadata controls which rules can use this content."
+              ]
+            }
+            title={adminEs["Template settings"]}
           >
             <FieldGrid columns={3}>
               <SelectField
-                label="Event"
+                label={adminEs["Event"]}
                 onChange={(event) => {
                   const eventOption = state.eventOptions.find(
                     (option) => option.eventType === event.target.value,
@@ -125,53 +134,59 @@ export function AdminNotificationTemplateDetailSection({
                 ))}
               </SelectField>
               <SelectField
-                label="Channel"
+                label={adminEs["Channel"]}
                 onChange={(event) =>
                   setForm((current) => ({
                     ...current,
-                    channel: event
-                      .target.value as AdminNotificationTemplateInput["channel"],
+                    channel: event.target
+                      .value as AdminNotificationTemplateInput["channel"],
                   }))
                 }
                 value={form.channel}
               >
-                <option value="EMAIL">Email</option>
-                <option value="WHATSAPP">WhatsApp</option>
+                <option value="EMAIL">{adminEs["Email"]}</option>
+                <option value="WHATSAPP">{adminEs["WhatsApp"]}</option>
               </SelectField>
               <SelectField
-                label="Status"
+                label={adminEs["Status"]}
                 onChange={(event) =>
                   setForm((current) => ({
                     ...current,
-                    status: event
-                      .target.value as AdminNotificationTemplateInput["status"],
+                    status: event.target
+                      .value as AdminNotificationTemplateInput["status"],
                   }))
                 }
                 value={form.status}
               >
-                <option value="DRAFT">Draft</option>
-                <option value="READY">Ready</option>
-                <option value="ACTIVE">Active</option>
-                <option value="ARCHIVED">Archived</option>
+                <option value="DRAFT">{adminEs["Draft"]}</option>
+                <option value="READY">{adminEs["Ready"]}</option>
+                <option value="ACTIVE">{adminEs["Active"]}</option>
+                <option value="ARCHIVED">{adminEs["Archived"]}</option>
               </SelectField>
             </FieldGrid>
             <div className="mt-4 grid gap-4 md:grid-cols-2">
               <TextField
-                description="Required for automatic WhatsApp sends through Prelude."
+                description={
+                  adminEs[
+                    "Required for automatic WhatsApp sends through Prelude."
+                  ]
+                }
                 disabled={form.channel !== "WHATSAPP"}
-                label="Provider template ID"
+                label={adminEs["Provider template ID"]}
                 onChange={(event) =>
                   setForm((current) => ({
                     ...current,
                     providerTemplateId: event.target.value,
                   }))
                 }
-                value={form.channel === "WHATSAPP" ? form.providerTemplateId : ""}
+                value={
+                  form.channel === "WHATSAPP" ? form.providerTemplateId : ""
+                }
               />
             </div>
             <div className="mt-4 grid gap-4 md:grid-cols-2">
               <TextAreaField
-                label="Allowed variables"
+                label={adminEs["Allowed variables"]}
                 onChange={(event) =>
                   setForm((current) => ({
                     ...current,
@@ -181,7 +196,7 @@ export function AdminNotificationTemplateDetailSection({
                 value={form.allowedVariablesText}
               />
               <TextAreaField
-                label="Required variables"
+                label={adminEs["Required variables"]}
                 onChange={(event) =>
                   setForm((current) => ({
                     ...current,
@@ -215,8 +230,12 @@ export function AdminNotificationTemplateDetailSection({
                 ))}
               </div>
             }
-            description="Write each language explicitly. Missing published languages will be shown as warnings."
-            title="Translations"
+            description={
+              adminEs[
+                "Write each language explicitly. Missing published languages will be shown as warnings."
+              ]
+            }
+            title={adminEs["Translations"]}
           >
             {activeTranslation ? (
               <TranslationEditor
@@ -236,7 +255,7 @@ export function AdminNotificationTemplateDetailSection({
         </div>
 
         <div className="space-y-5">
-          <Surface title="Preview">
+          <Surface title={adminEs["Preview"]}>
             <div className="space-y-4">
               <Button
                 disabled={isSaving || !activeTranslation}
@@ -246,27 +265,30 @@ export function AdminNotificationTemplateDetailSection({
                 variant="secondary"
               >
                 <Eye className="size-4" aria-hidden="true" />
-                Render preview
+                {adminEs["Render preview"]}
               </Button>
               {preview ? (
                 <PreviewPanel preview={preview} />
               ) : (
                 <p className="text-sm leading-6 text-slate-600">
-                  Preview will render with a local booking fixture.
+                  {adminEs["Preview will render with a local booking fixture."]}
                 </p>
               )}
             </div>
           </Surface>
 
-          <Surface title="Save">
+          <Surface title={adminEs["Save"]}>
             <div className="space-y-4">
               <p className="text-sm leading-6 text-slate-600">
-                Saving increments the template version and refreshes rules that
-                depend on it.
+                {
+                  adminEs[
+                    "Saving increments the template version and refreshes rules that depend on it."
+                  ]
+                }
               </p>
               <Button disabled={isSaving} loading={isSaving} type="submit">
                 <Save className="size-4" aria-hidden="true" />
-                Save template
+                {adminEs["Save template"]}
               </Button>
             </div>
           </Surface>
@@ -291,24 +313,24 @@ function TranslationEditor({
     <div className="space-y-4">
       <FieldGrid>
         <SelectField
-          label="Translation status"
+          label={adminEs["Translation status"]}
           onChange={(event) =>
             updateTranslation({
               ...translation,
-              status: event
-                .target.value as AdminNotificationTemplateTranslationInput["status"],
+              status: event.target
+                .value as AdminNotificationTemplateTranslationInput["status"],
             })
           }
           value={translation.status}
         >
-          <option value="DRAFT">Draft</option>
-          <option value="READY">Ready</option>
-          <option value="PUBLISHED">Published</option>
-          <option value="ARCHIVED">Archived</option>
+          <option value="DRAFT">{adminEs["Draft"]}</option>
+          <option value="READY">{adminEs["Ready"]}</option>
+          <option value="PUBLISHED">{adminEs["Published"]}</option>
+          <option value="ARCHIVED">{adminEs["Archived"]}</option>
         </SelectField>
         <TextAreaField
           disabled={channel !== "EMAIL"}
-          label="Subject"
+          label={adminEs["Subject"]}
           onChange={(event) =>
             updateTranslation({
               ...translation,
@@ -319,7 +341,7 @@ function TranslationEditor({
         />
       </FieldGrid>
       <TextAreaField
-        label="Preview text"
+        label={adminEs["Preview text"]}
         onChange={(event) =>
           updateTranslation({
             ...translation,
@@ -330,7 +352,7 @@ function TranslationEditor({
       />
       <TextAreaField
         className="min-h-64"
-        label="Body"
+        label={adminEs["Body"]}
         onChange={(event) =>
           updateTranslation({
             ...translation,
@@ -342,7 +364,7 @@ function TranslationEditor({
       <TextAreaField
         className="min-h-80 font-mono text-xs leading-5"
         disabled={channel !== "EMAIL"}
-        label="HTML body"
+        label={adminEs["HTML body"]}
         onChange={(event) =>
           updateTranslation({
             ...translation,
@@ -361,7 +383,7 @@ function PreviewPanel({ preview }: { preview: AdminNotificationPreview }) {
       {preview.renderedSubject ? (
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">
-            Subject
+            {adminEs["Subject"]}
           </p>
           <p className="mt-1 break-words text-sm font-semibold text-slate-950">
             {preview.renderedSubject}
@@ -371,7 +393,7 @@ function PreviewPanel({ preview }: { preview: AdminNotificationPreview }) {
       {preview.renderedPreviewText ? (
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">
-            Preview text
+            {adminEs["Preview text"]}
           </p>
           <p className="mt-1 break-words text-sm text-slate-700">
             {preview.renderedPreviewText}
@@ -380,7 +402,7 @@ function PreviewPanel({ preview }: { preview: AdminNotificationPreview }) {
       ) : null}
       <div>
         <p className="text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">
-          Body
+          {adminEs["Body"]}
         </p>
         <p className="mt-1 whitespace-pre-wrap break-words rounded-md border border-slate-200 bg-slate-50 px-3 py-3 text-sm leading-6 text-slate-700">
           {preview.renderedBody}
@@ -395,7 +417,7 @@ function PreviewPanel({ preview }: { preview: AdminNotificationPreview }) {
             className="mt-1 h-96 w-full rounded-md border border-slate-200 bg-white"
             sandbox=""
             srcDoc={preview.renderedHtmlBody}
-            title="HTML email preview"
+            title={adminEs["HTML email preview"]}
           />
         </div>
       ) : null}

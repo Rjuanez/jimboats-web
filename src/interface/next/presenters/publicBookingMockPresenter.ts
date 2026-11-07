@@ -1,3 +1,7 @@
+import { cancellationPolicy } from "@/content/booking/cancellationPolicy";
+import { getBookingPrivacyNotice } from "@/content/privacy/booking";
+import { privacyPath } from "@/content/privacy/routes";
+import { termsPages, termsPath } from "@/content/booking/termsRoutes";
 import type { PublicBookingContent } from "@/components/sections/public-booking/PublicBookingTypes";
 import { createLocalizedPath, type PublicLocale } from "@/i18n/locales";
 import { getPublicDictionary } from "@/i18n/public";
@@ -464,16 +468,16 @@ const publicBookingMockBase = {
   ],
   payment: {
     depositCopy:
-      "Pay a fixed €100 deposit now. The remaining balance is paid onboard in cash.",
+      "Pay a fixed €100 deposit now. The remaining balance is paid on board in cash, by card or via Bizum.",
     secureCopy:
       "Your deposit is processed securely by Stripe without leaving this page.",
     subtitle: "You're one step away from your day at sea.",
     title: "Confirm your booking",
   },
   policies: {
-    cancellation: "Cancellation windows are configurable from the backpanel.",
+    cancellation: cancellationPolicy.copy.en.summary,
     meetingPoint: "Port Olimpic, Barcelona",
-    remainingPayment: "Remaining balance paid onboard in cash.",
+    remainingPayment: "Remaining balance paid on board in cash, by card or via Bizum.",
   },
   confirmation: {
     bookingReference: "JB-MOCK-2026",
@@ -501,16 +505,25 @@ function withExperienceMaps(
 
   return {
     ...content,
+    experiences: content.experiences.map((experience) => ({
+      ...experience,
+      cancellationPolicySummary: cancellationPolicy.copy[locale].summary,
+    })),
+    policies: {
+      ...content.policies,
+      cancellation: cancellationPolicy.copy[locale].summary,
+    },
     bookHref: createLocalizedPath(locale, "/book"),
     footerLinks: [
       {
         href: createLocalizedPath(locale),
         label: dictionary.common.backToJimBoats,
       },
-      { href: "#", label: dictionary.common.privacyPolicy },
-      { href: "#", label: dictionary.common.termsOfService },
+      { href: privacyPath(locale), label: dictionary.common.privacyPolicy },
+      { href: termsPath(locale), label: termsPages[locale === "ca" ? "es" : locale].label },
     ],
     homeHref: createLocalizedPath(locale),
+    privacy: getBookingPrivacyNotice(locale),
     locale,
     availabilityByExperienceId: Object.fromEntries(
       content.experiences.map((experience) => [

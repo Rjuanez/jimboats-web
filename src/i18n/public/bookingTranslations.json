@@ -1,0 +1,410 @@
+{
+  "fr": {
+    "actions": {
+      "continueToExtras": "Continuer vers les extras",
+      "continueToPayment": "Continuer vers le paiement"
+    },
+    "bottomBar": {
+      "chooseDateAndTime": "Choisissez la date et l’heure",
+      "continue": "Continuer",
+      "depositDueNow": "À payer maintenant",
+      "openingPayment": "Ouverture du paiement",
+      "payDeposit": "Payer maintenant",
+      "remainingOnboard": "{value} restants à régler à bord en espèces, par carte ou via Bizum.",
+      "selectExperience": "Choisissez une expérience pour commencer",
+      "total": "Total"
+    },
+    "confirmation": {
+      "bookingReference": "—",
+      "subtitle": "Votre réservation est confirmée après réception du paiement.",
+      "title": "Réservation confirmée"
+    },
+    "errors": {
+      "invalidGuests": "Choisissez un nombre de passagers valable.",
+      "missingCustomer": "Indiquez votre nom et votre email.",
+      "missingDeliveryChannel": "Choisissez un canal pour recevoir votre billet.",
+      "missingWhatsappPhone": "Indiquez un numéro pour recevoir le billet par WhatsApp.",
+      "slotUnavailable": "Ce créneau n’est plus disponible. Choisissez une autre heure."
+    },
+    "experienceStep": {
+      "availableDates": "Dates disponibles",
+      "availabilityError": "Impossible de charger les disponibilités. Actualisez la page pour réessayer.",
+      "availabilityLoading": "Chargement des disponibilités…",
+      "dateDesktopTitle": "Choisissez votre date",
+      "dateMobileTitle": "Choisissez une date",
+      "departureTimesUnavailable": "Aucun départ disponible à cette date.",
+      "desktopTitle": "Choisissez votre expérience et votre date",
+      "emptyExperiences": "Aucune expérience réservable pour le moment.",
+      "experienceDesktopTitle": "Choisissez votre expérience",
+      "experienceMobileTitle": "Choisissez une expérience",
+      "from": "À partir de",
+      "mobileTitle": "Choisissez votre expérience",
+      "nextMonth": "Mois suivant",
+      "previousMonth": "Mois précédent",
+      "selectAvailableDate": "Sélectionnez une date disponible.",
+      "subtitle": "Trouvez le bon moment pour votre sortie en mer.",
+      "timeDesktopTitle": "Choisissez votre heure",
+      "timeMobileTitle": "Choisissez une heure"
+    },
+    "extrasStep": {
+      "add": "Ajouter",
+      "emptyExtras": "Aucun extra disponible pour ce départ.",
+      "remove": "Retirer",
+      "selectionTitle": "Extras disponibles",
+      "skip": "Continuer sans extras",
+      "subtitle": "Ajoutez quelques détails pour personnaliser votre sortie.",
+      "title": "À votre façon"
+    },
+    "footer": {
+      "legalLabel": "Informations légales de réservation",
+      "needHelp": "Besoin d’aide ?"
+    },
+    "header": {
+      "backHome": "Retour",
+      "closeLabel": "Fermer la réservation et revenir à JimBoats",
+      "navExperiences": "Expériences",
+      "navHowItWorks": "Comment ça marche",
+      "navLabel": "Navigation de réservation",
+      "navReviews": "Avis",
+      "secure": "Sécurisé"
+    },
+    "labels": {
+      "accepted": "acceptées",
+      "back": "Retour",
+      "bookingSummary": "Résumé de réservation",
+      "bookingPass": "Billet de réservation",
+      "cancellation": "Annulation",
+      "cancellationPolicy": "Conditions d’annulation",
+      "capacity": "Capacité de cette sortie : {value}.",
+      "coupon": "Code promo",
+      "couponApplied": "{value} appliqué",
+      "couponApply": "Appliquer",
+      "couponDiscount": "Réduction",
+      "couponPlaceholder": "CODE",
+      "couponRemove": "Retirer",
+      "date": "Date",
+      "deliveryPreferences": "Envoi du billet",
+      "depositDueNow": "À payer maintenant: {value}",
+      "disabled": "désactivé",
+      "emailAddress": "Email",
+      "emailPass": "Recevoir mon billet par email",
+      "emailPassDescription": "Nous enverrons le billet et le reçu à cette adresse.",
+      "enabled": "activé",
+      "experience": "Expérience",
+      "extras": "Extras",
+      "fullName": "Nom complet",
+      "guests": "Passagers",
+      "meetingPoint": "Point de rendez-vous",
+      "noExtrasSelected": "Aucun extra sélectionné.",
+      "notAccepted": "non acceptées",
+      "phone": "Téléphone",
+      "phoneDescription": "Nécessaire pour recevoir le billet par WhatsApp.",
+      "preparingPayment": "Préparation du paiement sécurisé",
+      "remainingBalance": "Solde restant : {value}, à régler à bord en espèces, par carte ou via Bizum.",
+      "securePayment": "Paiement sécurisé",
+      "selectedExtras": "Extras sélectionnés",
+      "termsAgreement": "En effectuant le paiement, vous acceptez les",
+      "time": "Heure",
+      "total": "Total",
+      "whatsappPass": "Recevoir mon billet par WhatsApp",
+      "whatsappPassDescription": "Nous enverrons le billet au numéro indiqué.",
+      "yourDetails": "Vos coordonnées",
+      "paymentChoice": "Comment souhaitez-vous payer ?",
+      "payDeposit": "Payer un acompte",
+      "payFull": "Tout payer maintenant",
+      "paidInFull": "Aucun solde restant",
+      "daytimeOnly": "Cette balade se termine avant le coucher du soleil. Pour l’admirer depuis le bateau, choisissez la sortie au coucher du soleil.",
+      "timeRange": "Départ → retour · heure de Barcelone"
+    },
+    "maxAdvanceLabel": "Réservation jusqu’à 6 mois à l’avance.",
+    "payment": {
+      "depositCopy": "Le montant de l’acompte figure dans le résumé.",
+      "secureCopy": "Stripe traite votre paiement de façon sécurisée.",
+      "subtitle": "Votre sortie en mer est presque réservée.",
+      "title": "Confirmez votre réservation"
+    },
+    "policies": {
+      "cancellation": "Consultez les conditions avant le paiement.",
+      "meetingPoint": "Port Olímpic, Barcelone",
+      "remainingPayment": "Le solde se règle à bord en espèces, par carte ou via Bizum."
+    },
+    "steps": {
+      "confirmation": "Confirmation",
+      "experience": "Date et durée",
+      "extras": "Extras",
+      "payment": "Paiement"
+    }
+  },
+  "de": {
+    "actions": {
+      "continueToExtras": "Weiter zu Extras",
+      "continueToPayment": "Weiter zur Zahlung"
+    },
+    "bottomBar": {
+      "chooseDateAndTime": "Datum und Uhrzeit wählen",
+      "continue": "Weiter",
+      "depositDueNow": "Jetzt zu zahlen",
+      "openingPayment": "Zahlung wird geöffnet",
+      "payDeposit": "Jetzt bezahlen",
+      "remainingOnboard": "{value} Restbetrag an Bord, bar, mit Karte oder über Bizum.",
+      "selectExperience": "Wählen Sie zuerst ein Erlebnis",
+      "total": "Gesamt"
+    },
+    "confirmation": {
+      "bookingReference": "—",
+      "subtitle": "Ihre Buchung wird nach Zahlungseingang bestätigt.",
+      "title": "Buchung bestätigt"
+    },
+    "errors": {
+      "invalidGuests": "Wählen Sie eine gültige Personenzahl.",
+      "missingCustomer": "Geben Sie Ihren Namen und Ihre E-Mail-Adresse ein.",
+      "missingDeliveryChannel": "Wählen Sie einen Kanal für Ihren Buchungspass.",
+      "missingWhatsappPhone": "Geben Sie für WhatsApp eine Telefonnummer ein.",
+      "slotUnavailable": "Dieser Termin ist nicht mehr verfügbar. Wählen Sie eine andere Uhrzeit."
+    },
+    "experienceStep": {
+      "availableDates": "Verfügbare Termine",
+      "availabilityError": "Die Verfügbarkeit konnte nicht geladen werden. Laden Sie die Seite neu.",
+      "availabilityLoading": "Verfügbarkeit wird geladen…",
+      "dateDesktopTitle": "Datum wählen",
+      "dateMobileTitle": "Datum wählen",
+      "departureTimesUnavailable": "Keine Abfahrten an diesem Datum verfügbar.",
+      "desktopTitle": "Erlebnis und Datum wählen",
+      "emptyExperiences": "Derzeit sind keine Erlebnisse buchbar.",
+      "experienceDesktopTitle": "Erlebnis wählen",
+      "experienceMobileTitle": "Erlebnis wählen",
+      "from": "Ab",
+      "mobileTitle": "Erlebnis wählen",
+      "nextMonth": "Nächster Monat",
+      "previousMonth": "Vorheriger Monat",
+      "selectAvailableDate": "Wählen Sie einen verfügbaren Termin.",
+      "subtitle": "Finden Sie den passenden Termin für Ihre Bootstour.",
+      "timeDesktopTitle": "Uhrzeit wählen",
+      "timeMobileTitle": "Uhrzeit wählen"
+    },
+    "extrasStep": {
+      "add": "Hinzufügen",
+      "emptyExtras": "Für diese Abfahrt sind keine Extras verfügbar.",
+      "remove": "Entfernen",
+      "selectionTitle": "Verfügbare Extras",
+      "skip": "Ohne Extras weiter",
+      "subtitle": "Gestalten Sie Ihre Bootstour mit zusätzlichen Extras.",
+      "title": "Ganz nach Ihren Wünschen"
+    },
+    "footer": {
+      "legalLabel": "Rechtliche Buchungsinformationen",
+      "needHelp": "Brauchen Sie Hilfe?"
+    },
+    "header": {
+      "backHome": "Zurück",
+      "closeLabel": "Buchung schließen und zu JimBoats zurückkehren",
+      "navExperiences": "Erlebnisse",
+      "navHowItWorks": "So funktioniert es",
+      "navLabel": "Buchungsnavigation",
+      "navReviews": "Bewertungen",
+      "secure": "Sicher"
+    },
+    "labels": {
+      "accepted": "akzeptiert",
+      "back": "Zurück",
+      "bookingSummary": "Buchungsübersicht",
+      "bookingPass": "Buchungspass",
+      "cancellation": "Stornierung",
+      "cancellationPolicy": "Stornierungsbedingungen",
+      "capacity": "Kapazität dieser Tour: {value}.",
+      "coupon": "Gutschein",
+      "couponApplied": "{value} angewendet",
+      "couponApply": "Anwenden",
+      "couponDiscount": "Gutscheinrabatt",
+      "couponPlaceholder": "CODE",
+      "couponRemove": "Entfernen",
+      "date": "Datum",
+      "deliveryPreferences": "Versandeinstellungen",
+      "depositDueNow": "Jetzt zu zahlen: {value}",
+      "disabled": "deaktiviert",
+      "emailAddress": "E-Mail",
+      "emailPass": "Buchungspass per E-Mail senden",
+      "emailPassDescription": "Wir senden Buchungspass und Beleg an diese E-Mail-Adresse.",
+      "enabled": "aktiviert",
+      "experience": "Erlebnis",
+      "extras": "Extras",
+      "fullName": "Vollständiger Name",
+      "guests": "Personen",
+      "meetingPoint": "Treffpunkt",
+      "noExtrasSelected": "Keine Extras ausgewählt.",
+      "notAccepted": "nicht akzeptiert",
+      "phone": "Telefon",
+      "phoneDescription": "Für den Versand per WhatsApp erforderlich.",
+      "preparingPayment": "Sichere Zahlung wird vorbereitet",
+      "remainingBalance": "Restbetrag: {value}, an Bord bar, mit Karte oder über Bizum zu zahlen.",
+      "securePayment": "Sichere Zahlung",
+      "selectedExtras": "Ausgewählte Extras",
+      "termsAgreement": "Mit der Zahlung akzeptieren Sie die",
+      "time": "Uhrzeit",
+      "total": "Gesamt",
+      "whatsappPass": "Buchungspass per WhatsApp senden",
+      "whatsappPassDescription": "Wir senden den Buchungspass an die angegebene Nummer.",
+      "yourDetails": "Ihre Angaben",
+      "paymentChoice": "Wie möchtest du bezahlen?",
+      "payDeposit": "Anzahlung leisten",
+      "payFull": "Jetzt vollständig bezahlen",
+      "paidInFull": "Kein Restbetrag",
+      "daytimeOnly": "Diese Fahrt endet vor Sonnenuntergang. Um ihn vom Boot aus zu sehen, wähle die Sonnenuntergangstour.",
+      "timeRange": "Abfahrt → Rückkehr · Ortszeit Barcelona"
+    },
+    "maxAdvanceLabel": "Bis zu 6 Monate im Voraus buchbar.",
+    "payment": {
+      "depositCopy": "Die Anzahlung finden Sie in der Übersicht.",
+      "secureCopy": "Stripe verarbeitet Ihre Zahlung sicher.",
+      "subtitle": "Nur noch ein Schritt bis zu Ihrem Tag auf dem Meer.",
+      "title": "Buchung abschließen"
+    },
+    "policies": {
+      "cancellation": "Prüfen Sie die Bedingungen vor der Zahlung.",
+      "meetingPoint": "Port Olímpic, Barcelona",
+      "remainingPayment": "Der Restbetrag ist an Bord bar, mit Karte oder über Bizum zahlbar."
+    },
+    "steps": {
+      "confirmation": "Bestätigung",
+      "experience": "Datum und Dauer",
+      "extras": "Extras",
+      "payment": "Zahlung"
+    }
+  },
+  "nl": {
+    "actions": {
+      "continueToExtras": "Verder naar extra’s",
+      "continueToPayment": "Verder naar betalen"
+    },
+    "bottomBar": {
+      "chooseDateAndTime": "Kies datum en tijd",
+      "continue": "Verder",
+      "depositDueNow": "Nu te betalen",
+      "openingPayment": "Betaling openen",
+      "payDeposit": "Nu betalen",
+      "remainingOnboard": "{value} resterend, aan boord contant, met een kaart of via Bizum.",
+      "selectExperience": "Kies een ervaring om te beginnen",
+      "total": "Totaal"
+    },
+    "confirmation": {
+      "bookingReference": "—",
+      "subtitle": "Je boeking wordt na ontvangst van de betaling bevestigd.",
+      "title": "Boeking bevestigd"
+    },
+    "errors": {
+      "invalidGuests": "Kies een geldig aantal personen.",
+      "missingCustomer": "Vul je naam en e-mailadres in.",
+      "missingDeliveryChannel": "Kies hoe je je boekingsbewijs wilt ontvangen.",
+      "missingWhatsappPhone": "Vul een telefoonnummer in voor WhatsApp.",
+      "slotUnavailable": "Dit tijdstip is niet meer beschikbaar. Kies een ander tijdstip."
+    },
+    "experienceStep": {
+      "availableDates": "Beschikbare datums",
+      "availabilityError": "De beschikbaarheid kon niet worden geladen. Vernieuw de pagina.",
+      "availabilityLoading": "Beschikbaarheid laden…",
+      "dateDesktopTitle": "Kies je datum",
+      "dateMobileTitle": "Kies een datum",
+      "departureTimesUnavailable": "Geen vertrektijden beschikbaar op deze datum.",
+      "desktopTitle": "Kies je ervaring en datum",
+      "emptyExperiences": "Er zijn momenteel geen ervaringen te boeken.",
+      "experienceDesktopTitle": "Kies je ervaring",
+      "experienceMobileTitle": "Kies een ervaring",
+      "from": "Vanaf",
+      "mobileTitle": "Kies je ervaring",
+      "nextMonth": "Volgende maand",
+      "previousMonth": "Vorige maand",
+      "selectAvailableDate": "Kies een beschikbare datum.",
+      "subtitle": "Kies het perfecte moment voor je boottocht.",
+      "timeDesktopTitle": "Kies je tijd",
+      "timeMobileTitle": "Kies een tijd"
+    },
+    "extrasStep": {
+      "add": "Toevoegen",
+      "emptyExtras": "Voor dit vertrek zijn geen extra’s beschikbaar.",
+      "remove": "Verwijderen",
+      "selectionTitle": "Beschikbare extra’s",
+      "skip": "Doorgaan zonder extra’s",
+      "subtitle": "Maak je boottocht persoonlijk met extra’s.",
+      "title": "Maak het jouw ervaring"
+    },
+    "footer": {
+      "legalLabel": "Juridische boekingsinformatie",
+      "needHelp": "Hulp nodig?"
+    },
+    "header": {
+      "backHome": "Terug",
+      "closeLabel": "Boeking sluiten en terug naar JimBoats",
+      "navExperiences": "Ervaringen",
+      "navHowItWorks": "Hoe werkt het",
+      "navLabel": "Boekingsnavigatie",
+      "navReviews": "Beoordelingen",
+      "secure": "Veilig"
+    },
+    "labels": {
+      "accepted": "geaccepteerd",
+      "back": "Terug",
+      "bookingSummary": "Boekingsoverzicht",
+      "bookingPass": "Boekingsbewijs",
+      "cancellation": "Annulering",
+      "cancellationPolicy": "Annuleringsvoorwaarden",
+      "capacity": "Capaciteit van deze tocht: {value}.",
+      "coupon": "Kortingscode",
+      "couponApplied": "{value} toegepast",
+      "couponApply": "Toepassen",
+      "couponDiscount": "Korting",
+      "couponPlaceholder": "CODE",
+      "couponRemove": "Verwijderen",
+      "date": "Datum",
+      "deliveryPreferences": "Verzendvoorkeuren",
+      "depositDueNow": "Nu te betalen: {value}",
+      "disabled": "uitgeschakeld",
+      "emailAddress": "E-mail",
+      "emailPass": "Stuur mijn boekingsbewijs per e-mail",
+      "emailPassDescription": "We sturen je boekingsbewijs en ontvangstbewijs naar dit adres.",
+      "enabled": "ingeschakeld",
+      "experience": "Ervaring",
+      "extras": "Extra’s",
+      "fullName": "Volledige naam",
+      "guests": "Personen",
+      "meetingPoint": "Ontmoetingspunt",
+      "noExtrasSelected": "Geen extra’s geselecteerd.",
+      "notAccepted": "niet geaccepteerd",
+      "phone": "Telefoon",
+      "phoneDescription": "Nodig voor ontvangst via WhatsApp.",
+      "preparingPayment": "Veilige betaling voorbereiden",
+      "remainingBalance": "Resterend bedrag: {value}, aan boord contant, met een kaart of via Bizum te betalen.",
+      "securePayment": "Veilig betalen",
+      "selectedExtras": "Geselecteerde extra’s",
+      "termsAgreement": "Door te betalen accepteer je de",
+      "time": "Tijd",
+      "total": "Totaal",
+      "whatsappPass": "Stuur mijn boekingsbewijs via WhatsApp",
+      "whatsappPassDescription": "We sturen het boekingsbewijs naar het opgegeven nummer.",
+      "yourDetails": "Je gegevens",
+      "paymentChoice": "Hoe wil je betalen?",
+      "payDeposit": "Een aanbetaling doen",
+      "payFull": "Nu volledig betalen",
+      "paidInFull": "Geen resterend bedrag",
+      "daytimeOnly": "Deze tocht eindigt voor zonsondergang. Kies de zonsondergangtocht om die vanaf de boot te bekijken.",
+      "timeRange": "Vertrek → terugkomst · tijd in Barcelona"
+    },
+    "maxAdvanceLabel": "Boek tot 6 maanden vooruit.",
+    "payment": {
+      "depositCopy": "Het aanbetalingsbedrag staat in het overzicht.",
+      "secureCopy": "Stripe verwerkt je betaling veilig.",
+      "subtitle": "Nog één stap tot je dag op zee.",
+      "title": "Bevestig je boeking"
+    },
+    "policies": {
+      "cancellation": "Lees de voorwaarden vóór betaling.",
+      "meetingPoint": "Port Olímpic, Barcelona",
+      "remainingPayment": "Het resterende bedrag betaal je aan boord contant, met een kaart of via Bizum."
+    },
+    "steps": {
+      "confirmation": "Bevestiging",
+      "experience": "Datum en duur",
+      "extras": "Extra’s",
+      "payment": "Betalen"
+    }
+  }
+}

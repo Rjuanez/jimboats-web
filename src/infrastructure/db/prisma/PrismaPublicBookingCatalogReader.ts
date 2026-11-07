@@ -1,3 +1,4 @@
+import { resolveHourlyTariffs, type HourlyTariffSource } from "@/infrastructure/booking/HourlyTariffs";
 import type {
   PublicBookingCalendarBlockReadModel,
   PublicBookingCatalogExperienceReadModel,
@@ -154,6 +155,7 @@ const mediaInclude = {
 export class PrismaPublicBookingCatalogReader implements PublicBookingCatalogReader {
   constructor(
     private readonly prisma: PrismaPublicBookingCatalogReaderClient,
+    private readonly hourlyTariffs: HourlyTariffSource = {},
   ) {}
 
   async listBookableExperiences(input: { locale: SupportedLocaleCode }) {
@@ -209,7 +211,7 @@ export class PrismaPublicBookingCatalogReader implements PublicBookingCatalogRea
       mediaIdsFromExperiences(records),
     );
 
-    return records.map((record) => experienceFromRecord(record, mediaById));
+    return records.map((record) => ({ ...experienceFromRecord(record, mediaById), hourlyRates: resolveHourlyTariffs(this.hourlyTariffs, record) }));
   }
 
   async listActiveCalendarBlocks(input: { from: Date; to: Date }) {

@@ -1,0 +1,521 @@
+{
+  "labels": {
+    "name": "Blog",
+    "title": "Barcelona, met tijd om te genieten.",
+    "seoTitle": "Barcelona: zonsondergang en romantische plannen",
+    "description": "Kies een plek voor zonsopgang of zonsondergang, plan tijd met z’n tweeën en ontdek Barcelona vanaf zee met de praktische gidsen van JimBoats.",
+    "eyebrow": "HET JIMBOATS DAGBOEK",
+    "read": "Lees de gids",
+    "toc": "In deze gids",
+    "related": "Meer ideeën voor je verblijf",
+    "sources": "Bronnen en praktische informatie",
+    "updated": "Bijgewerkt op",
+    "by": "Door",
+    "faq": "Veelgestelde vragen",
+    "experience": "Bekijk de ervaring",
+    "prices": "Vergelijk prijzen",
+    "contact": "Naar Port Olímpic",
+    "all": "Alle gidsen",
+    "relatedExperience": "Plan je uitstapje",
+    "photo": "Barcelona vanaf zee · JimBoats",
+    "source": "Informatie over de plek"
+  },
+  "articles": {
+    "sunset": {
+      "slug": "zonsondergang-barcelona-bekijken",
+      "title": "Waar kun je de zonsondergang in Barcelona bekijken?",
+      "seoTitle": "Zonsondergang Barcelona: plekken, tijden en tips",
+      "description": "Montjuïc, de boulevard of een privéboot: kies jouw plek voor de zonsondergang in Barcelona en plan een ontspannen avond met praktische tips.",
+      "category": "Het laatste licht",
+      "imageAlt": "De zee en het avondlicht tijdens een JimBoats-boottocht",
+      "lead": "De beste plek voor de zonsondergang in Barcelona hangt af van wat je wilt zien: de zon boven de heuvels, warm licht op de stad of veranderende kleuren op de Middellandse Zee. Dat zijn verschillende uitzichten. Deze drie mogelijkheden helpen je een avond te kiezen die bij je past.",
+      "sections": [
+        {
+          "id": "richting",
+          "title": "De zon gaat onder aan de landkant",
+          "paragraphs": [
+            "De kust van Barcelona ligt naar het oosten en zuidoosten. ’s Avonds zakt de zon richting het binnenland. Vanaf het strand kun je genieten van het licht op het water, maar verwacht niet dat je de zon in zee ziet verdwijnen. Vanaf een boot kun je naar de stad en de skyline kijken.",
+            "Wil je de zon boven de Middellandse Zee zien opkomen, kies dan voor de ochtend. De avond past bij uitzicht op de stad in warm licht of een wandeling aan het einde van de dag."
+          ]
+        },
+        {
+          "id": "montjuic",
+          "title": "Montjuïc: de stad van bovenaf",
+          "paragraphs": [
+            "Montjuïc heeft uitzichtpunten over Barcelona. Vanaf de Mirador de l’Alcalde kijk je naar de stad en de haven; rond de Mirador del Migdia vind je een andere kijkrichting voor het laatste licht.",
+            "Kies een concrete plek en controleer vooraf de toegang. Het kasteel bezoeken is iets anders dan naar een uitzichtpunt wandelen: een afgesloten terrein is niet vanzelfsprekend open tot zonsondergang. Plan ook de terugweg als je tot na het donker blijft."
+          ],
+          "sourceIds": [
+            "montjuic",
+            "outdoors"
+          ]
+        },
+        {
+          "id": "boulevard",
+          "title": "Barceloneta en de boulevard: houd het flexibel",
+          "paragraphs": [
+            "De kustpromenade past bij een avond zonder vaste reservering. Wandel, stop wanneer je wilt en loop richting Port Olímpic als dat in je plan past. Hoe lang je blijft, kun je ter plekke beslissen.",
+            "Hier gaat het om de sfeer en de kleuren, niet om een zon die in zee zakt. Wil je daarna uit eten, houd dan ruimte voor de wandeling en reserveer het restaurant apart. De hele avond hoeft niet af te hangen van één foto."
+          ]
+        },
+        {
+          "id": "vanaf-zee",
+          "title": "Een privéboot met de skyline als uitzicht",
+          "paragraphs": [
+            "Vertrekken vanuit Port Olímpic geeft je zicht op de kust vanaf het water en tijd met je eigen gezelschap. JimBoats biedt een privéboottocht bij zonsondergang voor maximaal zes gasten, inclusief schipper, brandstof en verzekering.",
+            "Deze ervaring begint bij twee uur; langere beschikbare tochten kun je ook kiezen. Vanaf twee uur zijn drankjes en snacks inbegrepen. De tijd van zonsondergang helpt bij je planning, maar is niet je instaptijd. Bekijk het beschikbare vertrek tijdens het boeken."
+          ]
+        },
+        {
+          "id": "tijd",
+          "title": "Hoe laat is de zonsondergang in Barcelona?",
+          "paragraphs": [
+            "De tijd verandert dagelijks en met de zomertijd. Als gedateerde voorbeelden voor Port Olímpic: op 15 januari 2026 gaat de zon onder om 17:46, op 15 juni om 21:26 en op 15 september om 20:00. Dit zijn lokale tijden voor die dagen, geen vaste tijden voor de hele maand.",
+            "Op de ervaringspagina staan een maandtabel als richtlijn en de zonnetijd van de dag. Controleer je precieze datum voordat je vervoer regelt. Wolken en zicht kunnen het beeld veranderen, ook als de astronomische tijd vaststaat."
+          ],
+          "sourceIds": [
+            "solar"
+          ]
+        },
+        {
+          "id": "kiezen",
+          "title": "Kies één plek en neem er de tijd voor",
+          "paragraphs": [
+            "Kies een uitzichtpunt voor hoogte, de boulevard voor vrijheid of een privéboot voor tijd samen op het water. Alle drie in één avond proberen te passen is niet nodig."
+          ],
+          "bullets": [
+            "Kom op tijd om rustig een plek te vinden.",
+            "Bekijk de weersverwachting en neem een lichte extra laag mee.",
+            "Volg bij een boottocht de ontmoetingsplek en vertrektijd van je boeking."
+          ]
+        },
+        {
+          "id": "jimboats",
+          "title": "Tips van de schippers van JimBoats",
+          "paragraphs": [
+            "Víctor raadt het einde van de boulevard van Barceloneta aan voor het avondlicht op hotel W. Voor de boottocht adviseert hij om ongeveer 15 minuten voor vertrek in de haven te zijn."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "Gaat de zon bij Barceloneta onder in zee?",
+          "De zon gaat onder richting het land. Op het strand zie je het veranderende licht op het water; vanaf een boot kun je de stad in avondlicht bekijken."
+        ],
+        [
+          "Is de zonsondergangstocht van JimBoats privé?",
+          "Ja. De boot is gereserveerd voor jouw groep van maximaal zes gasten, met een schipper erbij."
+        ],
+        [
+          "Is de tijd van zonsondergang ook de vertrektijd?",
+          "Nee. Bekijk tijdens het boeken welk vertrek beschikbaar is op jouw datum."
+        ]
+      ],
+      "cta": {
+        "title": "Het laatste licht, vanaf jullie eigen boot.",
+        "text": "Bekijk de zonsondergangstocht, de mogelijke duur, wat inbegrepen is en de beschikbare datums."
+      }
+    },
+    "sunrise": {
+      "slug": "zonsopgang-barcelona-bekijken",
+      "title": "Waar kun je de zonsopgang in Barcelona bekijken?",
+      "seoTitle": "Zonsopgang Barcelona: stranden en tijden",
+      "description": "Barceloneta, Bogatell of een privétocht vanuit Port Olímpic: plan de zonsopgang in Barcelona met tijdvoorbeelden en praktische tips voor de ochtend.",
+      "category": "Het eerste licht",
+      "imageAlt": "Ochtendlicht boven de zee tijdens de JimBoats-zonsopgangservaring",
+      "lead": "Bij zonsopgang in Barcelona kijk je richting de Middellandse Zee. Op het strand blijft je ochtend flexibel; een privéboot voegt het uitzicht op de kust vanaf het water toe. Kies op basis van je reis ernaartoe, je gezelschap en hoeveel tijd je aan de ochtend wilt besteden.",
+      "sections": [
+        {
+          "id": "barceloneta",
+          "title": "Barceloneta: de dag beginnen aan het water",
+          "paragraphs": [
+            "De promenade bij Barceloneta is een optie als je dicht bij de kust verblijft en te voet wilt komen. Zoek een plek met vrij zicht op het water en neem even de tijd om rond te kijken voordat je de camera pakt.",
+            "Voor zonsopgang aankomen geeft je de kans te zien hoe het licht verandert. Dat is een tip om van het moment te genieten, geen belofte van een heldere hemel of bepaalde kleuren. Daarna kun je doorwandelen en ontbijt zoeken zodra cafés opengaan."
+          ]
+        },
+        {
+          "id": "bogatell",
+          "title": "Bogatell en Nova Icària: een ander deel van de kust",
+          "paragraphs": [
+            "Bogatell ligt tussen Nova Icària en Mar Bella. Nova Icària ligt naast Port Olímpic. Beide stranden bieden een alternatief voor een ochtend die begint in Barceloneta.",
+            "Kies vooral de plek die je gemakkelijk vanuit je verblijf bereikt, zonder ervan uit te gaan dat het strand leeg zal zijn. Controleer de route en het vervoer voor het vroege uur; doordeweeks en in het weekend kunnen andere dienstregelingen gelden."
+          ],
+          "sourceIds": [
+            "bogatell",
+            "outdoors"
+          ]
+        },
+        {
+          "id": "aan-boord",
+          "title": "De zonsopgang vanaf een privéboot",
+          "paragraphs": [
+            "De zonsopgangservaring van JimBoats vertrekt vanuit Port Olímpic met je eigen groep van maximaal zes gasten. De tocht duurt minimaal twee uur, inclusief schipper, brandstof, verzekering, drankjes en snacks.",
+            "Het past bij stellen, vrienden of gezinnen die de ochtend op zee willen doorbrengen. Snacks zijn geen volledig ontbijt. Plan een maaltijd daarna apart als je dat wilt en houd wat ruimte na terugkomst; de route hangt af van de duur en de omstandigheden."
+          ]
+        },
+        {
+          "id": "tijd",
+          "title": "Hoe laat komt de zon op in Barcelona?",
+          "paragraphs": [
+            "Er is geen vaste zonsopgangstijd voor het hele seizoen. Voor Port Olímpic zijn gedateerde voorbeelden 08:15 op 15 januari 2026, 06:17 op 15 juni en 07:31 op 15 september. Dit zijn lokale tijden, inclusief zomertijd wanneer die van toepassing is.",
+            "De ervaringspagina bevat een maandtabel als richtlijn en de zonnetijd van de dag. Controleer je eigen datum en houd zonsopgang en bootvertrek uit elkaar: je boeking geeft aan wanneer je wordt verwacht."
+          ],
+          "sourceIds": [
+            "solar"
+          ]
+        },
+        {
+          "id": "voorbereiding",
+          "title": "Bereid de ochtend de avond ervoor voor",
+          "paragraphs": [
+            "Bepaal waar je aankomt en hoe je teruggaat, zodat je niet in het donker hoeft te improviseren. Een lichte extra laag, prettige schoenen en een opgeladen telefoon zijn vaak handiger dan een vol programma. Leg ook je camera alvast klaar.",
+            "Met kinderen of een groep is het goed af te spreken of iedereen vroeg wil opstaan. Een boottocht overdag kan beter passen als iemand liever later vertrekt dan een zonsopgang die niet iedereen prettig vindt."
+          ],
+          "bullets": [
+            "Controleer bewolking, wind en de zonnetijd voor je datum.",
+            "Plan de reis naar het strand of de opstapplek.",
+            "Regel ontbijt apart als je meer wilt dan de snacks aan boord."
+          ]
+        },
+        {
+          "id": "kiezen",
+          "title": "Strand of boot: twee verschillende ochtenden",
+          "paragraphs": [
+            "Op het strand kun je kort blijven of verder wandelen. Voor een privéboot heb je een reservering en ontmoetingsuur nodig, maar je maakt van de ochtend een gedeelde ervaring op zee. Kies voor de tijd die je samen wilt beleven, niet alleen voor de foto die je voor ogen hebt."
+          ]
+        },
+        {
+          "id": "jimboats",
+          "title": "Tips van de schippers van JimBoats",
+          "paragraphs": [
+            "David vaart graag de haven uit terwijl de stad nog slaapt. Hij raadt aan om de avond ervoor de weersverwachting te bekijken, want de rust op zee hangt af van de wind en de deining."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "Verandert de zonsopgangstijd door het jaar heen?",
+          "Ja, dagelijks. Lokale tijden houden ook rekening met zomertijd. Gebruik een tijd voor je precieze datum."
+        ],
+        [
+          "Is ontbijt inbegrepen bij JimBoats?",
+          "De ervaring van twee uur bevat drankjes en snacks. Er wordt geen volledig ontbijt aangeboden als inbegrepen onderdeel."
+        ],
+        [
+          "Kan ik één uur bij zonsopgang boeken?",
+          "De zonsopgangservaring begint bij twee uur. Bekijk de beschikbare duur en prijzen op de ervaringspagina en tijdens het boeken."
+        ]
+      ],
+      "cta": {
+        "title": "Een ander begin van de dag.",
+        "text": "Ontdek de privétocht bij zonsopgang, bekijk wat inbegrepen is en kies een datum die bij jullie ochtend past."
+      }
+    },
+    "romantic": {
+      "slug": "romantische-dingen-doen-barcelona",
+      "title": "Romantische dingen om te doen in Barcelona",
+      "seoTitle": "Romantisch Barcelona: wandelen en een boottocht",
+      "description": "Ideeën voor een date of jubileum in Barcelona: wandelen in de Gotische wijk, pauzeren in Ciutadella en een privéboottocht met schipper.",
+      "category": "Tijd voor twee",
+      "imageAlt": "Gedekte tafel op de JimBoats-boot met de kust van Barcelona op de achtergrond",
+      "lead": "Een romantische dag in Barcelona kan beginnen met een wandeling en eindigen met uitzicht op de stad vanaf zee. Kies een tempo dat bij jullie allebei past. Deze ideeën zijn er voor een date, een jubileum of een middag samen, zonder van de dag een lijst bezienswaardigheden te maken.",
+      "sections": [
+        {
+          "id": "gotic",
+          "title": "Wandel door de Gotische wijk zonder vaste route",
+          "paragraphs": [
+            "De straten en pleinen van de Barri Gòtic nodigen uit om de historische stad te voet te ontdekken. Begin bijvoorbeeld rond de kathedraal en beslis onderweg waar je stopt, in plaats van de hele wijk in één date te willen zien.",
+            "Dit past als jullie graag samen rondwandelen. Voor een bezoek binnen controleer je tickets en openingstijden apart. Elke minuut vastleggen laat weinig ruimte voor een gesprek; een startpunt en een idee voor het einde zijn vaak genoeg."
+          ],
+          "sourceIds": [
+            "gotic"
+          ]
+        },
+        {
+          "id": "ciutadella",
+          "title": "Ciutadella: een pauze tussen wandelingen",
+          "paragraphs": [
+            "Het Parc de la Ciutadella heeft paden, groen, een meer en een monumentale waterval. Het kan een fijne pauze zijn voordat jullie richting zee gaan, vooral als je geen activiteit op een vaste tijd wilt reserveren.",
+            "Controleer de toegang voor jullie dag en ga er niet van uit dat een activiteit op het meer altijd beschikbaar is. Voor een jubileum kan tijd samen zonder haast prettiger zijn dan nog een bezoek met een toegangsbewijs."
+          ],
+          "sourceIds": [
+            "ciutadella"
+          ]
+        },
+        {
+          "id": "waterkant",
+          "title": "Wandel langs zee en kies een plek om te stoppen",
+          "paragraphs": [
+            "De boulevard combineert een gesprek, uitzicht en de mogelijkheid om iets te eten of drinken. Kies het stuk dat het beste aansluit op je verblijf of volgende activiteit; de hele kust aflopen hoeft niet.",
+            "Willen jullie na een boottocht uit eten, laat dan voldoende ruimte na terugkomst. Restaurant en boot zijn aparte reserveringen. Je geniet gemakkelijker van de avond als niet alles op de minuut moet aansluiten."
+          ]
+        },
+        {
+          "id": "priveboot",
+          "title": "Een boot voor jullie groep, met schipper",
+          "paragraphs": [
+            "De romantische ervaring van JimBoats is een privétocht vanuit Port Olímpic van 1 tot 4 uur. De schipper verzorgt de vaart; de prijs geldt voor de boot voor jullie groep, niet voor twee plaatsen op een gedeelde excursie.",
+            "Schipper, brandstof, verzekering, de decoratie op de foto’s en een drankje zijn vanaf het eerste uur inbegrepen; vanaf twee uur zijn er ook snacks. Er is plaats voor maximaal zes gasten. Als jullie vooral van het laatste daglicht willen genieten, kunnen jullie ook de zonsondergangtocht kiezen.",
+            "De romantische ervaring is inclusief de decoratie die je op de foto’s ziet. We hebben verschillende decoraties. Willen jullie iets bijzonders, vertel ons dan jullie idee zodat we de details vóór het boeken kunnen afstemmen."
+          ]
+        },
+        {
+          "id": "budget",
+          "title": "Kies op basis van tijd en budget",
+          "paragraphs": [
+            "Voor een flexibele date kies je een wandeling en een fijne stop. Draait de gelegenheid om één activiteit, boek die dan eerst en plan de rest eromheen. Vergelijk bij een boottocht de duur, totale prijs en extra’s voordat je beslist.",
+            "De langste tocht is niet de enige manier om iets bijzonders te beleven. Bedenk hoeveel tijd jullie op het water willen zijn en of je daarna nog iets aan land wilt doen. Op de prijspagina van JimBoats kun je ervaringen vergelijken met een duidelijk onderscheid tussen prijs per boot en per persoon."
+          ]
+        },
+        {
+          "id": "verrassing",
+          "title": "Een verrassing of jubileum voorbereiden",
+          "paragraphs": [
+            "Stem datum en tijd af met de aanbieder, ook als de rest een verrassing blijft. Leg uit wat belangrijk is en laat die details bevestigen. Een foto op een andere website zegt niet wat jouw reservering omvat."
+          ],
+          "bullets": [
+            "Kies één hoofdactiviteit en laat ruimte tussen afspraken.",
+            "Bevestig speciale wensen en eventuele toeslagen apart.",
+            "Bekijk de annuleringsvoorwaarden en het weer voordat je vertrekt."
+          ]
+        },
+        {
+          "id": "jimboats",
+          "title": "Tips van de schippers van JimBoats",
+          "paragraphs": [
+            "De romantische ervaring is inclusief de decoratie die je op de foto’s ziet. We hebben verschillende decoraties. Willen jullie iets bijzonders, vertel ons dan jullie idee zodat we de details vóór het boeken kunnen afstemmen."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "Is de romantische tocht alleen voor twee personen?",
+          "Je kunt als stel boeken. De boot is privé voor jullie groep en heeft plaats voor maximaal zes gasten, met een schipper erbij."
+        ],
+        [
+          "Welke decoratie is inbegrepen? Kunnen we andere details aanvragen?",
+          "De romantische ervaring is inclusief de decoratie die je op de foto’s ziet. We hebben verschillende decoraties. Willen jullie iets bijzonders, vertel ons dan jullie idee zodat we de details vóór het boeken kunnen afstemmen. Een diner of fotograaf wordt apart afgesproken."
+        ],
+        [
+          "Zijn romantisch en zonsondergang dezelfde ervaring?",
+          "Nee. Romantisch beschrijft de gelegenheid; zonsondergang gaat over het moment van de dag. Lees beide pagina’s en kies wat bij jullie plan past."
+        ]
+      ],
+      "cta": {
+        "title": "Jullie moment, aan boord.",
+        "text": "Bekijk de romantische ervaring en de voorwaarden. Vertel ons vóór het boeken over eventuele bijzondere plannen."
+      },
+      "updatedAt": "2026-11-05"
+    },
+    "food": {
+      "slug": "borrel-aan-boord-barcelona",
+      "title": "Borrelen op een boot in Barcelona: drankjes en de borrelplank",
+      "seoTitle": "Borrelen op een boot in Barcelona",
+      "description": "Even proosten voor de kust of de tijd nemen voor een borrelplank. Zo regel je een aperitief met je eigen gezelschap op LENA.",
+      "category": "Aan boord",
+      "imageAlt": "Gasten delen een borrel onder de luifel van LENA",
+      "lead": "Even proosten voor de kust of de tijd nemen voor een borrelplank. Zo regel je een aperitief met je eigen gezelschap op LENA.",
+      "sections": [
+        {
+          "id": "plan",
+          "title": "Een drankje tijdens een tocht van een uur",
+          "paragraphs": [
+            "Wil je de Port Olímpic uitvaren, naar de Barceloneta kijken vanaf het water en samen proosten voordat je teruggaat naar de stad? Kies dan de privétocht overdag van één uur. Een drankje is vanaf het eerste uur inbegrepen. Als je daarna een tafel hebt gereserveerd, begint de afspraak al op zee in plaats van bij het restaurant."
+          ]
+        },
+        {
+          "id": "duration",
+          "title": "Wat ligt er op de plank?",
+          "paragraphs": [
+            "{food} Je kunt er samen wat van pakken terwijl je bijpraat en ondertussen de kust voorbij ziet glijden. Draait jullie middag om een lunch of avondeten, plan de plank dan als borrel vooraf. Houd wat tijd vrij tussen de terugkeer in de haven en de reservering aan wal, zodat je ook het laatste stuk varen rustig kunt beleven."
+          ]
+        },
+        {
+          "id": "group",
+          "title": "Welke drankjes kiest de groep?",
+          "paragraphs": [
+            "{drinks} Willen twee mensen graag met cava proosten terwijl de anderen liever iets zonder alcohol drinken, vertel dat dan bij het regelen van de tocht. De schipper kan dan een passende selectie aan boord zetten. Je hoeft geen fles van elke soort te bestellen om iedereen te laten genieten van een drankje naar eigen smaak."
+          ]
+        },
+        {
+          "id": "on-board",
+          "title": "Tijd maken om te borrelen",
+          "paragraphs": [
+            "Boek minstens twee uur als je de plank wilt delen. Je kunt overdag varen, in het vroege ochtendlicht of tegen zonsondergang. Vertel de schipper of je vooral uitkijkt naar het uitzicht op de stad of naar een rustig moment om bij te praten. De wind en de toestand van de zee bepalen mede de route op de dag zelf.",
+            "Vraag vooraf bij je gasten wat ze graag drinken. Heeft iemand een allergie of een vraag over een ingrediënt, neem dan voor het boeken contact op met JimBoats om de mogelijkheden te bespreken. Spreek ook af waar je elkaar ontmoet als iedereen apart naar de haven komt. Dan begint de borrel met het gezelschap al bij elkaar."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "Is de plank inbegrepen bij één uur?",
+          "Bij één uur is een drankje inbegrepen. De plank wordt geserveerd bij tochten vanaf twee uur."
+        ],
+        [
+          "Kunnen we cava en alcoholvrije dranken combineren?",
+          "Ja. Geef jullie voorkeuren en het aantal gasten door, zodat het team de selectie kan voorbereiden."
+        ]
+      ],
+      "cta": {
+        "title": "Privéboottocht in Barcelona",
+        "text": "Laat de drukte aan wal. Geniet van een privétocht langs de kust, bekijk Barcelona vanuit een ander perspectief en beleef de Middellandse Zee op jullie tempo."
+      }
+    },
+    "birthday": {
+      "slug": "verjaardag-op-een-boot-barcelona",
+      "title": "Een verjaardag vieren op een privéboot in Barcelona",
+      "seoTitle": "Verjaardag vieren op een privéboot in Barcelona",
+      "description": "Een klein feest op zee met maximaal zes gasten. Kies de duur, bereid de toost voor en spreek de verrassing af in Port Olímpic.",
+      "category": "Verjaardagen",
+      "imageAlt": "Drie gasten aan boord in de haven",
+      "lead": "Een klein feest op zee met maximaal zes gasten. Kies de duur, bereid de toost voor en spreek de verrassing af in Port Olímpic.",
+      "sections": [
+        {
+          "id": "plan",
+          "title": "Begin met de gastenlijst",
+          "paragraphs": [
+            "Op LENA kunnen maximaal zes gasten mee. Tel de jarige en iedereen die je wilt uitnodigen voordat je een datum kiest. Je boekt de hele boot en de schipper verzorgt het varen. Zo blijft het een feest met je eigen groep, zonder losse plaatsen te hoeven kopen of te wachten tot andere mensen zich aanmelden voor de tocht."
+          ]
+        },
+        {
+          "id": "duration",
+          "title": "Hoeveel tijd wil je samen doorbrengen?",
+          "paragraphs": [
+            "Voor een verrassingsrondje langs de kust en een toost voor de lunch aan wal is een tocht overdag van één uur een mogelijkheid. Wil je samen van de plank eten, cadeaus uitpakken en uitgebreid bijpraten, neem dan minstens twee uur. Ook een tocht bij zonsondergang begint bij twee uur. Bekijk de totaalprijs voor de gekozen duur voordat je de kosten verdeelt onder de gasten."
+          ]
+        },
+        {
+          "id": "group",
+          "title": "Regel de toost en de muziek",
+          "paragraphs": [
+            "{drinks} Bij een tocht van twee uur of langer is er ook een borrelplank om te delen. Maak een korte afspeellijst op je telefoon voor de Bluetooth-speaker aan boord. Laat iemand de muziek verzorgen en iemand anders de toost uitbrengen, zodat ook degene die de verjaardag organiseert rustig mee kan vieren."
+          ]
+        },
+        {
+          "id": "on-board",
+          "title": "Een verrassing geheimhouden",
+          "paragraphs": [
+            "Wil je een taart, bloemen, versiering of een fotograaf, bespreek dat dan ruim van tevoren. Voor zulke verzoeken kunnen extra kosten gelden. Vraag eerst wat op jullie datum mogelijk is en wat het kost. Laat één persoon met het team overleggen over de details, zodat de verrassing niet per ongeluk via een groepsbericht wordt verklapt.",
+            "Stuur de gasten de locatie aan de Moll de Xaloc en spreek ongeveer vijftien minuten voor vertrek af. Houd na de terugkeer in de haven tijd vrij voor de wandeling naar het restaurant of de volgende afspraak. Ook als de jarige nog niets weet, kan de rest van het gezelschap dan zonder haast op het juiste moment aan boord stappen."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "Hoeveel mensen kunnen er mee naar het feest?",
+          "Maximaal zes gasten, inclusief de jarige."
+        ],
+        [
+          "Is de versiering inbegrepen?",
+          "Versiering is optioneel en kost extra. Overleg voor het boeken met het team."
+        ]
+      ],
+      "cta": {
+        "title": "Privéboottocht in Barcelona",
+        "text": "Laat de drukte aan wal. Geniet van een privétocht langs de kust, bekijk Barcelona vanuit een ander perspectief en beleef de Middellandse Zee op jullie tempo."
+      }
+    },
+    "hen": {
+      "slug": "vrijgezellenfeest-barcelona-boot",
+      "title": "Vrijgezellenfeest in Barcelona: met z’n zessen op een privéboot",
+      "seoTitle": "Vrijgezellenfeest Barcelona op een privéboot",
+      "description": "Plan een vrijgezellenfeest in Barcelona op een privéboot voor maximaal zes gasten: budget, drankjes, hapjes en echte foto’s aan boord van de LENA.",
+      "category": "Feestelijke momenten",
+      "imageAlt": "De bruid en een vriendin vieren een vrijgezellenfeest aan boord van de LENA in Barcelona",
+      "lead": "Een boot voor jullie alleen, jullie eigen muziek en Barcelona vanaf het water. Voor een vrijgezellenfeest met maximaal zes gasten kun je de LENA privé boeken, met schipper en vertrek uit Port Olímpic. Deze gids helpt je met de duur, het groepsbudget en het voorbereiden van een verrassing.",
+      "sections": [
+        {
+          "id": "groep",
+          "title": "Tel de bruid mee bij de zes gasten",
+          "paragraphs": [
+            "De LENA biedt plaats aan maximaal zes gasten, inclusief de bruid. Jullie boeken de hele boot en delen de tocht niet met een andere groep. Maak daarom eerst de gastenlijst definitief: met meer dan zes kunnen jullie niet samen mee op de LENA.",
+            "De boot is een mediterrane llaüt van 7,49 meter. Er is ruimte om te zitten, een borrelplank te delen en van de kust te genieten. Een fijne setting voor een kleine groep die wil bijpraten, proosten en foto’s maken op het water."
+          ],
+          "photo": {
+            "slug": "hen-party-bride",
+            "alt": "De bruid op de boeg van de LENA, met het W Hotel en de kust van Barcelona op de achtergrond"
+          }
+        },
+        {
+          "id": "budget",
+          "title": "Wat kost een vrijgezellenfeest op een privéboot?",
+          "paragraphs": [
+            "De privéboottocht overdag kost {private1h} voor één uur, {private2h} voor twee uur en {private3h} voor drie uur. Dit zijn eindprijzen voor de hele boot, inclusief schipper, brandstof en verzekering. Jullie hebben geen vaarbewijs nodig.",
+            "Als je de kosten van twee uur met zes gasten deelt, is dat {perGuest2h} per persoon. De boeking blijft {private2h} voor de boot; we verkopen geen losse plaatsen. Bij een kleinere groep blijft de bootprijs hetzelfde. De zonsondergangtocht begint bij {sunset2h} voor twee uur. Optionele extra’s betaal je apart.",
+            "Eén uur past bij een korte verrassing tussen andere activiteiten. Met twee uur heb je meer tijd voor hapjes en een ontspannen toost. Drie uur geeft je langer op het water; een zwemstop hangt af van de omstandigheden en de beslissing van de schipper."
+          ]
+        },
+        {
+          "id": "hapjes",
+          "title": "Drankjes, hapjes en jullie playlist",
+          "paragraphs": [
+            "{drinks}",
+            "{food} Bij een tocht van één uur is een drankje inbegrepen, maar geen borrelplank.",
+            "Geef enkele voorkeuren door, zoals cava voor de toost en alcoholvrije drankjes voor wie dat wil. De hoeveelheden worden afgestemd op de groep. Er is geen onbeperkt drinken en je krijgt niet automatisch alle aangeboden dranksoorten. Bespreek allergieën of dieetwensen vóór het boeken.",
+            "Een Bluetooth-speaker is bij elke ervaring inbegrepen. Zet de lievelingsmuziek van de bruid klaar op je telefoon, inclusief het nummer voor het moment waarop jullie proosten."
+          ],
+          "photo": {
+            "slug": "hen-party-toast",
+            "alt": "Een detail van het vrijgezellenfeest aan boord, met de zee bij Barcelona op de achtergrond"
+          }
+        },
+        {
+          "id": "programma",
+          "title": "Twee uur vanaf Port Olímpic indelen",
+          "paragraphs": [
+            "Spreek ongeveer een kwartier voor vertrek af bij het ontmoetingspunt aan de Moll de Xaloc. Deel de contactpagina met de hele groep, zodat iedereen de locatie heeft. Na het instappen legt de schipper uit wat jullie moeten weten en varen jullie langs de kust van Barcelona.",
+            "Houd tijd vrij voor foto’s en de borrelplank en geniet daarna van de zee. Wil je zwemmen, overleg dan met de schipper; een zwemstop is niet gegarandeerd. Suppen is een optionele extra van €20 per boeking, die je apart selecteert als deze beschikbaar is.",
+            "Plan voldoende tijd tussen de terugkomst en een restaurantreservering of volgende activiteit. Kies je voor zonsondergang, controleer dan de zonsondergangtijd op jullie datum voordat je de rest van de middag vastlegt."
+          ],
+          "photo": {
+            "slug": "hen-party-paddle",
+            "alt": "Een gast op een SUP naast de LENA; suppen is een optionele extra"
+          }
+        },
+        {
+          "id": "verrassing",
+          "title": "De verrassing samen voorbereiden",
+          "paragraphs": [
+            "Kies één contactpersoon voor JimBoats en iemand anders die de groep bij elkaar brengt. Stuur ons via WhatsApp de datum, het aantal gasten en of de bruid het plan kent. Dat voorkomt tegenstrijdige berichten op de dag zelf.",
+            "Bloemen, versiering, een taart of een fotograaf vragen vooraf overleg en kunnen extra kosten. Vraag eerst wat mogelijk is voordat je iets koopt. De foto’s tonen een vrijgezellenfeest op de LENA; de accessoires en versieringen van de gasten zijn niet automatisch bij de boeking inbegrepen."
+          ],
+          "photo": {
+            "slug": "hen-party-preparations",
+            "alt": "De bruid en een vriendin schikken haar sluier tijdens het feest aan boord"
+          }
+        },
+        {
+          "id": "boeken",
+          "title": "Van groepsapp naar boeking",
+          "paragraphs": [
+            "Open de pagina van de privéboottocht, kies de duur en bekijk de kalender. Selecteer daarna de beschikbare extra’s en vul de boekingsgegevens in. Voor vragen of het regelen van een verrassing kun je ons vóór het betalen via WhatsApp bereiken.",
+            "Annuleren is gratis tot 48 uur voor vertrek. Neem bij kortere termijn contact op via WhatsApp om de situatie te bespreken. Als JimBoats vanwege ongeschikte omstandigheden annuleert, krijg je het geld terug en neemt de kapitein contact op."
+          ]
+        }
+      ],
+      "faqs": [
+        [
+          "Mogen we met zeven komen als de bruid erbij zit?",
+          "Nee. Het maximum is zes gasten in totaal, inclusief de bruid."
+        ],
+        [
+          "Zijn drankjes en hapjes inbegrepen?",
+          "Drankjes zijn vanaf één uur inbegrepen. Vanaf twee uur is er een borrelplank, met hoeveelheden afgestemd op de groep. Drankjes zijn niet onbeperkt."
+        ],
+        [
+          "Delen we de boot met een ander vrijgezellenfeest?",
+          "Nee. Jullie boeken de LENA privé voor de groep, inclusief schipper."
+        ],
+        [
+          "Is de versiering inbegrepen?",
+          "Versiering is niet inbegrepen in de prijs van de tocht. Vraag vóór het boeken naar de mogelijkheden en de extra kosten."
+        ]
+      ],
+      "cta": {
+        "title": "Kies jullie privéboottocht in Barcelona",
+        "text": "Bekijk de duur en beschikbaarheid van de LENA voor maximaal zes gasten. Via WhatsApp helpen we jullie bij het voorbereiden van de verrassing."
+      },
+      "updatedAt": "2026-11-05"
+    }
+  }
+}

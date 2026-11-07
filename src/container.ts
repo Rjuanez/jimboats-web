@@ -1,3 +1,8 @@
+import { MetNorwayWeatherProvider } from "@/infrastructure/weather/MetNorwayWeatherProvider";
+import type { WeatherProvider } from "@/modules/weather/application/ports/WeatherProvider";
+import { HourlyBookingUseCase } from "@/modules/booking/application/HourlyBookingUseCase";
+import { approvedHourlyTariffs, localHourlyTariffs, localBookingsEnabled } from "./infrastructure/booking/HourlyTariffs";
+import { LocalDepositPaymentProvider } from "./infrastructure/booking/LocalDepositPaymentProvider";
 import type {
   ArchiveExperienceCommand,
   CreateExperienceCommand,
@@ -26,6 +31,7 @@ import { BackpanelCreateBookingUseCase } from "@/modules/booking/application/Bac
 import { BackpanelIssueBookingAccessLinkUseCase } from "@/modules/booking/application/BackpanelIssueBookingAccessLinkUseCase";
 import { BackpanelMarkBookingSeenUseCase } from "@/modules/booking/application/BackpanelMarkBookingSeenUseCase";
 import { BackpanelUpdateBookingUseCase } from "@/modules/booking/application/BackpanelUpdateBookingUseCase";
+import { SunCalcBookingSunTimes } from "@/infrastructure/booking/SunCalcBookingSunTimes";
 import { CreatePublicBookingCheckoutUseCase } from "@/modules/booking/application/CreatePublicBookingCheckoutUseCase";
 import { ExitPublicBookingCheckoutUseCase } from "@/modules/booking/application/ExitPublicBookingCheckoutUseCase";
 import type { SaveCancellationPolicyCommand } from "@/modules/booking/application/AdminCancellationPolicyDtos";
@@ -141,8 +147,7 @@ import { PrismaBookingAccessRepository } from "./infrastructure/db/prisma/Prisma
 import type { PrismaBookingAccessRepositoryClient } from "./infrastructure/db/prisma/PrismaBookingAccessRepository";
 import { PrismaBookingRepository } from "./infrastructure/db/prisma/PrismaBookingRepository";
 import type { PrismaBookingRepositoryClient } from "./infrastructure/db/prisma/PrismaBookingRepository";
-import { PrismaCancellationPolicyRepository } from "./infrastructure/db/prisma/PrismaCancellationPolicyRepository";
-import type { PrismaCancellationPolicyRepositoryClient } from "./infrastructure/db/prisma/PrismaCancellationPolicyRepository";
+import { StaticCancellationPolicyRepository } from "./infrastructure/booking/StaticCancellationPolicyRepository";
 import { PrismaCalendarBlockRepository } from "./infrastructure/db/prisma/PrismaCalendarBlockRepository";
 import type { PrismaCalendarBlockRepositoryClient } from "./infrastructure/db/prisma/PrismaCalendarBlockRepository";
 import { PrismaCouponRepository } from "./infrastructure/db/prisma/PrismaCouponRepository";
@@ -182,11 +187,13 @@ import { CryptoMediaIdGenerator } from "./infrastructure/media/CryptoMediaIdGene
 import { createSharpLocalMediaVariantGeneratorFromEnv } from "./infrastructure/media/SharpLocalMediaVariantGenerator";
 import { SystemMediaClock } from "./infrastructure/media/SystemMediaClock";
 import { CryptoNotificationIdGenerator } from "./infrastructure/notifications/CryptoNotificationIdGenerator";
+import { ConsoleNotificationProvider } from "./infrastructure/notifications/ConsoleNotificationProvider";
 import { createNotificationProviderFromEnv } from "./infrastructure/notifications/NotificationProviderFactory";
 import { SimpleTemplateRenderer } from "./infrastructure/notifications/SimpleTemplateRenderer";
 import { StaticNotificationPreviewFixtureProvider } from "./infrastructure/notifications/StaticNotificationPreviewFixtureProvider";
 import { SystemNotificationClock } from "./infrastructure/notifications/SystemNotificationClock";
 import {
+  DisabledPushNotificationSender,
   createWebPushNotificationSenderFromEnv,
   getPushVapidPublicKeyFromEnv,
 } from "./infrastructure/notifications/WebPushNotificationSender";
@@ -216,20 +223,22 @@ export function getContainer() {
   const calendarBlockRepository = new PrismaCalendarBlockRepository(
     prisma as unknown as PrismaCalendarBlockRepositoryClient,
   );
+  const localBookingSimulation = localBookingsEnabled();
+  const hourlyTariffs = localBookingSimulation ? localHourlyTariffs : approvedHourlyTariffs;
   const bookingRepository = new PrismaBookingRepository(
     prisma as unknown as PrismaBookingRepositoryClient,
+    hourlyTariffs,
   );
   const bookingAccessRepository = new PrismaBookingAccessRepository(
     prisma as unknown as PrismaBookingAccessRepositoryClient,
   );
-  const cancellationPolicyRepository = new PrismaCancellationPolicyRepository(
-    prisma as unknown as PrismaCancellationPolicyRepositoryClient,
-  );
+  const cancellationPolicyRepository = new StaticCancellationPolicyRepository();
   const couponRepository = new PrismaCouponRepository(
     prisma as unknown as PrismaCouponRepositoryClient,
   );
   const publicBookingCatalogReader = new PrismaPublicBookingCatalogReader(
     prisma as unknown as PrismaPublicBookingCatalogReaderClient,
+    hourlyTariffs,
   );
   const notificationRuleRepository = new PrismaNotificationRuleRepository(
     prisma as unknown as PrismaNotificationRuleRepositoryClient,
@@ -270,12 +279,13 @@ export function getContainer() {
   const notificationClock = new SystemNotificationClock();
   const notificationIds = new CryptoNotificationIdGenerator();
   const notificationRenderer = new SimpleTemplateRenderer();
-  const notificationProvider = createNotificationProviderFromEnv();
-  const pushNotificationSender = createWebPushNotificationSenderFromEnv();
+  const notificationProvider = localBookingSimulation ? new ConsoleNotificationProvider() : createNotificationProviderFromEnv();
+  const pushNotificationSender = localBookingSimulation ? new DisabledPushNotificationSender() : createWebPushNotificationSenderFromEnv();
   const pushActivationCode = process.env.PUSH_ACTIVATION_CODE?.trim() || null;
   const notificationPreviewFixtures =
     new StaticNotificationPreviewFixtureProvider();
-  const depositPaymentProvider = createLazyDepositPaymentProvider();
+  const localPaymentSimulator = localBookingSimulation ? new LocalDepositPaymentProvider() : undefined;
+  const depositPaymentProvider = localPaymentSimulator ?? createLazyDepositPaymentProvider();
   const mediaStorage = createLazyLocalMediaStorage();
   const mediaVariantGenerator = createLazyLocalMediaVariantGenerator();
   const bookingCalendarPublisher = createBookingCalendarPublisherFromEnv();
@@ -458,10 +468,12 @@ export function getContainer() {
     bookingRepository,
     bookingClock,
   );
+  const bookingSunTimes = new SunCalcBookingSunTimes();
   const getPublicBookingPageUseCase = new GetPublicBookingPageUseCase(
     publicBookingCatalogReader,
     bookingClock,
     releaseExpiredBookingHoldsUseCase,
+    bookingSunTimes,
   );
   const createPublicBookingCheckoutUseCase =
     new CreatePublicBookingCheckoutUseCase(
@@ -472,6 +484,7 @@ export function getContainer() {
       cancellationPolicyRepository,
       reserveCouponRedemptionUseCase,
       releaseExpiredBookingHoldsUseCase,
+      bookingSunTimes,
     );
   const exitPublicBookingCheckoutUseCase =
     new ExitPublicBookingCheckoutUseCase(
@@ -500,6 +513,7 @@ export function getContainer() {
       confirmCouponRedemptionUseCase,
       releaseCouponRedemptionUseCase,
     );
+  const hourlyBooking = new HourlyBookingUseCase(bookingRepository, getPublicBookingPageUseCase, createPublicBookingCheckoutUseCase, handleDepositPaymentWebhookUseCase, localPaymentSimulator);
   const issueBookingAccessLinkUseCase = new IssueBookingAccessLinkUseCase(
     bookingAccessRepository,
     bookingAccessTokens,
@@ -744,6 +758,12 @@ export function getContainer() {
     notificationWorker: {
       processNextWork: () => processNextNotificationWorkUseCase.execute(),
     },
+    hourlyBooking: {
+      quote: hourlyBooking.quote.bind(hourlyBooking),
+      create: hourlyBooking.create.bind(hourlyBooking),
+      simulatePayment: hourlyBooking.simulatePayment.bind(hourlyBooking),
+      simulation: localBookingSimulation,
+    },
     publicBooking: {
       createCheckout: (command: CreatePublicBookingCheckoutCommand) =>
         createPublicBookingCheckoutUseCase.execute(command),
@@ -804,4 +824,10 @@ function createLazyDepositPaymentProvider(): DepositPaymentProvider {
     parseWebhook: (input) =>
       createStripeDepositPaymentProviderFromEnv().parseWebhook(input),
   };
+}
+
+// Independent from reservation infrastructure; a single cache per server process.
+let weatherProvider: WeatherProvider | undefined;
+export function getWeatherProvider(): WeatherProvider {
+  return (weatherProvider ??= new MetNorwayWeatherProvider());
 }

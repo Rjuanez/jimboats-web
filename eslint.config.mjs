@@ -7,6 +7,8 @@ const eslintConfig = [
   {
     ignores: [
       ".next/**",
+      ".local-preview/**",
+      ".worker/**",
       "out/**",
       "build/**",
       "dist/**",

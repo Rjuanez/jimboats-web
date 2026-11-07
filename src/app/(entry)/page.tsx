@@ -1,11 +1,11 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { resolvePreferredLocale } from "@/i18n/locales";
+import { resolvePreferredMarketingLocale } from "@/content/marketing/routes";
 
 export default async function HomePage() {
   const requestHeaders = await headers();
-  const locale = resolvePreferredLocale(requestHeaders.get("accept-language"));
+  const locale = resolvePreferredMarketingLocale(requestHeaders.get("accept-language"));
 
   redirect(`/${locale}`);
 }

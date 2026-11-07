@@ -3,48 +3,26 @@ import AxeBuilder from "@axe-core/playwright";
 
 const pages = [
   { name: "home", path: "/" },
-  { name: "public booking", path: "/en/book" },
-  { name: "admin dashboard", path: "/admin" },
-  { name: "admin experiences", path: "/admin/experiences" },
+  { name: "public booking", path: "/en/book?experience=daytrip&hours=1" },
+  { name: "admin entry", path: "/admin" },
   { name: "admin calendar", path: "/admin/calendar" },
   { name: "admin bookings", path: "/admin/bookings" },
-  { name: "admin device notifications", path: "/admin/device-notifications" },
-  { name: "admin coupons", path: "/admin/coupons" },
   { name: "admin new booking", path: "/admin/bookings/new" },
+  { name: "admin booking detail", path: "/admin/bookings/booking-preview-1" },
+  { name: "admin coupons", path: "/admin/coupons" },
+  { name: "admin coupon detail", path: "/admin/coupons/coupon-test10" },
+  { name: "admin new coupon", path: "/admin/coupons/new" },
+  { name: "admin notification rules", path: "/admin/notifications/rules" },
   {
-    name: "admin booking detail",
-    path: "/admin/bookings/booking-preview-1",
-  },
-  { name: "admin new experience", path: "/admin/experiences/new" },
-  {
-    name: "admin experience overview",
-    path: "/admin/experiences/sunset-experience",
-  },
-  {
-    name: "admin experience content",
-    path: "/admin/experiences/sunset-experience/content",
+    name: "admin notification templates",
+    path: "/admin/notifications/templates",
   },
   {
-    name: "admin experience availability",
-    path: "/admin/experiences/sunset-experience/availability",
+    name: "admin notification template detail",
+    path: "/admin/notifications/templates/template-preview-email-created",
   },
-  {
-    name: "admin experience extras",
-    path: "/admin/experiences/sunset-experience/extras",
-  },
-  {
-    name: "admin experience media",
-    path: "/admin/experiences/sunset-experience/media",
-  },
-  {
-    name: "admin experience publish",
-    path: "/admin/experiences/sunset-experience/publish",
-  },
-  { name: "admin media library", path: "/admin/media" },
-  {
-    name: "admin media detail",
-    path: "/admin/media/sunset-experience-hero",
-  },
+  { name: "admin notification logs", path: "/admin/notifications/logs" },
+  { name: "admin devices", path: "/admin/device-notifications" },
 ];
 
 for (const testedPage of pages) {
@@ -55,6 +33,19 @@ for (const testedPage of pages) {
       window.localStorage.clear();
     });
     await page.goto(testedPage.path);
+    if (testedPage.name === "admin devices") {
+      const activate = page.getByRole("button", {
+        name: "Activar avisos",
+        exact: true,
+      });
+      await expect(activate).toBeEnabled();
+      // Device detection enables this control after hydration; measure its final colors.
+      await activate.evaluate(async (element) => {
+        await Promise.all(
+          element.getAnimations().map((animation) => animation.finished),
+        );
+      });
+    }
 
     const results = await new AxeBuilder({ page }).analyze();
 

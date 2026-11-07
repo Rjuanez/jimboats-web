@@ -1,4 +1,5 @@
 "use client";
+import { adminEs } from "@/i18n/admin/es";
 
 import { Bell, Send } from "lucide-react";
 import { useState, useTransition } from "react";
@@ -40,7 +41,11 @@ export function AdminDashboardWorkspace({
       }
 
       setMessage(
-        `Enviadas: ${result.data.sent}. Fallidas: ${result.data.failed}. Total: ${result.data.total}.`,
+        adminEs.pushTestResults(
+          result.data.sent,
+          result.data.failed,
+          result.data.total,
+        ),
       );
     });
   }
@@ -54,7 +59,7 @@ export function AdminDashboardWorkspace({
               JimBoats OS
             </p>
             <h1 className="mt-1 text-2xl font-bold text-slate-950">
-              Dashboard
+              {adminEs["Dashboard"]}
             </h1>
           </div>
         </header>
@@ -65,11 +70,13 @@ export function AdminDashboardWorkspace({
               <Badge
                 tone={state.activePushSubscriptions > 0 ? "emerald" : "amber"}
               >
-                {state.activePushSubscriptions} active
+                {adminEs.activeDevices(state.activePushSubscriptions)}
               </Badge>
             }
-            title="Push notifications"
-            description="Send a test notification to every connected device."
+            title={adminEs["Push notifications"]}
+            description={
+              adminEs["Send a test notification to every connected device."]
+            }
           >
             <div className="flex flex-col gap-4">
               <div className="flex items-start gap-3 rounded-md border border-slate-200 bg-slate-50 p-4">
@@ -81,7 +88,11 @@ export function AdminDashboardWorkspace({
                     Prueba JimBoats
                   </h2>
                   <p className="mt-1 text-sm leading-6 text-slate-600">
-                    Notificacion de prueba enviada desde el dashboard.
+                    {
+                      adminEs[
+                        "Notificacion de prueba enviada desde el dashboard."
+                      ]
+                    }
                   </p>
                 </div>
               </div>
@@ -94,10 +105,10 @@ export function AdminDashboardWorkspace({
                   onClick={sendBroadcastTest}
                 >
                   <Send className="size-4" aria-hidden="true" />
-                  Send test to all
+                  {adminEs["Send test to all"]}
                 </Button>
                 <Button href="/admin/device-notifications" variant="secondary">
-                  Manage devices
+                  {adminEs["Manage devices"]}
                 </Button>
               </div>
 

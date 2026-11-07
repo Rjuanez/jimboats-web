@@ -1,0 +1,512 @@
+{
+  "es": {
+    "title": "Política de privacidad",
+    "description": "Cómo trata JimBoats tus datos de contacto, reservas y pagos: finalidades, proveedores, conservación y derechos.",
+    "updated": "Actualizada el 7 de noviembre de 2026",
+    "controller": "Responsable del tratamiento",
+    "taxId": "NIF",
+    "contact": "Contacto de privacidad",
+    "intro": "Esta política explica cómo tratamos los datos de quienes consultan o reservan una experiencia con JimBoats Charter. No enviamos publicidad.",
+    "sections": [
+      {
+        "id": "datos",
+        "title": "Qué datos recogemos",
+        "paragraphs": [
+          "Para reservar necesitamos tu nombre y correo electrónico. El teléfono es necesario si eliges recibir el justificante por WhatsApp. También tratamos la experiencia, fecha, horario, número de pasajeros, extras, idioma, descuentos, importes, referencia, estado y preferencias de entrega de la reserva. Sin los datos necesarios no podemos tramitarla.",
+          "Si contactas con nosotros, tratamos los datos y el contenido de tu consulta. El formulario no solicita DNI, pasaporte, datos identificativos de menores, fotografías ni información de salud. No incluyas datos sensibles que no sean necesarios para tu consulta.",
+          "Stripe procesa el pago online. Recibimos datos de la operación, identificadores, importes, estados y notificaciones del proveedor para relacionar el pago con la reserva y atender incidencias."
+        ]
+      },
+      {
+        "id": "finalidades",
+        "title": "Para qué usamos los datos",
+        "paragraphs": [
+          "Atendemos solicitudes de información y preparamos reservas mediante medidas precontractuales solicitadas por ti. La gestión del paseo, pagos, justificantes, cambios y cancelaciones se basa en la ejecución del contrato.",
+          "Conservamos la documentación exigida por las obligaciones mercantiles y tributarias aplicables. Los registros técnicos necesarios para proteger el servicio se tratan por nuestro interés legítimo en mantener su seguridad, con acceso y conservación limitados.",
+          "Los mensajes por correo y WhatsApp se refieren a tu reserva. Elegir el canal del justificante no autoriza promociones. Consultar esta política tampoco equivale a consentir publicidad o medición no esencial."
+        ]
+      },
+      {
+        "id": "proveedores",
+        "title": "Proveedores y destinatarios",
+        "paragraphs": [
+          "La web utiliza un VPS privado y el buzón de correo está alojado en Google. Stripe interviene en los pagos. Los proveedores de alojamiento, copias, correo, mensajería, calendario y soporte pueden acceder a los datos necesarios para prestar sus servicios.",
+          "Los servicios de envío reciben el destinatario y el contenido del mensaje. La coordinación en calendario puede incluir nombre, teléfono, correo, fecha, experiencia, pasajeros, referencia, estado, saldo pendiente y notas necesarias. Solo debe acceder el personal autorizado para gestionar la actividad.",
+          "También pueden recibir información los bancos y los destinatarios que resulten necesarios para cumplir obligaciones legales o atender requerimientos de autoridades. No vendemos los datos ni los utilizamos para enviar publicidad.",
+          "Algunos servicios pueden implicar tratamientos fuera del Espacio Económico Europeo. Las transferencias que procedan deberán contar con una decisión de adecuación u otra garantía válida conforme al RGPD, como cláusulas contractuales tipo. Puedes solicitar información sobre los destinatarios y las garantías aplicables, incluida una copia de estas, mediante nuestro contacto de privacidad."
+        ]
+      }
+    ],
+    "retention": {
+      "title": "Plazos de conservación",
+      "intro": "Aplicamos estos plazos al uso ordinario de los datos. La documentación que deba conservarse por obligación legal o para atender responsabilidades se mantiene separada, con acceso limitado.",
+      "rows": [
+        [
+          "Consultas sin reserva",
+          "6 meses desde el cierre de la consulta, si no existe una obligación documental asociada."
+        ],
+        [
+          "Reservas abandonadas sin pago ni incidencia",
+          "30 días desde la expiración o cierre definitivo del intento de pago."
+        ],
+        [
+          "Gestión de reservas, agenda y mensajes operativos",
+          "12 meses desde el paseo o la cancelación definitiva. Los justificantes y la correspondencia exigible se conservan aparte."
+        ],
+        [
+          "Documentación mercantil y contable",
+          "6 años desde el último asiento realizado en los libros, salvo disposiciones especiales aplicables."
+        ],
+        [
+          "Registros técnicos y de seguridad",
+          "90 días desde cada evento, salvo evidencia necesaria de un incidente identificado."
+        ],
+        [
+          "Analítica vinculada al navegador",
+          "6 meses desde cada evento. El identificador persistente tiene una duración máxima de 6 meses desde su creación."
+        ],
+        [
+          "Copias de seguridad operativas",
+          "Rotación de 30 días desde la creación de cada copia."
+        ],
+        [
+          "Incidencias y reclamaciones",
+          "Hasta su resolución definitiva y, para la evidencia necesaria, durante el plazo de responsabilidad aplicable al caso."
+        ]
+      ],
+      "notes": [
+        "Al terminar el uso ordinario, los datos se suprimen o anonimizan de forma irreversible, sin eliminar documentación que deba conservarse. Cuando proceda la supresión o rectificación, se aplica el bloqueo legal y la destrucción al finalizar el plazo de responsabilidad correspondiente.",
+        "Las copias de seguridad no se usan para consultas ordinarias. Una restauración debe respetar las supresiones realizadas. Los proveedores que actúan como responsables independientes pueden tener obligaciones de conservación propias."
+      ]
+    },
+    "after": [
+      {
+        "id": "derechos",
+        "title": "Tus derechos",
+        "paragraphs": [
+          "Puedes solicitar acceso, rectificación, supresión, limitación, oposición y portabilidad cuando correspondan, mediante el contacto de privacidad indicado arriba. Si el tratamiento se basa en consentimiento, puedes retirarlo sin afectar a su licitud anterior.",
+          "Indica qué derecho quieres ejercer y los datos necesarios para localizar tu solicitud. Solo se pedirá información adicional de identidad cuando sea necesaria y proporcionada. Puedes presentar una reclamación ante la Agencia Española de Protección de Datos."
+        ]
+      },
+      {
+        "id": "medicion",
+        "title": "Medición y decisiones automatizadas",
+        "paragraphs": [
+          "Cuando esté habilitada, la medición con Statsig utiliza un identificador persistente del navegador y eventos de navegación y reserva. No debe confundirse un identificador con información completamente anónima. La medición no esencial requiere una elección separada de la reserva y no se autoriza por leer esta política.",
+          "La web comprueba automáticamente la disponibilidad y calcula los importes de la reserva. El proveedor de pagos realiza sus propias verificaciones. Si tienes una incidencia con la disponibilidad, el pago o la reserva, contacta con JimBoats para que podamos revisarla."
+        ]
+      }
+    ],
+    "authority": "Agencia Española de Protección de Datos",
+    "legalBasis": "Conservación mercantil: artículo 30 del Código de Comercio",
+    "blocking": "Bloqueo de datos: artículo 32 de la LOPDGDD"
+  },
+  "en": {
+    "title": "Privacy policy",
+    "description": "How JimBoats handles your contact details, bookings and payments: purposes, service providers, retention and your rights.",
+    "updated": "Updated on 7 November 2026",
+    "controller": "Data controller",
+    "taxId": "Spanish tax ID (NIF)",
+    "contact": "Privacy contact",
+    "intro": "This policy explains how we process the data of people who enquire about or book an experience with JimBoats Charter. We do not send advertising.",
+    "sections": [
+      {
+        "id": "data",
+        "title": "The data we collect",
+        "paragraphs": [
+          "We need your name and email address to process an online booking. A phone number is required if you choose to receive your booking pass through WhatsApp. We also process the experience, date, time, passenger count, extras, language, discounts, amounts, reference, status and delivery preferences. We cannot process the booking without the necessary details.",
+          "When you contact us, we process your contact details and the content of your enquiry. The form does not request identity documents, passports, children's identifying details, photographs or health information. Please do not include sensitive information that is unnecessary for your enquiry.",
+          "Stripe processes online payments. We receive transaction details, identifiers, amounts, statuses and provider notifications to match the payment to your booking and handle issues."
+        ]
+      },
+      {
+        "id": "purposes",
+        "title": "Why we use your data",
+        "paragraphs": [
+          "We answer enquiries and prepare bookings by taking steps at your request before entering into a contract. Managing your trip, payments, booking pass, changes and cancellations is based on performing the contract.",
+          "We retain documentation required by applicable commercial and tax obligations. Technical records necessary to protect the service are processed under our legitimate interest in keeping it secure, with limited access and retention.",
+          "Email and WhatsApp messages concern your booking. Choosing a delivery channel does not authorise promotions. Reading this policy does not constitute consent to advertising or non-essential measurement."
+        ]
+      },
+      {
+        "id": "providers",
+        "title": "Service providers and recipients",
+        "paragraphs": [
+          "The website uses a private VPS, and Google hosts the email mailbox. Stripe handles payments. Hosting, backup, email, messaging, calendar and support providers may access the data needed to deliver their services.",
+          "Message delivery services receive the recipient and message content. Calendar coordination may include the customer's name, phone, email, date, experience, passenger count, reference, status, outstanding balance and necessary notes. Access must be limited to personnel authorised to manage the activity.",
+          "Banks and recipients necessary to meet legal obligations or respond to requests from authorities may also receive information. We do not sell your data or use it to send advertising.",
+          "Some services may involve processing outside the European Economic Area. Any transfers must be covered by an adequacy decision or another valid GDPR safeguard, such as standard contractual clauses. You can request information about recipients and applicable safeguards, including a copy of them, through our privacy contact."
+        ]
+      }
+    ],
+    "retention": {
+      "title": "How long we keep data",
+      "intro": "These periods apply to ordinary use of the data. Documents required by law or needed to address liabilities are kept separately with restricted access.",
+      "rows": [
+        [
+          "Enquiries without a booking",
+          "6 months after the enquiry is closed, where no associated documentation obligation applies."
+        ],
+        [
+          "Abandoned bookings without payment or an incident",
+          "30 days after the payment attempt expires or is definitively closed."
+        ],
+        [
+          "Booking administration, calendars and operational messages",
+          "12 months after the trip or definitive cancellation. Required supporting documents and correspondence are kept separately."
+        ],
+        [
+          "Commercial and accounting documentation",
+          "6 years from the last entry in the accounting books, unless special provisions apply."
+        ],
+        [
+          "Technical and security logs",
+          "90 days from each event, except evidence needed for an identified incident."
+        ],
+        [
+          "Browser-linked analytics",
+          "6 months from each event. The persistent identifier lasts no more than 6 months from its creation."
+        ],
+        [
+          "Operational backups",
+          "A rolling retention period of 30 days from each backup's creation."
+        ],
+        [
+          "Incidents and complaints",
+          "Until final resolution and, for necessary evidence, throughout the liability period applicable to the case."
+        ]
+      ],
+      "notes": [
+        "Once ordinary use ends, data is deleted or irreversibly anonymised without removing documents that must be retained. Where deletion or rectification requires statutory blocking, data is blocked and destroyed when the relevant liability period ends.",
+        "Backups are not used for routine enquiries. Restoring a backup must respect previous deletions. Providers acting as independent controllers may have their own retention obligations."
+      ]
+    },
+    "after": [
+      {
+        "id": "rights",
+        "title": "Your rights",
+        "paragraphs": [
+          "You may request access, rectification, erasure, restriction, objection and portability where applicable through the privacy contact above. Where processing is based on consent, you may withdraw it without affecting the lawfulness of earlier processing.",
+          "Tell us which right you want to exercise and provide the details needed to locate your request. Additional identity information will only be requested when necessary and proportionate. You may lodge a complaint with the Spanish Data Protection Agency."
+        ]
+      },
+      {
+        "id": "measurement",
+        "title": "Measurement and automated processing",
+        "paragraphs": [
+          "When enabled, Statsig measurement uses a persistent browser identifier and browsing and booking events. An identifier should not be confused with completely anonymous information. Non-essential measurement requires a choice separate from booking and is not authorised by reading this policy.",
+          "The website automatically checks availability and calculates booking amounts. The payment provider performs its own checks. If you have a problem with availability, payment or a booking, contact JimBoats so we can review it."
+        ]
+      }
+    ],
+    "authority": "Spanish Data Protection Agency",
+    "legalBasis": "Commercial retention: Article 30 of the Spanish Commercial Code",
+    "blocking": "Statutory data blocking: Article 32 of the Spanish LOPDGDD"
+  },
+  "fr": {
+    "title": "Politique de confidentialité",
+    "description": "Comment JimBoats traite vos coordonnées, réservations et paiements : finalités, prestataires, conservation et droits.",
+    "updated": "Mise à jour le 7 novembre 2026",
+    "controller": "Responsable du traitement",
+    "taxId": "Identifiant fiscal espagnol (NIF)",
+    "contact": "Contact pour la protection des données",
+    "intro": "Cette politique explique le traitement des données des personnes qui demandent des renseignements ou réservent une expérience avec JimBoats Charter. Nous n’envoyons pas de publicité.",
+    "sections": [
+      {
+        "id": "donnees",
+        "title": "Les données recueillies",
+        "paragraphs": [
+          "Votre nom et votre adresse e-mail sont nécessaires pour réserver en ligne. Le téléphone est nécessaire si vous choisissez de recevoir votre justificatif par WhatsApp. Nous traitons aussi l’expérience, la date, les horaires, le nombre de passagers, les options, la langue, les réductions, les montants, la référence, le statut et les préférences d’envoi. Sans les données nécessaires, la réservation ne peut pas être traitée.",
+          "Lorsque vous nous contactez, nous traitons vos coordonnées et le contenu de votre demande. Le formulaire ne demande ni pièce d’identité, ni passeport, ni données identifiant des mineurs, ni photos, ni informations de santé. N’indiquez pas de données sensibles inutiles à votre demande.",
+          "Stripe traite le paiement en ligne. Nous recevons les données de l’opération, identifiants, montants, statuts et notifications du prestataire pour rattacher le paiement à la réservation et gérer les incidents."
+        ]
+      },
+      {
+        "id": "finalites",
+        "title": "Pourquoi nous utilisons les données",
+        "paragraphs": [
+          "Nous répondons aux demandes et préparons les réservations dans le cadre de mesures précontractuelles prises à votre demande. La gestion de la sortie, des paiements, justificatifs, modifications et annulations repose sur l’exécution du contrat.",
+          "Nous conservons les documents exigés par les obligations commerciales et fiscales applicables. Les journaux techniques nécessaires à la protection du service reposent sur notre intérêt légitime à assurer sa sécurité, avec un accès et une conservation limités.",
+          "Les messages par e-mail et WhatsApp concernent votre réservation. Choisir un canal d’envoi n’autorise pas les promotions. Lire cette politique ne vaut pas consentement à la publicité ou à une mesure d’audience non essentielle."
+        ]
+      },
+      {
+        "id": "prestataires",
+        "title": "Prestataires et destinataires",
+        "paragraphs": [
+          "Le site utilise un VPS privé et Google héberge la boîte mail. Stripe intervient dans les paiements. Les prestataires d’hébergement, sauvegarde, e-mail, messagerie, calendrier et assistance peuvent accéder aux données nécessaires à leurs services.",
+          "Les services d’envoi reçoivent le destinataire et le contenu du message. Le calendrier peut contenir nom, téléphone, e-mail, date, expérience, nombre de passagers, référence, statut, solde dû et notes nécessaires. L’accès doit être limité au personnel autorisé à gérer l’activité.",
+          "Les banques et les destinataires nécessaires au respect d’obligations légales ou aux demandes des autorités peuvent également recevoir des informations. Nous ne vendons pas les données et ne les utilisons pas pour envoyer de publicité.",
+          "Certains services peuvent impliquer un traitement hors de l’Espace économique européen. Tout transfert doit être couvert par une décision d’adéquation ou une autre garantie valable au titre du RGPD, comme des clauses contractuelles types. Notre contact pour la protection des données peut vous renseigner sur les destinataires et les garanties applicables et vous en fournir une copie."
+        ]
+      }
+    ],
+    "retention": {
+      "title": "Durées de conservation",
+      "intro": "Ces durées concernent l’utilisation courante des données. Les documents exigés par la loi ou nécessaires pour répondre d’éventuelles responsabilités sont conservés séparément, avec un accès limité.",
+      "rows": [
+        [
+          "Demandes sans réservation",
+          "6 mois après la clôture de la demande, en l’absence d’obligation documentaire associée."
+        ],
+        [
+          "Réservations abandonnées sans paiement ni incident",
+          "30 jours après l’expiration ou la clôture définitive de la tentative de paiement."
+        ],
+        [
+          "Gestion des réservations, calendrier et messages opérationnels",
+          "12 mois après la sortie ou l’annulation définitive. Les justificatifs et correspondances obligatoires sont conservés séparément."
+        ],
+        [
+          "Documents commerciaux et comptables",
+          "6 ans à compter de la dernière écriture dans les livres comptables, sauf dispositions particulières applicables."
+        ],
+        [
+          "Journaux techniques et de sécurité",
+          "90 jours après chaque événement, sauf éléments nécessaires à un incident identifié."
+        ],
+        [
+          "Analyse liée au navigateur",
+          "6 mois après chaque événement. L’identifiant persistant expire au plus tard 6 mois après sa création."
+        ],
+        [
+          "Sauvegardes opérationnelles",
+          "Rotation sur 30 jours à compter de la création de chaque copie."
+        ],
+        [
+          "Incidents et réclamations",
+          "Jusqu’à leur résolution définitive puis, pour les preuves nécessaires, pendant le délai de responsabilité applicable."
+        ]
+      ],
+      "notes": [
+        "À la fin de l’utilisation courante, les données sont supprimées ou anonymisées irréversiblement, sans détruire les documents qui doivent être conservés. Lorsque la suppression ou la rectification impose un blocage légal, les données sont bloquées puis détruites à l’expiration du délai de responsabilité concerné.",
+        "Les sauvegardes ne servent pas aux consultations courantes. Une restauration doit respecter les suppressions antérieures. Les prestataires agissant comme responsables indépendants peuvent avoir leurs propres obligations de conservation."
+      ]
+    },
+    "after": [
+      {
+        "id": "droits",
+        "title": "Vos droits",
+        "paragraphs": [
+          "Vous pouvez demander l’accès, la rectification, l’effacement, la limitation, l’opposition et la portabilité lorsque ces droits s’appliquent, en utilisant le contact indiqué ci-dessus. Un consentement peut être retiré sans remettre en cause la licéité du traitement antérieur.",
+          "Précisez le droit demandé et les informations permettant de retrouver votre demande. Des éléments d’identité supplémentaires ne seront demandés que s’ils sont nécessaires et proportionnés. Vous pouvez introduire une réclamation auprès de l’Agence espagnole de protection des données."
+        ]
+      },
+      {
+        "id": "mesure",
+        "title": "Mesure d’audience et traitement automatisé",
+        "paragraphs": [
+          "Lorsqu’elle est activée, la mesure avec Statsig utilise un identifiant persistant du navigateur et des événements de navigation et de réservation. Un identifiant ne rend pas les données entièrement anonymes. La mesure non essentielle nécessite un choix distinct de la réservation ; lire cette politique ne l’autorise pas.",
+          "Le site vérifie automatiquement la disponibilité et calcule les montants. Le prestataire de paiement effectue ses propres contrôles. En cas de problème de disponibilité, paiement ou réservation, contactez JimBoats pour un examen de la situation."
+        ]
+      }
+    ],
+    "authority": "Agence espagnole de protection des données",
+    "legalBasis": "Conservation commerciale : article 30 du Code de commerce espagnol",
+    "blocking": "Blocage des données : article 32 de la LOPDGDD espagnole"
+  },
+  "de": {
+    "title": "Datenschutzerklärung",
+    "description": "So verarbeitet JimBoats Kontakt-, Buchungs- und Zahlungsdaten: Zwecke, Dienstleister, Aufbewahrung und Ihre Rechte.",
+    "updated": "Aktualisiert am 7. November 2026",
+    "controller": "Verantwortlicher",
+    "taxId": "Spanische Steuernummer (NIF)",
+    "contact": "Kontakt zum Datenschutz",
+    "intro": "Diese Erklärung beschreibt die Verarbeitung von Daten bei Anfragen und Buchungen von Erlebnissen mit JimBoats Charter. Wir versenden keine Werbung.",
+    "sections": [
+      {
+        "id": "daten",
+        "title": "Welche Daten wir erheben",
+        "paragraphs": [
+          "Für eine Onlinebuchung benötigen wir Ihren Namen und Ihre E-Mail-Adresse. Eine Telefonnummer ist erforderlich, wenn Sie den Buchungsbeleg per WhatsApp erhalten möchten. Außerdem verarbeiten wir Erlebnis, Datum, Uhrzeit, Personenzahl, Extras, Sprache, Rabatte, Beträge, Referenz, Status und Zustellpräferenzen. Ohne die erforderlichen Angaben können wir die Buchung nicht bearbeiten.",
+          "Bei einer Kontaktaufnahme verarbeiten wir Ihre Kontaktdaten und den Inhalt der Anfrage. Das Formular fragt keine Ausweis- oder Passdaten, personenbezogenen Angaben zu Kindern, Fotos oder Gesundheitsdaten ab. Bitte übermitteln Sie keine sensiblen Daten, die für Ihre Anfrage nicht erforderlich sind.",
+          "Stripe verarbeitet Onlinezahlungen. Wir erhalten Transaktionsdaten, Kennungen, Beträge, Statusangaben und Mitteilungen des Anbieters, um die Zahlung der Buchung zuzuordnen und Probleme zu bearbeiten."
+        ]
+      },
+      {
+        "id": "zwecke",
+        "title": "Zwecke und Rechtsgrundlagen",
+        "paragraphs": [
+          "Wir beantworten Anfragen und bereiten Buchungen als vorvertragliche Maßnahmen auf Ihren Wunsch vor. Die Abwicklung von Fahrt, Zahlung, Buchungsbeleg, Änderungen und Stornierungen beruht auf der Vertragserfüllung.",
+          "Gesetzlich erforderliche Unterlagen bewahren wir zur Erfüllung handels- und steuerrechtlicher Pflichten auf. Notwendige technische Sicherheitsprotokolle verarbeiten wir auf Grundlage unseres berechtigten Interesses an einem sicheren Dienst, mit begrenztem Zugriff und begrenzter Aufbewahrung.",
+          "Nachrichten per E-Mail und WhatsApp betreffen Ihre Buchung. Die Wahl eines Zustellkanals erlaubt keine Werbenachrichten. Das Lesen dieser Erklärung ist keine Einwilligung in Werbung oder nicht notwendige Nutzungsmessung."
+        ]
+      },
+      {
+        "id": "dienstleister",
+        "title": "Dienstleister und Empfänger",
+        "paragraphs": [
+          "Die Website nutzt einen privaten VPS; Google hostet das E-Mail-Postfach. Stripe wickelt Zahlungen ab. Anbieter für Hosting, Sicherungskopien, E-Mail, Nachrichten, Kalender und Support können auf die für ihre Leistungen notwendigen Daten zugreifen.",
+          "Versanddienste erhalten Empfänger und Nachrichteninhalt. Die Kalenderplanung kann Name, Telefonnummer, E-Mail, Datum, Erlebnis, Personenzahl, Referenz, Status, offenen Betrag und erforderliche Notizen enthalten. Zugriff darf nur befugtes Personal zur Organisation der Tätigkeit haben.",
+          "Informationen können außerdem an Banken und Empfänger gehen, soweit dies zur Erfüllung gesetzlicher Pflichten oder behördlicher Anforderungen notwendig ist. Wir verkaufen Ihre Daten nicht und verwenden sie nicht zum Versand von Werbung.",
+          "Einige Dienste können eine Verarbeitung außerhalb des Europäischen Wirtschaftsraums mit sich bringen. Übermittlungen müssen durch einen Angemessenheitsbeschluss oder eine andere gültige DSGVO-Garantie, etwa Standardvertragsklauseln, abgesichert sein. Über unseren Datenschutzkontakt erhalten Sie Informationen zu Empfängern und anwendbaren Garantien sowie eine Kopie dieser Garantien."
+        ]
+      }
+    ],
+    "retention": {
+      "title": "Aufbewahrungsfristen",
+      "intro": "Diese Fristen gelten für die gewöhnliche Nutzung der Daten. Gesetzlich vorgeschriebene oder zur Klärung von Haftungsfragen erforderliche Unterlagen werden getrennt und mit beschränktem Zugriff aufbewahrt.",
+      "rows": [
+        [
+          "Anfragen ohne Buchung",
+          "6 Monate ab Abschluss der Anfrage, sofern keine zugehörige Dokumentationspflicht besteht."
+        ],
+        [
+          "Abgebrochene Buchungen ohne Zahlung oder Vorfall",
+          "30 Tage nach Ablauf oder endgültigem Abschluss des Zahlungsversuchs."
+        ],
+        [
+          "Buchungsverwaltung, Kalender und organisatorische Nachrichten",
+          "12 Monate nach der Fahrt oder endgültigen Stornierung. Erforderliche Belege und Geschäftskorrespondenz werden getrennt aufbewahrt."
+        ],
+        [
+          "Geschäfts- und Buchhaltungsunterlagen",
+          "6 Jahre ab der letzten Eintragung in die Geschäftsbücher, vorbehaltlich besonderer Vorschriften."
+        ],
+        [
+          "Technische und Sicherheitsprotokolle",
+          "90 Tage ab dem jeweiligen Ereignis, außer benötigten Nachweisen zu einem festgestellten Vorfall."
+        ],
+        [
+          "Browserbezogene Analysedaten",
+          "6 Monate ab dem jeweiligen Ereignis. Die dauerhafte Kennung ist höchstens 6 Monate ab Erstellung gültig."
+        ],
+        [
+          "Betriebliche Sicherungskopien",
+          "Rollierende Aufbewahrung von 30 Tagen ab Erstellung jeder Kopie."
+        ],
+        [
+          "Vorfälle und Beschwerden",
+          "Bis zur endgültigen Klärung; notwendige Nachweise anschließend während der im Einzelfall geltenden Haftungsfrist."
+        ]
+      ],
+      "notes": [
+        "Nach Ende der gewöhnlichen Nutzung werden Daten gelöscht oder unumkehrbar anonymisiert. Aufbewahrungspflichtige Unterlagen bleiben erhalten. Soweit eine Löschung oder Berichtigung eine gesetzliche Sperrung verlangt, werden die Daten gesperrt und nach Ablauf der jeweiligen Haftungsfrist vernichtet.",
+        "Sicherungskopien dienen nicht der gewöhnlichen Auskunft. Bei einer Wiederherstellung müssen frühere Löschungen berücksichtigt werden. Anbieter, die eigenständig Verantwortliche sind, können eigenen Aufbewahrungspflichten unterliegen."
+      ]
+    },
+    "after": [
+      {
+        "id": "rechte",
+        "title": "Ihre Rechte",
+        "paragraphs": [
+          "Sie können über den oben genannten Datenschutzkontakt Auskunft, Berichtigung, Löschung, Einschränkung, Widerspruch und Datenübertragbarkeit verlangen, soweit diese Rechte anwendbar sind. Eine Einwilligung können Sie widerrufen, ohne dass die Rechtmäßigkeit der vorherigen Verarbeitung berührt wird.",
+          "Bitte nennen Sie das gewünschte Recht und die Angaben, mit denen sich Ihr Anliegen zuordnen lässt. Zusätzliche Identitätsnachweise werden nur verlangt, wenn dies erforderlich und verhältnismäßig ist. Sie können sich bei der spanischen Datenschutzbehörde beschweren."
+        ]
+      },
+      {
+        "id": "messung",
+        "title": "Nutzungsmessung und automatisierte Verarbeitung",
+        "paragraphs": [
+          "Wenn aktiviert, verwendet Statsig eine dauerhafte Browserkennung sowie Navigations- und Buchungsereignisse. Eine Kennung ist nicht mit vollständig anonymen Daten gleichzusetzen. Nicht notwendige Messung erfordert eine von der Buchung getrennte Entscheidung und wird nicht durch das Lesen dieser Erklärung erlaubt.",
+          "Die Website prüft Verfügbarkeiten und berechnet Buchungsbeträge automatisch. Der Zahlungsanbieter führt eigene Prüfungen durch. Bei Problemen mit Verfügbarkeit, Zahlung oder Buchung wenden Sie sich zur Prüfung an JimBoats."
+        ]
+      }
+    ],
+    "authority": "Spanische Datenschutzbehörde",
+    "legalBasis": "Geschäftliche Aufbewahrung: Artikel 30 des spanischen Handelsgesetzbuchs",
+    "blocking": "Datensperrung: Artikel 32 der spanischen LOPDGDD"
+  },
+  "nl": {
+    "title": "Privacybeleid",
+    "description": "Hoe JimBoats contactgegevens, boekingen en betalingen verwerkt: doeleinden, dienstverleners, bewaartermijnen en je rechten.",
+    "updated": "Bijgewerkt op 7 november 2026",
+    "controller": "Verwerkingsverantwoordelijke",
+    "taxId": "Spaans fiscaal nummer (NIF)",
+    "contact": "Contact voor privacy",
+    "intro": "Dit beleid legt uit hoe we gegevens verwerken van mensen die informatie vragen of een ervaring boeken bij JimBoats Charter. We sturen geen reclame.",
+    "sections": [
+      {
+        "id": "gegevens",
+        "title": "Welke gegevens we verzamelen",
+        "paragraphs": [
+          "Voor een online boeking hebben we je naam en e-mailadres nodig. Een telefoonnummer is nodig als je het boekingsbewijs via WhatsApp wilt ontvangen. We verwerken ook de ervaring, datum, tijd, het aantal passagiers, extra’s, taal, kortingen, bedragen, referentie, status en bezorgvoorkeuren. Zonder de benodigde gegevens kunnen we de boeking niet verwerken.",
+          "Als je contact opneemt, verwerken we je contactgegevens en de inhoud van je vraag. Het formulier vraagt niet om identiteitsbewijzen, paspoorten, identificerende gegevens van minderjarigen, foto’s of gezondheidsgegevens. Deel geen gevoelige informatie die niet nodig is voor je vraag.",
+          "Stripe verwerkt online betalingen. We ontvangen transactiegegevens, identificatoren, bedragen, statussen en meldingen van de aanbieder om de betaling aan je boeking te koppelen en problemen af te handelen."
+        ]
+      },
+      {
+        "id": "doeleinden",
+        "title": "Waarom we je gegevens gebruiken",
+        "paragraphs": [
+          "We beantwoorden vragen en bereiden boekingen voor als stappen op jouw verzoek vóór het sluiten van een overeenkomst. Het beheer van de tocht, betalingen, bewijsstukken, wijzigingen en annuleringen berust op de uitvoering van de overeenkomst.",
+          "We bewaren documenten die nodig zijn voor toepasselijke handelsrechtelijke en fiscale verplichtingen. Technische logs die nodig zijn om de dienst te beschermen verwerken we op basis van ons gerechtvaardigd belang bij veiligheid, met beperkte toegang en bewaring.",
+          "E-mail- en WhatsApp-berichten gaan over je boeking. De keuze van een bezorgkanaal geeft geen toestemming voor aanbiedingen. Het lezen van dit beleid is geen toestemming voor reclame of niet-noodzakelijke meting."
+        ]
+      },
+      {
+        "id": "dienstverleners",
+        "title": "Dienstverleners en ontvangers",
+        "paragraphs": [
+          "De website gebruikt een privé-VPS en Google host de mailbox. Stripe verzorgt betalingen. Dienstverleners voor hosting, back-ups, e-mail, berichten, agenda en ondersteuning kunnen de gegevens inzien die nodig zijn voor hun diensten.",
+          "Verzenddiensten ontvangen de ontvanger en de inhoud van het bericht. De planning in de agenda kan naam, telefoon, e-mail, datum, ervaring, passagiersaantal, referentie, status, openstaand bedrag en noodzakelijke notities bevatten. Alleen bevoegd personeel dat de activiteit organiseert mag toegang hebben.",
+          "Ook banken en ontvangers die nodig zijn voor wettelijke verplichtingen of verzoeken van autoriteiten kunnen informatie ontvangen. We verkopen je gegevens niet en gebruiken ze niet voor reclame.",
+          "Sommige diensten kunnen verwerking buiten de Europese Economische Ruimte meebrengen. Doorgiften moeten onder een adequaatheidsbesluit of een andere geldige AVG-waarborg vallen, zoals standaardcontractbepalingen. Via ons privacycontact kun je informatie over ontvangers en toepasselijke waarborgen opvragen, inclusief een kopie daarvan."
+        ]
+      }
+    ],
+    "retention": {
+      "title": "Hoe lang we gegevens bewaren",
+      "intro": "Deze termijnen gelden voor het gewone gebruik van de gegevens. Documenten die wettelijk nodig zijn of voor aansprakelijkheidskwesties bewaard moeten worden, blijven apart opgeslagen met beperkte toegang.",
+      "rows": [
+        [
+          "Vragen zonder boeking",
+          "6 maanden nadat de vraag is afgehandeld, tenzij een bijbehorende documentatieplicht geldt."
+        ],
+        [
+          "Afgebroken boekingen zonder betaling of incident",
+          "30 dagen nadat de betaalpoging verloopt of definitief is gesloten."
+        ],
+        [
+          "Boekingsbeheer, agenda en operationele berichten",
+          "12 maanden na de tocht of definitieve annulering. Vereiste bewijsstukken en correspondentie worden apart bewaard."
+        ],
+        [
+          "Zakelijke en boekhoudkundige documenten",
+          "6 jaar vanaf de laatste inschrijving in de boekhouding, tenzij bijzondere bepalingen gelden."
+        ],
+        [
+          "Technische en beveiligingslogs",
+          "90 dagen vanaf elke gebeurtenis, behalve bewijs dat nodig is voor een vastgesteld incident."
+        ],
+        [
+          "Browsergebonden analysegegevens",
+          "6 maanden vanaf elke gebeurtenis. De blijvende identificator vervalt uiterlijk 6 maanden na aanmaak."
+        ],
+        [
+          "Operationele back-ups",
+          "Een roulerende bewaartermijn van 30 dagen vanaf het maken van elke kopie."
+        ],
+        [
+          "Incidenten en klachten",
+          "Tot de definitieve afhandeling; noodzakelijk bewijs daarna gedurende de toepasselijke aansprakelijkheidstermijn."
+        ]
+      ],
+      "notes": [
+        "Na het gewone gebruik worden gegevens verwijderd of onomkeerbaar geanonimiseerd, zonder documenten te wissen die bewaard moeten blijven. Wanneer verwijdering of rectificatie wettelijke blokkering vereist, worden gegevens geblokkeerd en vernietigd na afloop van de betreffende aansprakelijkheidstermijn.",
+        "Back-ups worden niet gebruikt voor gewone raadpleging. Bij herstel moeten eerdere verwijderingen worden gerespecteerd. Dienstverleners die zelfstandig verwerkingsverantwoordelijke zijn, kunnen eigen bewaarplichten hebben."
+      ]
+    },
+    "after": [
+      {
+        "id": "rechten",
+        "title": "Je rechten",
+        "paragraphs": [
+          "Je kunt via het privacycontact hierboven verzoeken om inzage, rectificatie, verwijdering, beperking, bezwaar en overdraagbaarheid, waar deze rechten van toepassing zijn. Toestemming kun je intrekken zonder de rechtmatigheid van eerdere verwerking aan te tasten.",
+          "Vermeld welk recht je wilt uitoefenen en de gegevens die nodig zijn om je verzoek terug te vinden. Extra identiteitsgegevens worden alleen gevraagd wanneer dat nodig en evenredig is. Je kunt een klacht indienen bij de Spaanse gegevensbeschermingsautoriteit."
+        ]
+      },
+      {
+        "id": "meting",
+        "title": "Meting en geautomatiseerde verwerking",
+        "paragraphs": [
+          "Wanneer ingeschakeld, gebruikt Statsig een blijvende browseridentificator en navigatie- en boekingsgebeurtenissen. Een identificator maakt gegevens niet volledig anoniem. Niet-noodzakelijke meting vereist een keuze los van de boeking en wordt niet toegestaan door dit beleid te lezen.",
+          "De website controleert automatisch de beschikbaarheid en berekent boekingsbedragen. De betalingsdienst voert eigen controles uit. Neem bij problemen met beschikbaarheid, betaling of een boeking contact op met JimBoats zodat we dit kunnen bekijken."
+        ]
+      }
+    ],
+    "authority": "Spaanse gegevensbeschermingsautoriteit",
+    "legalBasis": "Zakelijke bewaring: artikel 30 van het Spaanse Wetboek van Koophandel",
+    "blocking": "Gegevensblokkering: artikel 32 van de Spaanse LOPDGDD"
+  }
+}

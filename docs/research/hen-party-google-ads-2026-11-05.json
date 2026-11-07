@@ -1,0 +1,184 @@
+{
+  "queriedAt": "2026-11-05",
+  "network": "GOOGLE_SEARCH",
+  "records": [
+    {
+      "request": {
+        "language": "es",
+        "geo_target_constants": [
+          "ES"
+        ],
+        "seed_keywords": [
+          "despedida soltera barco barcelona",
+          "despedida soltera barcelona",
+          "alquiler barco despedida soltera barcelona"
+        ]
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"seedKeywords\":[\"despedida soltera barco barcelona\",\"despedida soltera barcelona\",\"alquiler barco despedida soltera barcelona\"],\"ideas\":[{\"text\":\"despedida de soltera barcelona\",\"avgMonthlySearches\":480,\"competition\":\"HIGH\",\"competitionIndex\":82,\"lowTopOfPageBidMicros\":412753,\"highTopOfPageBidMicros\":1126770},{\"text\":\"despedida de soltero barcelona\",\"avgMonthlySearches\":480,\"competition\":\"HIGH\",\"competitionIndex\":82,\"lowTopOfPageBidMicros\":412753,\"highTopOfPageBidMicros\":1126770},{\"text\":\"despedida de soltero en barcelona\",\"avgMonthlySearches\":480,\"competition\":\"HIGH\",\"competitionIndex\":82,\"lowTopOfPageBidMicros\":412753,\"highTopOfPageBidMicros\":1126770},{\"text\":\"barcelona despedida de soltera\",\"avgMonthlySearches\":480,\"competition\":\"HIGH\",\"competitionIndex\":82,\"lowTopOfPageBidMicros\":412753,\"highTopOfPageBidMicros\":1126770},{\"text\":\"despedidas de solteros barcelona\",\"avgMonthlySearches\":480,\"competition\":\"HIGH\",\"competitionIndex\":82,\"lowTopOfPageBidMicros\":412753,\"highTopOfPageBidMicros\":1126770},{\"text\":\"despedida soltera barcelona\",\"avgMonthlySearches\":260,\"competition\":\"HIGH\",\"competitionIndex\":90,\"lowTopOfPageBidMicros\":350729,\"highTopOfPageBidMicros\":898680},{\"text\":\"despedida soltera en barcelona\",\"avgMonthlySearches\":260,\"competition\":\"HIGH\",\"competitionIndex\":90,\"lowTopOfPageBidMicros\":350729,\"highTopOfPageBidMicros\":898680},{\"text\":\"solteras barcelona\",\"avgMonthlySearches\":110,\"competition\":\"MEDIUM\",\"competitionIndex\":35,\"lowTopOfPageBidMicros\":492818,\"highTopOfPageBidMicros\":1827282},{\"text\":\"despedidas barcelona\",\"avgMonthlySearches\":50,\"competition\":\"MEDIUM\",\"competitionIndex\":45,\"lowTopOfPageBidMicros\":404821,\"highTopOfPageBidMicros\":619561},{\"text\":\"despedida barcelona\",\"avgMonthlySearches\":50,\"competition\":\"MEDIUM\",\"competitionIndex\":45,\"lowTopOfPageBidMicros\":404821,\"highTopOfPageBidMicros\":619561},{\"text\":\"barcelona despedida\",\"avgMonthlySearches\":50,\"competition\":\"MEDIUM\",\"competitionIndex\":45,\"lowTopOfPageBidMicros\":404821,\"highTopOfPageBidMicros\":619561},{\"text\":\"actividades despedida de soltera barcelona\",\"avgMonthlySearches\":40,\"competition\":\"HIGH\",\"competitionIndex\":98,\"lowTopOfPageBidMicros\":423785,\"highTopOfPageBidMicros\":1013213},{\"text\":\"pack despedida de soltera barcelona\",\"avgMonthlySearches\":40,\"competition\":\"HIGH\",\"competitionIndex\":92,\"lowTopOfPageBidMicros\":397166,\"highTopOfPageBidMicros\":620425},{\"text\":\"despedida soltera barco barcelona\",\"avgMonthlySearches\":20,\"competition\":\"LOW\",\"competitionIndex\":29},{\"text\":\"ideas despedida de soltera barcelona\",\"avgMonthlySearches\":20,\"competition\":\"HIGH\",\"competitionIndex\":76},{\"text\":\"actividades despedida soltera barcelona\",\"avgMonthlySearches\":20,\"competition\":\"HIGH\",\"competitionIndex\":90,\"lowTopOfPageBidMicros\":606095,\"highTopOfPageBidMicros\":2077049},{\"text\":\"despedidas de soltera originales barcelona\",\"avgMonthlySearches\":20,\"competition\":\"MEDIUM\",\"competitionIndex\":62},{\"text\":\"despedida de soltera en barcelona ideas\",\"avgMonthlySearches\":20,\"competition\":\"HIGH\",\"competitionIndex\":76}],\"count\":18,\"totalFound\":43,\"language\":\"languageConstants/1003\",\"geoTargetConstants\":[\"geoTargetConstants/2724\"]}"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "language": "en",
+        "geo_target_constants": [
+          "GB",
+          "IE",
+          "US"
+        ],
+        "seed_keywords": [
+          "barcelona hen party boat",
+          "barcelona hen do",
+          "barcelona bachelorette boat"
+        ]
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"seedKeywords\":[\"barcelona hen party boat\",\"barcelona hen do\",\"barcelona bachelorette boat\"],\"ideas\":[{\"text\":\"barcelona hen do\",\"avgMonthlySearches\":390,\"competition\":\"MEDIUM\",\"competitionIndex\":60,\"lowTopOfPageBidMicros\":602230,\"highTopOfPageBidMicros\":1497184},{\"text\":\"hen party barcelona\",\"avgMonthlySearches\":390,\"competition\":\"MEDIUM\",\"competitionIndex\":60,\"lowTopOfPageBidMicros\":602230,\"highTopOfPageBidMicros\":1497184},{\"text\":\"barcelona for hen do\",\"avgMonthlySearches\":390,\"competition\":\"MEDIUM\",\"competitionIndex\":60,\"lowTopOfPageBidMicros\":602230,\"highTopOfPageBidMicros\":1497184},{\"text\":\"hen night barcelona\",\"avgMonthlySearches\":390,\"competition\":\"MEDIUM\",\"competitionIndex\":60,\"lowTopOfPageBidMicros\":602230,\"highTopOfPageBidMicros\":1497184},{\"text\":\"barcelona hen do ideas\",\"avgMonthlySearches\":110,\"competition\":\"MEDIUM\",\"competitionIndex\":66,\"lowTopOfPageBidMicros\":461597,\"highTopOfPageBidMicros\":1086745},{\"text\":\"hen party ideas barcelona\",\"avgMonthlySearches\":110,\"competition\":\"MEDIUM\",\"competitionIndex\":66,\"lowTopOfPageBidMicros\":461597,\"highTopOfPageBidMicros\":1086745},{\"text\":\"barcelona hen weekend ideas\",\"avgMonthlySearches\":110,\"competition\":\"MEDIUM\",\"competitionIndex\":66,\"lowTopOfPageBidMicros\":461597,\"highTopOfPageBidMicros\":1086745},{\"text\":\"hen do activities barcelona\",\"avgMonthlySearches\":90,\"competition\":\"HIGH\",\"competitionIndex\":76,\"lowTopOfPageBidMicros\":553595,\"highTopOfPageBidMicros\":1441471},{\"text\":\"hen party activities barcelona\",\"avgMonthlySearches\":90,\"competition\":\"HIGH\",\"competitionIndex\":76,\"lowTopOfPageBidMicros\":553595,\"highTopOfPageBidMicros\":1441471},{\"text\":\"hen party activities in barcelona\",\"avgMonthlySearches\":90,\"competition\":\"HIGH\",\"competitionIndex\":76,\"lowTopOfPageBidMicros\":553595,\"highTopOfPageBidMicros\":1441471},{\"text\":\"hen activities barcelona\",\"avgMonthlySearches\":30,\"competition\":\"HIGH\",\"competitionIndex\":76,\"lowTopOfPageBidMicros\":587781,\"highTopOfPageBidMicros\":1484788},{\"text\":\"hen barcelona\",\"avgMonthlySearches\":30,\"competition\":\"MEDIUM\",\"competitionIndex\":41,\"lowTopOfPageBidMicros\":738979,\"highTopOfPageBidMicros\":1522383},{\"text\":\"barcelona hen do itinerary\",\"avgMonthlySearches\":20,\"competition\":\"HIGH\",\"competitionIndex\":77,\"lowTopOfPageBidMicros\":301730,\"highTopOfPageBidMicros\":1257666},{\"text\":\"bachelorette party barcelona\",\"avgMonthlySearches\":20,\"competition\":\"LOW\",\"competitionIndex\":21,\"lowTopOfPageBidMicros\":364451,\"highTopOfPageBidMicros\":1514104},{\"text\":\"classy hen do barcelona\",\"avgMonthlySearches\":10,\"competition\":\"\",\"competitionIndex\":0},{\"text\":\"barcelona boat trip hen do\",\"avgMonthlySearches\":10,\"competition\":\"\",\"competitionIndex\":0},{\"text\":\"barcelona hen weekend\",\"avgMonthlySearches\":10,\"competition\":\"MEDIUM\",\"competitionIndex\":52,\"lowTopOfPageBidMicros\":623989,\"highTopOfPageBidMicros\":1736360},{\"text\":\"barcelona hen do packages\",\"avgMonthlySearches\":10,\"competition\":\"HIGH\",\"competitionIndex\":77,\"lowTopOfPageBidMicros\":688443,\"highTopOfPageBidMicros\":1904401}],\"count\":18,\"totalFound\":32,\"language\":\"languageConstants/1000\",\"geoTargetConstants\":[\"geoTargetConstants/2826\",\"geoTargetConstants/2372\",\"geoTargetConstants/2840\"]}"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "language": "fr",
+        "geo_target_constants": [
+          "FR",
+          "BE"
+        ],
+        "seed_keywords": [
+          "evjf barcelone bateau",
+          "evjf barcelone",
+          "bateau privatif barcelone evjf"
+        ]
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"seedKeywords\":[\"evjf barcelone bateau\",\"evjf barcelone\",\"bateau privatif barcelone evjf\"],\"ideas\":[{\"text\":\"evjf barcelone\",\"avgMonthlySearches\":480,\"competition\":\"MEDIUM\",\"competitionIndex\":50,\"lowTopOfPageBidMicros\":422669,\"highTopOfPageBidMicros\":1670672},{\"text\":\"barcelone evjf\",\"avgMonthlySearches\":480,\"competition\":\"MEDIUM\",\"competitionIndex\":50,\"lowTopOfPageBidMicros\":422669,\"highTopOfPageBidMicros\":1670672},{\"text\":\"evjf à barcelone\",\"avgMonthlySearches\":480,\"competition\":\"MEDIUM\",\"competitionIndex\":50,\"lowTopOfPageBidMicros\":422669,\"highTopOfPageBidMicros\":1670672},{\"text\":\"activité evjf barcelone\",\"avgMonthlySearches\":170,\"competition\":\"HIGH\",\"competitionIndex\":69,\"lowTopOfPageBidMicros\":299707,\"highTopOfPageBidMicros\":1323704},{\"text\":\"evjf barcelone activités\",\"avgMonthlySearches\":170,\"competition\":\"HIGH\",\"competitionIndex\":69,\"lowTopOfPageBidMicros\":299707,\"highTopOfPageBidMicros\":1323704},{\"text\":\"activités barcelone evjf\",\"avgMonthlySearches\":170,\"competition\":\"HIGH\",\"competitionIndex\":69,\"lowTopOfPageBidMicros\":299707,\"highTopOfPageBidMicros\":1323704},{\"text\":\"barcelone enterrement de vie de garcon\",\"avgMonthlySearches\":50,\"competition\":\"HIGH\",\"competitionIndex\":75,\"lowTopOfPageBidMicros\":521797,\"highTopOfPageBidMicros\":1815997},{\"text\":\"spa barcelone evjf\",\"avgMonthlySearches\":40,\"competition\":\"MEDIUM\",\"competitionIndex\":56,\"lowTopOfPageBidMicros\":345135,\"highTopOfPageBidMicros\":1806889},{\"text\":\"spa evjf barcelone\",\"avgMonthlySearches\":40,\"competition\":\"MEDIUM\",\"competitionIndex\":56,\"lowTopOfPageBidMicros\":345135,\"highTopOfPageBidMicros\":1806889},{\"text\":\"evjf barcelone tout compris\",\"avgMonthlySearches\":30,\"competition\":\"HIGH\",\"competitionIndex\":69,\"lowTopOfPageBidMicros\":407396,\"highTopOfPageBidMicros\":1716166},{\"text\":\"catamaran barcelone evjf\",\"avgMonthlySearches\":20,\"competition\":\"HIGH\",\"competitionIndex\":74,\"lowTopOfPageBidMicros\":785373,\"highTopOfPageBidMicros\":1403805},{\"text\":\"crazy evg barcelone\",\"avgMonthlySearches\":20,\"competition\":\"MEDIUM\",\"competitionIndex\":60,\"lowTopOfPageBidMicros\":707749,\"highTopOfPageBidMicros\":1222755},{\"text\":\"evjf a barcelone\",\"avgMonthlySearches\":20,\"competition\":\"MEDIUM\",\"competitionIndex\":53,\"lowTopOfPageBidMicros\":270661,\"highTopOfPageBidMicros\":1461085},{\"text\":\"my evjf barcelone\",\"avgMonthlySearches\":20,\"competition\":\"MEDIUM\",\"competitionIndex\":44,\"lowTopOfPageBidMicros\":934230,\"highTopOfPageBidMicros\":2055151},{\"text\":\"evjf barcelona\",\"avgMonthlySearches\":20,\"competition\":\"\",\"competitionIndex\":0},{\"text\":\"evjf barcelone budget\",\"avgMonthlySearches\":10,\"competition\":\"MEDIUM\",\"competitionIndex\":57},{\"text\":\"crazy evjf barcelone\",\"avgMonthlySearches\":10,\"competition\":\"MEDIUM\",\"competitionIndex\":61,\"lowTopOfPageBidMicros\":420220,\"highTopOfPageBidMicros\":1774520},{\"text\":\"organisation evjf barcelone\",\"avgMonthlySearches\":10,\"competition\":\"HIGH\",\"competitionIndex\":82,\"lowTopOfPageBidMicros\":626341,\"highTopOfPageBidMicros\":3124386}],\"count\":18,\"totalFound\":28,\"language\":\"languageConstants/1002\",\"geoTargetConstants\":[\"geoTargetConstants/2250\",\"geoTargetConstants/2056\"]}"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "language": "de",
+        "geo_target_constants": [
+          "DE",
+          "AT",
+          "CH"
+        ],
+        "seed_keywords": [
+          "junggesellinnenabschied barcelona boot",
+          "jga barcelona frauen",
+          "junggesellinnenabschied barcelona"
+        ]
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"seedKeywords\":[\"junggesellinnenabschied barcelona boot\",\"jga barcelona frauen\",\"junggesellinnenabschied barcelona\"],\"ideas\":[{\"text\":\"jga barcelona\",\"avgMonthlySearches\":90,\"competition\":\"MEDIUM\",\"competitionIndex\":64,\"lowTopOfPageBidMicros\":437430,\"highTopOfPageBidMicros\":1337973},{\"text\":\"junggesellinnenabschied barcelona\",\"avgMonthlySearches\":70,\"competition\":\"MEDIUM\",\"competitionIndex\":66,\"lowTopOfPageBidMicros\":489226,\"highTopOfPageBidMicros\":1530192},{\"text\":\"barcelona jga\",\"avgMonthlySearches\":70,\"competition\":\"MEDIUM\",\"competitionIndex\":53,\"lowTopOfPageBidMicros\":329368,\"highTopOfPageBidMicros\":862571},{\"text\":\"barcelona junggesellenabschied\",\"avgMonthlySearches\":70,\"competition\":\"MEDIUM\",\"competitionIndex\":66,\"lowTopOfPageBidMicros\":489226,\"highTopOfPageBidMicros\":1530192},{\"text\":\"jga in barcelona\",\"avgMonthlySearches\":20,\"competition\":\"HIGH\",\"competitionIndex\":76,\"lowTopOfPageBidMicros\":264176,\"highTopOfPageBidMicros\":893180},{\"text\":\"barcelona jga frauen\",\"avgMonthlySearches\":20,\"competition\":\"MEDIUM\",\"competitionIndex\":41,\"lowTopOfPageBidMicros\":270157,\"highTopOfPageBidMicros\":774334},{\"text\":\"jga barcelona frauen\",\"avgMonthlySearches\":10,\"competition\":\"LOW\",\"competitionIndex\":29,\"lowTopOfPageBidMicros\":176262,\"highTopOfPageBidMicros\":534967},{\"text\":\"barcelona jga männer\",\"avgMonthlySearches\":10,\"competition\":\"MEDIUM\",\"competitionIndex\":60,\"lowTopOfPageBidMicros\":462914,\"highTopOfPageBidMicros\":968308},{\"text\":\"jga barcelona für frauen\",\"avgMonthlySearches\":10,\"competition\":\"\",\"competitionIndex\":0},{\"text\":\"jga barcelona tipps\",\"avgMonthlySearches\":10,\"competition\":\"MEDIUM\",\"competitionIndex\":57},{\"text\":\"junggesellenabschied barcelona tipps\",\"avgMonthlySearches\":10,\"competition\":\"\",\"competitionIndex\":0},{\"text\":\"junggesellenabschied in barcelona\",\"avgMonthlySearches\":10,\"competition\":\"MEDIUM\",\"competitionIndex\":50},{\"text\":\"junggesellinnenabschied barcelona boot\",\"avgMonthlySearches\":0,\"competition\":\"\",\"competitionIndex\":0}],\"count\":13,\"totalFound\":13,\"language\":\"languageConstants/1001\",\"geoTargetConstants\":[\"geoTargetConstants/2276\",\"geoTargetConstants/2040\",\"geoTargetConstants/2756\"]}"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "language": "nl",
+        "geo_target_constants": [
+          "NL",
+          "BE"
+        ],
+        "seed_keywords": [
+          "vrijgezellenfeest barcelona boot",
+          "vrijgezellenfeest barcelona vrouwen",
+          "vrijgezellenfeest barcelona"
+        ]
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"seedKeywords\":[\"vrijgezellenfeest barcelona boot\",\"vrijgezellenfeest barcelona vrouwen\",\"vrijgezellenfeest barcelona\"],\"ideas\":[{\"text\":\"vrijgezellenfeest barcelona\",\"avgMonthlySearches\":10,\"competition\":\"MEDIUM\",\"competitionIndex\":54},{\"text\":\"vrijgezellenweekend barcelona\",\"avgMonthlySearches\":10,\"competition\":\"HIGH\",\"competitionIndex\":86},{\"text\":\"vrijgezellenfeest barcelona boot\",\"avgMonthlySearches\":0,\"competition\":\"\",\"competitionIndex\":0},{\"text\":\"vrijgezellenfeest barcelona vrouwen\",\"avgMonthlySearches\":0,\"competition\":\"\",\"competitionIndex\":0}],\"count\":4,\"totalFound\":4,\"language\":\"languageConstants/1010\",\"geoTargetConstants\":[\"geoTargetConstants/2528\",\"geoTargetConstants/2056\"]}"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "language": "es",
+        "geo_target_constants": [
+          "ES"
+        ],
+        "keywords": [
+          "despedida soltera barco barcelona",
+          "despedida de soltera en barco barcelona",
+          "alquiler barco despedida soltera barcelona"
+        ]
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"keywords\":[{\"text\":\"despedida soltera barco barcelona\",\"avgMonthlySearches\":20,\"competition\":\"LOW\",\"competitionIndex\":29,\"monthlySearchVolumes\":[{\"year\":2025,\"month\":10,\"monthlySearches\":40},{\"year\":2025,\"month\":11,\"monthlySearches\":70},{\"year\":2025,\"month\":12,\"monthlySearches\":20},{\"year\":2026,\"month\":1,\"monthlySearches\":30},{\"year\":2026,\"month\":2,\"monthlySearches\":10},{\"year\":2026,\"month\":3,\"monthlySearches\":10},{\"year\":2026,\"month\":4,\"monthlySearches\":10},{\"year\":2026,\"month\":5,\"monthlySearches\":10},{\"year\":2026,\"month\":6,\"monthlySearches\":20},{\"year\":2026,\"month\":7,\"monthlySearches\":10},{\"year\":2026,\"month\":8,\"monthlySearches\":10},{\"year\":2026,\"month\":9,\"monthlySearches\":10}]},{\"text\":\"despedida de soltera en barco barcelona\",\"avgMonthlySearches\":10,\"competition\":\"MEDIUM\",\"competitionIndex\":55,\"lowTopOfPageBidMicros\":453472,\"highTopOfPageBidMicros\":2536204,\"monthlySearchVolumes\":[{\"year\":2025,\"month\":10,\"monthlySearches\":10},{\"year\":2025,\"month\":11,\"monthlySearches\":30},{\"year\":2025,\"month\":12,\"monthlySearches\":10},{\"year\":2026,\"month\":1,\"monthlySearches\":10},{\"year\":2026,\"month\":2,\"monthlySearches\":10},{\"year\":2026,\"month\":3,\"monthlySearches\":20},{\"year\":2026,\"month\":4,\"monthlySearches\":20},{\"year\":2026,\"month\":5,\"monthlySearches\":20},{\"year\":2026,\"month\":6,\"monthlySearches\":10},{\"year\":2026,\"month\":7,\"monthlySearches\":10},{\"year\":2026,\"month\":8,\"monthlySearches\":10},{\"year\":2026,\"month\":9,\"monthlySearches\":10}]},{\"text\":\"alquiler barco despedida soltera barcelona\",\"avgMonthlySearches\":10,\"competition\":\"\",\"competitionIndex\":0,\"monthlySearchVolumes\":[{\"year\":2025,\"month\":10,\"monthlySearches\":10},{\"year\":2025,\"month\":11,\"monthlySearches\":10},{\"year\":2025,\"month\":12,\"monthlySearches\":10},{\"year\":2026,\"month\":1,\"monthlySearches\":10},{\"year\":2026,\"month\":2,\"monthlySearches\":0},{\"year\":2026,\"month\":3,\"monthlySearches\":10},{\"year\":2026,\"month\":4,\"monthlySearches\":0},{\"year\":2026,\"month\":5,\"monthlySearches\":10},{\"year\":2026,\"month\":6,\"monthlySearches\":0},{\"year\":2026,\"month\":7,\"monthlySearches\":0},{\"year\":2026,\"month\":8,\"monthlySearches\":0},{\"year\":2026,\"month\":9,\"monthlySearches\":0}]}],\"count\":3}"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "language": "en",
+        "geo_target_constants": [
+          "GB",
+          "IE",
+          "US"
+        ],
+        "keywords": [
+          "barcelona hen party boat",
+          "barcelona boat trip hen do",
+          "barcelona bachelorette boat",
+          "private boat hen party barcelona"
+        ]
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"keywords\":[{\"text\":\"barcelona boat trip hen do\",\"avgMonthlySearches\":10,\"competition\":\"\",\"competitionIndex\":0,\"monthlySearchVolumes\":[{\"year\":2025,\"month\":10,\"monthlySearches\":10},{\"year\":2025,\"month\":11,\"monthlySearches\":10},{\"year\":2025,\"month\":12,\"monthlySearches\":0},{\"year\":2026,\"month\":1,\"monthlySearches\":10},{\"year\":2026,\"month\":2,\"monthlySearches\":10},{\"year\":2026,\"month\":3,\"monthlySearches\":10},{\"year\":2026,\"month\":4,\"monthlySearches\":10},{\"year\":2026,\"month\":5,\"monthlySearches\":10},{\"year\":2026,\"month\":6,\"monthlySearches\":10},{\"year\":2026,\"month\":7,\"monthlySearches\":10},{\"year\":2026,\"month\":8,\"monthlySearches\":0},{\"year\":2026,\"month\":9,\"monthlySearches\":0}]},{\"text\":\"barcelona hen party boat\",\"avgMonthlySearches\":0,\"competition\":\"\",\"competitionIndex\":0},{\"text\":\"barcelona bachelorette boat\",\"avgMonthlySearches\":0,\"competition\":\"\",\"competitionIndex\":0},{\"text\":\"private boat hen party barcelona\",\"avgMonthlySearches\":0,\"competition\":\"\",\"competitionIndex\":0}],\"count\":4}"
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "language": "fr",
+        "geo_target_constants": [
+          "FR",
+          "BE"
+        ],
+        "keywords": [
+          "evjf barcelone bateau",
+          "bateau privatif barcelone evjf",
+          "evjf barcelone budget"
+        ]
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"keywords\":[{\"text\":\"evjf barcelone budget\",\"avgMonthlySearches\":10,\"competition\":\"MEDIUM\",\"competitionIndex\":57,\"monthlySearchVolumes\":[{\"year\":2025,\"month\":10,\"monthlySearches\":10},{\"year\":2025,\"month\":11,\"monthlySearches\":10},{\"year\":2025,\"month\":12,\"monthlySearches\":10},{\"year\":2026,\"month\":1,\"monthlySearches\":10},{\"year\":2026,\"month\":2,\"monthlySearches\":10},{\"year\":2026,\"month\":3,\"monthlySearches\":10},{\"year\":2026,\"month\":4,\"monthlySearches\":10},{\"year\":2026,\"month\":5,\"monthlySearches\":10},{\"year\":2026,\"month\":6,\"monthlySearches\":0},{\"year\":2026,\"month\":7,\"monthlySearches\":10},{\"year\":2026,\"month\":8,\"monthlySearches\":10},{\"year\":2026,\"month\":9,\"monthlySearches\":10}]},{\"text\":\"evjf barcelone bateau\",\"avgMonthlySearches\":0,\"competition\":\"\",\"competitionIndex\":0},{\"text\":\"bateau privatif barcelone evjf\",\"avgMonthlySearches\":0,\"competition\":\"\",\"competitionIndex\":0}],\"count\":3}"
+          }
+        ]
+      }
+    }
+  ]
+}

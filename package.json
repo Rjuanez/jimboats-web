@@ -45,7 +45,12 @@
     "media:worker:build": "esbuild src/interface/worker/mediaWorkerCli.ts --bundle --platform=node --target=node24 --format=cjs --packages=external --outfile=.worker/media-worker.cjs",
     "media:worker": "pnpm media:worker:build && node .worker/media-worker.cjs",
     "notifications:worker:build": "esbuild src/interface/worker/notificationWorkerCli.ts --bundle --platform=node --target=node24 --format=cjs --packages=external --outfile=.worker/notification-worker.cjs",
-    "notifications:worker": "pnpm notifications:worker:build && node .worker/notification-worker.cjs"
+    "notifications:worker": "pnpm notifications:worker:build && node .worker/notification-worker.cjs",
+    "dev:seo": "JIMBOATS_SEO_PREVIEW=1 JIMBOATS_ADMIN_PREVIEW_DATA=1 next dev --webpack --hostname 127.0.0.1 --port 3100",
+    "dev:hourly": "node scripts/dev/hourly-preview.mjs",
+    "db:hourly:setup": "node scripts/dev/hourly-preview.mjs --setup",
+    "start:hourly": "node scripts/dev/hourly-preview.mjs --start",
+    "test:local": "PLAYWRIGHT_PORT=3102 PLAYWRIGHT_BASE_URL=http://127.0.0.1:3102 PLAYWRIGHT_REUSE_EXISTING_SERVER=1 PLAYWRIGHT_WEB_SERVER_COMMAND=\"node scripts/dev/hourly-preview.mjs --start\" HOURLY_BOOKING_E2E=1 playwright test tests/hourly-booking.spec.ts tests/local-operations.spec.ts --workers=1"
   },
   "dependencies": {
     "@prisma/adapter-pg": "7.8.0",
@@ -63,6 +68,7 @@
     "react-dom": "19.2.6",
     "sharp": "0.33.5",
     "stripe": "^22.2.0",
+    "suncalc": "2.1.2",
     "tailwind-merge": "3.6.0",
     "web-push": "^3.6.7",
     "zod": "4.4.3"

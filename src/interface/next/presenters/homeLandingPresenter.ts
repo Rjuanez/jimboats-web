@@ -11,6 +11,8 @@ import type {
   PublicBookingExtra,
 } from "@/components/sections/public-booking/PublicBookingTypes";
 import { createLocalizedPath, localeToIntlLocale } from "@/i18n/locales";
+import { privacyPath } from "@/content/privacy/routes";
+import { termsPages, termsPath } from "@/content/booking/termsRoutes";
 import { getPublicDictionary, type PublicDictionary } from "@/i18n/public";
 import type { SupportedLocaleCode } from "@/shared/domain/LocaleCode";
 
@@ -595,8 +597,8 @@ function localizeFallbackHomeLandingContent(
       copyright: dictionary.landing.footer.copyright,
       description: dictionary.landing.footer.description,
       legalLinks: [
-        { href: "#", label: dictionary.common.privacyPolicy },
-        { href: "#", label: dictionary.common.termsOfService },
+        { href: privacyPath(locale), label: dictionary.common.privacyPolicy },
+        { href: termsPath(locale), label: termsPages[locale === "ca" ? "es" : locale].label },
       ],
     },
     gallery: {
