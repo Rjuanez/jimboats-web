@@ -28,7 +28,7 @@ export function GET() {
       const rates = trip.durationOptions.map(
         (hours) => `${hours} h: EUR ${trip.prices[hours]}`,
       );
-      return `- ${link(trip.title, trip.href)}: ${trip.confirmedPrice ? rates.join(", ") : "Price on request"}.`;
+      return `- ${link(trip.title, trip.href)}: ${trip.confirmedPrice ? `${trip.pricing.summary} ${trip.pricing.decoration} Exact totals: ${rates.join(", ")}` : "Price on request"}.`;
     }),
     "",
     page.pricing.boatNote,

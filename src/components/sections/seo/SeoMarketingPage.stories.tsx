@@ -3,6 +3,7 @@ import { SeoSolarCalendar } from "./SeoSolarCalendar";
 import { SeoDurationGuide } from "./SeoDurationGuide";
 import { SeoTripPreparation } from "./SeoTripPreparation";
 import { SeoPricingTables } from "./SeoPricingTables";
+import { SeoExperiencePrices } from "./SeoExperiencePrices";
 import { SeoFaq, SeoFindUs } from "./SeoTrustSections";
 import { SeoReviews } from "./SeoReviews";
 import { SeoPremiumFinalCta } from "./SeoPremiumSections";
@@ -39,9 +40,35 @@ export const GermanLongText: Story = {
 export const Prices: Story = {
   args: { page: getMarketingPage("en", "prices") },
 };
+export const ExperiencePrices: Story = {
+  args: { page: getMarketingPage("es", "private") },
+  render: ({ page }) => (
+    <div className="mx-auto max-w-3xl p-5">
+      <SeoExperiencePrices
+        detail={page.detail!}
+        capacityLabel={
+          page.experiences.find((item) => item.id === page.key)!.capacityLabel
+        }
+      />
+    </div>
+  ),
+};
+export const ExperiencePricesGerman: Story = {
+  ...ExperiencePrices,
+  args: { page: getMarketingPage("de", "sunset") },
+};
+export const ExperiencePricesMobile: Story = {
+  ...ExperiencePrices,
+  args: { page: getMarketingPage("fr", "romantic") },
+  parameters: { viewport: { defaultViewport: "mobile1" } },
+};
 export const DurationGuide: Story = {
   args: { page: getMarketingPage("es", "prices") },
-  render: ({ page }) => <div className="mx-auto max-w-6xl p-5"><SeoDurationGuide planning={page.planning} /></div>,
+  render: ({ page }) => (
+    <div className="mx-auto max-w-6xl p-5">
+      <SeoDurationGuide planning={page.planning} />
+    </div>
+  ),
 };
 export const DurationGuideGerman: Story = {
   ...DurationGuide,
@@ -49,7 +76,11 @@ export const DurationGuideGerman: Story = {
 };
 export const BeforeBoarding: Story = {
   args: { page: getMarketingPage("es", "contact") },
-  render: ({ page }) => <div className="mx-auto max-w-3xl p-5"><SeoTripPreparation page={page} /></div>,
+  render: ({ page }) => (
+    <div className="mx-auto max-w-3xl p-5">
+      <SeoTripPreparation page={page} />
+    </div>
+  ),
 };
 export const BeforeBoardingFrench: Story = {
   ...BeforeBoarding,

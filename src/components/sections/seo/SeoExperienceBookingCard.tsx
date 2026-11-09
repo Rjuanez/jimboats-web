@@ -32,7 +32,9 @@ export function SeoExperienceBookingCard({
       className="rounded-4xl border border-sand/70 bg-white p-6 shadow-soft lg:sticky lg:top-8 lg:max-h-[calc(100dvh-4rem)] lg:overflow-y-auto"
     >
       <p className="inline-flex max-w-full rounded-full bg-emerald-50 px-3 py-2 text-xs font-semibold uppercase leading-5 tracking-wide text-emerald-800">
-        {experience.confirmedPrice ? copy.bestPrice : page.copy.provisionalPrice}
+        {experience.confirmedPrice
+          ? copy.bestPrice
+          : page.copy.provisionalPrice}
       </p>
       <p className="mt-5 text-xs font-medium uppercase tracking-wider text-text-muted">
         {labels.from}
@@ -42,6 +44,9 @@ export function SeoExperienceBookingCard({
         <span className="font-sans text-lg font-semibold">
           ({experience.featuredHours} h)
         </span>
+      </p>
+      <p className="mt-2 text-sm font-semibold leading-6 text-primary-dark">
+        {experience.pricing.extraLabel}
       </p>
       <p className="mt-3 text-base font-semibold leading-6 text-emerald-800">
         {detail.priceHighlight}

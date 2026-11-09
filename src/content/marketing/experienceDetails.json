@@ -154,12 +154,7 @@
       "weatherAssurance": "Si cancelamos por mal tiempo, te devolvemos el importe abonado.",
       "oneHourPrice": "Precio final · bebida incluida",
       "longerPrice": "Precio final · bebidas y snacks incluidos",
-      "essentials": [
-        "Patrón",
-        "Combustible",
-        "Seguro",
-        "Altavoz Bluetooth"
-      ],
+      "essentials": ["Patrón", "Combustible", "Seguro", "Altavoz Bluetooth"],
       "drink": "Bebida incluida",
       "drinks": "Bebidas incluidas",
       "snacks": "Snacks incluidos",
@@ -175,7 +170,8 @@
         "note": "Referencia: día 15 de cada mes de 2026, hora local de Barcelona. La hora varía cada día; en marzo y octubre también influye el cambio de hora. Consulta el horario de tu salida al reservar.",
         "source": "Fuente"
       },
-      "decoration": "Decoración de las fotos incluida"
+      "decoration": "Decoración de las fotos incluida",
+      "refreshmentsFromTwo": "Todas las duraciones de esta experiencia incluyen bebidas y snacks."
     },
     "whatsappMessages": {
       "experience": "Hola, me interesa reservar: {experience}. ¿Qué disponibilidad tenéis?",
@@ -365,12 +361,7 @@
       "weatherAssurance": "If we cancel due to bad weather, we refund the amount you paid.",
       "oneHourPrice": "Final price · drink included",
       "longerPrice": "Final price · drinks and snacks included",
-      "essentials": [
-        "Skipper",
-        "Fuel",
-        "Insurance",
-        "Bluetooth speaker"
-      ],
+      "essentials": ["Skipper", "Fuel", "Insurance", "Bluetooth speaker"],
       "drink": "Drink included",
       "drinks": "Drinks included",
       "snacks": "Snacks included",
@@ -386,7 +377,8 @@
         "note": "Reference: the 15th of each month in 2026, Barcelona local time. Times change daily; clock changes also affect March and October. Check your departure time when booking.",
         "source": "Source"
       },
-      "decoration": "Decorations shown in the photos included"
+      "decoration": "Decorations shown in the photos included",
+      "refreshmentsFromTwo": "All durations of this experience include drinks and snacks."
     },
     "whatsappMessages": {
       "experience": "Hello, I would like to book: {experience}. What dates are available?",
@@ -576,12 +568,7 @@
       "weatherAssurance": "Si nous annulons pour cause de mauvais temps, nous remboursons le montant versé.",
       "oneHourPrice": "Prix final · boisson incluse",
       "longerPrice": "Prix final · boissons et snacks inclus",
-      "essentials": [
-        "Skipper",
-        "Carburant",
-        "Assurance",
-        "Enceinte Bluetooth"
-      ],
+      "essentials": ["Skipper", "Carburant", "Assurance", "Enceinte Bluetooth"],
       "drink": "Boisson incluse",
       "drinks": "Boissons incluses",
       "snacks": "Snacks inclus",
@@ -597,7 +584,8 @@
         "note": "Référence : le 15 de chaque mois de 2026, heure locale de Barcelone. Les horaires varient chaque jour ; les changements d’heure influent aussi sur mars et octobre. Consultez votre horaire de départ lors de la réservation.",
         "source": "Source"
       },
-      "decoration": "Décoration des photos incluse"
+      "decoration": "Décoration des photos incluse",
+      "refreshmentsFromTwo": "Toutes les durées de cette expérience comprennent des boissons et des snacks."
     },
     "whatsappMessages": {
       "experience": "Bonjour, je souhaite réserver : {experience}. Quelles sont vos disponibilités ?",
@@ -808,7 +796,8 @@
         "note": "Referenz: jeweils der 15. des Monats im Jahr 2026, Ortszeit Barcelona. Die Zeiten ändern sich täglich; im März und Oktober wirkt sich zusätzlich die Zeitumstellung aus. Prüft eure Abfahrtszeit bei der Buchung.",
         "source": "Quelle"
       },
-      "decoration": "Dekoration wie auf den Fotos inklusive"
+      "decoration": "Dekoration wie auf den Fotos inklusive",
+      "refreshmentsFromTwo": "Bei jeder verfügbaren Dauer dieses Erlebnisses sind Getränke und Snacks inklusive."
     },
     "whatsappMessages": {
       "experience": "Hallo, ich möchte folgendes Erlebnis buchen: {experience}. Welche Termine sind verfügbar?",
@@ -1019,7 +1008,8 @@
         "note": "Referentie: de 15e van elke maand in 2026, lokale tijd in Barcelona. Tijden veranderen dagelijks; in maart en oktober speelt ook de klokverzetting een rol. Bekijk je vertrektijd bij het boeken.",
         "source": "Bron"
       },
-      "decoration": "Decoratie zoals op de foto’s inbegrepen"
+      "decoration": "Decoratie zoals op de foto’s inbegrepen",
+      "refreshmentsFromTwo": "Bij elke beschikbare duur van deze ervaring zijn drankjes en snacks inbegrepen."
     },
     "whatsappMessages": {
       "experience": "Hallo, ik wil graag boeken: {experience}. Welke data zijn beschikbaar?",

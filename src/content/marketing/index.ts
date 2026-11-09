@@ -5,7 +5,11 @@ import {
 } from "./experienceDetails";
 import hospitality from "./hospitality.json";
 import { cancellationPolicy } from "../booking/cancellationPolicy";
-import { pricingCopy, productionExtraPrices } from "./pricing";
+import {
+  getExperiencePricing,
+  pricingCopy,
+  productionExtraPrices,
+} from "./pricing";
 import { weatherCopy } from "./weather";
 import { getTripPlanning } from "./tripPlanning";
 import { customerReviews } from "./reviews";
@@ -74,10 +78,18 @@ export function getMarketingPage(
     capacityLabel: copy.capacityLabel,
     confirmedPrice: confirmedPriceIds.includes(experiences[id].bookingId),
     prices: hourlyPrices[experiences[id].bookingId],
+    pricing: getExperiencePricing(locale, experiences[id].bookingId),
     formattedPrices: Object.fromEntries(
-      Object.entries(hourlyPrices[experiences[id].bookingId]).map(([hours, euros]) => [
-        hours, new Intl.NumberFormat(locale, { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(euros),
-      ]),
+      Object.entries(hourlyPrices[experiences[id].bookingId]).map(
+        ([hours, euros]) => [
+          hours,
+          new Intl.NumberFormat(locale, {
+            style: "currency",
+            currency: "EUR",
+            maximumFractionDigits: 0,
+          }).format(euros),
+        ],
+      ),
     ),
   }));
   const currentExperience = preparedExperiences.find((item) => item.id === key);
@@ -89,7 +101,9 @@ export function getMarketingPage(
           "{experience}",
           currentExperience.title,
         )
-      : key === "contact" ? copy.support.contactMessage : detailCopy.whatsappMessages.general,
+      : key === "contact"
+        ? copy.support.contactMessage
+        : detailCopy.whatsappMessages.general,
   );
   const detail = currentExperience
     ? getExperienceDetails(locale, currentExperience)
@@ -102,7 +116,11 @@ export function getMarketingPage(
   return {
     locale,
     onboard: hospitality[locale],
-    planning: getTripPlanning(locale, preparedExperiences.find((item) => item.id === "private")!, copy.support.accessRoute),
+    planning: getTripPlanning(
+      locale,
+      preparedExperiences.find((item) => item.id === "private")!,
+      copy.support.accessRoute,
+    ),
     key,
     detail,
     detailCopy,
@@ -113,7 +131,9 @@ export function getMarketingPage(
         ? guide.key === key
         : key === "romantic"
           ? guide.key === "sunset"
-          : key === "private" ? guide.key === "food" || guide.key === "birthday" : true,
+          : key === "private"
+            ? guide.key === "food" || guide.key === "birthday"
+            : true,
     ),
     experiencesHref: `${marketingPath(locale)}#experiences`,
     copy: {
@@ -125,7 +145,16 @@ export function getMarketingPage(
                 cancellationPolicy.copy[locale].weatherQuestion,
                 cancellationPolicy.copy[locale].weather,
               ]
-            : index === 3 ? [faq[0], [faq[1], hospitality[locale].drinks, hospitality[locale].food].join(" ")] : faq,
+            : index === 3
+              ? [
+                  faq[0],
+                  [
+                    faq[1],
+                    hospitality[locale].drinks,
+                    hospitality[locale].food,
+                  ].join(" "),
+                ]
+              : faq,
         ),
         [
           cancellationPolicy.copy[locale].question,
@@ -209,12 +238,12 @@ export function getMarketingPage(
       href: marketingPath(language, key),
       active: language === locale,
     })),
-    navigation: (["experiences", "prices", "boat", "find-us", "contact-us"] as const).map(
-      (section, index) => ({
-        label: copy.nav[index],
-        href: `${marketingPath(locale)}#${section}`,
-      }),
-    ),
+    navigation: (
+      ["experiences", "prices", "boat", "find-us", "contact-us"] as const
+    ).map((section, index) => ({
+      label: copy.nav[index],
+      href: `${marketingPath(locale)}#${section}`,
+    })),
     experiences: preparedExperiences,
     infoLinks: [
       ...(["about", "boat", "prices", "contact"] as const).map((page) => ({

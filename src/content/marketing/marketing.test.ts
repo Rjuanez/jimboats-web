@@ -42,10 +42,12 @@ describe("static marketing architecture", () => {
         });
         expect(graph.find((item) => item["@type"] === "FAQPage")).toMatchObject(
           {
-            mainEntity: [...page.detail!.faqs, ...page.planning.questions].map(([name, text]) => ({
-              name,
-              acceptedAnswer: { text },
-            })),
+            mainEntity: [...page.detail!.faqs, ...page.planning.questions].map(
+              ([name, text]) => ({
+                name,
+                acceptedAnswer: { text },
+              }),
+            ),
           },
         );
         expect(page.reviews.excerpts.map((item) => item.id)).not.toContain(
@@ -78,6 +80,9 @@ describe("static marketing architecture", () => {
           detail.labels.bookingCard.snacks,
         );
         expect(detail.faqs[0][1]).toContain(
+          detail.labels.bookingCard.refreshmentsFromTwo,
+        );
+        expect(detail.faqs[0][1]).not.toContain(
           detail.labels.bookingCard.refreshments,
         );
       }
@@ -195,14 +200,20 @@ describe("static marketing architecture", () => {
         const schema = JSON.stringify(
           marketingStructuredData(getMarketingPage(locale, key)),
         );
-        const experience = getMarketingPage(locale, key).experiences.find((item) => item.id === key);
-        if (experience?.confirmedPrice) {
-          const service = JSON.parse(schema)["@graph"].find((node: { "@type": string }) => node["@type"] === "Service");
-          expect(service.offers.map((offer: { price: number }) => offer.price)).toEqual(experience.durationOptions.map((hours) => experience.prices[hours]));
-        }
-        expect(schema).not.toMatch(
-          /aggregateRating|reviewCount|InStock/,
+        const experience = getMarketingPage(locale, key).experiences.find(
+          (item) => item.id === key,
         );
+        if (experience?.confirmedPrice) {
+          const service = JSON.parse(schema)["@graph"].find(
+            (node: { "@type": string }) => node["@type"] === "Service",
+          );
+          expect(
+            service.offers.map((offer: { price: number }) => offer.price),
+          ).toEqual(
+            experience.durationOptions.map((hours) => experience.prices[hours]),
+          );
+        }
+        expect(schema).not.toMatch(/aggregateRating|reviewCount|InStock/);
       }
     expect(
       Object.values(experiences).every((item) => item.price === null),
@@ -234,18 +245,36 @@ describe("static marketing architecture", () => {
   it("keeps romantic pricing, decorations, duration limits and related guides consistent in every language", () => {
     for (const locale of marketingLocales) {
       const page = getMarketingPage(locale, "romantic");
-      const experience = page.experiences.find((item) => item.id === "romantic")!;
+      const experience = page.experiences.find(
+        (item) => item.id === "romantic",
+      )!;
       expect(experience.durationOptions).toEqual([1, 2, 3, 4]);
       expect(experience.prices).toEqual({ 1: 250, 2: 350, 3: 450, 4: 550 });
       expect(experience.durationLabel).toBe(`1–4 ${page.copy.hours}`);
       expect(page.guides.map((guide) => guide.key)).toEqual(["sunset"]);
-      expect(page.detail!.includedItems).toContain(page.detailCopy.bookingCard.decoration);
-      expect(page.detail!.includedSummary).toContain(page.detailCopy.bookingCard.decoration);
-      expect(page.detail!.faqs[0][1]).toContain(page.detailCopy.bookingCard.decoration);
-      expect(page.detail!.faqs[1][1]).toBe(page.detailCopy.durationAnswer.replace("{min}", "1").replace("{max}", "4"));
-      expect(page.detail!.priceHighlight).toBe(page.detailCopy.bookingCard.oneHourPrice);
-      expect(page.detail!.includedItems).toContain(page.detailCopy.bookingCard.snacksFrom);
-      expect(page.detail!.includedItems).not.toContain(page.detailCopy.bookingCard.snacks);
+      expect(page.detail!.includedItems).toContain(
+        page.detailCopy.bookingCard.decoration,
+      );
+      expect(page.detail!.includedSummary).toContain(
+        page.detailCopy.bookingCard.decoration,
+      );
+      expect(page.detail!.faqs[0][1]).toContain(
+        page.detailCopy.bookingCard.decoration,
+      );
+      expect(page.detail!.faqs[1][1]).toBe(
+        page.detailCopy.durationAnswer
+          .replace("{min}", "1")
+          .replace("{max}", "4"),
+      );
+      expect(page.detail!.priceHighlight).toBe(
+        page.detailCopy.bookingCard.oneHourPrice,
+      );
+      expect(page.detail!.includedItems).toContain(
+        page.detailCopy.bookingCard.snacksFrom,
+      );
+      expect(page.detail!.includedItems).not.toContain(
+        page.detailCopy.bookingCard.snacks,
+      );
     }
   });
 });
@@ -253,8 +282,12 @@ describe("static marketing architecture", () => {
 describe("search metadata regressions", () => {
   it("keeps search titles short, unique and explicitly branded once", () => {
     for (const locale of marketingLocales) {
-      const titles = pageKeys.map((key) => marketingMetadata(locale, key).title as { absolute: string });
-      expect(new Set(titles.map(({ absolute }) => absolute)).size).toBe(pageKeys.length);
+      const titles = pageKeys.map(
+        (key) => marketingMetadata(locale, key).title as { absolute: string },
+      );
+      expect(new Set(titles.map(({ absolute }) => absolute)).size).toBe(
+        pageKeys.length,
+      );
       for (const { absolute } of titles) {
         expect(absolute.match(/JimBoats/g)).toHaveLength(1);
         expect(absolute.length).toBeLessThanOrEqual(65);
@@ -263,9 +296,14 @@ describe("search metadata regressions", () => {
   });
   it("publishes the boarding point, rather than the old street number or fiscal address", () => {
     const graph = marketingStructuredData(getMarketingPage("es"))["@graph"];
-    expect(graph).toContainEqual(expect.objectContaining({
-      "@id": "https://jimboatscharter.com/#business",
-      address: expect.objectContaining({ streetAddress: "Moll de Xaloc, Pantalan 5", postalCode: "08005" }),
-    }));
+    expect(graph).toContainEqual(
+      expect.objectContaining({
+        "@id": "https://jimboatscharter.com/#business",
+        address: expect.objectContaining({
+          streetAddress: "Moll de Xaloc, Pantalan 5",
+          postalCode: "08005",
+        }),
+      }),
+    );
   });
 });

@@ -1,0 +1,47 @@
+{
+  "es": {
+    "hour": "hora",
+    "hours": "horas",
+    "base": "{duration} por {price}",
+    "extra": "+{extra} por hora adicional",
+    "summary": "{base}. Amplía tu paseo por {extra} cada hora adicional, hasta un máximo de {max} horas, según disponibilidad.",
+    "examples": "Por ejemplo: {first} y {second}.",
+    "decoration": "Decoración incluida."
+  },
+  "en": {
+    "hour": "hour",
+    "hours": "hours",
+    "base": "{duration} for {price}",
+    "extra": "+{extra} per additional hour",
+    "summary": "{base}. Extend your trip for {extra} per additional hour, up to {max} hours in total, subject to availability.",
+    "examples": "For example: {first} and {second}.",
+    "decoration": "Decorations included."
+  },
+  "fr": {
+    "hour": "heure",
+    "hours": "heures",
+    "base": "{duration} pour {price}",
+    "extra": "+{extra} par heure supplémentaire",
+    "summary": "{base}. Prolongez votre balade pour {extra} par heure supplémentaire, jusqu’à {max} heures au total, selon disponibilité.",
+    "examples": "Par exemple : {first} et {second}.",
+    "decoration": "Décoration incluse."
+  },
+  "de": {
+    "hour": "Stunde",
+    "hours": "Stunden",
+    "base": "{duration} für {price}",
+    "extra": "+{extra} pro zusätzlicher Stunde",
+    "summary": "{base}. Verlängert eure Fahrt für {extra} pro zusätzlicher Stunde auf insgesamt bis zu {max} Stunden, je nach Verfügbarkeit.",
+    "examples": "Zum Beispiel: {first} und {second}.",
+    "decoration": "Dekoration inklusive."
+  },
+  "nl": {
+    "hour": "uur",
+    "hours": "uur",
+    "base": "{duration} voor {price}",
+    "extra": "+{extra} per extra uur",
+    "summary": "{base}. Verleng je tocht voor {extra} per extra uur, tot maximaal {max} uur in totaal, afhankelijk van beschikbaarheid.",
+    "examples": "Bijvoorbeeld: {first} en {second}.",
+    "decoration": "Decoratie inbegrepen."
+  }
+}

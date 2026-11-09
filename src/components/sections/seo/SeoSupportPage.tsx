@@ -1,6 +1,5 @@
 import { MapPin, Navigation, Mail, Phone } from "lucide-react";
 import { WhatsAppIcon } from "./WhatsAppIcon";
-import { durationOptions } from "@/content/marketing/catalog";
 import { Container } from "@/components/layout/Container";
 import { SeoBoatPage } from "./SeoBoatPage";
 import type { MarketingPage } from "@/content/marketing";
@@ -18,21 +17,18 @@ type Props = { page: MarketingPage };
 
 function Prices({ page }: Props) {
   const copy = page.pricing;
-  const columns = [
+  const groups = [
     {
       label: copy.dayTrip,
-      rates: page.experiences.find((item) => item.id === "private")!
-        .formattedPrices,
+      experience: page.experiences.find((item) => item.id === "private")!,
     },
     {
       label: copy.twilight,
-      rates: page.experiences.find((item) => item.id === "sunset")!
-        .formattedPrices,
+      experience: page.experiences.find((item) => item.id === "sunset")!,
     },
     {
       label: copy.romantic,
-      rates: page.experiences.find((item) => item.id === "romantic")!
-        .formattedPrices,
+      experience: page.experiences.find((item) => item.id === "romantic")!,
     },
   ];
   return (
@@ -41,56 +37,22 @@ function Prices({ page }: Props) {
       <section>
         <h2 className={heading}>{page.copy.pricesHeading}</h2>
         <p className="mb-6 max-w-3xl text-text-muted">{page.copy.priceNote}</p>
-        <div className="overflow-hidden rounded-2xl border border-sand bg-white">
-          <table className="w-full table-fixed border-collapse text-center text-sm sm:text-base">
-            <caption className="sr-only">{page.title}</caption>
-            <colgroup>
-              <col className="w-[17%]" />
-              <col className="w-[25%]" />
-              <col className="w-[33%]" />
-              <col className="w-1/4" />
-            </colgroup>
-            <thead className="bg-primary-dark text-white">
-              <tr>
-                {[copy.duration, ...columns.map((col) => col.label)].map(
-                  (label) => (
-                    <th
-                      key={label}
-                      scope="col"
-                      className="px-1 py-4 text-xs leading-snug hyphens-auto [overflow-wrap:anywhere] sm:px-3 sm:text-base"
-                    >
-                      {label}
-                    </th>
-                  ),
-                )}
-              </tr>
-            </thead>
-            <tbody>
-              {durationOptions.map((hours) => (
-                <tr
-                  key={hours}
-                  className="border-t border-sand even:bg-background"
-                >
-                  <th scope="row" className="py-3 font-semibold">
-                    {hours} h
-                  </th>
-                  {columns.map(({ label, rates }) => (
-                    <td
-                      key={label}
-                      className="whitespace-nowrap px-1 py-3 tabular-nums"
-                    >
-                      {rates[hours] ?? (
-                        <>
-                          <span aria-hidden="true">—</span>
-                          <span className="sr-only">{copy.unavailable}</span>
-                        </>
-                      )}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="max-w-3xl divide-y divide-sand" id="pricing-rules">
+          {groups.map(({ label, experience }) => (
+            <div key={label} className="py-5 first:pt-0">
+              <h3 className="text-lg font-semibold text-primary-dark">
+                {label}
+              </h3>
+              <p className="mt-2 text-text-muted">
+                {experience.pricing.summary}
+              </p>
+              {experience.pricing.decoration && (
+                <p className="mt-1 text-text-muted">
+                  {experience.pricing.decoration}
+                </p>
+              )}
+            </div>
+          ))}
         </div>
         <p className="mt-4 max-w-3xl text-sm text-text-muted">
           {copy.boatNote}
@@ -271,7 +233,9 @@ export function SeoSupportPage({ page }: Props) {
           ) : (
             <Contact page={page} />
           )}
-          {(page.key === "prices" || page.key === "contact") && <SeoTripPreparation page={page} />}
+          {(page.key === "prices" || page.key === "contact") && (
+            <SeoTripPreparation page={page} />
+          )}
         </div>
       </Container>
     </SeoSiteShell>

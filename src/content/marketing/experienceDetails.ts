@@ -1,3 +1,4 @@
+import type { getExperiencePricing } from "./pricing";
 import hospitality from "./hospitality.json";
 import solarCalendar from "./solarCalendar.json";
 import copy from "./experienceDetails.json";
@@ -20,6 +21,7 @@ export function getExperienceDetails(
   experience: {
     id: ExperienceKey;
     title: string;
+    pricing: ReturnType<typeof getExperiencePricing>;
     featuredHours: number;
     durationOptions: readonly number[];
     formattedPrices: Record<number, string>;
@@ -35,16 +37,16 @@ export function getExperienceDetails(
       .replaceAll("{hours}", duration)
       .replaceAll("{min}", String(experience.durationOptions[0]))
       .replaceAll("{max}", String(experience.durationOptions.at(-1)));
-  const decoration = experience.id === "romantic" ? labels.bookingCard.decoration : null;
-  const priceDescription = `${fill(labels.priceAnswer)}${decoration ? ` ${decoration}.` : ""}`;
+  const decoration =
+    experience.id === "romantic" ? labels.bookingCard.decoration : null;
   const priceTitle = `${experience.title} ${labels.from} ${price} ${labels.for} ${duration}`;
-  const rates = experience.durationOptions.map((hours) =>
-    `${hours} h · ${experience.formattedPrices[hours]}`
-  ).join(" / ");
+  const refreshments = experience.durationOptions.includes(1)
+    ? labels.bookingCard.refreshments
+    : labels.bookingCard.refreshmentsFromTwo;
   const faqs: [string, string][] = [
     [
       labels.priceQuestion,
-      `${priceDescription} ${rates}. ${labels.bookingCard.refreshments} ${hospitality[locale].drinks} ${hospitality[locale].food}`,
+      `${experience.title}: ${experience.pricing.summary} ${experience.pricing.examples} ${labels.finalPrice} ${labels.capacityAnswer}${decoration ? ` ${decoration}.` : ""} ${refreshments} ${hospitality[locale].drinks} ${hospitality[locale].food}`,
     ],
     [labels.durationQuestion, fill(labels.durationAnswer)],
     ...profile.faqs.map(([question, answer]): [string, string] => [
@@ -68,6 +70,7 @@ export function getExperienceDetails(
     labels,
     ...profile,
     priceTitle,
+    pricing: experience.pricing,
     priceHighlight:
       experience.featuredHours === 1
         ? labels.bookingCard.oneHourPrice
@@ -105,18 +108,33 @@ export function getExperienceDetails(
     reviewsContext: specificReviews
       ? labels.reviewsSpecific
       : labels.reviewsGeneral,
-    galleryAlts: experience.id === "sunrise" ? labels.sunriseGalleryAlts : experience.id === "romantic" ? labels.romanticGalleryAlts : experience.id === "sunset" ? labels.sunsetGalleryAlts : labels.galleryAlts,
-    gallerySlugs: experience.id === "sunrise" || experience.id === "romantic" ? Array.from({ length: experience.id === "sunrise" ? 7 : 10 }, (_, i) => `${experience.id}-gallery-${i + 1}`) : experience.id === "sunset" ? [
-      "sunset-lena-panorama",
-      "sunset-lena-portrait",
-      "sunset-couple-deck",
-      "sunset-guests-skyline",
-      "sunset-lena-golden",
-    ] : [
-      "production-gallery-1",
-      "production-gallery-2",
-      "production-gallery-3",
-      "production-gallery-4",
-    ],
+    galleryAlts:
+      experience.id === "sunrise"
+        ? labels.sunriseGalleryAlts
+        : experience.id === "romantic"
+          ? labels.romanticGalleryAlts
+          : experience.id === "sunset"
+            ? labels.sunsetGalleryAlts
+            : labels.galleryAlts,
+    gallerySlugs:
+      experience.id === "sunrise" || experience.id === "romantic"
+        ? Array.from(
+            { length: experience.id === "sunrise" ? 7 : 10 },
+            (_, i) => `${experience.id}-gallery-${i + 1}`,
+          )
+        : experience.id === "sunset"
+          ? [
+              "sunset-lena-panorama",
+              "sunset-lena-portrait",
+              "sunset-couple-deck",
+              "sunset-guests-skyline",
+              "sunset-lena-golden",
+            ]
+          : [
+              "production-gallery-1",
+              "production-gallery-2",
+              "production-gallery-3",
+              "production-gallery-4",
+            ],
   };
 }
