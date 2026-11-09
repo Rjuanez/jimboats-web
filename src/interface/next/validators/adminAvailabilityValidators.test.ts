@@ -14,6 +14,11 @@ const input = {
   slots: [],
 };
 describe("operational availability input", () => {
+  it("persists the opt-in solar mode without obsolete time windows", () => {
+    expect(
+      parseAdminAvailability({ ...input, mode: "HOURLY_SOLAR" }).slotPolicy,
+    ).toEqual({ mode: "HOURLY_SOLAR", timeZone: "Europe/Madrid" });
+  });
   it("maps times and only allows operational fields", () => {
     const result = parseAdminAvailability({
       ...input,

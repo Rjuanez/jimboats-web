@@ -24,6 +24,18 @@ import type { PrismaExperienceRecord } from "./PrismaExperienceRepository";
 import type { PrismaLocalizedExperienceContentRecord } from "./PrismaLocalizedExperienceContentMappers";
 
 describe("Prisma experience catalog mappers", () => {
+  it("round trips solar schedules without old fixed windows", () => {
+    const experience = experienceFromPrismaRecord(
+      experienceRecord({
+        id: "daytrip",
+        slotPolicyMode: "HOURLY_SOLAR",
+      }),
+    );
+    expect(experience.toSnapshot().slotPolicy.mode).toBe("HOURLY_SOLAR");
+    const persisted = experienceToPrismaWriteModel(experience);
+    expect(persisted.experience.slotPolicyMode).toBe("HOURLY_SOLAR");
+    expect(persisted.fixedSlots).toEqual([]);
+  });
   it("maps an experience record into the domain model", () => {
     const experience = experienceFromPrismaRecord(experienceRecord());
 

@@ -34,3 +34,16 @@ export const Error: Story = {
   },
 };
 export const Empty: Story = { args: { experiences: [] } };
+
+export const HourlySolar: Story = {
+  args: {
+    experiences: [
+      {
+        ...meta.args.experiences[0],
+        mode: "HOURLY_SOLAR",
+        hourlyScheduleDescription:
+          "Salidas en punto desde las 09:00, de 1 a 6 horas. Regreso antes de la puesta de sol de cada fecha.",
+      },
+    ],
+  },
+};

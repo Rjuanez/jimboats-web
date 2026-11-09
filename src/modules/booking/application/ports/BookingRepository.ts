@@ -34,6 +34,10 @@ export type BookingSlotPolicyReadModel =
       timeZone: string;
     }
   | {
+      mode: "HOURLY_SOLAR";
+      timeZone: string;
+    }
+  | {
       mode: "MANUAL_APPROVAL";
       timeZone: string;
     };
@@ -258,7 +262,9 @@ export type BookingCalendarSyncState = {
 };
 
 export type BookingRepository = {
-  findCalendarSyncState(bookingId: string): Promise<BookingCalendarSyncState | null>;
+  findCalendarSyncState(
+    bookingId: string,
+  ): Promise<BookingCalendarSyncState | null>;
   findBookingsPendingCalendarSync(input: { limit: number }): Promise<Booking[]>;
   findActiveCalendarOverlaps(
     startAt: Date,
@@ -289,7 +295,9 @@ export type BookingRepository = {
   ): Promise<BookingNotificationPreferenceReadModel[]>;
   listExperienceOptions(): Promise<BookingExperienceOptionReadModel[]>;
   listExtraOptions(): Promise<BookingExtraOptionReadModel[]>;
-  saveAdminCancelledBooking(input: AdminCancelledBookingPersistence): Promise<void>;
+  saveAdminCancelledBooking(
+    input: AdminCancelledBookingPersistence,
+  ): Promise<void>;
   saveAdminCreatedBooking(input: AdminCreatedBookingPersistence): Promise<void>;
   saveAdminUpdatedBooking(input: AdminUpdatedBookingPersistence): Promise<void>;
   saveDepositPaymentFailed(
@@ -304,7 +312,9 @@ export type BookingRepository = {
   savePaymentHoldHeartbeat(
     input: PaymentHoldHeartbeatPersistence,
   ): Promise<PaymentHoldHeartbeatPersistenceResult>;
-  savePublicPendingBooking(input: PublicPendingBookingPersistence): Promise<void>;
+  savePublicPendingBooking(
+    input: PublicPendingBookingPersistence,
+  ): Promise<void>;
   markCalendarSyncFailed(input: {
     bookingId: string;
     syncError: string;

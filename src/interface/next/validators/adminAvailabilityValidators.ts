@@ -9,7 +9,12 @@ const schema = z.object({
   minimumAdvanceMinutes: z.number().int().min(0),
   maximumAdvanceMonths: z.number().int().min(1).max(6),
   allowsManualScheduling: z.boolean(),
-  mode: z.enum(["ANY_AVAILABLE", "FIXED_SLOTS", "MANUAL_APPROVAL"]),
+  mode: z.enum([
+    "ANY_AVAILABLE",
+    "FIXED_SLOTS",
+    "MANUAL_APPROVAL",
+    "HOURLY_SOLAR",
+  ]),
   startTime: time,
   endTime: time,
   granularityMinutes: z.number().int().min(1).max(720),

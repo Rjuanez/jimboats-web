@@ -45,6 +45,9 @@ export function slotPolicyFromCommand(command: SlotPolicyCommand) {
     });
   }
 
+  if (command.mode === "HOURLY_SOLAR")
+    return SlotPolicy.hourlySolar({ timeZone: command.timeZone });
+
   return SlotPolicy.manualApproval({
     timeZone: command.timeZone,
   });

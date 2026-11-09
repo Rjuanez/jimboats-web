@@ -15,6 +15,18 @@ export function presentAvailability(
   )?.title;
   return {
     experienceId: experience.id,
+    hourlyScheduleDescription: (
+      {
+        daytrip:
+          "Salidas en punto desde las 09:00, de 1 a 6 horas. El regreso debe ser anterior a la puesta de sol de cada fecha.",
+        sunrise:
+          "De 2 a 6 horas. Salida a la hora en punto anterior al amanecer; las horas adicionales retrasan el regreso.",
+        "ex-sunset":
+          "De 2 a 6 horas. Regreso a la hora en punto posterior a la puesta de sol; las horas adicionales adelantan la salida.",
+        romantic:
+          "Salidas en punto desde las 09:00, de 1 a 4 horas. Regreso máximo a las 21:30; con horas completas, el último regreso es a las 21:00.",
+      } as Record<string, string>
+    )[experience.id],
     name: title ?? experience.internalName,
     bufferMinutes: experience.bufferMinutes,
     minimumAdvanceMinutes: experience.minimumAdvanceMinutes,

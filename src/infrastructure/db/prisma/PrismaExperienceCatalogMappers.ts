@@ -297,6 +297,9 @@ function slotPolicyFromPrismaRecord(record: PrismaExperienceRecord) {
     });
   }
 
+  if (mode === "HOURLY_SOLAR")
+    return SlotPolicy.hourlySolar({ timeZone: record.slotPolicyTimezone });
+
   return SlotPolicy.manualApproval({
     timeZone: record.slotPolicyTimezone,
   });
@@ -355,6 +358,7 @@ function experienceMediaStatusFromPrisma(value: string): ExperienceMediaStatus {
 
 function slotPolicyModeFromPrisma(value: string): SlotPolicyMode {
   if (
+    value === "HOURLY_SOLAR" ||
     value === "ANY_AVAILABLE" ||
     value === "FIXED_SLOTS" ||
     value === "MANUAL_APPROVAL"

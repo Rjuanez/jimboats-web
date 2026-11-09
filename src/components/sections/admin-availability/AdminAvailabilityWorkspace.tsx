@@ -27,10 +27,10 @@ export function AdminAvailabilityWorkspace({ experiences, save }: Props) {
         <p className="max-w-3xl text-sm leading-6 text-slate-600">
           Define las salidas de cada experiencia. Todas comparten el calendario
           del barco; una reserva impide vender ese mismo tiempo en las demás
-          experiencias. Horas de Barcelona. Para amanecer y atardecer,
-          selecciona salidas fijas y escribe las horas que quieras ofrecer. Al
-          ampliar la duración se mantiene la salida y se retrasa el regreso. El
-          paseo privado normal siempre debe regresar antes de ponerse el sol.
+          experiencias. Horas de Barcelona. El calendario por horas y sol adapta
+          las salidas a la fecha y la duración. Las franjas flexibles y salidas
+          fijas conservan la configuración anterior hasta que actives el nuevo
+          modo.
         </p>
         <Link
           className="inline-block text-sm font-semibold text-sky-800 underline"
@@ -100,6 +100,9 @@ function AvailabilityForm({
                 })
               }
             >
+              {initial.hourlyScheduleDescription && (
+                <option value="HOURLY_SOLAR">Calendario por horas y sol</option>
+              )}
               <option value="ANY_AVAILABLE">Franja flexible</option>
               <option value="FIXED_SLOTS">Salidas fijas</option>
               <option value="MANUAL_APPROVAL">Solo reservas manuales</option>
@@ -116,6 +119,12 @@ function AvailabilityForm({
               description="Se protege este margen a cada lado de cada reserva. Si ambas tienen 15 minutos, habrá al menos 30 minutos entre ellas."
             />
           </FieldGrid>
+          {value.mode === "HOURLY_SOLAR" && (
+            <p className="rounded-lg bg-sky-50 p-4 text-sm leading-6 text-slate-700">
+              {initial.hourlyScheduleDescription} Se respetan las reservas,
+              bloqueos, márgenes y antelación del barco.
+            </p>
+          )}
           {value.mode === "ANY_AVAILABLE" && (
             <FieldGrid columns={3}>
               <TextField

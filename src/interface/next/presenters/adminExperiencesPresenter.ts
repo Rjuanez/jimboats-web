@@ -470,13 +470,15 @@ export function presentAdminExperiencesWorkspace(
   );
 
   return {
-    cancellationPolicies: (workspace.cancellationPolicies ?? []).map((policy) => ({
-      activeVersion: policy.activeVersion?.version ?? null,
-      id: policy.id,
-      isDefault: policy.isDefault,
-      name: policy.name,
-      summary: policy.activeVersion?.summaries.en ?? "",
-    })),
+    cancellationPolicies: (workspace.cancellationPolicies ?? []).map(
+      (policy) => ({
+        activeVersion: policy.activeVersion?.version ?? null,
+        id: policy.id,
+        isDefault: policy.isDefault,
+        name: policy.name,
+        summary: policy.activeVersion?.summaries.en ?? "",
+      }),
+    ),
     experiences: workspace.experiences.map((experience) =>
       presentExperience(experience, mediaAssetsById),
     ),
@@ -808,6 +810,7 @@ function translationStatusToAdmin(
 function slotPolicyTypeToAdmin(
   mode: AdminExperiencesWorkspaceDto["experiences"][number]["experience"]["slotPolicy"]["mode"],
 ): AdminExperience["slotPolicyType"] {
+  if (mode === "HOURLY_SOLAR") return "hourly_solar";
   if (mode === "ANY_AVAILABLE") {
     return "any_available";
   }

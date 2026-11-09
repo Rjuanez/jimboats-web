@@ -32,6 +32,7 @@ const slotPolicyOptions: Array<{
   label: string;
   value: AdminSlotPolicyType;
 }> = [
+  { label: "Hourly / solar schedule", value: "hourly_solar" },
   { label: "Fixed slots", value: "fixed_slots" },
   { label: "Any available time", value: "any_available" },
   { label: "Manual approval", value: "manual_approval" },

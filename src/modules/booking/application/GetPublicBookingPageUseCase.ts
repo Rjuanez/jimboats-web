@@ -1,3 +1,4 @@
+import { resolveHourlySchedulePolicy } from "./HourlySchedulePolicy";
 import type { BookingSunTimes } from "./ports/BookingSunTimes";
 import { finishesBeforeSunset } from "../domain/DaytimeTrip";
 import { requireHourlyRate } from "../domain/HourlyRate";
@@ -237,7 +238,15 @@ function buildTimeSlotsForDate(input: {
   localDate: string;
   now: Date;
 }) {
-  const candidates = buildSlotCandidates(input.experience);
+  const candidates = buildSlotCandidates({
+    ...input.experience,
+    slotPolicy: resolveHourlySchedulePolicy(
+      input.experience,
+      input.localDate,
+      input.experience.durationMinutes / 60,
+      input.sunTimes,
+    ),
+  });
 
   const sunset =
     input.experience.id === "daytrip"

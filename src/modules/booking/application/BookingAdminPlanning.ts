@@ -276,6 +276,12 @@ function resolveSlotKey(input: {
     return matchingSlot.id;
   }
 
+  if (experience.slotPolicy.mode === "HOURLY_SOLAR") {
+    throw new ApplicationError(
+      "BOOKING_SELECTED_SLOT_OUTSIDE_POLICY",
+      "Hourly schedule must be resolved for the selected date.",
+    );
+  }
   const window = experience.slotPolicy.operatingWindow;
   const granularity = experience.slotPolicy.granularityMinutes;
 
