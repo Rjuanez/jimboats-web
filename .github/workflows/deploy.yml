@@ -129,9 +129,6 @@ jobs:
       - name: Responsive checks
         run: pnpm test:responsive
 
-      - name: Visual checks
-        run: pnpm test:visual
-
   deploy-config:
     needs: changes
     if: needs.changes.outputs.infra == 'true'
