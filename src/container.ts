@@ -1,7 +1,12 @@
 import { MetNorwayWeatherProvider } from "@/infrastructure/weather/MetNorwayWeatherProvider";
+import { previewHourlySchedule } from "@/modules/booking/application/PreviewHourlySchedule";
 import type { WeatherProvider } from "@/modules/weather/application/ports/WeatherProvider";
 import { HourlyBookingUseCase } from "@/modules/booking/application/HourlyBookingUseCase";
-import { approvedHourlyTariffs, localHourlyTariffs, localBookingsEnabled } from "./infrastructure/booking/HourlyTariffs";
+import {
+  approvedHourlyTariffs,
+  localHourlyTariffs,
+  localBookingsEnabled,
+} from "./infrastructure/booking/HourlyTariffs";
 import { LocalDepositPaymentProvider } from "./infrastructure/booking/LocalDepositPaymentProvider";
 import type {
   ArchiveExperienceCommand,
@@ -446,18 +451,21 @@ export function getContainer() {
   const getAdminBookingsWorkspaceUseCase = new GetAdminBookingsWorkspaceUseCase(
     bookingRepository,
   );
+  const bookingSunTimes = new SunCalcBookingSunTimes();
   const backpanelCreateBookingUseCase = new BackpanelCreateBookingUseCase(
     bookingRepository,
     bookingIds,
     bookingClock,
     cancellationPolicyRepository,
     bookingCalendarSync,
+    bookingSunTimes,
   );
   const backpanelUpdateBookingUseCase = new BackpanelUpdateBookingUseCase(
     bookingRepository,
     bookingIds,
     bookingClock,
     bookingCalendarSync,
+    bookingSunTimes,
   );
   const backpanelCancelBookingUseCase = new BackpanelCancelBookingUseCase(
     bookingRepository,
@@ -468,7 +476,6 @@ export function getContainer() {
     bookingRepository,
     bookingClock,
   );
-  const bookingSunTimes = new SunCalcBookingSunTimes();
   const getPublicBookingPageUseCase = new GetPublicBookingPageUseCase(
     publicBookingCatalogReader,
     bookingClock,
@@ -513,7 +520,13 @@ export function getContainer() {
       confirmCouponRedemptionUseCase,
       releaseCouponRedemptionUseCase,
     );
-  const hourlyBooking = new HourlyBookingUseCase(bookingRepository, getPublicBookingPageUseCase, createPublicBookingCheckoutUseCase, handleDepositPaymentWebhookUseCase, localPaymentSimulator);
+  const hourlyBooking = new HourlyBookingUseCase(
+    bookingRepository,
+    getPublicBookingPageUseCase,
+    createPublicBookingCheckoutUseCase,
+    handleDepositPaymentWebhookUseCase,
+    localPaymentSimulator,
+  );
   const issueBookingAccessLinkUseCase = new IssueBookingAccessLinkUseCase(
     bookingAccessRepository,
     bookingAccessTokens,
@@ -830,4 +843,19 @@ function createLazyDepositPaymentProvider(): DepositPaymentProvider {
 let weatherProvider: WeatherProvider | undefined;
 export function getWeatherProvider(): WeatherProvider {
   return (weatherProvider ??= new MetNorwayWeatherProvider());
+}
+
+// Does not construct the database/payment container. Only used by visual preview.
+export function getHourlySchedulePreview(
+  experienceId: string,
+  hours: number,
+  romanticStartMinutes: number,
+) {
+  return previewHourlySchedule({
+    experienceId,
+    hours,
+    romanticStartMinutes,
+    now: new Date(),
+    sunTimes: new SunCalcBookingSunTimes(),
+  });
 }

@@ -40,6 +40,152 @@ import type { Booking } from "../domain/Booking";
 import type { PaymentRecord } from "../domain/PaymentRecord";
 
 describe("Booking use cases", () => {
+  const solarTimes = {
+    sunrise: (day: string) => new Date(`${day}T04:18:00Z`),
+    sunset: (day: string) => new Date(`${day}T19:26:00Z`),
+  };
+  function solarExperience(id: string, hours: number) {
+    return createBookingExperienceOption({
+      id,
+      hourlyRates: [{ hours, total: moneyDto(58000), deposit: moneyDto(5000) }],
+      slotPolicy: { mode: "HOURLY_SOLAR", timeZone: "Europe/Madrid" },
+    });
+  }
+  it.each([
+    ["daytrip", 6, "09:00", "15:00"],
+    ["sunrise", 6, "06:00", "12:00"],
+    ["ex-sunset", 6, "16:00", "22:00"],
+    ["romantic", 4, "17:00", "21:00"],
+  ])(
+    "accepts the displayed %s departure at checkout",
+    async (id, hours, startTime, endTime) => {
+      const deps = createDependencies({
+        experiences: [solarExperience(id, hours)],
+      });
+      await new CreatePublicBookingCheckoutUseCase(
+        deps.bookings,
+        deps.ids,
+        deps.clock,
+        deps.paymentProvider,
+        undefined,
+        undefined,
+        undefined,
+        solarTimes,
+      ).execute(
+        createPublicCheckoutCommand({
+          experienceId: id,
+          startTime,
+          endTime,
+          slotKey: null,
+          selectedExtras: [],
+        }),
+      );
+      expect(
+        deps.bookings.publicPending!.booking.selectedSlot.startMinutes,
+      ).toBe(Number(startTime.slice(0, 2)) * 60);
+    },
+  );
+  it.each([
+    ["daytrip", 2, "20:00", "22:00"],
+    ["daytrip", 2, "09:30", "11:30"],
+    ["sunrise", 2, "10:00", "12:00"],
+    ["ex-sunset", 2, "16:00", "18:00"],
+    ["romantic", 4, "18:00", "22:00"],
+  ])(
+    "rejects a forged %s departure before creating a payment",
+    async (id, hours, startTime, endTime) => {
+      const deps = createDependencies({
+        experiences: [solarExperience(id, hours)],
+      });
+      await expect(
+        new CreatePublicBookingCheckoutUseCase(
+          deps.bookings,
+          deps.ids,
+          deps.clock,
+          deps.paymentProvider,
+          undefined,
+          undefined,
+          undefined,
+          solarTimes,
+        ).execute(
+          createPublicCheckoutCommand({
+            experienceId: id,
+            startTime,
+            endTime,
+            slotKey: null,
+            selectedExtras: [],
+          }),
+        ),
+      ).rejects.toMatchObject({ code: "BOOKING_SELECTED_SLOT_OUTSIDE_POLICY" });
+      expect(deps.bookings.publicPending).toBeNull();
+    },
+  );
+  it("keeps a legacy departure during a metadata edit after activating solar schedules", async () => {
+    const experience = createBookingExperienceOption({
+      id: "romantic",
+      hourlyRates: [
+        { hours: 4, total: moneyDto(58000), deposit: moneyDto(5000) },
+      ],
+    });
+    experience.slotPolicy = {
+      mode: "FIXED_SLOTS",
+      timeZone: "Europe/Madrid",
+      fixedSlots: [
+        {
+          id: "legacy",
+          label: "Old departure",
+          enabled: true,
+          startMinutes: 630,
+          endMinutes: 870,
+        },
+      ],
+    };
+    const deps = createDependencies({ experiences: [experience] });
+    await new BackpanelCreateBookingUseCase(
+      deps.bookings,
+      deps.ids,
+      deps.clock,
+    ).execute(
+      createCommand({
+        experienceId: "romantic",
+        startTime: "10:30",
+        endTime: "14:30",
+        slotKey: "legacy",
+      }),
+    );
+    experience.slotPolicy = { mode: "HOURLY_SOLAR", timeZone: "Europe/Madrid" };
+    const updated = await new BackpanelUpdateBookingUseCase(
+      deps.bookings,
+      deps.ids,
+      deps.clock,
+      undefined,
+      solarTimes,
+    ).execute(
+      createUpdateCommand({
+        internalNotes: "Updated contact",
+        startTime: "10:30",
+        endTime: "14:30",
+        slotKey: "legacy",
+      }),
+    );
+    expect(updated.selectedSlot.startMinutes).toBe(630);
+    expect(updated.selectedSlot.endMinutes).toBe(870);
+  });
+  it("blocks public checkout for manual-only experiences", async () => {
+    const experience = createBookingExperienceOption({
+      slotPolicy: { mode: "MANUAL_APPROVAL", timeZone: "Europe/Madrid" },
+    });
+    const deps = createDependencies({ experiences: [experience] });
+    await expect(
+      new CreatePublicBookingCheckoutUseCase(
+        deps.bookings,
+        deps.ids,
+        deps.clock,
+        deps.paymentProvider,
+      ).execute(createPublicCheckoutCommand()),
+    ).rejects.toMatchObject({ code: "BOOKING_EXPERIENCE_NOT_BOOKABLE" });
+  });
+
   it("applies the coupon to full payment and records zero cash balance in the redemption", async () => {
     const deps = createDependencies();
     const coupons = new ReserveCouponRedemptionUseCase({

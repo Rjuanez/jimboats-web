@@ -165,12 +165,23 @@ export class Experience {
       configuredExtraIds.add(rule.extraId);
     }
 
+    if (
+      input.slotPolicy.mode === "HOURLY_SOLAR" &&
+      !["daytrip", "sunrise", "ex-sunset", "romantic"].includes(id)
+    ) {
+      throw domainError(
+        "EXPERIENCE_SLOT_POLICY_INVALID",
+        "No hourly schedule is defined for this experience.",
+      );
+    }
     assertSlotPolicyFitsDuration(input.slotPolicy, input.durationMinutes);
 
     return new Experience({
       ...input,
       departurePort,
-      cancellationPolicyId: normalizeOptionalId(input.cancellationPolicyId ?? null),
+      cancellationPolicyId: normalizeOptionalId(
+        input.cancellationPolicyId ?? null,
+      ),
       id,
       includedItems: input.includedItems.trim(),
       internalName,
@@ -450,7 +461,9 @@ function assertSlotPolicyFitsDuration(
   }
 
   const shortEnabledSlot = snapshot.fixedSlots.find((slot) => {
-    return slot.enabled && slot.endMinutes - slot.startMinutes < durationMinutes;
+    return (
+      slot.enabled && slot.endMinutes - slot.startMinutes < durationMinutes
+    );
   });
 
   if (!shortEnabledSlot) {

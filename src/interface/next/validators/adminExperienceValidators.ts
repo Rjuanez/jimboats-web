@@ -15,6 +15,7 @@ const translationStatusSchema = z.enum([
   "ready",
 ]);
 const slotPolicyTypeSchema = z.enum([
+  "hourly_solar",
   "any_available",
   "fixed_slots",
   "manual_approval",

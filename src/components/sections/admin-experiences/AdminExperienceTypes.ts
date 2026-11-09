@@ -13,6 +13,7 @@ export type AdminTranslationStatus =
   | "published"
   | "ready";
 export type AdminSlotPolicyType =
+  | "hourly_solar"
   | "any_available"
   | "fixed_slots"
   | "manual_approval";

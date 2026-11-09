@@ -1,3 +1,5 @@
+import { resolveHourlySchedulePolicy } from "./HourlySchedulePolicy";
+import { parseClockTime } from "@/modules/boat-calendar/application/CalendarDateTime";
 import type { BookingSunTimes } from "./ports/BookingSunTimes";
 import { finishesBeforeSunset } from "../domain/DaytimeTrip";
 import { ApplicationError } from "@/shared/application/ApplicationError";
@@ -42,7 +44,7 @@ export class CreatePublicBookingCheckoutUseCase {
     command: CreatePublicBookingCheckoutCommand,
   ): Promise<PublicBookingCheckoutDto> {
     const now = this.clock.now();
-    const experience = await this.bookings.findExperienceOptionById(
+    let experience = await this.bookings.findExperienceOptionById(
       command.experienceId,
     );
 
@@ -53,6 +55,22 @@ export class CreatePublicBookingCheckoutUseCase {
       );
     }
 
+    if (experience.slotPolicy.mode === "MANUAL_APPROVAL") {
+      throw new ApplicationError(
+        "BOOKING_EXPERIENCE_NOT_BOOKABLE",
+        "This experience only accepts manual bookings.",
+      );
+    }
+    experience = {
+      ...experience,
+      slotPolicy: resolveHourlySchedulePolicy(
+        experience,
+        command.localDate,
+        (parseClockTime(command.endTime) - parseClockTime(command.startTime)) /
+          60,
+        this.sunTimes,
+      ),
+    };
     const extraOptions = await this.bookings.findExtraOptionsByIds(
       collectSelectedExtraIds(command),
     );

@@ -37,6 +37,10 @@ export type SlotPolicyCommand =
       timeZone: string;
     }
   | {
+      mode: "HOURLY_SOLAR";
+      timeZone: string;
+    }
+  | {
       mode: "MANUAL_APPROVAL";
       timeZone: string;
     };

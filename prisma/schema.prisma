@@ -21,6 +21,7 @@ enum ExperienceMediaStatus {
 }
 
 enum SlotPolicyMode {
+  HOURLY_SOLAR
   FIXED_SLOTS
   ANY_AVAILABLE
   MANUAL_APPROVAL

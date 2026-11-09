@@ -257,6 +257,8 @@ async function loadState(container: ReturnType<typeof getContainer>) {
 }
 
 function toSlotPolicyCommand(experience: AdminExperience) {
+  if (experience.slotPolicyType === "hourly_solar")
+    return { mode: "HOURLY_SOLAR" as const, timeZone: "Europe/Madrid" };
   if (experience.slotPolicyType === "any_available") {
     return {
       granularityMinutes: experience.flexibleAvailability.granularityMinutes,

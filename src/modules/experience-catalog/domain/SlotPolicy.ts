@@ -2,6 +2,7 @@ import { domainError } from "@/shared/domain/DomainError";
 import { TimeRange } from "@/shared/domain/TimeRange";
 
 export type SlotPolicyMode =
+  | "HOURLY_SOLAR"
   | "ANY_AVAILABLE"
   | "FIXED_SLOTS"
   | "MANUAL_APPROVAL";
@@ -116,6 +117,17 @@ export class SlotPolicy {
       granularityMinutes: input.granularityMinutes,
       mode: "ANY_AVAILABLE",
       operatingWindow: input.operatingWindow,
+      timeZone: input.timeZone,
+    });
+  }
+
+  static hourlySolar(input: { timeZone: string }) {
+    assertTimeZone(input.timeZone);
+    return new SlotPolicy({
+      fixedSlots: [],
+      granularityMinutes: null,
+      mode: "HOURLY_SOLAR",
+      operatingWindow: null,
       timeZone: input.timeZone,
     });
   }

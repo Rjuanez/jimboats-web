@@ -73,7 +73,11 @@ export type AdminBookingExperienceOption = {
   availableDurations?: number[];
   id: string;
   name: string;
-  slotMode: "any_available" | "fixed_slots" | "manual_approval";
+  slotMode:
+    | "any_available"
+    | "fixed_slots"
+    | "manual_approval"
+    | "hourly_solar";
   slots: AdminBookingSlotOption[];
 };
 

@@ -1,4 +1,7 @@
-import { resolveHourlyTariffs, type HourlyTariffSource } from "@/infrastructure/booking/HourlyTariffs";
+import {
+  resolveHourlyTariffs,
+  type HourlyTariffSource,
+} from "@/infrastructure/booking/HourlyTariffs";
 import type {
   PublicBookingCalendarBlockReadModel,
   PublicBookingCatalogExperienceReadModel,
@@ -211,7 +214,10 @@ export class PrismaPublicBookingCatalogReader implements PublicBookingCatalogRea
       mediaIdsFromExperiences(records),
     );
 
-    return records.map((record) => ({ ...experienceFromRecord(record, mediaById), hourlyRates: resolveHourlyTariffs(this.hourlyTariffs, record) }));
+    return records.map((record) => ({
+      ...experienceFromRecord(record, mediaById),
+      hourlyRates: resolveHourlyTariffs(this.hourlyTariffs, record),
+    }));
   }
 
   async listActiveCalendarBlocks(input: { from: Date; to: Date }) {
@@ -360,6 +366,12 @@ function mediaIdsFromExperiences(
 }
 
 function slotPolicyFromRecord(record: PrismaPublicBookingExperienceRecord) {
+  if (record.slotPolicyMode === "HOURLY_SOLAR")
+    return {
+      mode: "HOURLY_SOLAR" as const,
+      timeZone: record.slotPolicyTimezone,
+    };
+
   if (record.slotPolicyMode === "FIXED_SLOTS") {
     return {
       fixedSlots: record.fixedSlots

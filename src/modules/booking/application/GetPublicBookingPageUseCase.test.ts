@@ -9,6 +9,70 @@ import type {
 } from "./ports/PublicBookingCatalogReader";
 
 describe("GetPublicBookingPageUseCase", () => {
+  it.each([
+    ["daytrip", 6, 540, 900],
+    ["sunrise", 6, 360, 720],
+    ["ex-sunset", 6, 960, 1320],
+    ["romantic", 4, 540, 780],
+  ])(
+    "offers the approved %s schedule and respects shared protected blocks",
+    async (id, hours, firstStart, firstEnd) => {
+      const experience = createExperience({
+        id,
+        bufferMinutes: 30,
+        hourlyRates: [{ hours, total: money(58000), deposit: money(5000) }],
+        slotPolicy: { mode: "HOURLY_SOLAR", timeZone: "Europe/Madrid" },
+      });
+      const catalog = new FakePublicBookingCatalogReader({
+        experiences: [experience],
+        blocks: [],
+      });
+      const sunTimes = {
+        sunrise: (day: string) => new Date(`${day}T04:18:00Z`),
+        sunset: (day: string) => new Date(`${day}T19:26:00Z`),
+      };
+      const useCase = new GetPublicBookingPageUseCase(
+        catalog,
+        fixedClock(),
+        undefined,
+        sunTimes,
+      );
+      const query = {
+        locale: "es",
+        experienceId: id,
+        hours,
+        localDate: "2026-06-10",
+      };
+      const result = await useCase.executeAvailability(query);
+      expect(result!.timeSlotsByDate[query.localDate][0]).toMatchObject({
+        startMinutes: firstStart,
+        endMinutes: firstEnd,
+        available: true,
+      });
+      const blocked = new GetPublicBookingPageUseCase(
+        new FakePublicBookingCatalogReader({
+          experiences: [experience],
+          blocks: [
+            {
+              id: "another-experience",
+              protectedStartAt: new Date("2026-06-10T00:00:00Z"),
+              protectedEndAt: new Date("2026-06-11T00:00:00Z"),
+            },
+          ],
+        }),
+        fixedClock(),
+        undefined,
+        sunTimes,
+      );
+      const unavailable = await blocked.executeAvailability(query);
+      expect(
+        unavailable!.timeSlotsByDate[query.localDate].every(
+          (slot) => !slot.available,
+        ),
+      ).toBe(true);
+    },
+  );
+
   it("removes long daytrips that reach sunset and keeps panel departures for sunset trips", async () => {
     const experience = createExperience({
       id: "daytrip",

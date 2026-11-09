@@ -1,3 +1,6 @@
+import { resolveHourlySchedulePolicy } from "./HourlySchedulePolicy";
+import type { BookingSunTimes } from "./ports/BookingSunTimes";
+import { parseClockTime } from "@/modules/boat-calendar/application/CalendarDateTime";
 import { ApplicationError } from "@/shared/application/ApplicationError";
 
 import type {
@@ -27,11 +30,14 @@ export class BackpanelCreateBookingUseCase {
     private readonly clock: BookingClock,
     private readonly cancellationPolicies?: CancellationPolicyRepository,
     private readonly bookingCalendarSync?: BookingCalendarSynchronizer,
+    private readonly sunTimes?: BookingSunTimes,
   ) {}
 
-  async execute(command: BackpanelCreateBookingCommand): Promise<AdminBookingDto> {
+  async execute(
+    command: BackpanelCreateBookingCommand,
+  ): Promise<AdminBookingDto> {
     const now = this.clock.now();
-    const experience = await this.bookings.findExperienceOptionById(
+    let experience = await this.bookings.findExperienceOptionById(
       command.experienceId,
     );
 
@@ -49,6 +55,16 @@ export class BackpanelCreateBookingUseCase {
       );
     }
 
+    experience = {
+      ...experience,
+      slotPolicy: resolveHourlySchedulePolicy(
+        experience,
+        command.localDate,
+        (parseClockTime(command.endTime) - parseClockTime(command.startTime)) /
+          60,
+        this.sunTimes,
+      ),
+    };
     const extraOptions = await this.bookings.findExtraOptionsByIds(
       collectSelectedExtraIds(command),
     );
@@ -74,9 +90,9 @@ export class BackpanelCreateBookingUseCase {
     const calendarBlockId = this.ids.newCalendarBlockId({ bookingId });
     const paymentRecordId = this.ids.newPaymentRecordId({ bookingId });
     const cancellationPolicySnapshot =
-      await this.cancellationPolicies?.findActiveBookingSnapshotForExperience(
+      (await this.cancellationPolicies?.findActiveBookingSnapshotForExperience(
         experience.id,
-      ) ?? null;
+      )) ?? null;
     const paymentRecord = PaymentRecord.createManualDeposit({
       amount: plan.priceSnapshot.depositAmount,
       bookingId,

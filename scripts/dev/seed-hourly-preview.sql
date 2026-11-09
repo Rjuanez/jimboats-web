@@ -17,7 +17,7 @@ SELECT id, name, 'private-charter', 'PUBLISHED'::"ExperienceStatus", position, (
  360, 1380, 30, now(), now()
 FROM (VALUES ('daytrip','Private boat trip',1), ('ex-sunset','Sunset',2), ('sunrise','Sunrise',3), ('romantic','Romantic',4)) AS seed(id,name,position)
 ON CONFLICT (id) DO NOTHING;
-UPDATE experiences SET capacity = 6, base_price_amount_minor = (:'starting_prices'::jsonb ->> id)::int
+UPDATE experiences SET slot_policy_mode = 'HOURLY_SOLAR'::"SlotPolicyMode", capacity = 6, base_price_amount_minor = (:'starting_prices'::jsonb ->> id)::int
 WHERE id IN ('daytrip','ex-sunset','sunrise','romantic');
 INSERT INTO localized_experience_contents (
  id, experience_id, locale, status, slug, title, public_page_enabled, h1, summary, main_content,
@@ -45,7 +45,20 @@ INSERT INTO extras (id, name, status, price_amount_minor, price_currency, defaul
 VALUES ('paddle-surf', 'Paddle surf', 'ACTIVE', 2000, 'EUR', 0, now(), now()) ON CONFLICT DO NOTHING;
 INSERT INTO experience_extra_rules (id, experience_id, extra_id, enabled, limit_per_booking, notice_minutes, capacity_reduction, created_at, updated_at)
 SELECT 'local-paddle-' || id, id, 'paddle-surf', true, 1, 0, 0, now(), now()
-FROM experiences WHERE id IN ('daytrip','ex-sunset','sunrise','romantic') ON CONFLICT DO NOTHING;
+FROM experiences e WHERE id IN ('daytrip','ex-sunset','sunrise','romantic')
+AND NOT EXISTS (
+ SELECT 1 FROM experience_extra_rules r WHERE r.experience_id = e.id AND r.extra_id = 'paddle-surf'
+) ON CONFLICT DO NOTHING;
+-- Remove only a duplicate seed-owned rule left by earlier runs after the admin
+-- editor rewrote its identifier. Never remove booking rows or operator rules.
+DELETE FROM experience_extra_rules seeded
+WHERE seeded.id = 'local-paddle-' || seeded.experience_id
+  AND seeded.extra_id = 'paddle-surf'
+  AND EXISTS (
+    SELECT 1 FROM experience_extra_rules other
+    WHERE other.experience_id = seeded.experience_id
+      AND other.extra_id = seeded.extra_id AND other.id <> seeded.id
+  );
 
 -- Local notification templates, never imported from customers or production.
 INSERT INTO notification_templates (id, notification_type, event_type, channel, status, allowed_variables_json, required_variables_json, version, updated_at)

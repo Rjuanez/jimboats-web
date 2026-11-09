@@ -1,3 +1,6 @@
+import { resolveHourlySchedulePolicy } from "./HourlySchedulePolicy";
+import type { BookingSunTimes } from "./ports/BookingSunTimes";
+import { parseClockTime } from "@/modules/boat-calendar/application/CalendarDateTime";
 import { Money } from "@/shared/domain/Money";
 import { ApplicationError } from "@/shared/application/ApplicationError";
 
@@ -24,6 +27,7 @@ export class BackpanelUpdateBookingUseCase {
     private readonly ids: BookingIdGenerator,
     private readonly clock: BookingClock,
     private readonly bookingCalendarSync?: BookingCalendarSynchronizer,
+    private readonly sunTimes?: BookingSunTimes,
   ) {}
 
   async execute(
@@ -51,7 +55,7 @@ export class BackpanelUpdateBookingUseCase {
     }
 
     const currentSnapshot = current.toSnapshot();
-    const experience = await this.bookings.findExperienceOptionById(
+    let experience = await this.bookings.findExperienceOptionById(
       currentSnapshot.experienceId,
     );
 
@@ -62,6 +66,40 @@ export class BackpanelUpdateBookingUseCase {
       );
     }
 
+    // A metadata-only edit must keep a previously agreed departure, even after
+    // switching policies. A changed date/time must meet the current rules.
+    const originalSlot = currentSnapshot.selectedSlot;
+    const unchangedSchedule =
+      command.localDate === originalSlot.localDate &&
+      parseClockTime(command.startTime) === originalSlot.startMinutes &&
+      parseClockTime(command.endTime) === originalSlot.endMinutes;
+    if (experience.slotPolicy.mode === "HOURLY_SOLAR") {
+      experience = {
+        ...experience,
+        slotPolicy: unchangedSchedule
+          ? {
+              mode: "FIXED_SLOTS",
+              timeZone: originalSlot.timeZone,
+              fixedSlots: [
+                {
+                  id: originalSlot.slotKey ?? "retained",
+                  label: "Existing booking",
+                  enabled: true,
+                  startMinutes: originalSlot.startMinutes,
+                  endMinutes: originalSlot.endMinutes,
+                },
+              ],
+            }
+          : resolveHourlySchedulePolicy(
+              experience,
+              command.localDate,
+              (parseClockTime(command.endTime) -
+                parseClockTime(command.startTime)) /
+                60,
+              this.sunTimes,
+            ),
+      };
+    }
     const extraOptions = await this.bookings.findExtraOptionsByIds(
       collectSelectedExtraIds(command),
     );

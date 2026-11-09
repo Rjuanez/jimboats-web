@@ -244,8 +244,13 @@ export function bookingFromPrismaRecord(record: PrismaBookingRecord) {
       basePrice: Money.create({
         amountMinor:
           subtotalAmountMinorFromRecord(record) -
-          record.extras.reduce((total, extra) => total + extra.totalAmountMinor, 0),
-        currency: currencyFromPrisma(record.subtotalCurrency ?? record.totalCurrency),
+          record.extras.reduce(
+            (total, extra) => total + extra.totalAmountMinor,
+            0,
+          ),
+        currency: currencyFromPrisma(
+          record.subtotalCurrency ?? record.totalCurrency,
+        ),
       }),
       capturedAt: record.priceCapturedAt,
       depositAmount: Money.create({
@@ -254,7 +259,9 @@ export function bookingFromPrismaRecord(record: PrismaBookingRecord) {
       }),
       discountAmount: Money.create({
         amountMinor: record.discountAmountMinor ?? 0,
-        currency: currencyFromPrisma(record.discountCurrency ?? record.totalCurrency),
+        currency: currencyFromPrisma(
+          record.discountCurrency ?? record.totalCurrency,
+        ),
       }),
       discountSnapshot: record.couponSnapshot
         ? (record.couponSnapshot as BookingDiscountSnapshot)
@@ -278,7 +285,9 @@ export function bookingFromPrismaRecord(record: PrismaBookingRecord) {
       }),
       subtotalAmount: Money.create({
         amountMinor: subtotalAmountMinorFromRecord(record),
-        currency: currencyFromPrisma(record.subtotalCurrency ?? record.totalCurrency),
+        currency: currencyFromPrisma(
+          record.subtotalCurrency ?? record.totalCurrency,
+        ),
       }),
       totalAmount: Money.create({
         amountMinor: record.totalAmountMinor,
@@ -466,6 +475,12 @@ export function bookingExtraOptionFromPrismaRecord(
 }
 
 function slotPolicyFromPrismaRecord(record: PrismaBookingExperienceRecord) {
+  if (record.slotPolicyMode === "HOURLY_SOLAR")
+    return {
+      mode: "HOURLY_SOLAR" as const,
+      timeZone: record.slotPolicyTimezone,
+    };
+
   if (record.slotPolicyMode === "FIXED_SLOTS") {
     return {
       fixedSlots: record.fixedSlots
@@ -567,7 +582,7 @@ function paymentRecordStatusFromPrisma(value: string): PaymentRecordStatus {
 
 function subtotalAmountMinorFromRecord(record: PrismaBookingRecord) {
   return (record.subtotalAmountMinor ?? 0) > 0
-    ? record.subtotalAmountMinor ?? 0
+    ? (record.subtotalAmountMinor ?? 0)
     : record.totalAmountMinor + (record.discountAmountMinor ?? 0);
 }
 

@@ -65,7 +65,8 @@ describe("hourly original booking presentation", () => {
       5,
     );
     const slot = Object.values(availability!.timeSlotsByDate)[0][0];
-    expect(slot.endTime).toBe("15:00");
+    expect(slot.startTime).toBe("09:00");
+    expect(slot.endTime).toBe("14:00");
     expect(availability?.calendar.weekdays).toEqual([
       "Mo",
       "Di",
