@@ -2,6 +2,10 @@ import { applicationError } from "@/shared/application/ApplicationError";
 
 export const boatCalendarTimeZone = "Europe/Madrid";
 
+// Reuse formatting rules, never a date or an offset: DST is resolved per instant.
+const boatLocalDateFormatter = createLocalDateFormatter(boatCalendarTimeZone);
+const boatOffsetFormatter = createOffsetFormatter(boatCalendarTimeZone);
+
 export type ManualCalendarBlockTimeRange = {
   localDate: string;
   protectedEndAt: Date;
@@ -106,14 +110,21 @@ export function parseClockTime(value: string) {
 }
 
 export function todayLocalDate(now: Date, timeZone = boatCalendarTimeZone) {
-  const formatter = new Intl.DateTimeFormat("en-CA", {
+  const formatter =
+    timeZone === boatCalendarTimeZone
+      ? boatLocalDateFormatter
+      : createLocalDateFormatter(timeZone);
+
+  return formatter.format(now);
+}
+
+function createLocalDateFormatter(timeZone: string) {
+  return new Intl.DateTimeFormat("en-CA", {
     day: "2-digit",
     month: "2-digit",
     timeZone,
     year: "numeric",
   });
-
-  return formatter.format(now);
 }
 
 export function addDaysToLocalDate(localDate: string, days: number) {
@@ -161,8 +172,8 @@ function parseLocalDateParts(value: string) {
   };
 }
 
-function getTimeZoneOffsetMs(date: Date, timeZone: string) {
-  const parts = new Intl.DateTimeFormat("en-US", {
+function createOffsetFormatter(timeZone: string) {
+  return new Intl.DateTimeFormat("en-US", {
     day: "2-digit",
     hour: "2-digit",
     hour12: false,
@@ -172,7 +183,15 @@ function getTimeZoneOffsetMs(date: Date, timeZone: string) {
     second: "2-digit",
     timeZone,
     year: "numeric",
-  }).formatToParts(date);
+  });
+}
+
+function getTimeZoneOffsetMs(date: Date, timeZone: string) {
+  const formatter =
+    timeZone === boatCalendarTimeZone
+      ? boatOffsetFormatter
+      : createOffsetFormatter(timeZone);
+  const parts = formatter.formatToParts(date);
   const values = Object.fromEntries(
     parts
       .filter((part) => part.type !== "literal")

@@ -269,6 +269,21 @@ function presentCalendarMonths(
   locale: BookingUiLocale,
 ): PublicBookingCalendarMonth[] {
   const monthsById = new Map<string, PublicBookingCalendarMonth>();
+  const formatters = {
+    ariaLabel: new Intl.DateTimeFormat(locale, {
+      dateStyle: "full",
+      timeZone: "UTC",
+    }),
+    dateLabel: new Intl.DateTimeFormat(locale, {
+      day: "numeric",
+      month: "short",
+      timeZone: "UTC",
+    }),
+    dayLabel: new Intl.DateTimeFormat(locale, {
+      day: "numeric",
+      timeZone: "UTC",
+    }),
+  };
 
   for (const day of days) {
     const monthId = day.localDate.slice(0, 7);
@@ -276,7 +291,7 @@ function presentCalendarMonths(
     const presentedDay = presentCalendarDay(
       day.localDate,
       day.available,
-      locale,
+      formatters,
     );
 
     if (existingMonth) {
@@ -319,25 +334,17 @@ function presentExtra(
 function presentCalendarDay(
   localDate: string,
   available: boolean,
-  locale: BookingUiLocale,
+  formatters: Record<
+    "ariaLabel" | "dateLabel" | "dayLabel",
+    Intl.DateTimeFormat
+  >,
 ) {
   const date = new Date(`${localDate}T00:00:00.000Z`);
-  const intlLocale = locale;
 
   return {
-    ariaLabel: new Intl.DateTimeFormat(intlLocale, {
-      dateStyle: "full",
-      timeZone: "UTC",
-    }).format(date),
-    dateLabel: new Intl.DateTimeFormat(intlLocale, {
-      day: "numeric",
-      month: "short",
-      timeZone: "UTC",
-    }).format(date),
-    dayLabel: new Intl.DateTimeFormat(intlLocale, {
-      day: "numeric",
-      timeZone: "UTC",
-    }).format(date),
+    ariaLabel: formatters.ariaLabel.format(date),
+    dateLabel: formatters.dateLabel.format(date),
+    dayLabel: formatters.dayLabel.format(date),
     disabled: !available,
     id: localDate,
   };

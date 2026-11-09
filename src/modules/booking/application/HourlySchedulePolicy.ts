@@ -4,6 +4,14 @@ import { hourlyDepartureSchedule } from "../domain/HourlyDepartureSchedule";
 import type { BookingSunTimes } from "./ports/BookingSunTimes";
 import type { BookingSlotPolicyReadModel } from "./ports/BookingRepository";
 
+const solarTimeFormatter = new Intl.DateTimeFormat("en-GB", {
+  timeZone: boatCalendarTimeZone,
+  hourCycle: "h23",
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+});
+
 export function resolveHourlySchedulePolicy(
   experience: { id: string; slotPolicy: BookingSlotPolicyReadModel },
   localDate: string,
@@ -43,13 +51,7 @@ export function resolveHourlySchedulePolicy(
 }
 
 export function solarMinutes(date: Date): number {
-  const parts = new Intl.DateTimeFormat("en-GB", {
-    timeZone: boatCalendarTimeZone,
-    hourCycle: "h23",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  }).formatToParts(date);
+  const parts = solarTimeFormatter.formatToParts(date);
   const value = (type: string) =>
     Number(parts.find((part) => part.type === type)?.value);
   return value("hour") * 60 + value("minute") + value("second") / 60;
