@@ -240,6 +240,7 @@ export function presentPublicBookingAvailability(
   const months = presentCalendarMonths(availability.days, locale);
   const firstMonth = months[0];
   const calendar = {
+    ...(availability.monthRange ? { monthRange: availability.monthRange } : {}),
     days: firstMonth?.days ?? [],
     monthLabel:
       firstMonth?.monthLabel ??

@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { GetPublicBookingPageUseCase } from "./GetPublicBookingPageUseCase";
 import type { BookingClock } from "./ports/BookingClock";
@@ -9,6 +9,52 @@ import type {
 } from "./ports/PublicBookingCatalogReader";
 
 describe("GetPublicBookingPageUseCase", () => {
+  it("returns only the requested month and queries only its protected range", async () => {
+    const experience = createExperience();
+    const catalog = new FakePublicBookingCatalogReader({
+      experiences: [experience],
+    });
+    const blocks = vi.spyOn(catalog, "listActiveCalendarBlocks");
+    const useCase = new GetPublicBookingPageUseCase(catalog, fixedClock());
+    const query = { locale: "en", experienceId: experience.id };
+    const full = await useCase.executeAvailability(query);
+    const first = await useCase.executeAvailability({
+      ...query,
+      month: "current",
+    });
+    expect(first!.days).toEqual(
+      full!.days.filter((day) => day.localDate.startsWith("2026-06")),
+    );
+    expect(Object.keys(first!.timeSlotsByDate)).toHaveLength(30);
+    expect(first!.monthRange).toEqual({ first: "2026-06", last: "2026-12" });
+    const july = await useCase.executeAvailability({
+      ...query,
+      month: "2026-07",
+    });
+    expect(july!.days).toHaveLength(31);
+    expect(july!.timeSlotsByDate).toEqual(
+      Object.fromEntries(
+        Object.entries(full!.timeSlotsByDate).filter(([date]) =>
+          date.startsWith("2026-07"),
+        ),
+      ),
+    );
+    expect(blocks).toHaveBeenLastCalledWith({
+      from: new Date("2026-06-29T22:00:00Z"),
+      to: new Date("2026-08-01T22:00:00Z"),
+    });
+    const last = await useCase.executeAvailability({
+      ...query,
+      month: "2026-12",
+    });
+    expect(last!.days.at(-1)?.localDate).toBe("2026-12-04");
+    for (const month of ["2026-13", "2026-05", "2027-01"]) {
+      await expect(
+        useCase.executeAvailability({ ...query, month }),
+      ).rejects.toMatchObject({ code: "CALENDAR_DATE_RANGE_INVALID" });
+    }
+  });
+
   it.each([
     ["daytrip", 6, 540, 900],
     ["sunrise", 6, 360, 720],

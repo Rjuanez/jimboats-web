@@ -7,7 +7,7 @@ import {
 import { hourlyLabels } from "@/content/booking/labels";
 import { bookingTransactionLocale } from "@/i18n/bookingLocales";
 import { LifeBuoy } from "lucide-react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useEffectEvent, useMemo, useRef, useState } from "react";
 
 import {
   useClientAnalytics,
@@ -18,6 +18,7 @@ import { Container } from "@/components/layout/Container";
 import { cn } from "@/design/variants";
 import { getPublicDictionary } from "@/i18n/public";
 
+import { bookingAvailabilityClient } from "./bookingAvailabilityClient";
 import { PublicBookingBottomBar } from "./PublicBookingBottomBar";
 import { PublicBookingConfirmationStep } from "./PublicBookingConfirmationStep";
 import { PublicBookingExperienceStep } from "./PublicBookingExperienceStep";
@@ -38,6 +39,8 @@ import type {
 } from "./PublicBookingTypes";
 
 type PublicBookingWorkspaceProps = {
+  availabilityMonth?: string;
+  onChangeMonth?: (month: string) => void;
   actions: PublicBookingActions;
   content: PublicBookingContent;
   initialExperienceId?: string;
@@ -63,6 +66,8 @@ const timeSelectionId = "public-booking-time-selection";
 const continueAnchorId = "public-booking-continue-anchor";
 
 export function PublicBookingWorkspace({
+  availabilityMonth = "current",
+  onChangeMonth,
   actions,
   content,
   initialExperienceId,
@@ -279,78 +284,47 @@ export function PublicBookingWorkspace({
     trackBookingEvent,
   ]);
 
+  const hours = content.hourly?.hours;
+  const initialAvailability = content.availabilityByExperienceId[selectedExperienceId ?? ""];
+  const trackAvailabilityEvent = useEffectEvent(trackBookingEvent);
+
   useEffect(() => {
-    if (!selectedExperienceId) {
-      return;
-    }
-
-    if (availabilityByExperienceId[selectedExperienceId]) {
-      return;
-    }
-
-    const controller = new AbortController();
+    if (!selectedExperienceId || (!hours && initialAvailability)) return;
+    let active = true;
     const availabilityUrl = `/api/public-booking/availability?locale=${encodeURIComponent(
       content.locale,
-    )}&experienceId=${encodeURIComponent(selectedExperienceId)}${content.hourly ? `&hours=${content.hourly.hours}` : ""}`;
+    )}&experienceId=${encodeURIComponent(selectedExperienceId)}${hours ? `&hours=${hours}&month=${availabilityMonth}` : ""}`;
 
-    fetch(availabilityUrl, { signal: controller.signal })
-      .then(async (response) => {
-        if (!response.ok) {
-          throw new Error("Availability request failed.");
-        }
-
-        return (await response.json()) as {
-          availability?: PublicBookingExperienceAvailability;
-        };
-      })
-      .then((responseBody) => {
-        if (!responseBody.availability) {
-          throw new Error("Availability response was empty.");
-        }
-
-        const availability = responseBody.availability;
-        const availableDatesCount = availability.calendar.months?.length
-          ? availability.calendar.months.reduce(
-              (count, month) => count + month.days.length,
-              0,
-            )
-          : availability.calendar.days.length;
-
+    // Shared requests survive incidental re-renders and duration switches.
+    // Only the subscriber for the current selection may update the UI.
+    bookingAvailabilityClient.load(availabilityUrl)
+      .then((availability) => {
+        if (!active) return;
         setAvailabilityByExperienceId((current) => ({
           ...current,
           [selectedExperienceId]: availability,
         }));
-        trackBookingEvent("booking_availability_loaded", {
-          available_dates_count: availableDatesCount,
+        trackAvailabilityEvent("booking_availability_loaded", {
+          available_dates_count: availability.calendar.months?.reduce(
+            (count, month) => count + month.days.length, 0,
+          ) ?? availability.calendar.days.length,
           experience_id: selectedExperienceId,
         });
       })
-      .catch((error: unknown) => {
-        if (error instanceof DOMException && error.name === "AbortError") {
-          return;
-        }
-
+      .catch(() => {
+        if (!active) return;
         setAvailabilityErrorExperienceId(selectedExperienceId);
-        trackBookingEvent("booking_availability_failed", {
+        trackAvailabilityEvent("booking_availability_failed", {
           experience_id: selectedExperienceId,
         });
       })
       .finally(() => {
-        setLoadingAvailabilityExperienceId((current) =>
-          current === selectedExperienceId ? null : current,
-        );
+        if (!active) return;
+        setLoadingAvailabilityExperienceId(null);
       });
 
-    return () => {
-      controller.abort();
-    };
-  }, [
-    availabilityByExperienceId,
-    content.locale,
-    content.hourly,
-    selectedExperienceId,
-    trackBookingEvent,
-  ]);
+    return () => { active = false; };
+  }, [availabilityMonth, content.locale, hours, initialAvailability, selectedExperienceId]);
 
   const scrollToBookingSection = (sectionId: string) => {
     window.setTimeout(() => {
@@ -396,31 +370,16 @@ export function PublicBookingWorkspace({
   };
 
   const refreshAvailability = async (experienceId: string) => {
+    const month = selectedDateId?.slice(0, 7) ?? availabilityMonth;
     const availabilityUrl = `/api/public-booking/availability?locale=${encodeURIComponent(
       content.locale,
-    )}&experienceId=${encodeURIComponent(experienceId)}${content.hourly ? `&hours=${content.hourly.hours}` : ""}`;
-    const response = await fetch(availabilityUrl, {
-      cache: "no-store",
-    });
-
-    if (!response.ok) {
-      throw new Error("Availability request failed.");
-    }
-
-    const responseBody = (await response.json()) as {
-      availability?: PublicBookingExperienceAvailability;
-    };
-
-    if (!responseBody.availability) {
-      throw new Error("Availability response was empty.");
-    }
-
+    )}&experienceId=${encodeURIComponent(experienceId)}${hours ? `&hours=${hours}&month=${month}` : ""}`;
+    const availability = await bookingAvailabilityClient.load(availabilityUrl, true);
     setAvailabilityByExperienceId((current) => ({
       ...current,
-      [experienceId]: responseBody.availability!,
+      [experienceId]: availability,
     }));
-
-    return responseBody.availability;
+    return availability;
   };
 
   const selectedSlotIsAvailable = (
@@ -717,6 +676,17 @@ export function PublicBookingWorkspace({
               {activeStep === "experience" ? (
                 <PublicBookingExperienceStep
                   onChangeHours={onChangeHours}
+                  onChangeMonth={onChangeMonth ? (month) => {
+                    setLoadingAvailabilityExperienceId(selectedExperienceId);
+                    setAvailabilityErrorExperienceId(null);
+                    setSelectedDateId(null);
+                    setSelectedTimeSlotId(null);
+                    setSelectedExtraIds([]);
+                    setCheckoutClientSecret(null);
+                    setCheckoutSessionId(null);
+                    invalidateCoupon();
+                    onChangeMonth(month);
+                  } : undefined}
                   calendar={activeCalendar}
                   availabilityError={availabilityError}
                   availabilityLoading={availabilityLoading}

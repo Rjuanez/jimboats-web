@@ -177,21 +177,29 @@ export async function getHourlyPublicBookingAvailability(
   locale: MarketingLocale,
   experienceId: string,
   hours: number,
+  month = "current",
 ) {
   if (!hourlyDurationOptions[experienceId]?.includes(hours)) return null;
   if (hourlyVisualPreview()) {
     const { hourlyPreviewAvailability } =
       await import("./hourlyPublicBookingPreview");
-    return presentPublicBookingAvailability(
-      hourlyPreviewAvailability(experienceId, hours),
-      locale,
-    );
+    const preview = hourlyPreviewAvailability(experienceId, hours);
+    const first = preview.days[0].localDate.slice(0, 7);
+    const last = preview.days[preview.days.length - 1].localDate.slice(0, 7);
+    const selected = month === "current" ? first : month;
+    return presentPublicBookingAvailability({
+      days: preview.days.filter((day) => day.localDate.startsWith(`${selected}-`)),
+      timeSlotsByDate: Object.fromEntries(Object.entries(preview.timeSlotsByDate)
+        .filter(([day]) => day.startsWith(`${selected}-`))),
+      monthRange: { first, last },
+    }, locale);
   }
   const { getContainer } = await import("@/container");
   const availability = await getContainer().publicBooking.getAvailability({
     locale: bookingTransactionLocale(locale),
     experienceId,
     hours,
+    month,
   });
   return availability
     ? presentPublicBookingAvailability(availability, locale)

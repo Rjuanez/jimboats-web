@@ -32,6 +32,7 @@ export type PublicBookingExperience = {
 };
 
 export type PublicBookingCalendar = {
+  monthRange?: { first: string; last: string };
   days: readonly PublicBookingCalendarDay[];
   monthLabel: string;
   months?: readonly PublicBookingCalendarMonth[];

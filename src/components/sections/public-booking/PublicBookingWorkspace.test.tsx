@@ -1,4 +1,7 @@
-import { render, screen, within } from "@testing-library/react";
+import { StrictMode } from "react";
+import { HourlyPublicBookingWorkspace } from "./HourlyPublicBookingWorkspace";
+import { bookingAvailabilityClient } from "./bookingAvailabilityClient";
+import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -39,6 +42,103 @@ vi.mock("next/navigation", () => ({
 }));
 
 describe("PublicBookingWorkspace", () => {
+  it("shares the initial request across re-renders and loads months only on navigation", async () => {
+    const user = userEvent.setup();
+    const mock = getPublicBookingMockPage();
+    const base = mock.availabilityByExperienceId["sunset-cruise"];
+    const june = {
+      ...base,
+      calendar: {
+        ...base.calendar,
+        monthRange: { first: "2026-06", last: "2026-07" },
+        months: [
+          { id: "2026-06", monthLabel: "June 2026", days: base.calendar.days },
+        ],
+      },
+    };
+    const july = {
+      ...base,
+      calendar: {
+        ...base.calendar,
+        days: [],
+        monthLabel: "July 2026",
+        monthRange: { first: "2026-06", last: "2026-07" },
+        months: [{ id: "2026-07", monthLabel: "July 2026", days: [] }],
+      },
+      timeSlotsByDate: {},
+    };
+    let finish!: (value: unknown) => void;
+    const pending = new Promise((resolve) => {
+      finish = resolve;
+    });
+    const fetchAvailability = vi
+      .fn()
+      .mockReturnValueOnce(pending)
+      .mockImplementation(async (url: string) => ({
+        ok: true,
+        json: async () => ({
+          availability: url.includes("2026-07") ? july : june,
+        }),
+      }));
+    vi.stubGlobal("fetch", fetchAvailability);
+    const content = {
+      ...mock,
+      experiences: mock.experiences.filter((e) => e.id === "sunset-cruise"),
+      availabilityByExperienceId: {},
+      hourly: {
+        hours: 2,
+        rates: [
+          { hours: 2, price: 200, depositAmount: 50 },
+          { hours: 3, price: 290, depositAmount: 50 },
+        ],
+        title: "Duration and date",
+        durationLabel: "Duration",
+      },
+    };
+    const view = render(
+      <StrictMode>
+        <HourlyPublicBookingWorkspace
+          content={content}
+          actions={createActions()}
+          stripePublishableKey="pk_test_component"
+        />
+      </StrictMode>,
+    );
+    view.rerender(
+      <StrictMode>
+        <HourlyPublicBookingWorkspace
+          content={{ ...content, hourly: { ...content.hourly } }}
+          actions={createActions()}
+          stripePublishableKey="pk_test_component"
+        />
+      </StrictMode>,
+    );
+    expect(fetchAvailability).toHaveBeenCalledTimes(1);
+    expect(fetchAvailability.mock.calls[0][0]).toContain(
+      "&hours=2&month=current",
+    );
+    await act(async () => {
+      finish({ ok: true, json: async () => ({ availability: june }) });
+    });
+    await screen.findByRole("button", { name: /monday june 15, 2026/i });
+    await user.click(screen.getByRole("button", { name: "Next month" }));
+    await screen.findByText("July 2026");
+    expect(fetchAvailability).toHaveBeenCalledTimes(2);
+    expect(fetchAvailability.mock.calls[1][0]).toContain("&month=2026-07");
+    await user.click(screen.getByRole("button", { name: "Previous month" }));
+    await screen.findByRole("button", { name: /monday june 15, 2026/i });
+    expect(fetchAvailability).toHaveBeenCalledTimes(2);
+    await user.click(screen.getByRole("button", { name: "3 h" }));
+    await screen.findByRole("button", { name: /monday june 15, 2026/i });
+    expect(fetchAvailability).toHaveBeenCalledTimes(3);
+    expect(fetchAvailability.mock.calls[2][0]).toContain(
+      "&hours=3&month=2026-06",
+    );
+    await user.click(screen.getByRole("button", { name: "2 h" }));
+    await screen.findByRole("button", { name: /monday june 15, 2026/i });
+    expect(fetchAvailability).toHaveBeenCalledTimes(3);
+  });
+
   it("lets the customer choose the discounted total instead of a deposit", async () => {
     const user = userEvent.setup();
     stubAvailabilityRefresh();
@@ -79,6 +179,7 @@ describe("PublicBookingWorkspace", () => {
 
   afterEach(() => {
     vi.unstubAllGlobals();
+    bookingAvailabilityClient.clear();
   });
 
   it("preselects the requested experience", () => {
@@ -141,7 +242,7 @@ describe("PublicBookingWorkspace", () => {
     expect(fetchAvailability).toHaveBeenCalledWith(
       "/api/public-booking/availability?locale=en&experienceId=sunset-cruise",
       expect.objectContaining({
-        signal: expect.any(AbortSignal),
+        cache: "no-store",
       }),
     );
 
@@ -196,11 +297,15 @@ describe("PublicBookingWorkspace", () => {
     await user.type(screen.getByLabelText("Full name"), "Sailor Guest");
     await user.type(screen.getByLabelText("Email address"), "sailor@test.com");
     expect(
-      within(screen.getByRole("complementary", { name: "Your data and your booking" }))
-        .getByRole("link", { name: "Privacy policy" }),
+      within(
+        screen.getByRole("complementary", {
+          name: "Your data and your booking",
+        }),
+      ).getByRole("link", { name: "Privacy policy" }),
     ).toHaveAttribute("href", "/en/privacy");
     expect(
-      screen.getAllByRole("link", { name: /^Booking terms$/ })
+      screen
+        .getAllByRole("link", { name: /^Booking terms$/ })
         .find((link) => link.getAttribute("target") === "_blank"),
     ).toHaveAttribute("href", "/en/booking-terms");
     expect(

@@ -20,6 +20,7 @@ export function HourlyPublicBookingWorkspace({
   localPaymentActions?: LocalBookingPaymentActions;
 }) {
   const [hours, setHours] = useState(content.hourly!.hours);
+  const [month, setMonth] = useState("current");
   const rate = content.hourly!.rates.find((item) => item.hours === hours)!;
   const experience = content.experiences[0];
   const current: PublicBookingContent = {
@@ -41,6 +42,8 @@ export function HourlyPublicBookingWorkspace({
   return (
     <PublicBookingWorkspace
       key={hours}
+      availabilityMonth={month}
+      onChangeMonth={setMonth}
       localPaymentActions={localPaymentActions}
       content={current}
       actions={actions}
