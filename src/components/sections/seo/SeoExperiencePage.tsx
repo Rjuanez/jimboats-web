@@ -15,6 +15,7 @@ import { SeoSolarCalendar } from "./SeoSolarCalendar";
 import { SeoFaq } from "./SeoTrustSections";
 import { SeoGuideLinks } from "../blog/SeoGuideLinks";
 import { SeoTripPreparation } from "./SeoTripPreparation";
+import { SeoExperiencePrices } from "./SeoExperiencePrices";
 
 export function SeoExperiencePage({
   page,
@@ -39,7 +40,10 @@ export function SeoExperiencePage({
             mobileImage={
               experience.id === "sunset"
                 ? {
-                    ...marketingImage("production-sunset-mobile", experience.title),
+                    ...marketingImage(
+                      "production-sunset-mobile",
+                      experience.title,
+                    ),
                     sizes: "100vw",
                   }
                 : undefined
@@ -142,7 +146,8 @@ export function SeoExperiencePage({
             </ul>
             <div className="mt-4 max-w-3xl border-t border-sand pt-4 text-sm leading-6 text-text-muted">
               <p className="font-semibold text-text">{page.onboard.title}</p>
-              <p className="mt-2">{page.onboard.drinks}</p><p>{page.onboard.food}</p>
+              <p className="mt-2">{page.onboard.drinks}</p>
+              <p>{page.onboard.food}</p>
             </div>
           </div>
         </Container>
@@ -162,6 +167,10 @@ export function SeoExperiencePage({
                 {paragraph}
               </p>
             ))}
+            <SeoExperiencePrices
+              detail={detail}
+              capacityLabel={experience.capacityLabel}
+            />
           </section>
           <section aria-labelledby="experience-itinerary">
             <h2
@@ -217,9 +226,19 @@ export function SeoExperiencePage({
                     <MarketingImageFrame
                       image={{
                         ...marketingImage(slug, detail.galleryAlts[i]),
-                        sizes: experience.id !== "private" && i === 0 ? "(min-width: 1024px) 65vw, 100vw" : "(min-width: 1024px) 35vw, 50vw",
+                        sizes:
+                          experience.id !== "private" && i === 0
+                            ? "(min-width: 1024px) 65vw, 100vw"
+                            : "(min-width: 1024px) 35vw, 50vw",
                       }}
-                      imgClassName={experience.id === "sunrise" || experience.id === "romantic" ? "h-auto" : experience.id === "sunset" && i === 1 ? "object-[center_75%]" : undefined}
+                      imgClassName={
+                        experience.id === "sunrise" ||
+                        experience.id === "romantic"
+                          ? "h-auto"
+                          : experience.id === "sunset" && i === 1
+                            ? "object-[center_75%]"
+                            : undefined
+                      }
                     />
                   </div>
                 ))}

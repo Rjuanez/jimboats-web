@@ -1,4 +1,45 @@
 import type { MarketingLocale } from "./routes";
+import { hourlyPriceRules, hourlyPrices } from "../booking/hourlyPrices";
+import ruleCopy from "./pricingRules.json";
+
+export function getExperiencePricing(
+  locale: MarketingLocale,
+  bookingId: string,
+) {
+  const rule = hourlyPriceRules[bookingId];
+  const labels = ruleCopy[locale];
+  const currency = (euros: number) =>
+    new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency: "EUR",
+      maximumFractionDigits: 0,
+    }).format(euros);
+  const rate = (hours: number) =>
+    labels.base
+      .replace(
+        "{duration}",
+        `${hours} ${hours === 1 ? labels.hour : labels.hours}`,
+      )
+      .replace("{price}", currency(hourlyPrices[bookingId][hours]));
+  const baseLabel = rate(rule.baseHours);
+  const extraLabel = labels.extra.replace(
+    "{extra}",
+    currency(rule.extraHourPrice),
+  );
+  const summary = labels.summary
+    .replace("{base}", baseLabel)
+    .replace("{extra}", currency(rule.extraHourPrice))
+    .replace("{max}", String(rule.maxHours));
+  return {
+    baseLabel,
+    extraLabel,
+    summary,
+    examples: labels.examples
+      .replace("{first}", rate(rule.baseHours + 1))
+      .replace("{second}", rate(rule.baseHours + 2)),
+    decoration: bookingId === "romantic" ? labels.decoration : "",
+  };
+}
 
 // Checked in the public production booking flow on 2026-11-02 for all four
 // experiences: paddle adds EUR 20 to the booking total. The other two extras

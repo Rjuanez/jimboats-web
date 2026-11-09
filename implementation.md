@@ -196,6 +196,9 @@ Reglas de esta puerta:
 
 ## Reglas de SEO y contenido
 
+- Las tarifas publicadas por duración proceden de `src/content/booking/hourlyPrices.ts`. La regla de precio base + hora adicional, los ejemplos, FAQ, página de precios, `llms.txt` y ofertas JSON-LD se generan desde esa fuente; no se copian importes en traducciones ni componentes.
+- Cada página de experiencia explica en HTML inicial el precio base, las horas incluidas, el incremento por hora y la duración máxima, junto al precio total por barco. La descripción y tarjeta de reserva usan esta regla breve, sin tablas de tarifas. Los importes exactos por duración se conservan en JSON-LD y `llms.txt`; las FAQ incluyen dos ejemplos. Los textos de inclusiones solo describen duraciones disponibles para esa experiencia.
+
 - Las paginas publicas deben definir metadata relevante cuando se creen.
 - Las paginas de servicios deben tener URLs estables y descriptivas.
 - El contenido estatico puede vivir en archivos locales mientras no haga falta CMS.

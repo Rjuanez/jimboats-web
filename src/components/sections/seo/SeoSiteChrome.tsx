@@ -194,7 +194,7 @@ export function SeoFooter({ page }: { page: MarketingPage }) {
 export function SeoSiteShell({
   page,
   children,
-  preview = true,
+  preview = false,
   hero = false,
 }: {
   page: MarketingPage;
