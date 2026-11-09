@@ -12,12 +12,14 @@ import type {
 } from "./PublicBookingTypes";
 
 type PublicBookingCalendarProps = {
+  onChangeMonth?: (month: string) => void;
   calendar: PublicBookingCalendarModel;
   onSelectDate: (dayId: string) => void;
   selectedDateId: string | null;
 };
 
 export function PublicBookingCalendar({
+  onChangeMonth,
   calendar,
   onSelectDate,
   selectedDateId,
@@ -46,8 +48,13 @@ export function PublicBookingCalendar({
   );
   const visibleMonth = months[visibleMonthIndex] ?? fallbackMonth;
   const calendarCells = buildCalendarCells(visibleMonth);
-  const canGoPrevious = visibleMonthIndex > 0;
-  const canGoNext = visibleMonthIndex < months.length - 1;
+  const lazyMonthRange = onChangeMonth ? calendar.monthRange : undefined;
+  const canGoPrevious = lazyMonthRange
+    ? visibleMonth.id > lazyMonthRange.first
+    : visibleMonthIndex > 0;
+  const canGoNext = lazyMonthRange
+    ? visibleMonth.id < lazyMonthRange.last
+    : visibleMonthIndex < months.length - 1;
 
   return (
     <div className="rounded-[1.75rem] border border-sand/25 bg-white p-4 shadow-soft lg:rounded-[2rem] lg:p-6">
@@ -57,6 +64,10 @@ export function PublicBookingCalendar({
           disabled={!canGoPrevious}
           icon="previous"
           onClick={() => {
+            if (lazyMonthRange) {
+              onChangeMonth?.(adjacentMonth(visibleMonth.id, -1));
+              return;
+            }
             const previousMonth = months[visibleMonthIndex - 1];
 
             if (previousMonth) {
@@ -78,6 +89,10 @@ export function PublicBookingCalendar({
           disabled={!canGoNext}
           icon="next"
           onClick={() => {
+            if (lazyMonthRange) {
+              onChangeMonth?.(adjacentMonth(visibleMonth.id, 1));
+              return;
+            }
             const nextMonth = months[visibleMonthIndex + 1];
 
             if (nextMonth) {
@@ -115,6 +130,11 @@ export function PublicBookingCalendar({
 type CalendarCell = PublicBookingCalendarDay & {
   outsideMonth?: boolean;
 };
+
+function adjacentMonth(monthId: string, offset: number) {
+  const [year, month] = monthId.split("-").map(Number);
+  return new Date(Date.UTC(year, month - 1 + offset, 1)).toISOString().slice(0, 7);
+}
 
 function CalendarMonthButton({
   ariaLabel,

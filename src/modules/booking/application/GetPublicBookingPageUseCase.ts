@@ -1,4 +1,5 @@
 import { resolveHourlySchedulePolicy } from "./HourlySchedulePolicy";
+import { applicationError } from "@/shared/application/ApplicationError";
 import type { BookingSunTimes } from "./ports/BookingSunTimes";
 import { finishesBeforeSunset } from "../domain/DaytimeTrip";
 import { requireHourlyRate } from "../domain/HourlyRate";
@@ -130,13 +131,19 @@ export class GetPublicBookingPageUseCase {
       requireHourlyRate(experience.hourlyRates, query.hours);
       experience = { ...experience, durationMinutes: query.hours * 60 };
     }
-    const availabilityWindow = createAvailabilityWindow(now, experiences);
+    const fullWindow = createAvailabilityWindow(
+      now,
+      query.month ? [experience] : experiences,
+    );
+    const availabilityWindow = query.month
+      ? selectAvailabilityMonth(fullWindow, query.month)
+      : fullWindow;
     await this.releaseExpiredHolds(now);
     const blocks = await this.catalog.listActiveCalendarBlocks(
       calendarBlockRangeForWindow(availabilityWindow),
     );
 
-    return buildExperienceAvailability({
+    const availability = buildExperienceAvailability({
       sunTimes: this.sunTimes,
       blocks,
       experience,
@@ -145,6 +152,15 @@ export class GetPublicBookingPageUseCase {
         : availabilityWindow.localDates,
       now,
     });
+    return query.month
+      ? {
+          ...availability,
+          monthRange: {
+            first: fullWindow.startLocalDate.slice(0, 7),
+            last: fullWindow.endLocalDate.slice(0, 7),
+          },
+        }
+      : availability;
   }
 
   private async releaseExpiredHolds(now: Date) {
@@ -160,6 +176,21 @@ type AvailabilityWindow = {
   localDates: string[];
   startLocalDate: string;
 };
+
+function selectAvailabilityMonth(window: AvailabilityWindow, requested: string): AvailabilityWindow {
+  const first = window.startLocalDate.slice(0, 7);
+  const last = window.endLocalDate.slice(0, 7);
+  const month = requested === "current" ? first : requested;
+  if (!/^\d{4}-(0[1-9]|1[0-2])$/.test(month) || month < first || month > last) {
+    throw applicationError("CALENDAR_DATE_RANGE_INVALID", "Month is outside the booking window.");
+  }
+  const localDates = window.localDates.filter((day) => day.startsWith(`${month}-`));
+  return {
+    startLocalDate: localDates[0],
+    endLocalDate: localDates[localDates.length - 1],
+    localDates,
+  };
+}
 
 function createAvailabilityWindow(
   now: Date,

@@ -51,6 +51,7 @@ export type PublicBookingTimeSlotDto = {
 };
 
 export type PublicBookingExperienceAvailabilityDto = {
+  monthRange?: { first: string; last: string };
   days: PublicBookingCalendarDayDto[];
   timeSlotsByDate: Record<string, PublicBookingTimeSlotDto[]>;
 };
@@ -69,6 +70,7 @@ export type PublicBookingPageDto = {
 };
 
 export type GetPublicBookingAvailabilityQuery = {
+  month?: string;
   hours?: number;
   localDate?: string;
   experienceId: string;

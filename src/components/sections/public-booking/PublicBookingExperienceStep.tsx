@@ -13,6 +13,7 @@ import type {
 } from "./PublicBookingTypes";
 
 type PublicBookingExperienceStepProps = {
+  onChangeMonth?: (month: string) => void;
   onChangeHours?: (hours: number) => void;
   calendar: PublicBookingCalendarModel;
   availabilityError?: string | null;
@@ -29,6 +30,7 @@ type PublicBookingExperienceStepProps = {
 };
 
 export function PublicBookingExperienceStep({
+  onChangeMonth,
   onChangeHours,
   calendar,
   availabilityError,
@@ -172,6 +174,7 @@ export function PublicBookingExperienceStep({
             </div>
           ) : (
             <PublicBookingCalendar
+              onChangeMonth={onChangeMonth}
               calendar={calendar}
               key={selectedExperienceId}
               onSelectDate={onSelectDate}
