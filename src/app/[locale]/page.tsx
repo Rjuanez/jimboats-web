@@ -12,6 +12,8 @@ import {
 } from "@/interface/next/presenters/marketingSeoPresenter";
 
 type Props = { params: Promise<{ locale: string }> };
+export const revalidate = 3600;
+
 export function generateStaticParams() {
   return marketingLocales.map((locale) => ({ locale }));
 }

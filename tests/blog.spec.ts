@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { blogKeys, blogPath, getBlogCopy } from "../src/content/blog/catalog";
+import { termsPath } from "../src/content/booking/termsRoutes";
+import { privacyPath } from "../src/content/privacy/routes";
 import {
   marketingLocales,
   marketingPath,
@@ -58,7 +60,14 @@ test("all localized blog URLs contain static localized text, reciprocal alternat
     (await request.get("/es/blog/where-to-watch-sunset-barcelona")).status(),
   ).toBe(404);
   const sitemap = await (await request.get("/sitemap.xml")).text();
-  expect((sitemap.match(/<loc>/g) ?? []).length).toBe(95);
+  expect((sitemap.match(/<loc>/g) ?? []).length).toBe(105);
+  for (const locale of marketingLocales) {
+    for (const path of [privacyPath(locale), termsPath(locale)]) {
+      expect(sitemap).toContain(
+        `<loc>https://jimboatscharter.com${path}</loc>`,
+      );
+    }
+  }
   expect(sitemap).toContain(blogPath("nl", "romantic"));
 });
 

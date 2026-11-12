@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Bound the CDN stale window as well as the commercial routes' ISR interval.
+  expireTime: 3600,
   turbopack: { root: process.cwd() },
   allowedDevOrigins: ["127.0.0.1"],
   experimental: {

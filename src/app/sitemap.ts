@@ -6,6 +6,9 @@ import { marketingSitemap } from "@/interface/next/presenters/marketingSeoPresen
 import { blogSitemap } from "@/interface/next/presenters/blogPresenter";
 import { privacySitemap } from "@/interface/next/presenters/privacyPresenter";
 import { bookingTermsSitemap } from "@/interface/next/presenters/bookingTermsPresenter";
+
+export const revalidate = 3600;
+
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...marketingSitemap(),

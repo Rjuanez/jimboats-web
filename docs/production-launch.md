@@ -1,5 +1,130 @@
 # Preparación de publicación — 5 noviembre 2026
 
+## Caché comercial y fechas del sitemap — 12 noviembre 2026
+
+Las páginas de inicio y la ruta comercial `/{locale}/{slug}` usan ISR con
+`revalidate = 3600`. La ruta compartida también incluye privacidad y condiciones.
+El sitemap se revalida con el mismo intervalo. `expireTime = 3600` limita la
+ventana adicional `stale-while-revalidate` anunciada por Next.js: para estas
+rutas HTML se espera `Cache-Control: s-maxage=3600`. El sitemap conserva la
+cabecera nativa de metadata de Next.js `public, max-age=0, must-revalidate`:
+se revalida cada hora dentro de la app y las cachés externas deben validarlo.
+Esta opción es global para ISR;
+no modifica la caché inmutable de `/_next/static/*` ni la de `/media/*` en Caddy.
+ISR regenera al recibir visitas, no mediante un cron exacto; la primera visita
+tras vencer el intervalo puede recibir el resultado anterior mientras regenera.
+Por tanto, una hora no es una garantía absoluta de frescura del contenido.
+
+El marketing usa tarifas versionadas en `src/content/booking/hourlyPrices.ts`.
+Para publicarlas hay que compilar y desplegar una nueva imagen, que reemplaza
+la caché de páginas de la app (no hay volumen persistente de caché Next.js en
+el Compose actual). La invalidación del catálogo del antiguo panel no actualiza
+estos archivos. Caddy solo hace reverse proxy para HTML, sin caché de respuestas
+configurada. Si se incorpora una CDN, habrá que purgar también sus páginas al
+publicar tarifas. Una política nueva no revoca copias almacenadas previamente
+por terceros bajo la cabecera antigua.
+
+`src/content/marketing/lastModified.ts` registra la última modificación
+significativa de cada página e idioma. Las fechas iniciales se justifican con:
+
+- `9f2e4ca`, 2026-11-09: explicación de precios y retirada del aviso incorrecto
+  de simulación de reservas/pagos en todas las páginas comerciales.
+- `d299b07`, 2026-11-12: aclaraciones de precio e inclusiones en las experiencias.
+
+Al modificar contenido, tarifas, inclusiones, metadata o datos estructurados
+significativos, actualizar las entradas afectadas con la fecha real del cambio.
+Un cambio común de tarifas puede afectar inicio, precios y varias experiencias;
+revisar todas las páginas que lo muestran y cada traducción. No actualizar fechas
+por un build, un despliegue sin cambios editoriales o una modificación técnica.
+No calcularlas con `new Date()`, mtimes ni la fecha del último commit global.
+
+Verificar las cabeceras contra una compilación local de producción, no `next dev`:
+
+```sh
+pnpm build
+cp -R public .next/standalone/
+cp -R .next/static .next/standalone/.next/
+SEO_CACHE_E2E=1 PLAYWRIGHT_PORT=3112 PLAYWRIGHT_BASE_URL=http://127.0.0.1:3112 PLAYWRIGHT_REUSE_EXISTING_SERVER=0 PLAYWRIGHT_WEB_SERVER_COMMAND="HOSTNAME=127.0.0.1 PORT=3112 node .next/standalone/server.js" pnpm exec playwright test tests/seo-cache.spec.ts --workers=1
+```
+
+La prueba comprueba GET repetidos de las 45 páginas, las 105 URL del sitemap con
+fechas y alternates, las rutas compartidas de políticas y un recurso versionado.
+Tras un despliegue autorizado, repetir GET de inicio, precios, experiencias y
+`/sitemap.xml` en el dominio público; contrastar sus cabeceras y contenido con
+la nueva versión. Estas medidas no garantizan resolver un «Cache miss» de una
+herramienta externa ni forzar que un buscador vuelva a rastrear la web.
+
+### Verificación de este cambio (local, 12 noviembre 2026)
+
+Entorno: Node 24.13.1, pnpm 10.34.1, Next 16.2.6 y Chromium de Playwright 1.60.0.
+Dependencias instaladas con lockfile congelado; Prisma Client y media estática
+regenerados. La base `jimboats_hourly_preview` ya tenía todas las migraciones;
+no se aplicó ninguna. Se retiraron tipos generados obsoletos de `.next/dev/types`
+que aún referenciaban las rutas raíz anteriores. Se conservó el cambio local
+previo de `next-env.d.ts` y el archivo `public/.Rhistory`.
+
+| Verificación | Resultado final |
+| --- | --- |
+| `rules:check`, lint, typecheck y `git diff --check` | Correctos |
+| Vitest (`test` y `test:ui` ejecutan la misma suite) | 118 archivos, 662 pruebas correctas |
+| Build Next.js y Storybook | Correctos; aviso no bloqueante sobre tamaño de bundles Storybook |
+| Suite Playwright general, 2 workers | 164 correctas, sin fallos ni omisiones; incluye visuales, responsive, axe, widgets externos y 4 contratos de caché/sitemap |
+| Pruebas operativas, PostgreSQL local, pagos simulados, 1 worker | 5 correctas, sin fallos ni omisiones |
+| Repetición de ambos recorridos de pago, 3 veces cada uno | 6 ejecuciones adicionales correctas |
+
+Resultado consolidado por caso: **169 de 169 pruebas de navegador correctas**.
+Los casos operativos se ejecutaron en `127.0.0.1:3102` con PostgreSQL aislado;
+los otros 164 en `127.0.0.1:3112` con fixtures, excluyendo solo los cinco casos
+operativos ya ejecutados en su entorno. Se habilitaron `SEO_CACHE_E2E=1` y
+`MARKETING_EMBEDS_E2E=1`. Las comparaciones finales se ejecutaron sin actualizar
+snapshots. No se aumentaron timeouts ni tolerancias, ni se desactivaron reglas axe.
+
+La primera validación obtuvo 150/169 casos correctos. Tras la aprobación del
+alcance de corrección, se resolvieron los 19 fallos:
+
+- Sitemap: el test comprueba 105 URL y la presencia de privacidad y contratación
+  en los cinco idiomas, usando sus rutas traducidas.
+- Inclusiones: se actualizaron las tres expectativas responsive al texto vigente
+  de bebida y aperitivo, conservando las comprobaciones de precios y duración.
+- Accesibilidad: `BookingPrivacyNotice` usa una `section` con nombre accesible en
+  lugar de un `aside` anidado. Se conservan contenido, enlaces y estilos. Con
+  aprobación adicional, la prueba unitaria consulta el rol `region` y mantiene
+  la comprobación del enlace de privacidad. Axe pasa en ambos recorridos.
+- Calendario: `selectDate` espera a que el calendario regrese tras cargar cada
+  mes, verifica el cambio de mes y comprueba que la fecha esté habilitada. Los
+  recorridos conservan pago, persistencia, solapamientos y cancelación, y pasan
+  tres repeticiones adicionales cada uno.
+- Referencias visuales: se actualizaron exactamente 11 PNG revisados (cuatro
+  del blog, seis SEO y la portada desktop). Reflejan la retirada del aviso local,
+  enlaces legales y precios/textos vigentes; las dos portadas SEO incorporan
+  diferencias mínimas y reproducibles de renderizado. Las 11 nuevas referencias
+  coinciden píxel a píxel con las capturas revisadas antes de aprobar el cambio.
+  No se modificaron las demás referencias ni el contenido comercial para
+  satisfacer las capturas.
+
+El alcance de corrección comprende 17 archivos: `BookingPrivacyNotice.tsx`,
+`PublicBookingWorkspace.test.tsx`, `tests/blog.spec.ts`,
+`tests/experience-booking.spec.ts`, `tests/hourly-booking.spec.ts`, los 11 PNG
+y este documento. No se añadieron dependencias, migraciones ni reglas de negocio.
+La semántica se corrigió en el componente compartido; las páginas siguen siendo
+composición. Las verificaciones cubren 360, 768 y 1280 px. El grafo y el diff se
+revisaron; sus avisos de cobertura indirecta quedan cubiertos por los tests
+unitarios, XML/HTTP y recorridos de reserva ejecutados.
+
+Los logs y resultados JSON finales están en `.local-preview/failure-fixes/`.
+La evidencia inicial permanece en `.local-preview/cache-validation/`,
+`test-results-cache-full/` y `test-results-cache-operational/`.
+La web operativa local queda levantada en `http://127.0.0.1:3102/es`, con pagos
+simulados y notificaciones locales. **No se ha desplegado ni publicado ningún
+cambio.**
+
+Archivos de este cambio: `next.config.ts`, `src/app/[locale]/page.tsx`,
+`src/app/[locale]/[slug]/page.tsx`, `src/app/sitemap.ts`,
+`src/content/marketing/lastModified.ts`, `src/content/marketing/marketing.test.ts`,
+`src/interface/next/presenters/marketingSeoPresenter.ts`, `tests/seo-cache.spec.ts`
+y este documento. Se respetan las capas existentes; no hay nuevas dependencias,
+reglas de negocio en rutas, cambios de esquema ni modificaciones visuales.
+
 ## Estado y mecanismo
 
 La nueva web vive en `web-seo`; no se ha desplegado. La imagen Docker activa

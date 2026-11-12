@@ -1,5 +1,5 @@
 import { localHourlyTariffs } from "@/infrastructure/booking/HourlyTariffs";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { getMarketingPage, marketingImage } from "./index";
 import { durationOptions, experiences } from "./catalog";
 import {
@@ -280,6 +280,37 @@ describe("static marketing architecture", () => {
 });
 
 describe("search metadata regressions", () => {
+  it("dates all 45 commercial URLs from their significant content changes", () => {
+    const entries = marketingSitemap();
+    expect(entries).toHaveLength(45);
+    for (const locale of marketingLocales) {
+      for (const key of pageKeys) {
+        const entry = entries.find(
+          (item) => item.url === `https://jimboatscharter.com${marketingPath(locale, key)}`,
+        );
+        // d299b07 changed experience pricing/inclusions; 9f2e4ca changed
+        // the prices page and removed the misleading local-booking notice.
+        const expected = ["private", "sunset", "sunrise", "romantic"].includes(key)
+          ? "2026-11-12"
+          : "2026-11-09";
+        expect(entry).toHaveProperty("lastModified", expected);
+        expect(entry?.alternates.languages).toHaveProperty(locale, entry?.url);
+      }
+    }
+  });
+
+  it("does not advance sitemap dates when the clock advances", () => {
+    vi.useFakeTimers();
+    try {
+      vi.setSystemTime(new Date("2026-11-12T12:00:00Z"));
+      const original = marketingSitemap();
+      vi.setSystemTime(new Date("2027-06-01T12:00:00Z"));
+      expect(marketingSitemap()).toEqual(original);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("keeps search titles short, unique and explicitly branded once", () => {
     for (const locale of marketingLocales) {
       const titles = pageKeys.map(

@@ -11,19 +11,30 @@ async function selectDate(page: Page, localDate: string) {
     dateStyle: "full",
     timeZone: "UTC",
   }).format(new Date(`${localDate}T12:00:00Z`));
+  const monthLabel = new Intl.DateTimeFormat("es", {
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(`${localDate}T12:00:00Z`));
   const calendar = page.locator("#public-booking-date-selection");
-  await expect(
-    calendar.getByRole("button", { name: "Mes siguiente" }),
-  ).toBeVisible();
-  for (
-    let attempt = 0;
-    attempt < 6 &&
-    !(await calendar.getByRole("button", { name: label, exact: true }).count());
-    attempt++
-  ) {
-    await calendar.getByRole("button", { name: "Mes siguiente" }).click();
+  const nextMonth = calendar.getByRole("button", { name: "Mes siguiente" });
+  const visibleMonth = calendar.getByText(/^\p{L}+ de \d{4}$/u);
+  for (let attempt = 0; attempt < 6; attempt++) {
+    // Month navigation replaces the calendar while availability loads.
+    // Wait for its return before deciding whether another month is needed.
+    await expect(nextMonth).toBeVisible();
+    await expect(calendar.getByRole("status")).toBeHidden();
+    const previousMonth = await visibleMonth.innerText();
+    if (previousMonth === monthLabel) break;
+    await expect(nextMonth).toBeEnabled();
+    await nextMonth.click();
+    await expect(visibleMonth).toBeVisible();
+    await expect(visibleMonth).not.toHaveText(previousMonth);
   }
-  await calendar.getByRole("button", { name: label, exact: true }).click();
+  await expect(visibleMonth).toHaveText(monthLabel);
+  const day = calendar.getByRole("button", { name: label, exact: true });
+  await expect(day).toBeEnabled();
+  await day.click();
 }
 
 for (const paymentChoice of ["DEPOSIT", "FULL"] as const) {
