@@ -38,6 +38,7 @@ export class CreatePublicBookingCheckoutUseCase {
     private readonly coupons?: ReserveCouponRedemptionUseCase,
     private readonly expiredHolds?: ReleaseExpiredBookingHoldsUseCase,
     private readonly sunTimes?: BookingSunTimes,
+    private readonly adsEnabled = false,
   ) {}
 
   async execute(
@@ -192,6 +193,8 @@ export class CreatePublicBookingCheckoutUseCase {
       cancellationPolicySnapshot,
     });
     const checkoutSession = await this.paymentProvider.createCheckoutSession({
+      ...(this.adsEnabled && command.adsAttribution?.consentGranted === true
+        ? { adsAttribution: command.adsAttribution } : {}),
       amount: finalPlan.priceSnapshot.depositAmount.toSnapshot(),
       bookingId,
       customer: {

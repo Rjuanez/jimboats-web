@@ -20,7 +20,12 @@ describe("public privacy integration", () => {
       });
       expect(page.path).toBe(path);
       expect(document.title).toBe(privacyPages[locale].label);
-      expect(document.retention.rows).toHaveLength(8);
+      expect(document.retention.rows).toHaveLength(10);
+      const advertising = document.after.find(section => section.id === "chatgpt-ads");
+      expect(advertising?.paragraphs.join(" ")).toContain("jimboats_ads_consent_v1");
+      expect(advertising?.paragraphs.join(" ")).toContain("WhatsApp");
+      expect(document.sections.flatMap(section => section.paragraphs).join(" ")).toContain("OpenAI Ireland Limited");
+      expect(document.updated).toMatch(/12/);
       expect(privacyMetadata(locale).alternates?.canonical).toBe(
         `https://jimboatscharter.com${path}`,
       );

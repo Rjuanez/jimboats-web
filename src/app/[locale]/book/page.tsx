@@ -1,3 +1,6 @@
+import { getBookingAdsPrivacy } from "@/interface/next/config/bookingAdsPrivacy";
+import { saveBookingAdsChoiceAction, recordBookingWhatsAppClickAction } from "@/interface/next/actions/bookingAdsActions";
+import { BookingPrivacyPreferences } from "@/components/sections/public-booking/BookingPrivacyPreferences";
 import {
   simulateHourlyPaymentAction,
   abandonHourlyCheckoutAction,
@@ -41,7 +44,7 @@ export default async function BookingPage(props: Props) {
   );
   const content = await getHourlyPublicBookingPage(locale, experience, hours);
   if (!content) redirect(`${marketingPath(locale)}#experiences`);
-  return (
+  const workspace = (
     <PublicClientAnalyticsBoundary
       config={getPublicStatsigConfig()}
       metadata={{
@@ -69,4 +72,17 @@ export default async function BookingPage(props: Props) {
       />
     </PublicClientAnalyticsBoundary>
   );
+  const adsPrivacy = await getBookingAdsPrivacy();
+  return adsPrivacy.enabled || process.env.JIMBOATS_LOCAL_BOOKINGS === "1" || process.env.JIMBOATS_SEO_PREVIEW === "1" ? (
+    <BookingPrivacyPreferences
+      locale={locale} privacyHref={content.privacy.href}
+      initialChoice={adsPrivacy.initialChoice}
+      measurement={adsPrivacy.enabled ? {
+        saveChoice: saveBookingAdsChoiceAction,
+        whatsappClick: recordBookingWhatsAppClickAction,
+      } : undefined}
+    >
+      {workspace}
+    </BookingPrivacyPreferences>
+  ) : workspace;
 }

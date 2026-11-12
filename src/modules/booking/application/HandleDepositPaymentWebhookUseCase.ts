@@ -1,3 +1,4 @@
+import { bookingAdsConversion, type BookingAdsConfig } from "./BookingAdsConversion";
 import { ApplicationError } from "@/shared/application/ApplicationError";
 
 import type { BookingCalendarSynchronizer } from "./BookingCalendarSyncService";
@@ -30,6 +31,7 @@ export class HandleDepositPaymentWebhookUseCase {
     private readonly bookingCalendarSync?: BookingCalendarSynchronizer,
     private readonly confirmCouponRedemption?: ConfirmCouponRedemptionUseCase,
     private readonly releaseCouponRedemption?: ReleaseCouponRedemptionUseCase,
+    private readonly adsConfig?: BookingAdsConfig | null,
   ) {}
 
   async execute(
@@ -97,7 +99,17 @@ export class HandleDepositPaymentWebhookUseCase {
         auditEntries: lifecycleRecords.auditEntries,
         booking: confirmedBooking,
         calendarBlockId: bookingSnapshot.calendarBlockId,
-        outboxEvents: lifecycleRecords.outboxEvents,
+        outboxEvents: [
+          ...lifecycleRecords.outboxEvents,
+          ...bookingAdsConversion({
+            config: this.adsConfig,
+            attribution: event.adsAttribution,
+            bookingId: bookingSnapshot.id,
+            occurredAt: confirmedAt,
+            amountMinor: event.amountTotalMinor!,
+            currency: event.currency!,
+          }),
+        ],
         paymentRecord: succeededPayment,
         providerEvent: providerEventFromWebhook({
           event,

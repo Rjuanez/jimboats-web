@@ -26,6 +26,10 @@ services:
     image: ${APP_IMAGE:?APP_IMAGE is required}
     restart: unless-stopped
     environment:
+      CHATGPT_ADS_ENABLED: ${CHATGPT_ADS_ENABLED:-false}
+      CHATGPT_ADS_PIXEL_ID: ${CHATGPT_ADS_PIXEL_ID:-}
+      CHATGPT_ADS_CAPI_KEY: ${CHATGPT_ADS_CAPI_KEY:-}
+      CHATGPT_ADS_VALIDATE_ONLY: ${CHATGPT_ADS_VALIDATE_ONLY:-true}
       DATABASE_URL: ${DATABASE_URL:?DATABASE_URL is required}
       GOOGLE_CALENDAR_ENABLED: ${GOOGLE_CALENDAR_ENABLED:-false}
       GOOGLE_CALENDAR_ID: ${GOOGLE_CALENDAR_ID:-}
@@ -59,6 +63,24 @@ services:
       - "3000"
     volumes:
       - ${MEDIA_ROOT:-/var/lib/jimboats/media}:${MEDIA_ROOT:-/var/lib/jimboats/media}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # deploy.sh starts this service explicitly only when Ads is enabled.
+  ads-conversion-worker:
+    image: ${APP_IMAGE:?APP_IMAGE is required}
+    profiles: [advertising]
+    restart: unless-stopped
+    command: node .worker/ads-conversion-worker.cjs
+    environment:
+      CHATGPT_ADS_ENABLED: ${CHATGPT_ADS_ENABLED:-false}
+      CHATGPT_ADS_PIXEL_ID: ${CHATGPT_ADS_PIXEL_ID:-}
+      CHATGPT_ADS_CAPI_KEY: ${CHATGPT_ADS_CAPI_KEY:-}
+      CHATGPT_ADS_VALIDATE_ONLY: ${CHATGPT_ADS_VALIDATE_ONLY:-true}
+      DATABASE_URL: ${DATABASE_URL:?DATABASE_URL is required}
+      PUBLIC_SITE_URL: ${PUBLIC_SITE_URL:?PUBLIC_SITE_URL is required}
+      NODE_ENV: production
     depends_on:
       db:
         condition: service_healthy

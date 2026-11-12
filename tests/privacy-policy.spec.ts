@@ -24,7 +24,9 @@ test("privacy pages are readable on mobile, switch language and link from the fo
     await expect(
       page.locator("footer").getByRole("link", { name: title, exact: true }),
     ).toHaveAttribute("href", path);
-    await expect(page.locator("article dl > div")).toHaveCount(8);
+    await expect(page.locator("article dl > div")).toHaveCount(10);
+    await expect(page.locator("#privacy-chatgpt-ads")).toBeVisible();
+    await expect(page.locator('article a[href="https://openai.com/policies/ad-tools-dpa/"]')).toBeVisible();
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth > innerWidth,

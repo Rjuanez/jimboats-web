@@ -1,5 +1,6 @@
 "use server";
 
+import { getBookingAdsAttribution } from "../config/bookingAdsPrivacy";
 import { hourlyVisualPreview } from "../presenters/hourlyPublicBookingPresenter";
 import { ZodError } from "zod";
 
@@ -69,6 +70,7 @@ export async function startPublicBookingCheckoutAction(
     const commandInput = parsePublicBookingCheckout(input);
     const baseUrl = publicSiteUrlFromEnv();
     const checkout = await getContainer().publicBooking.createCheckout({
+      adsAttribution: await getBookingAdsAttribution(),
       consents: commandInput.consents,
       paymentChoice: commandInput.paymentChoice,
       couponCode: commandInput.couponCode ?? null,

@@ -1,5 +1,5 @@
 import { ReserveCouponRedemptionUseCase } from "@/modules/coupons/application/ReserveCouponRedemptionUseCase";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { ApplicationError } from "@/shared/application/ApplicationError";
 
@@ -1068,6 +1068,52 @@ describe("Booking use cases", () => {
     ).toMatchObject({
       status: "CANCELLED",
     });
+  });
+
+  it.each([false, true])("forwards attribution to Stripe only with integration enabled=%s", async (enabled) => {
+    const deps = createDependencies();
+    const createSession = vi.spyOn(deps.paymentProvider, "createCheckoutSession");
+    const attribution = { consentGranted: true as const, consentId: "consent-1" };
+    await new CreatePublicBookingCheckoutUseCase(
+      deps.bookings, deps.ids, deps.clock, deps.paymentProvider,
+      undefined, undefined, undefined, undefined, enabled,
+    ).execute(createPublicCheckoutCommand({ adsAttribution: attribution }));
+    if (enabled) expect(createSession).toHaveBeenCalledWith(expect.objectContaining({ adsAttribution: attribution }));
+    else expect(createSession).toHaveBeenCalledWith(expect.not.objectContaining({ adsAttribution: expect.anything() }));
+  });
+
+  it.each(["DEPOSIT", "FULL"] as const)("queues actual %s collected money once after confirmation", async (paymentChoice) => {
+    const deps = createDependencies();
+    await new CreatePublicBookingCheckoutUseCase(deps.bookings, deps.ids, deps.clock, deps.paymentProvider)
+      .execute(createPublicCheckoutCommand({ paymentChoice }));
+    const paid = deps.bookings.publicPending!.paymentRecord.toSnapshot().amount.amountMinor;
+    deps.paymentProvider.nextEvent = stripeCompletedEvent({
+      amountTotalMinor: paid,
+      adsAttribution: { consentGranted: true, consentId: "consent-1" },
+    });
+    const handler = new HandleDepositPaymentWebhookUseCase(
+      deps.bookings, deps.clock, deps.paymentProvider, undefined, undefined, undefined,
+      { pixelId: "jimboats-pixel", sourceUrl: "https://example.com/en/book/success" },
+    );
+    expect(await handler.execute({ rawBody: "paid", signature: "test" })).toMatchObject({ action: "PROCESSED" });
+    const queued = deps.bookings.depositSucceeded!.outboxEvents.filter((e) => e.aggregateType === "ADS_CONVERSION");
+    expect(queued).toHaveLength(1);
+    expect(queued[0].payload).toMatchObject({ conversion: {
+      id: "booking_booking-1_paid", amountMinor: paid, currency: "EUR", consentId: "consent-1",
+    } });
+    expect(await handler.execute({ rawBody: "paid", signature: "test" })).toMatchObject({ action: "DUPLICATE" });
+    expect(deps.bookings.depositSucceeded!.outboxEvents.filter((e) => e.aggregateType === "ADS_CONVERSION")).toHaveLength(1);
+  });
+
+  it.each(["disabled", "no-consent"])("does not queue advertising when %s", async (mode) => {
+    const deps = createDependencies();
+    await new CreatePublicBookingCheckoutUseCase(deps.bookings, deps.ids, deps.clock, deps.paymentProvider).execute(createPublicCheckoutCommand());
+    deps.paymentProvider.nextEvent = stripeCompletedEvent(mode === "disabled" ? { adsAttribution: { consentGranted: true, consentId: "click" } } : {});
+    await new HandleDepositPaymentWebhookUseCase(
+      deps.bookings, deps.clock, deps.paymentProvider, undefined, undefined, undefined,
+      mode === "disabled" ? null : { pixelId: "pixel", sourceUrl: "https://example.com/en/book/success" },
+    ).execute({ rawBody: "paid", signature: "test" });
+    expect(deps.bookings.depositSucceeded!.outboxEvents.map((e) => e.eventType)).toEqual(["BookingCreated"]);
   });
 
   it("confirms a public booking from a paid Stripe checkout webhook", async () => {

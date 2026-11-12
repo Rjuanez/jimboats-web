@@ -29,6 +29,7 @@ describe("StripeDepositPaymentProvider", () => {
       await expect(
         provider.createCheckoutSession({
           paymentChoice,
+          adsAttribution: { consentGranted: true, consentId: "consent-1" },
           amount: {
             amountMinor: 10_000,
             currency: "EUR",
@@ -54,6 +55,7 @@ describe("StripeDepositPaymentProvider", () => {
       expect(createSession).toHaveBeenCalledWith(
         expect.objectContaining({
           mode: "payment",
+          metadata: expect.objectContaining({ chatgptMeasurementConsent: "granted-v1", chatgptConsentId: "consent-1" }),
           redirect_on_completion: "if_required",
           return_url:
             "http://localhost:3000/en/book/success?session_id={CHECKOUT_SESSION_ID}",
@@ -74,6 +76,24 @@ describe("StripeDepositPaymentProvider", () => {
     },
   );
 
+  it.each([
+    ["checkout.session.completed", "unpaid", false],
+    ["checkout.session.completed", "paid", true],
+    ["checkout.session.async_payment_succeeded", "paid", true],
+    ["checkout.session.async_payment_failed", "unpaid", false],
+  ])("handles %s / %s without counting unpaid checkouts", async (type, paymentStatus, paid) => {
+    const secret = "whsec_test";
+    const provider = new StripeDepositPaymentProvider({ secretKey: "sk_test", webhookSecret: secret });
+    const payload = JSON.stringify({ id: "evt_1", type, created: 1_780_316_520, object: "event", data: { object: {
+      id: "cs_test", object: "checkout.session", payment_status: paymentStatus,
+      amount_total: 10_000, currency: "eur", metadata: { chatgptMeasurementConsent: "granted-v1", chatgptConsentId: "consent-1" },
+    } } });
+    const result = await provider.parseWebhook({ rawBody: payload, signature: Stripe.webhooks.generateTestHeaderString({ payload, secret }) });
+    if (paid) expect(result).toMatchObject({ eventType: "checkout.session.completed", adsAttribution: { consentGranted: true, consentId: "consent-1" } });
+    else expect(result).not.toHaveProperty("adsAttribution");
+    if (type === "checkout.session.completed" && !paid) expect(result).not.toHaveProperty("providerSessionId");
+  });
+
   it("verifies and normalizes checkout session completed webhooks", async () => {
     const webhookSecret = "whsec_test_secret";
     const provider = new StripeDepositPaymentProvider({
@@ -93,6 +113,7 @@ describe("StripeDepositPaymentProvider", () => {
           },
           object: "checkout.session",
           payment_intent: "pi_test_123",
+          payment_status: "paid",
         },
       },
       id: "evt_test_123",

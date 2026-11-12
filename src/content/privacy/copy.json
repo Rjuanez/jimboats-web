@@ -2,11 +2,11 @@
   "es": {
     "title": "Política de privacidad",
     "description": "Cómo trata JimBoats tus datos de contacto, reservas y pagos: finalidades, proveedores, conservación y derechos.",
-    "updated": "Actualizada el 7 de noviembre de 2026",
+    "updated": "Actualizada el 12 de noviembre de 2026",
     "controller": "Responsable del tratamiento",
     "taxId": "NIF",
     "contact": "Contacto de privacidad",
-    "intro": "Esta política explica cómo tratamos los datos de quienes consultan o reservan una experiencia con JimBoats Charter. No enviamos publicidad.",
+    "intro": "Esta política explica cómo tratamos los datos de quienes consultan o reservan una experiencia con JimBoats Charter. No enviamos comunicaciones comerciales por correo ni WhatsApp.",
     "sections": [
       {
         "id": "datos",
@@ -23,7 +23,8 @@
         "paragraphs": [
           "Atendemos solicitudes de información y preparamos reservas mediante medidas precontractuales solicitadas por ti. La gestión del paseo, pagos, justificantes, cambios y cancelaciones se basa en la ejecución del contrato.",
           "Conservamos la documentación exigida por las obligaciones mercantiles y tributarias aplicables. Los registros técnicos necesarios para proteger el servicio se tratan por nuestro interés legítimo en mantener su seguridad, con acceso y conservación limitados.",
-          "Los mensajes por correo y WhatsApp se refieren a tu reserva. Elegir el canal del justificante no autoriza promociones. Consultar esta política tampoco equivale a consentir publicidad o medición no esencial."
+          "Los mensajes por correo y WhatsApp se refieren a tu reserva. Elegir el canal del justificante no autoriza promociones. Consultar esta política tampoco equivale a consentir publicidad o medición no esencial.",
+          "Si aceptas la medición publicitaria en el aviso de la reserva, utilizamos tu consentimiento para relacionar nuestros anuncios con reservas pagadas y clics en WhatsApp durante la reserva. Esta elección es independiente de contratar el paseo y de recibir sus mensajes."
         ]
       },
       {
@@ -32,7 +33,8 @@
         "paragraphs": [
           "La web utiliza un VPS privado y el buzón de correo está alojado en Google. Stripe interviene en los pagos. Los proveedores de alojamiento, copias, correo, mensajería, calendario y soporte pueden acceder a los datos necesarios para prestar sus servicios.",
           "Los servicios de envío reciben el destinatario y el contenido del mensaje. La coordinación en calendario puede incluir nombre, teléfono, correo, fecha, experiencia, pasajeros, referencia, estado, saldo pendiente y notas necesarias. Solo debe acceder el personal autorizado para gestionar la actividad.",
-          "También pueden recibir información los bancos y los destinatarios que resulten necesarios para cumplir obligaciones legales o atender requerimientos de autoridades. No vendemos los datos ni los utilizamos para enviar publicidad.",
+          "Para esta medición, el destinatario es OpenAI Ireland Limited (ChatGPT Ads), como responsable independiente. Pueden existir transferencias fuera del EEE sujetas a las garantías de sus condiciones de protección de datos.",
+          "También pueden recibir información los bancos y los destinatarios que resulten necesarios para cumplir obligaciones legales o atender requerimientos de autoridades. No vendemos los datos ni los utilizamos para enviar comunicaciones comerciales por correo ni WhatsApp.",
           "Algunos servicios pueden implicar tratamientos fuera del Espacio Económico Europeo. Las transferencias que procedan deberán contar con una decisión de adecuación u otra garantía válida conforme al RGPD, como cláusulas contractuales tipo. Puedes solicitar información sobre los destinatarios y las garantías aplicables, incluida una copia de estas, mediante nuestro contacto de privacidad."
         ]
       }
@@ -72,6 +74,14 @@
         [
           "Incidencias y reclamaciones",
           "Hasta su resolución definitiva y, para la evidencia necesaria, durante el plazo de responsabilidad aplicable al caso."
+        ],
+        [
+          "Elección y referencia de medición publicitaria",
+          "La cookie dura hasta 24 horas desde la elección. El permiso y la referencia del anuncio dejan de usarse a las 24 horas desde su aceptación y se eliminan en la siguiente limpieza horaria. Si retiras el permiso antes, borramos la referencia al registrar la retirada."
+        ],
+        [
+          "Registros técnicos de envío publicitario",
+          "90 días desde el evento, con eliminación en la siguiente limpieza horaria. Incluyen la referencia interna, tipo, fecha, estado e importe cuando proceda; no duplican la referencia del anuncio. La documentación de la reserva mantiene sus plazos propios."
         ]
       ],
       "notes": [
@@ -89,6 +99,17 @@
         ]
       },
       {
+        "id": "chatgpt-ads",
+        "title": "Medición de anuncios de ChatGPT",
+        "paragraphs": [
+          "Cuando está habilitada, esta medición es opcional. Puedes aceptar o rechazar en el aviso inferior al entrar a reservar. Rechazar no impide reservar, pagar ni abrir WhatsApp. Seguir navegando, pulsar WhatsApp o aceptar las condiciones de contratación no autoriza esta medición.",
+          "Solo tras aceptar recogemos la referencia del anuncio presente en la dirección de la página de reserva. Con ella comunicamos a OpenAI el tipo y momento del evento, un identificador para evitar duplicados, una dirección de página sin parámetros y, si hay pago, el importe efectivamente cobrado y su moneda. No enviamos mediante esta integración tu nombre, correo, teléfono, dirección IP, datos de tarjeta ni contenido de mensajes. La referencia publicitaria es un identificador seudónimo, no un dato anónimo.",
+          "El clic en WhatsApp se mide dentro del flujo de reserva; no significa que hayas enviado un mensaje ni comprado. En los pagos se comunica la señal o el total realmente cobrado online, no el saldo pendiente. El envío se configura para excluir la personalización individual de anuncios.",
+          "La cookie propia jimboats_ads_consent_v1 recuerda tu elección durante un máximo de 24 horas. Contiene una referencia interna o el rechazo, no datos de contacto ni la referencia del anuncio. Puedes cambiar la elección en «Preferencias de privacidad», al pie de la reserva. Al retirar el permiso dejamos de enviar nuevos eventos y bloqueamos los pendientes; no podemos deshacer un envío ya realizado o en curso. Para ejercer derechos sobre datos enviados, utiliza el contacto de privacidad indicado en esta política.",
+          "Los plazos de nuestra tabla se refieren a los registros de JimBoats. OpenAI aplica sus propias condiciones de privacidad y protección de datos, enlazadas al final de esta página, a los datos que haya recibido."
+        ]
+      },
+      {
         "id": "medicion",
         "title": "Medición y decisiones automatizadas",
         "paragraphs": [
@@ -99,16 +120,18 @@
     ],
     "authority": "Agencia Española de Protección de Datos",
     "legalBasis": "Conservación mercantil: artículo 30 del Código de Comercio",
-    "blocking": "Bloqueo de datos: artículo 32 de la LOPDGDD"
+    "blocking": "Bloqueo de datos: artículo 32 de la LOPDGDD",
+    "adsPrivacy": "Privacidad de OpenAI",
+    "adsDataTerms": "Protección de datos de las herramientas publicitarias de OpenAI"
   },
   "en": {
     "title": "Privacy policy",
     "description": "How JimBoats handles your contact details, bookings and payments: purposes, service providers, retention and your rights.",
-    "updated": "Updated on 7 November 2026",
+    "updated": "Updated on 12 November 2026",
     "controller": "Data controller",
     "taxId": "Spanish tax ID (NIF)",
     "contact": "Privacy contact",
-    "intro": "This policy explains how we process the data of people who enquire about or book an experience with JimBoats Charter. We do not send advertising.",
+    "intro": "This policy explains how we process the data of people who enquire about or book an experience with JimBoats Charter. We do not send marketing messages by email or WhatsApp.",
     "sections": [
       {
         "id": "data",
@@ -125,7 +148,8 @@
         "paragraphs": [
           "We answer enquiries and prepare bookings by taking steps at your request before entering into a contract. Managing your trip, payments, booking pass, changes and cancellations is based on performing the contract.",
           "We retain documentation required by applicable commercial and tax obligations. Technical records necessary to protect the service are processed under our legitimate interest in keeping it secure, with limited access and retention.",
-          "Email and WhatsApp messages concern your booking. Choosing a delivery channel does not authorise promotions. Reading this policy does not constitute consent to advertising or non-essential measurement."
+          "Email and WhatsApp messages concern your booking. Choosing a delivery channel does not authorise promotions. Reading this policy does not constitute consent to advertising or non-essential measurement.",
+          "If you accept advertising measurement in the booking notice, we rely on your consent to link our ads to paid bookings and WhatsApp clicks during booking. This choice is separate from booking the trip and receiving its messages."
         ]
       },
       {
@@ -134,7 +158,8 @@
         "paragraphs": [
           "The website uses a private VPS, and Google hosts the email mailbox. Stripe handles payments. Hosting, backup, email, messaging, calendar and support providers may access the data needed to deliver their services.",
           "Message delivery services receive the recipient and message content. Calendar coordination may include the customer's name, phone, email, date, experience, passenger count, reference, status, outstanding balance and necessary notes. Access must be limited to personnel authorised to manage the activity.",
-          "Banks and recipients necessary to meet legal obligations or respond to requests from authorities may also receive information. We do not sell your data or use it to send advertising.",
+          "The recipient for this measurement is OpenAI Ireland Limited (ChatGPT Ads), acting as an independent controller. Transfers outside the EEA may take place subject to the safeguards in its data protection terms.",
+          "Banks and recipients necessary to meet legal obligations or respond to requests from authorities may also receive information. We do not sell your data or use it to send marketing messages by email or WhatsApp.",
           "Some services may involve processing outside the European Economic Area. Any transfers must be covered by an adequacy decision or another valid GDPR safeguard, such as standard contractual clauses. You can request information about recipients and applicable safeguards, including a copy of them, through our privacy contact."
         ]
       }
@@ -174,6 +199,14 @@
         [
           "Incidents and complaints",
           "Until final resolution and, for necessary evidence, throughout the liability period applicable to the case."
+        ],
+        [
+          "Advertising measurement choice and reference",
+          "The cookie lasts up to 24 hours from your choice. Permission and the ad reference stop being used 24 hours after acceptance and are deleted in the next hourly cleanup. If you withdraw earlier, we erase the reference when recording the withdrawal."
+        ],
+        [
+          "Advertising delivery technical records",
+          "90 days from the event, deleted in the next hourly cleanup. They include an internal reference, type, date, status and amount where applicable; they do not duplicate the ad reference. Booking documentation follows its own retention periods."
         ]
       ],
       "notes": [
@@ -191,6 +224,17 @@
         ]
       },
       {
+        "id": "chatgpt-ads",
+        "title": "ChatGPT advertising measurement",
+        "paragraphs": [
+          "When enabled, this measurement is optional. You can accept or reject in the bottom notice when entering the booking flow. Rejecting does not prevent booking, paying or opening WhatsApp. Browsing, clicking WhatsApp or accepting the booking terms does not authorise this measurement.",
+          "Only after you accept do we collect the ad reference present in the booking page address. We send OpenAI that reference, the event type and time, an identifier to prevent duplicates, a page address without parameters and, for a payment, the amount actually collected and its currency. This integration does not send your name, email, phone number, IP address, card details or message content. The ad reference is a pseudonymous identifier, not anonymous data.",
+          "A WhatsApp click is measured within the booking flow; it does not mean you sent a message or purchased. For payments, we report the deposit or total actually paid online, not the outstanding balance. Sending is configured to opt out of individual ad personalisation.",
+          "The first-party cookie jimboats_ads_consent_v1 remembers your choice for up to 24 hours. It contains an internal reference or a rejection, not contact details or the ad reference. You can change your choice through “Privacy preferences” at the bottom of the booking flow. Withdrawing stops new sends and blocks pending events; it cannot undo a completed or in-flight send. To exercise rights concerning data already sent, use the privacy contact in this policy.",
+          "The periods in our table apply to JimBoats records. OpenAI applies its own privacy and data protection terms, linked at the end of this page, to data it has received."
+        ]
+      },
+      {
         "id": "measurement",
         "title": "Measurement and automated processing",
         "paragraphs": [
@@ -201,16 +245,18 @@
     ],
     "authority": "Spanish Data Protection Agency",
     "legalBasis": "Commercial retention: Article 30 of the Spanish Commercial Code",
-    "blocking": "Statutory data blocking: Article 32 of the Spanish LOPDGDD"
+    "blocking": "Statutory data blocking: Article 32 of the Spanish LOPDGDD",
+    "adsPrivacy": "OpenAI privacy policy",
+    "adsDataTerms": "OpenAI advertising tools data protection terms"
   },
   "fr": {
     "title": "Politique de confidentialité",
     "description": "Comment JimBoats traite vos coordonnées, réservations et paiements : finalités, prestataires, conservation et droits.",
-    "updated": "Mise à jour le 7 novembre 2026",
+    "updated": "Mise à jour le 12 novembre 2026",
     "controller": "Responsable du traitement",
     "taxId": "Identifiant fiscal espagnol (NIF)",
     "contact": "Contact pour la protection des données",
-    "intro": "Cette politique explique le traitement des données des personnes qui demandent des renseignements ou réservent une expérience avec JimBoats Charter. Nous n’envoyons pas de publicité.",
+    "intro": "Cette politique explique le traitement des données des personnes qui demandent des renseignements ou réservent une expérience avec JimBoats Charter. Nous n’envoyons pas de messages commerciaux par e-mail ou WhatsApp.",
     "sections": [
       {
         "id": "donnees",
@@ -227,7 +273,8 @@
         "paragraphs": [
           "Nous répondons aux demandes et préparons les réservations dans le cadre de mesures précontractuelles prises à votre demande. La gestion de la sortie, des paiements, justificatifs, modifications et annulations repose sur l’exécution du contrat.",
           "Nous conservons les documents exigés par les obligations commerciales et fiscales applicables. Les journaux techniques nécessaires à la protection du service reposent sur notre intérêt légitime à assurer sa sécurité, avec un accès et une conservation limités.",
-          "Les messages par e-mail et WhatsApp concernent votre réservation. Choisir un canal d’envoi n’autorise pas les promotions. Lire cette politique ne vaut pas consentement à la publicité ou à une mesure d’audience non essentielle."
+          "Les messages par e-mail et WhatsApp concernent votre réservation. Choisir un canal d’envoi n’autorise pas les promotions. Lire cette politique ne vaut pas consentement à la publicité ou à une mesure d’audience non essentielle.",
+          "Si vous acceptez la mesure publicitaire dans l’avis de réservation, votre consentement nous permet de relier nos publicités aux réservations payées et aux clics sur WhatsApp pendant la réservation. Ce choix est distinct de la réservation et de la réception de ses messages."
         ]
       },
       {
@@ -236,7 +283,8 @@
         "paragraphs": [
           "Le site utilise un VPS privé et Google héberge la boîte mail. Stripe intervient dans les paiements. Les prestataires d’hébergement, sauvegarde, e-mail, messagerie, calendrier et assistance peuvent accéder aux données nécessaires à leurs services.",
           "Les services d’envoi reçoivent le destinataire et le contenu du message. Le calendrier peut contenir nom, téléphone, e-mail, date, expérience, nombre de passagers, référence, statut, solde dû et notes nécessaires. L’accès doit être limité au personnel autorisé à gérer l’activité.",
-          "Les banques et les destinataires nécessaires au respect d’obligations légales ou aux demandes des autorités peuvent également recevoir des informations. Nous ne vendons pas les données et ne les utilisons pas pour envoyer de publicité.",
+          "Le destinataire de cette mesure est OpenAI Ireland Limited (ChatGPT Ads), responsable de traitement indépendant. Des transferts hors EEE peuvent avoir lieu selon les garanties de ses conditions de protection des données.",
+          "Les banques et les destinataires nécessaires au respect d’obligations légales ou aux demandes des autorités peuvent également recevoir des informations. Nous ne vendons pas les données et ne les utilisons pas pour envoyer des messages commerciaux par e-mail ou WhatsApp.",
           "Certains services peuvent impliquer un traitement hors de l’Espace économique européen. Tout transfert doit être couvert par une décision d’adéquation ou une autre garantie valable au titre du RGPD, comme des clauses contractuelles types. Notre contact pour la protection des données peut vous renseigner sur les destinataires et les garanties applicables et vous en fournir une copie."
         ]
       }
@@ -276,6 +324,14 @@
         [
           "Incidents et réclamations",
           "Jusqu’à leur résolution définitive puis, pour les preuves nécessaires, pendant le délai de responsabilité applicable."
+        ],
+        [
+          "Choix et référence de mesure publicitaire",
+          "Le cookie dure jusqu’à 24 heures après votre choix. Le consentement et la référence cessent d’être utilisés 24 heures après acceptation et sont supprimés au nettoyage horaire suivant. Un retrait antérieur entraîne l’effacement de la référence lors de son enregistrement."
+        ],
+        [
+          "Registres techniques des envois publicitaires",
+          "90 jours après l’événement, avec suppression au nettoyage horaire suivant. Ils comprennent référence interne, type, date, état et montant éventuel, sans dupliquer la référence publicitaire. Les documents de réservation suivent leurs propres durées."
         ]
       ],
       "notes": [
@@ -293,6 +349,17 @@
         ]
       },
       {
+        "id": "chatgpt-ads",
+        "title": "Mesure des publicités ChatGPT",
+        "paragraphs": [
+          "Lorsqu’elle est activée, cette mesure est facultative. Vous pouvez accepter ou refuser dans l’avis en bas de page en entrant dans la réservation. Refuser n’empêche ni de réserver, ni de payer, ni d’ouvrir WhatsApp. Naviguer, cliquer sur WhatsApp ou accepter les conditions de réservation n’autorise pas cette mesure.",
+          "Ce n’est qu’après votre accord que nous recueillons la référence publicitaire présente dans l’adresse de la page de réservation. Nous transmettons à OpenAI cette référence, le type et l’heure de l’événement, un identifiant pour éviter les doublons, une adresse de page sans paramètres et, en cas de paiement, le montant réellement encaissé et sa devise. Cette intégration ne transmet ni nom, ni e-mail, ni téléphone, ni adresse IP, ni données de carte, ni contenu des messages. La référence publicitaire est un identifiant pseudonyme, pas une donnée anonyme.",
+          "Le clic WhatsApp est mesuré dans le parcours de réservation ; il ne signifie pas qu’un message a été envoyé ou qu’un achat a eu lieu. Pour les paiements, nous transmettons l’acompte ou le total effectivement réglé en ligne, sans le solde restant. L’envoi est configuré pour exclure la personnalisation individuelle des publicités.",
+          "Le cookie propriétaire jimboats_ads_consent_v1 mémorise votre choix pendant 24 heures au maximum. Il contient une référence interne ou le refus, sans coordonnées ni référence publicitaire. Vous pouvez modifier votre choix via « Préférences de confidentialité », au bas de la réservation. Le retrait bloque les nouveaux envois et les événements en attente, sans annuler un envoi effectué ou en cours. Pour exercer vos droits sur les données déjà transmises, utilisez le contact de confidentialité indiqué ici.",
+          "Les durées de notre tableau concernent les registres de JimBoats. OpenAI applique ses propres conditions de confidentialité et de protection des données, accessibles en fin de page, aux données reçues."
+        ]
+      },
+      {
         "id": "mesure",
         "title": "Mesure d’audience et traitement automatisé",
         "paragraphs": [
@@ -303,16 +370,18 @@
     ],
     "authority": "Agence espagnole de protection des données",
     "legalBasis": "Conservation commerciale : article 30 du Code de commerce espagnol",
-    "blocking": "Blocage des données : article 32 de la LOPDGDD espagnole"
+    "blocking": "Blocage des données : article 32 de la LOPDGDD espagnole",
+    "adsPrivacy": "Confidentialité chez OpenAI",
+    "adsDataTerms": "Protection des données des outils publicitaires OpenAI"
   },
   "de": {
     "title": "Datenschutzerklärung",
     "description": "So verarbeitet JimBoats Kontakt-, Buchungs- und Zahlungsdaten: Zwecke, Dienstleister, Aufbewahrung und Ihre Rechte.",
-    "updated": "Aktualisiert am 7. November 2026",
+    "updated": "Aktualisiert am 12. November 2026",
     "controller": "Verantwortlicher",
     "taxId": "Spanische Steuernummer (NIF)",
     "contact": "Kontakt zum Datenschutz",
-    "intro": "Diese Erklärung beschreibt die Verarbeitung von Daten bei Anfragen und Buchungen von Erlebnissen mit JimBoats Charter. Wir versenden keine Werbung.",
+    "intro": "Diese Erklärung beschreibt die Verarbeitung von Daten bei Anfragen und Buchungen von Erlebnissen mit JimBoats Charter. Wir versenden keine Werbenachrichten per E-Mail oder WhatsApp.",
     "sections": [
       {
         "id": "daten",
@@ -329,7 +398,8 @@
         "paragraphs": [
           "Wir beantworten Anfragen und bereiten Buchungen als vorvertragliche Maßnahmen auf Ihren Wunsch vor. Die Abwicklung von Fahrt, Zahlung, Buchungsbeleg, Änderungen und Stornierungen beruht auf der Vertragserfüllung.",
           "Gesetzlich erforderliche Unterlagen bewahren wir zur Erfüllung handels- und steuerrechtlicher Pflichten auf. Notwendige technische Sicherheitsprotokolle verarbeiten wir auf Grundlage unseres berechtigten Interesses an einem sicheren Dienst, mit begrenztem Zugriff und begrenzter Aufbewahrung.",
-          "Nachrichten per E-Mail und WhatsApp betreffen Ihre Buchung. Die Wahl eines Zustellkanals erlaubt keine Werbenachrichten. Das Lesen dieser Erklärung ist keine Einwilligung in Werbung oder nicht notwendige Nutzungsmessung."
+          "Nachrichten per E-Mail und WhatsApp betreffen Ihre Buchung. Die Wahl eines Zustellkanals erlaubt keine Werbenachrichten. Das Lesen dieser Erklärung ist keine Einwilligung in Werbung oder nicht notwendige Nutzungsmessung.",
+          "Wenn Sie der Werbemessung im Buchungshinweis zustimmen, verknüpfen wir auf Grundlage Ihrer Einwilligung unsere Anzeigen mit bezahlten Buchungen und WhatsApp-Klicks während der Buchung. Diese Entscheidung ist von der Buchung und dem Empfang zugehöriger Nachrichten getrennt."
         ]
       },
       {
@@ -338,7 +408,8 @@
         "paragraphs": [
           "Die Website nutzt einen privaten VPS; Google hostet das E-Mail-Postfach. Stripe wickelt Zahlungen ab. Anbieter für Hosting, Sicherungskopien, E-Mail, Nachrichten, Kalender und Support können auf die für ihre Leistungen notwendigen Daten zugreifen.",
           "Versanddienste erhalten Empfänger und Nachrichteninhalt. Die Kalenderplanung kann Name, Telefonnummer, E-Mail, Datum, Erlebnis, Personenzahl, Referenz, Status, offenen Betrag und erforderliche Notizen enthalten. Zugriff darf nur befugtes Personal zur Organisation der Tätigkeit haben.",
-          "Informationen können außerdem an Banken und Empfänger gehen, soweit dies zur Erfüllung gesetzlicher Pflichten oder behördlicher Anforderungen notwendig ist. Wir verkaufen Ihre Daten nicht und verwenden sie nicht zum Versand von Werbung.",
+          "Empfänger dieser Messdaten ist OpenAI Ireland Limited (ChatGPT Ads) als eigenständiger Verantwortlicher. Übermittlungen außerhalb des EWR können unter den Garantien seiner Datenschutzbedingungen erfolgen.",
+          "Informationen können außerdem an Banken und Empfänger gehen, soweit dies zur Erfüllung gesetzlicher Pflichten oder behördlicher Anforderungen notwendig ist. Wir verkaufen Ihre Daten nicht und verwenden sie nicht zum Versand von Werbenachrichten per E-Mail oder WhatsApp.",
           "Einige Dienste können eine Verarbeitung außerhalb des Europäischen Wirtschaftsraums mit sich bringen. Übermittlungen müssen durch einen Angemessenheitsbeschluss oder eine andere gültige DSGVO-Garantie, etwa Standardvertragsklauseln, abgesichert sein. Über unseren Datenschutzkontakt erhalten Sie Informationen zu Empfängern und anwendbaren Garantien sowie eine Kopie dieser Garantien."
         ]
       }
@@ -378,6 +449,14 @@
         [
           "Vorfälle und Beschwerden",
           "Bis zur endgültigen Klärung; notwendige Nachweise anschließend während der im Einzelfall geltenden Haftungsfrist."
+        ],
+        [
+          "Auswahl und Referenz für die Werbemessung",
+          "Das Cookie gilt bis zu 24 Stunden nach Ihrer Auswahl. Einwilligung und Anzeigenreferenz werden 24 Stunden nach Zustimmung nicht mehr verwendet und bei der nächsten stündlichen Bereinigung gelöscht. Bei früherem Widerruf löschen wir die Referenz mit dessen Erfassung."
+        ],
+        [
+          "Technische Protokolle der Werbeübermittlung",
+          "90 Tage ab dem Ereignis, mit Löschung bei der nächsten stündlichen Bereinigung. Enthalten sind interne Referenz, Art, Datum, Status und gegebenenfalls Betrag, ohne Kopie der Anzeigenreferenz. Für Buchungsunterlagen gelten eigene Fristen."
         ]
       ],
       "notes": [
@@ -395,6 +474,17 @@
         ]
       },
       {
+        "id": "chatgpt-ads",
+        "title": "Messung von ChatGPT-Anzeigen",
+        "paragraphs": [
+          "Diese Messung ist, sofern aktiviert, freiwillig. Beim Einstieg in die Buchung können Sie im unteren Hinweis zustimmen oder ablehnen. Eine Ablehnung verhindert weder Buchung noch Zahlung oder das Öffnen von WhatsApp. Weitersurfen, ein WhatsApp-Klick oder die Annahme der Buchungsbedingungen erlauben diese Messung nicht.",
+          "Erst nach Ihrer Zustimmung erfassen wir die Anzeigenreferenz in der Adresse der Buchungsseite. An OpenAI senden wir diese Referenz, Art und Zeitpunkt des Ereignisses, eine Kennung zur Vermeidung von Duplikaten, eine Seitenadresse ohne Parameter und bei Zahlungen den tatsächlich eingezogenen Betrag samt Währung. Diese Integration sendet weder Namen, E-Mail-Adresse, Telefonnummer, IP-Adresse, Kartendaten noch Nachrichteninhalte. Die Anzeigenreferenz ist eine pseudonyme Kennung, keine anonyme Information.",
+          "Gemessen wird der WhatsApp-Klick innerhalb der Buchung; er bedeutet nicht, dass eine Nachricht gesendet oder etwas gekauft wurde. Bei Zahlungen melden wir die online tatsächlich geleistete Anzahlung oder Gesamtzahlung, nicht den offenen Restbetrag. Die Übermittlung ist so eingestellt, dass individuelle Anzeigenpersonalisierung ausgeschlossen wird.",
+          "Das eigene Cookie jimboats_ads_consent_v1 merkt sich Ihre Auswahl höchstens 24 Stunden. Es enthält eine interne Referenz oder die Ablehnung, keine Kontaktdaten oder Anzeigenreferenz. Über „Datenschutzeinstellungen“ unten in der Buchung können Sie die Auswahl ändern. Ein Widerruf stoppt neue Übermittlungen und blockiert ausstehende Ereignisse; bereits erfolgte oder laufende Übermittlungen lassen sich nicht rückgängig machen. Für Rechte bezüglich bereits übermittelter Daten nutzen Sie den hier genannten Datenschutzkontakt.",
+          "Die Fristen in unserer Tabelle betreffen die Aufzeichnungen von JimBoats. Für empfangene Daten gelten bei OpenAI eigene Datenschutzbedingungen, die am Seitenende verlinkt sind."
+        ]
+      },
+      {
         "id": "messung",
         "title": "Nutzungsmessung und automatisierte Verarbeitung",
         "paragraphs": [
@@ -405,16 +495,18 @@
     ],
     "authority": "Spanische Datenschutzbehörde",
     "legalBasis": "Geschäftliche Aufbewahrung: Artikel 30 des spanischen Handelsgesetzbuchs",
-    "blocking": "Datensperrung: Artikel 32 der spanischen LOPDGDD"
+    "blocking": "Datensperrung: Artikel 32 der spanischen LOPDGDD",
+    "adsPrivacy": "Datenschutz bei OpenAI",
+    "adsDataTerms": "Datenschutzbedingungen für OpenAI-Werbetools"
   },
   "nl": {
     "title": "Privacybeleid",
     "description": "Hoe JimBoats contactgegevens, boekingen en betalingen verwerkt: doeleinden, dienstverleners, bewaartermijnen en je rechten.",
-    "updated": "Bijgewerkt op 7 november 2026",
+    "updated": "Bijgewerkt op 12 november 2026",
     "controller": "Verwerkingsverantwoordelijke",
     "taxId": "Spaans fiscaal nummer (NIF)",
     "contact": "Contact voor privacy",
-    "intro": "Dit beleid legt uit hoe we gegevens verwerken van mensen die informatie vragen of een ervaring boeken bij JimBoats Charter. We sturen geen reclame.",
+    "intro": "Dit beleid legt uit hoe we gegevens verwerken van mensen die informatie vragen of een ervaring boeken bij JimBoats Charter. We sturen geen commerciële berichten per e-mail of WhatsApp.",
     "sections": [
       {
         "id": "gegevens",
@@ -431,7 +523,8 @@
         "paragraphs": [
           "We beantwoorden vragen en bereiden boekingen voor als stappen op jouw verzoek vóór het sluiten van een overeenkomst. Het beheer van de tocht, betalingen, bewijsstukken, wijzigingen en annuleringen berust op de uitvoering van de overeenkomst.",
           "We bewaren documenten die nodig zijn voor toepasselijke handelsrechtelijke en fiscale verplichtingen. Technische logs die nodig zijn om de dienst te beschermen verwerken we op basis van ons gerechtvaardigd belang bij veiligheid, met beperkte toegang en bewaring.",
-          "E-mail- en WhatsApp-berichten gaan over je boeking. De keuze van een bezorgkanaal geeft geen toestemming voor aanbiedingen. Het lezen van dit beleid is geen toestemming voor reclame of niet-noodzakelijke meting."
+          "E-mail- en WhatsApp-berichten gaan over je boeking. De keuze van een bezorgkanaal geeft geen toestemming voor aanbiedingen. Het lezen van dit beleid is geen toestemming voor reclame of niet-noodzakelijke meting.",
+          "Als je advertentiemeting accepteert in de boekingsmelding, gebruiken we je toestemming om onze advertenties te koppelen aan betaalde boekingen en WhatsApp-klikken tijdens het boeken. Deze keuze staat los van de boeking en het ontvangen van bijbehorende berichten."
         ]
       },
       {
@@ -440,7 +533,8 @@
         "paragraphs": [
           "De website gebruikt een privé-VPS en Google host de mailbox. Stripe verzorgt betalingen. Dienstverleners voor hosting, back-ups, e-mail, berichten, agenda en ondersteuning kunnen de gegevens inzien die nodig zijn voor hun diensten.",
           "Verzenddiensten ontvangen de ontvanger en de inhoud van het bericht. De planning in de agenda kan naam, telefoon, e-mail, datum, ervaring, passagiersaantal, referentie, status, openstaand bedrag en noodzakelijke notities bevatten. Alleen bevoegd personeel dat de activiteit organiseert mag toegang hebben.",
-          "Ook banken en ontvangers die nodig zijn voor wettelijke verplichtingen of verzoeken van autoriteiten kunnen informatie ontvangen. We verkopen je gegevens niet en gebruiken ze niet voor reclame.",
+          "De ontvanger van deze meetgegevens is OpenAI Ireland Limited (ChatGPT Ads), als zelfstandig verwerkingsverantwoordelijke. Doorgiften buiten de EER kunnen plaatsvinden met de waarborgen uit de voorwaarden voor gegevensbescherming.",
+          "Ook banken en ontvangers die nodig zijn voor wettelijke verplichtingen of verzoeken van autoriteiten kunnen informatie ontvangen. We verkopen je gegevens niet en gebruiken ze niet voor commerciële berichten per e-mail of WhatsApp.",
           "Sommige diensten kunnen verwerking buiten de Europese Economische Ruimte meebrengen. Doorgiften moeten onder een adequaatheidsbesluit of een andere geldige AVG-waarborg vallen, zoals standaardcontractbepalingen. Via ons privacycontact kun je informatie over ontvangers en toepasselijke waarborgen opvragen, inclusief een kopie daarvan."
         ]
       }
@@ -480,6 +574,14 @@
         [
           "Incidenten en klachten",
           "Tot de definitieve afhandeling; noodzakelijk bewijs daarna gedurende de toepasselijke aansprakelijkheidstermijn."
+        ],
+        [
+          "Keuze en referentie voor advertentiemeting",
+          "De cookie blijft maximaal 24 uur geldig na je keuze. Toestemming en advertentiereferentie worden 24 uur na acceptatie niet meer gebruikt en bij de volgende uurlijkse opschoning verwijderd. Trek je eerder in, dan wissen we de referentie zodra de intrekking wordt vastgelegd."
+        ],
+        [
+          "Technische registraties van advertentieverzending",
+          "90 dagen na het evenement, verwijderd bij de volgende uurlijkse opschoning. Ze bevatten interne referentie, type, datum, status en eventueel bedrag, zonder kopie van de advertentiereferentie. Boekingsdocumenten hebben hun eigen bewaartermijnen."
         ]
       ],
       "notes": [
@@ -497,6 +599,17 @@
         ]
       },
       {
+        "id": "chatgpt-ads",
+        "title": "Meting van ChatGPT-advertenties",
+        "paragraphs": [
+          "Wanneer ingeschakeld, is deze meting optioneel. Je kunt accepteren of weigeren in de melding onderaan bij het openen van de boeking. Weigeren verhindert niet dat je boekt, betaalt of WhatsApp opent. Verder navigeren, op WhatsApp klikken of de boekingsvoorwaarden accepteren geeft geen toestemming voor deze meting.",
+          "Pas na je toestemming verzamelen we de advertentiereferentie in het adres van de boekingspagina. We sturen OpenAI die referentie, het type en tijdstip van het evenement, een identificator om duplicaten te voorkomen, een pagina-adres zonder parameters en bij betaling het werkelijk ontvangen bedrag en de valuta. Deze integratie stuurt geen naam, e-mailadres, telefoonnummer, IP-adres, kaartgegevens of berichtinhoud. De advertentiereferentie is een pseudonieme identificator, geen anoniem gegeven.",
+          "De WhatsApp-klik wordt gemeten binnen de boeking; dit betekent niet dat je een bericht hebt verzonden of iets hebt gekocht. Bij betalingen melden we de daadwerkelijk online betaalde aanbetaling of het totaal, niet het openstaande saldo. De verzending is ingesteld om individuele advertentiepersonalisatie uit te sluiten.",
+          "De eigen cookie jimboats_ads_consent_v1 onthoudt je keuze maximaal 24 uur. Deze bevat een interne referentie of weigering, geen contactgegevens of advertentiereferentie. Je kunt je keuze wijzigen via “Privacyvoorkeuren” onderaan de boeking. Intrekken stopt nieuwe verzendingen en blokkeert wachtende evenementen; een verzonden of lopend verzoek kan niet ongedaan worden gemaakt. Gebruik het privacycontact in dit beleid om je rechten uit te oefenen voor al verzonden gegevens.",
+          "De termijnen in onze tabel gelden voor JimBoats-registraties. OpenAI past zijn eigen privacy- en gegevensbeschermingsvoorwaarden toe op ontvangen gegevens; de links staan onderaan deze pagina."
+        ]
+      },
+      {
         "id": "meting",
         "title": "Meting en geautomatiseerde verwerking",
         "paragraphs": [
@@ -507,6 +620,8 @@
     ],
     "authority": "Spaanse gegevensbeschermingsautoriteit",
     "legalBasis": "Zakelijke bewaring: artikel 30 van het Spaanse Wetboek van Koophandel",
-    "blocking": "Gegevensblokkering: artikel 32 van de Spaanse LOPDGDD"
+    "blocking": "Gegevensblokkering: artikel 32 van de Spaanse LOPDGDD",
+    "adsPrivacy": "Privacy bij OpenAI",
+    "adsDataTerms": "Gegevensbescherming voor OpenAI-advertentietools"
   }
 }

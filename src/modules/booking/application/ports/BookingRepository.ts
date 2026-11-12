@@ -154,8 +154,8 @@ export type BookingNotificationPreferenceReadModel = {
 
 export type BookingOutboxEventWriteModel = {
   aggregateId: string;
-  aggregateType: "BOOKING";
-  eventType: BookingLifecycleEventType;
+  aggregateType: "BOOKING" | "ADS_CONVERSION";
+  eventType: BookingLifecycleEventType | "ChatGptOrderCreated";
   eventVersion: 1;
   occurredAt: Date;
   payload: BookingJsonValue;

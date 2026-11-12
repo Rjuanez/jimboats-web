@@ -1,3 +1,5 @@
+import type { AdsAttribution } from "@/modules/ads/application/ports/AdsConversions";
+
 export type PublicSelectedBookingExtraCommand = {
   extraId: string;
   quantity: number;
@@ -9,6 +11,7 @@ export type PublicBookingNotificationConsentCommand = {
 };
 
 export type CreatePublicBookingCheckoutCommand = {
+  adsAttribution?: AdsAttribution;
   consents: PublicBookingNotificationConsentCommand;
   paymentChoice?: "DEPOSIT" | "FULL";
   couponCode?: string | null;
