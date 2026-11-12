@@ -50,7 +50,9 @@
     "dev:hourly": "node scripts/dev/hourly-preview.mjs",
     "db:hourly:setup": "node scripts/dev/hourly-preview.mjs --setup",
     "start:hourly": "node scripts/dev/hourly-preview.mjs --start",
-    "test:local": "PLAYWRIGHT_PORT=3102 PLAYWRIGHT_BASE_URL=http://127.0.0.1:3102 PLAYWRIGHT_REUSE_EXISTING_SERVER=1 PLAYWRIGHT_WEB_SERVER_COMMAND=\"node scripts/dev/hourly-preview.mjs --start\" HOURLY_BOOKING_E2E=1 playwright test tests/hourly-booking.spec.ts tests/local-operations.spec.ts --workers=1"
+    "test:local": "PLAYWRIGHT_PORT=3102 PLAYWRIGHT_BASE_URL=http://127.0.0.1:3102 PLAYWRIGHT_REUSE_EXISTING_SERVER=1 PLAYWRIGHT_WEB_SERVER_COMMAND=\"node scripts/dev/hourly-preview.mjs --start\" HOURLY_BOOKING_E2E=1 playwright test tests/hourly-booking.spec.ts tests/local-operations.spec.ts --workers=1",
+    "ads:worker:build": "esbuild src/interface/worker/adsConversionWorkerCli.ts --bundle --platform=node --target=node24 --format=cjs --packages=external --outfile=.worker/ads-conversion-worker.cjs",
+    "ads:worker": "pnpm ads:worker:build && node .worker/ads-conversion-worker.cjs"
   },
   "dependencies": {
     "@prisma/adapter-pg": "7.8.0",

@@ -156,7 +156,7 @@ jobs:
           PUSH_VAPID_SUBJECT: mailto:admin@example.com
           STRIPE_SECRET_KEY: sk_test
           STRIPE_WEBHOOK_SECRET: whsec_test
-        run: docker compose -f infra/production/docker-compose.yml config >/tmp/jimboats-production-compose.yml
+        run: docker compose --profile advertising -f infra/production/docker-compose.yml config >/tmp/jimboats-production-compose.yml
 
   publish-and-deploy:
     needs:
@@ -236,8 +236,14 @@ jobs:
           ssh "${SSH_OPTS[@]}" "$VPS_USER@$VPS_HOST" "chmod +x '$VPS_APP_DIR'/infra/deploy/*.sh"
 
       - name: Deploy on VPS
+        shell: bash
         env:
           APP_CHANGED: ${{ needs.changes.outputs.app }}
+          CHATGPT_ADS_ENABLED: ${{ vars.CHATGPT_ADS_ENABLED || 'false' }}
+          CHATGPT_ADS_PIXEL_ID: ${{ vars.CHATGPT_ADS_PIXEL_ID }}
+          CHATGPT_ADS_CAPI_KEY: ${{ secrets.CHATGPT_ADS_CAPI_KEY }}
+          CHATGPT_ADS_VALIDATE_ONLY: ${{ vars.CHATGPT_ADS_VALIDATE_ONLY || 'true' }}
+          GHCR_USERNAME: ${{ github.actor }}
           GHCR_TOKEN: ${{ github.token }}
           IMAGE_REPOSITORY: ${{ steps.image.outputs.repository }}
           IMAGE_TAG: ${{ github.sha }}
@@ -246,16 +252,14 @@ jobs:
           VPS_PORT: ${{ secrets.VPS_PORT }}
           VPS_USER: ${{ secrets.VPS_USER }}
         run: |
+          set -euo pipefail
           VPS_APP_DIR="${VPS_APP_DIR:-/srv/jimboats/web}"
           VPS_PORT="${VPS_PORT:-22}"
           : "${VPS_HOST:?VPS_HOST secret is required}"
           : "${VPS_USER:?VPS_USER secret is required}"
-          DEPLOY_IMAGE_TAG="$IMAGE_TAG"
-          if [ "$APP_CHANGED" != "true" ]; then
-            DEPLOY_IMAGE_TAG="latest"
-          fi
           SSH_OPTS=(-o BatchMode=yes -o IdentitiesOnly=yes -i ~/.ssh/id_ed25519 -p "$VPS_PORT")
-          ssh "${SSH_OPTS[@]}" "$VPS_USER@$VPS_HOST" "APP_DIR='$VPS_APP_DIR' IMAGE_REPOSITORY='$IMAGE_REPOSITORY' IMAGE_TAG='$DEPLOY_IMAGE_TAG' GHCR_USERNAME='${{ github.actor }}' GHCR_TOKEN='$GHCR_TOKEN' sh '$VPS_APP_DIR/infra/deploy/deploy.sh'"
+          # The generated script contains credentials: pipe directly to SSH, never echo or save it.
+          python3 infra/deploy/github-deploy-payload.py | ssh "${SSH_OPTS[@]}" "$VPS_USER@$VPS_HOST" 'sh -s'
 
   result:
     needs:

@@ -1082,3 +1082,16 @@ model PushDeliveryAttempt {
   @@index([bookingId, eventType], map: "push_delivery_attempts_booking_event_idx")
   @@map("push_delivery_attempts")
 }
+
+// No customer/contact information; consent and attribution for the booking flow only.
+model AdsMeasurementConsent {
+  id        String @id
+  version   Int
+  oppref    String? @db.VarChar(500)
+  grantedAt DateTime @map("granted_at") @db.Timestamptz(3)
+  expiresAt DateTime @map("expires_at") @db.Timestamptz(3)
+  revokedAt DateTime? @map("revoked_at") @db.Timestamptz(3)
+
+  @@index([expiresAt], map: "ads_measurement_consents_expires_at_idx")
+  @@map("ads_measurement_consents")
+}

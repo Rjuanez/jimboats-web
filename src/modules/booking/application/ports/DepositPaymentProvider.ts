@@ -1,6 +1,9 @@
+import type { AdsAttribution } from "@/modules/ads/application/ports/AdsConversions";
+
 import type { MoneySnapshot } from "@/shared/domain/Money";
 
 export type DepositCheckoutSessionCommand = {
+  adsAttribution?: AdsAttribution;
   paymentChoice?: "DEPOSIT" | "FULL";
   amount: MoneySnapshot;
   bookingId: string;
@@ -29,6 +32,7 @@ export type DepositPaymentWebhookEvent =
       currency: string | null;
       eventId: string;
       eventType: "checkout.session.completed";
+      adsAttribution?: AdsAttribution;
       occurredAt: Date;
       paymentRecordId: string | null;
       provider: "STRIPE";

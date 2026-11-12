@@ -71,6 +71,8 @@ export function SeoPrivacyPage({
           <ul className="mt-8 space-y-3 text-sm leading-6">
             {[
               [document.authority, "https://www.aepd.es/"],
+              [document.adsPrivacy, "https://openai.com/policies/eu-privacy-policy/"],
+              [document.adsDataTerms, "https://openai.com/policies/ad-tools-dpa/"],
               [
                 document.legalBasis,
                 "https://www.boe.es/buscar/act.php?id=BOE-A-1885-6627#art30",

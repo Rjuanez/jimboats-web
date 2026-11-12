@@ -78,6 +78,7 @@ export class StripeDepositPaymentProvider implements DepositPaymentProvider {
 
     if (
       event.type === "checkout.session.completed" ||
+      event.type === "checkout.session.async_payment_succeeded" ||
       event.type === "checkout.session.async_payment_failed" ||
       event.type === "checkout.session.expired"
     ) {
@@ -99,10 +100,18 @@ export class StripeDepositPaymentProvider implements DepositPaymentProvider {
         rawPayload: rawPayload(event),
       };
 
-      if (event.type === "checkout.session.completed") {
+      if (event.type === "checkout.session.completed" || event.type === "checkout.session.async_payment_succeeded") {
+        // Delayed payment methods may complete checkout while payment is still unpaid.
+        if (session.payment_status !== "paid") {
+          return { eventId: event.id, eventType: event.type, occurredAt, provider: "STRIPE", rawPayload: rawPayload(event) };
+        }
+        const consentId = session.metadata?.chatgptConsentId;
+        const consent = session.metadata?.chatgptMeasurementConsent;
         return {
           ...baseEvent,
-          eventType: event.type,
+          eventType: "checkout.session.completed",
+          ...(consent === "granted-v1" && consentId && consentId.length <= 100
+            ? { adsAttribution: { consentGranted: true as const, consentId } } : {}),
         };
       }
 
@@ -139,6 +148,8 @@ function metadataFromCommand(command: DepositCheckoutSessionCommand) {
     paymentRecordId: command.paymentRecordId,
     reference: command.reference,
     paymentChoice: command.paymentChoice ?? "DEPOSIT",
+    ...(command.adsAttribution?.consentGranted === true && command.adsAttribution.consentId && command.adsAttribution.consentId.length <= 100
+      ? { chatgptMeasurementConsent: "granted-v1", chatgptConsentId: command.adsAttribution.consentId } : {}),
   };
 }
 

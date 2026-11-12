@@ -1,3 +1,10 @@
+import { randomUUID } from "node:crypto";
+import { BookingAdsMeasurement } from "./modules/ads/application/BookingAdsMeasurement";
+import { PrismaAdsConsentStore } from "./infrastructure/db/prisma/PrismaAdsConsentStore";
+import { getChatGptAdsConfig } from "./infrastructure/ads/chatGptAdsConfig";
+import { ChatGptConversionSender } from "./infrastructure/ads/ChatGptConversionSender";
+import { PrismaAdsConversionQueue } from "./infrastructure/db/prisma/PrismaAdsConversionQueue";
+import { ProcessNextAdsConversionUseCase } from "./modules/ads/application/ProcessNextAdsConversionUseCase";
 import { MetNorwayWeatherProvider } from "@/infrastructure/weather/MetNorwayWeatherProvider";
 import { previewHourlySchedule } from "@/modules/booking/application/PreviewHourlySchedule";
 import type { WeatherProvider } from "@/modules/weather/application/ports/WeatherProvider";
@@ -208,6 +215,7 @@ import { createLocalMediaStorageFromEnv } from "./infrastructure/storage/local/L
 const adminLocales = ["en", "es", "ca"] as const;
 
 export function getContainer() {
+  const chatGptAdsConfig = getChatGptAdsConfig();
   const prisma = getPrismaClient();
   const experienceRepository = new PrismaExperienceRepository(
     prisma as unknown as PrismaExperienceRepositoryClient,
@@ -492,6 +500,7 @@ export function getContainer() {
       reserveCouponRedemptionUseCase,
       releaseExpiredBookingHoldsUseCase,
       bookingSunTimes,
+      Boolean(chatGptAdsConfig),
     );
   const exitPublicBookingCheckoutUseCase =
     new ExitPublicBookingCheckoutUseCase(
@@ -519,6 +528,7 @@ export function getContainer() {
       bookingCalendarSync,
       confirmCouponRedemptionUseCase,
       releaseCouponRedemptionUseCase,
+      chatGptAdsConfig,
     );
   const hourlyBooking = new HourlyBookingUseCase(
     bookingRepository,
@@ -858,4 +868,31 @@ export function getHourlySchedulePreview(
     now: new Date(),
     sunTimes: new SunCalcBookingSunTimes(),
   });
+}
+
+/** Separate composition avoids initializing Stripe/calendar/email for the ads worker. */
+export function getAdsConversionWorker() {
+  const config = getChatGptAdsConfig();
+  const useCase = config
+    ? new ProcessNextAdsConversionUseCase(
+        new PrismaAdsConversionQueue(getPrismaClient()),
+        new ChatGptConversionSender(config),
+        new SystemBookingClock(),
+        new PrismaAdsConsentStore(getPrismaClient()),
+      )
+    : null;
+  return {
+    enabled: Boolean(config),
+    processNext: () => useCase?.execute() ?? Promise.resolve("DISABLED" as const),
+  };
+}
+
+/** Independent of booking infrastructure; disabled mode never opens a database connection. */
+export function getBookingAdsMeasurement() {
+  const config = getChatGptAdsConfig();
+  return config ? new BookingAdsMeasurement(
+    new PrismaAdsConsentStore(getPrismaClient()),
+    new PrismaAdsConversionQueue(getPrismaClient()),
+    new SystemBookingClock(), { next: randomUUID }, config,
+  ) : null;
 }

@@ -147,7 +147,7 @@ jobs:
           PUSH_VAPID_SUBJECT: mailto:admin@example.com
           STRIPE_SECRET_KEY: sk_test
           STRIPE_WEBHOOK_SECRET: whsec_test
-        run: docker compose -f infra/production/docker-compose.yml config >/tmp/jimboats-production-compose.yml
+        run: docker compose --profile advertising -f infra/production/docker-compose.yml config >/tmp/jimboats-production-compose.yml
 
   result:
     needs:

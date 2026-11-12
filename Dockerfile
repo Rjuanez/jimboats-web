@@ -31,6 +31,7 @@ RUN mkdir -p public \
   && pnpm home-gallery:worker:build \
   && pnpm media:worker:build \
   && pnpm notifications:worker:build \
+  && pnpm ads:worker:build \
   && pnpm build
 
 FROM node:24-alpine AS runner
