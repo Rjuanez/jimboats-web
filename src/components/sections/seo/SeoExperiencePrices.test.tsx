@@ -38,6 +38,9 @@ describe("concise pricing in initial HTML", () => {
         );
         expect(section).toHaveTextContent(page.detail!.labels.finalPrice);
         expect(section).toHaveTextContent(trip.capacityLabel);
+        expect(section).toHaveTextContent(
+          trip.formattedPrices[trip.durationOptions[1]].replace(/\s/g, " "),
+        );
         expect(page.detail!.faqs[0][1]).toContain(trip.title);
         expect(page.detail!.faqs[0][1]).toContain(trip.pricing.summary);
         expect(page.detail!.faqs[0][1]).toContain(trip.pricing.examples);
@@ -50,6 +53,14 @@ describe("concise pricing in initial HTML", () => {
         );
         expect(card).toHaveTextContent(
           trip.pricing.extraLabel.replace(/\s/g, " "),
+        );
+        expect(card).toHaveTextContent(
+          trip.formattedPrices[trip.durationOptions[1]].replace(/\s/g, " "),
+        );
+        expect(card).toHaveTextContent(
+          trip.featuredHours === 1
+            ? page.detail!.labels.bookingCard.snacksFrom
+            : page.detail!.labels.bookingCard.snacks,
         );
         expect(trip.pricing.extraLabel).toContain(
           key === "romantic" ? "100" : "90",

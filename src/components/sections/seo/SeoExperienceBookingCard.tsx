@@ -46,6 +46,9 @@ export function SeoExperienceBookingCard({
         </span>
       </p>
       <p className="mt-2 text-sm font-semibold leading-6 text-primary-dark">
+        {experience.pricing.nextDurationLabel}
+      </p>
+      <p className="mt-2 text-sm leading-6 text-text-muted">
         {experience.pricing.extraLabel}
       </p>
       <p className="mt-3 text-base font-semibold leading-6 text-emerald-800">

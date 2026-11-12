@@ -85,7 +85,7 @@ export function getExperienceDetails(
         ? labels.bookingCard.snacksFrom
         : labels.bookingCard.snacks,
     ],
-    includedSummary: `${labels.includedShort}. ${experience.featuredHours === 1 ? labels.bookingCard.drink : `${labels.bookingCard.drinks} · ${labels.bookingCard.snacks}`}.${decoration ? ` ${decoration}.` : ""}`,
+    includedSummary: `${labels.includedShort}. ${experience.featuredHours === 1 ? `${labels.bookingCard.drink} · ${labels.bookingCard.snacksFrom}` : `${labels.bookingCard.drinks} · ${labels.bookingCard.snacks}`}.${decoration ? ` ${decoration}.` : ""}`,
     solarCalendar:
       experience.id === "sunrise" || experience.id === "sunset"
         ? {
