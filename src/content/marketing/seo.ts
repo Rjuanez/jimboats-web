@@ -73,7 +73,7 @@ export const skipperDescriptions: Record<MarketingLocale, Record<SkipperId, stri
 export const marketingTitles: Record<MarketingLocale, Record<MarketingPageKey, string>> = {
   es: {
     home: "Paseos en barco y alquiler con patrón en Barcelona",
-    private: "Paseo privado en barco por Barcelona",
+    private: "Paseo privado en barco con patrón en Barcelona",
     sunset: "Paseo en barco al atardecer en Barcelona",
     sunrise: "Paseo en barco al amanecer en Barcelona",
     romantic: "Paseo romántico en barco por Barcelona",
@@ -84,7 +84,7 @@ export const marketingTitles: Record<MarketingLocale, Record<MarketingPageKey, s
   },
   en: {
     home: "Barcelona boat tours & boat rental with a skipper",
-    private: "Private boat trip in Barcelona",
+    private: "Private boat trip with skipper in Barcelona",
     sunset: "Sunset boat trip in Barcelona",
     sunrise: "Sunrise boat trip in Barcelona",
     romantic: "Romantic boat trip in Barcelona",
@@ -95,7 +95,7 @@ export const marketingTitles: Record<MarketingLocale, Record<MarketingPageKey, s
   },
   fr: {
     home: "Balade en bateau et location avec skipper à Barcelone",
-    private: "Balade en bateau privé à Barcelone",
+    private: "Bateau privé avec skipper à Barcelone",
     sunset: "Barcelone en bateau au coucher du soleil",
     sunrise: "Barcelone en bateau au lever du soleil",
     romantic: "Balade romantique en bateau à Barcelone",
@@ -106,7 +106,7 @@ export const marketingTitles: Record<MarketingLocale, Record<MarketingPageKey, s
   },
   de: {
     home: "Bootstour Barcelona & Boot mieten mit Skipper",
-    private: "Private Bootstour in Barcelona",
+    private: "Private Bootstour mit Skipper in Barcelona",
     sunset: "Bootstour zum Sonnenuntergang in Barcelona",
     sunrise: "Bootstour zum Sonnenaufgang in Barcelona",
     romantic: "Romantische Bootsfahrt in Barcelona",
@@ -117,7 +117,7 @@ export const marketingTitles: Record<MarketingLocale, Record<MarketingPageKey, s
   },
   nl: {
     home: "Boottocht Barcelona & boot huren met schipper",
-    private: "Privéboottocht in Barcelona",
+    private: "Privéboottocht met schipper in Barcelona",
     sunset: "Boottocht bij zonsondergang in Barcelona",
     sunrise: "Boottocht bij zonsopgang in Barcelona",
     romantic: "Romantische boottocht in Barcelona",

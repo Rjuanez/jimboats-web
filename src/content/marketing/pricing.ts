@@ -32,6 +32,7 @@ export function getExperiencePricing(
     .replace("{max}", String(rule.maxHours));
   return {
     baseLabel,
+    nextDurationLabel: rate(rule.baseHours + 1),
     extraLabel,
     summary,
     examples: labels.examples

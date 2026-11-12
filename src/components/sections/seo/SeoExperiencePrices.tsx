@@ -16,6 +16,9 @@ export function SeoExperiencePrices({
         {detail.pricing.summary} {detail.pricing.decoration}
       </p>
       <p className="mt-2 text-sm font-semibold leading-6 text-primary-dark">
+        {detail.pricing.nextDurationLabel}.
+      </p>
+      <p className="mt-2 text-sm leading-6 text-text-muted">
         {detail.labels.finalPrice} {capacityLabel}.
       </p>
     </div>
