@@ -260,8 +260,8 @@ for (const width of [360, 768, 1280]) {
       await expect(card).toContainText("Mejor precio online");
       await expect(card).toContainText(
         startsAtOneHour
-          ? "Precio final · bebida incluida"
-          : "Precio final · bebidas y snacks incluidos",
+          ? "Bebida incluida · Aperitivo desde 2 h"
+          : "Bebidas y aperitivo incluidos",
       );
       await expect(
         card.getByRole("link", { name: "Reservar por WhatsApp", exact: true }),
@@ -282,7 +282,7 @@ for (const width of [360, 768, 1280]) {
         exact: true,
       });
       await expect(included).toContainText(
-        startsAtOneHour ? "Snacks desde 2 horas" : "Snacks incluidos",
+        startsAtOneHour ? "Aperitivo desde 2 h" : "Snacks incluidos",
       );
       if (key === "sunrise" || key === "sunset") {
         const table = page.getByRole("table", {

@@ -8,6 +8,7 @@ import {
   type MarketingExperience,
 } from "@/content/marketing";
 import { operator } from "@/content/marketing/catalog";
+import { marketingLastModified } from "@/content/marketing/lastModified";
 import { marketingDescriptions, marketingTitles } from "@/content/marketing/seo";
 import {
   marketingLocales,
@@ -284,6 +285,7 @@ export function marketingSitemap() {
   return marketingLocales.flatMap((locale) =>
     pageKeys.map((key) => ({
       url: operator.url + marketingPath(locale, key),
+      lastModified: marketingLastModified[locale][key],
       alternates: {
         languages: Object.fromEntries(
           marketingLocales.map((language) => [

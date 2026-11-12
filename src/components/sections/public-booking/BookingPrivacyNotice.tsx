@@ -6,7 +6,7 @@ export function BookingPrivacyNotice({
   notice: PublicBookingContent["privacy"];
 }) {
   return (
-    <aside
+    <section
       aria-label={notice.title}
       className="mt-6 rounded-2xl border border-sand/40 bg-background p-4 text-xs leading-6 text-text-muted"
     >
@@ -28,6 +28,6 @@ export function BookingPrivacyNotice({
       >
         {notice.label}
       </a>
-    </aside>
+    </section>
   );
 }

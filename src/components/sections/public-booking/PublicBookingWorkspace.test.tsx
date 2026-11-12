@@ -298,7 +298,7 @@ describe("PublicBookingWorkspace", () => {
     await user.type(screen.getByLabelText("Email address"), "sailor@test.com");
     expect(
       within(
-        screen.getByRole("complementary", {
+        screen.getByRole("region", {
           name: "Your data and your booking",
         }),
       ).getByRole("link", { name: "Privacy policy" }),
